@@ -69,6 +69,9 @@
     <ClCompile Include="..\..\AudioIO\LevelAnalyser.cpp">
       <Filter>Source Files\AudioIO</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\AudioIO\ParametersQueue.cpp">
+      <Filter>Source Files\AudioIO</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\AVPTesterApp.h">
@@ -103,6 +106,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Widgets\VuMeter.h">
       <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\AudioIO\ParametersQueue.h">
+      <Filter>Header Files\AudioIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\AudioIO\ProcessParams.h">
+      <Filter>Header Files\AudioIO</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

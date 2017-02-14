@@ -7,8 +7,6 @@ std::unique_ptr<AudioIO> ugAudioIO;
 
 AudioIO *gAudioIO{};
 
-//#define M_PI  (3.14159265)
-
 class AudioThread: public wxThread {
 public:
 	AudioThread() :wxThread(wxTHREAD_JOINABLE) {}
@@ -34,6 +32,8 @@ AudioIO::AudioIO()
 ,mIsSafe(true)
 ,mInputLevelMetric(NULL)
 ,mOutputLevelMetric(NULL)
+,mOutputGain(0.5)
+,mParametersQueue(128)
 {
 	mPortStreamV19 = NULL;
 	mEngineOK = false;
@@ -75,7 +75,6 @@ void AudioIO::StopDevicesTest()
 		//wxMessageBox(wxT("test finished"));
 	}
 }
-
 
 int AudioIO::getInputDevIndex(const wxString &hostName, const wxString &devName )
 {
@@ -151,8 +150,8 @@ PaError AudioIO::OpenStream()
 	const PaDeviceInfo *captureDeviceInfo;
 
 	//get the global index of the selected input device
-	wxString inDevHost = gPrefs->Read(wxT("/AudioIO/InputHostName"), wxT(""));;
-	wxString inDevName = gPrefs->Read(wxT("/AudioIO/InputDevName"), wxT(""));;
+	wxString inDevHost = gPrefs->Read(wxT("/AudioIO/InputHostName"), wxT(""));
+	wxString inDevName = gPrefs->Read(wxT("/AudioIO/InputDevName"), wxT(""));
 	int inDevIdx = getInputDevIndex(inDevHost, inDevName);
 	
 	//check that the selected input device is still available, if not return an error
@@ -200,7 +199,7 @@ PaError AudioIO::OpenStream()
 	err = Pa_OpenStream(&mPortStreamV19,
 						captureEnabled ? &captureParameters : NULL,
 						playbackEnabled ? &playbackParameters : NULL,
-						mCaptureSampleRate,
+						(double)mCaptureSampleRate,
 						mCaptureFrameSize,
 						paClipOff,
 						NULL, 
@@ -271,17 +270,21 @@ int AudioIO::doIODevicesTest()
 
 		if (bPAIsOpen)
 		{
-			//FlushParameterQueue();
+			FlushParameterQueue();
 			/////////////////////////////////////////////////////////////////////////////
 			
 			for (size_t i = 0; i < mCaptureFrameSize; i++ )
 			{
 				angleS = freq*timeS;
-				if (angleS == 1)
-					angleS = 0;
+				if (angleS == 1.0)
+					angleS = 0.0;
 
-				mOutputBuffer[2*i] = (float)(0.5*sin(twoPi*angleS));
-				mOutputBuffer[2 * i + 1] = (float)(0.5*sin(twoPi*angleS));
+				double sig = (float)(mOutputGain*sin(twoPi*angleS));
+
+				for (size_t j = 0; j < mNoPlaybackChannels; j++)
+				{
+					mOutputBuffer[mNoPlaybackChannels* i + j] = (float)sig;
+				}
 				timeS += dTime;
 			}
 
@@ -372,6 +375,44 @@ LevelAnalyser*
 AudioIO::GetOutputsLevelAnalyser()
 {
 	return mOutputLevelMetric;
+}
+
+void 
+AudioIO::SetParameter(AudioParam msg, bool flushQueue)
+{
+	mParametersQueue.Put(msg);
+	if (flushQueue)
+	{
+		FlushParameterQueue();
+	}
+}
+
+void 
+AudioIO::FlushParameterQueue()
+{
+	AudioParam msg;
+	size_t nPms = 0;
+
+	while (mParametersQueue.Get(msg))
+	{
+		ProcessParameter(msg.paramIdx, msg.value);
+		nPms++;
+	}
+}
+
+void AudioIO::ProcessParameter(int paramID, double paramValue)
+{
+	switch (paramID)
+	{
+		case kOutputGain:
+		{
+			mOutputGain = pow(10, (paramValue / 20.0));
+		}
+		break;
+
+		default:
+		{}
+	}
 }
 
 AudioThread::ExitCode AudioThread::Entry()

@@ -63,6 +63,7 @@ void InitPreferences()
 		gPrefs->Write(wxT("/AudioIO/OutputDevName"), wxT("") );
 		gPrefs->Write(wxT("/AudioIO/OutputDevSRate"), 48000 );
 		gPrefs->Write(wxT("/AudioIO/OutputDevChans"), 1 );
+		gPrefs->Write(wxT("/Parameters/OutputStreamGain"), -6.0);
 		gPrefs->Write(wxT("/Logging/EnumerateDevicesToFile"), 1 );
 		gPrefs->Write(wxT("/Logging/EnumerateDevicesToFilePath"), dataFolder );
 		gPrefs->Write(wxT("/Logging/LogToFile"), 0 );

@@ -9,6 +9,8 @@
 #include <malloc.h>
 
 #include "LevelAnalyser.h"
+#include "ParametersQueue.h"
+#include "ProcessParams.h"
 
 #define safenew new
 
@@ -34,6 +36,7 @@ class AudioIO
 
 		LevelAnalyser* GetInputsLevelAnalyser();
 		LevelAnalyser* GetOutputsLevelAnalyser();
+		void SetParameter(AudioParam msg, bool flushQueue);
 
 	protected:
 		PaError OpenStream();
@@ -41,6 +44,9 @@ class AudioIO
 
 		int CreateLevelAnalysers(size_t srate, size_t interval);
 		void DeleteLevelAnalysers();
+
+		void FlushParameterQueue();
+		void ProcessParameter(int paramID, double paramValue);
 
 		float* mInputBuffer;
 		float* mOutputBuffer;
@@ -58,6 +64,9 @@ class AudioIO
 
 		LevelAnalyser* mInputLevelMetric;
 		LevelAnalyser* mOutputLevelMetric;
+		ParametersQueue mParametersQueue;
+
+		double mOutputGain;
 
 	private:
 		int getInputDevIndex(const wxString &hostName = wxEmptyString, const wxString &devName = wxEmptyString);

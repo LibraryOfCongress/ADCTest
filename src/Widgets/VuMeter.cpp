@@ -58,7 +58,7 @@ VuMeter::VuMeter(wxWindow* parent,
 	mTicksPos[8] = -6;
 	mTicksPos[9] = -3;
 	mTicksPos[10] = 0;
-	mTicksPos[11] = 3;
+//	mTicksPos[11] = 3;
 }
 
 VuMeter::~VuMeter()
@@ -139,7 +139,9 @@ void VuMeter::OnPaint(wxPaintEvent& WXUNUSED(event))
 	wxMemoryDC dc;
 	dc.SelectObject(*membitmap);
 	dc.SetBackground(*wxTheBrushList->FindOrCreateBrush(mBackColour,wxSOLID));
+	//dc.SetPen(*wxThePenList->FindOrCreatePen(wxColour(196,196,196), 1, wxPENSTYLE_SOLID));
 	dc.SetBrush(*wxTheBrushList->FindOrCreateBrush(mBackColour,wxSOLID));
+	//dc.DrawRectangle(0, 0, mWidgetWidth, mWidgetHeight);
 	dc.Clear();
 	//////////////////
 	//sectors

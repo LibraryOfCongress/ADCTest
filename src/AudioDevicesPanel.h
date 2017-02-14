@@ -35,26 +35,37 @@ class AudioDevicesPanel: public wxPanel
 		void BuildTestUI();
 
 		//(*Declarations(AudioDevicesPanel)
+		RimPanel* PanelPBInR;
 		wxPanel* PanelRecording;
 		wxPanel* PanelPlayback;
 		wxStaticText* StaticTextDevTestTitle;
+		GButton* ButtonOutGainDwn;
 		GButton* ButtonDevTestStop;
 		wxStaticText* StaticTextGenSettingsTitle;
 		GButton* ButtonDevTestStart;
 		wxStaticText* StaticTextInHosts;
 		wxStaticText* StaticTextLineUp;
+		wxStaticText* StaticTextGainTtl;
 		RimPanel* PanelDevTest;
 		wxTextCtrl* TextCtrlOutChannels;
 		wxStaticText* StaticTextOutDevices;
 		wxStaticText* StaticTextInDevices;
+		RimPanel* PanelPBInL;
 		wxTimer TimerAudioMonitor;
 		wxStaticText* StaticTextSysSampleRate;
+		wxStaticText* StaticTextOutGain;
 		wxStaticText* StaticTextInChannels;
+		wxStaticText* StaticTextPBStreamTTL;
 		RimPanel* PanelHosts;
+		wxBoxSizer* BoxSizerRecInL;
 		RimPanel* PanelSysGenSettings;
 		wxChoice* ChoiceSystemSampleRate;
+		RimPanel* PanelRecInL;
+		RimPanel* Panel1RecInR;
 		wxBoxSizer* BoxSizerTest;
 		wxBoxSizer* BoxSizerRecording;
+		wxStaticText* StaticTextRecStreamTTL;
+		GButton* ButtonOutGainUp;
 		wxStaticText* StaticTextOutChannels;
 		wxChoice* ChoiceInputDevice;
 		wxBoxSizer* BoxSizerPlayback;
@@ -66,6 +77,7 @@ class AudioDevicesPanel: public wxPanel
 		wxTextCtrl* TextCtrlInChannels;
 		RimPanel* PanelTest;
 		wxChoice* ChoiceHost;
+		wxBoxSizer* BoxSizerPBInL;
 		//*)
 
 		VuMeter* mVuMeterIn;
@@ -97,7 +109,17 @@ class AudioDevicesPanel: public wxPanel
 		static const long ID_BUTTON_TST_DEV_START;
 		static const long ID_BUTTON_TST_DEV_STOP;
 		static const long ID_PANEL_DEV_TEST;
+		static const long ID_STATICTEXT_PB_STREAM_TTL;
+		static const long ID_PANEL_PB_IN_L;
+		static const long ID_STATICTEXT_GAIN_TTL;
+		static const long ID_STATICTEXT_GAIN;
+		static const long ID_BUTTON_OUT_GAIN_UP;
+		static const long ID_BUTTON_OUT_GAIN_DWN;
+		static const long ID_PANEL_PB_IN_R;
 		static const long ID_PANEL_PLAYBACK;
+		static const long ID_STATICTEXT_REC_STREAM_TTL;
+		static const long ID_PANEL_REC_IN_L;
+		static const long ID_PANEL_REC_IN_R;
 		static const long ID_PANEL_RECORDING;
 		static const long ID_PANEL_TEST;
 		static const long ID_TIMER_AUDIO_MONITOR;
@@ -116,15 +138,22 @@ class AudioDevicesPanel: public wxPanel
 		void OnButtonDevTestStopClick(wxCommandEvent& event);
 		void OnChoiceHostSelect(wxCommandEvent& event);
 		void OnTimerAudioMonitorTrigger(wxTimerEvent& event);
+		void OnButtonOutGainUpClick(wxCommandEvent& event);
+		void OnButtonOutGainDwnClick(wxCommandEvent& event);
 		//*)
 
 		DECLARE_EVENT_TABLE()
+
+		void UpdateOutputGain( bool write = false);
 
 		bool mAudioTestStarted;
 		int mNumInputChannels;
 		int mPrevNumInputChannels;
 		int mNumOutputChannels;
 		int mPrevNumOutputChannels;
+
+		double mOutputStreamGain;
+		bool mCtrlDwn;
 };
 
 #endif

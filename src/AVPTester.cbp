@@ -112,8 +112,6 @@
 		<Unit filename="AudioDevicesPanel.h" />
 		<Unit filename="AudioIO/AudioEngine.cpp" />
 		<Unit filename="AudioIO/AudioEngine.h" />
-		<Unit filename="DevicesTestPanel.cpp" />
-		<Unit filename="DevicesTestPanel.h" />
 		<Unit filename="Devices/ADevicesManager.cpp" />
 		<Unit filename="Devices/ADevicesManager.h" />
 		<Unit filename="Devices/AudioInput.cpp" />
@@ -132,7 +130,6 @@
 		</Unit>
 		<Unit filename="wxsmith/AVPTesterframe.wxs" />
 		<Unit filename="wxsmith/AudioDevicesPanel.wxs" />
-		<Unit filename="wxsmith/DevicesTestPanel.wxs" />
 		<Extensions>
 			<code_completion />
 			<envvars />
@@ -142,7 +139,6 @@
 				<resources>
 					<wxFrame wxs="wxsmith/AVPTesterframe.wxs" src="AVPTesterMain.cpp" hdr="AVPTesterMain.h" fwddecl="0" i18n="1" name="AVPTesterFrame" language="CPP" />
 					<wxPanel wxs="wxsmith/AudioDevicesPanel.wxs" src="AudioDevicesPanel.cpp" hdr="AudioDevicesPanel.h" fwddecl="0" i18n="1" name="AudioDevicesPanel" language="CPP" />
-					<wxPanel wxs="wxsmith/DevicesTestPanel.wxs" src="DevicesTestPanel.cpp" hdr="DevicesTestPanel.h" fwddecl="0" i18n="1" name="DevicesTestPanel" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>

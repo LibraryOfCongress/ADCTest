@@ -2,6 +2,7 @@
 #include "Devices\ADevicesManager.h"
 #include "System\Prefs.h"
 #include "AudioIO\AudioEngine.h"
+#include "AudioIO\ProcessParams.h"
 
 //(*InternalHeaders(AudioDevicesPanel)
 #include <wx/intl.h>
@@ -32,7 +33,17 @@ const long AudioDevicesPanel::ID_STATICTEXT_DEV_TST_TTL = wxNewId();
 const long AudioDevicesPanel::ID_BUTTON_TST_DEV_START = wxNewId();
 const long AudioDevicesPanel::ID_BUTTON_TST_DEV_STOP = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_DEV_TEST = wxNewId();
+const long AudioDevicesPanel::ID_STATICTEXT_PB_STREAM_TTL = wxNewId();
+const long AudioDevicesPanel::ID_PANEL_PB_IN_L = wxNewId();
+const long AudioDevicesPanel::ID_STATICTEXT_GAIN_TTL = wxNewId();
+const long AudioDevicesPanel::ID_STATICTEXT_GAIN = wxNewId();
+const long AudioDevicesPanel::ID_BUTTON_OUT_GAIN_UP = wxNewId();
+const long AudioDevicesPanel::ID_BUTTON_OUT_GAIN_DWN = wxNewId();
+const long AudioDevicesPanel::ID_PANEL_PB_IN_R = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_PLAYBACK = wxNewId();
+const long AudioDevicesPanel::ID_STATICTEXT_REC_STREAM_TTL = wxNewId();
+const long AudioDevicesPanel::ID_PANEL_REC_IN_L = wxNewId();
+const long AudioDevicesPanel::ID_PANEL_REC_IN_R = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_RECORDING = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_TEST = wxNewId();
 const long AudioDevicesPanel::ID_TIMER_AUDIO_MONITOR = wxNewId();
@@ -52,20 +63,26 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	wxBoxSizer* BoxSizerInputDevices;
 	wxBoxSizer* BoxSizerOutputDevices;
 	wxBoxSizer* BoxSizerSRateInner;
+	wxBoxSizer* BoxSizerRecTTL;
+	wxBoxSizer* BoxSizerPBInR;
 	wxBoxSizer* BoxSizerInputDevice;
 	wxBoxSizer* BoxSizerMain;
 	wxBoxSizer* BoxSizerHosts;
+	wxBoxSizer* BoxSizerPBTTL;
 	wxBoxSizer* BoxSizerInputChannels;
 	wxBoxSizer* BoxSizerOutputChannels;
+	wxBoxSizer* BoxSizerRecInR;
 	wxBoxSizer* BoxSizerGenSettings;
 	wxBoxSizer* BoxSizerDevTest;
+	wxBoxSizer* BoxSizerGainBtns;
+	wxBoxSizer* BoxSizerBtnsLay;
 	wxBoxSizer* BoxSizerRescan;
+	wxBoxSizer* BoxSizerGainTtl;
 	wxBoxSizer* BoxSizerTestStart;
 	wxBoxSizer* BoxSizerHostAPIIn;
 	wxBoxSizer* BoxSizerDevicesSetttingsTitle;
-	
-	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
 
+	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
 	SetForegroundColour(wxColour(0,0,0));
 	SetBackgroundColour(wxColour(220,220,220));
 	BoxSizerMain = new wxBoxSizer(wxVERTICAL);
@@ -74,8 +91,8 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	BoxSizerMain->Add(StaticTextLineUp, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
 	BoxSizerDevicesSetttingsTitle = new wxBoxSizer(wxHORIZONTAL);
 	StaticTextGenSettingsTitle = new wxStaticText(this, ID_STATICTEXT_GEN_SET_TTL, _("audio devices settings"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_GEN_SET_TTL"));
-	BoxSizerDevicesSetttingsTitle->Add(StaticTextGenSettingsTitle, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 2);
-	BoxSizerMain->Add(BoxSizerDevicesSetttingsTitle, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerDevicesSetttingsTitle->Add(StaticTextGenSettingsTitle, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 2);
+	BoxSizerMain->Add(BoxSizerDevicesSetttingsTitle, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	PanelSysGenSettings = new RimPanel(this, ID_PANEL_SYS_GEN_SET, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE, _T("ID_PANEL_SYS_GEN_SET"));
 	BoxSizerGenSettings = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizerRescan = new wxBoxSizer(wxVERTICAL);
@@ -147,7 +164,7 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	PanelTest = new RimPanel(this, ID_PANEL_TEST, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE, _T("ID_PANEL_TEST"));
 	BoxSizerTest = new wxBoxSizer(wxVERTICAL);
 	StaticTextDevTestTitle = new wxStaticText(PanelTest, ID_STATICTEXT_DEV_TST_TTL, _("Audio devices test"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_DEV_TST_TTL"));
-	BoxSizerTest->Add(StaticTextDevTestTitle, 0, wxTOP|wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerTest->Add(StaticTextDevTestTitle, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	BoxSizerTestStart = new wxBoxSizer(wxHORIZONTAL);
 	PanelDevTest = new RimPanel(PanelTest, ID_PANEL_DEV_TEST, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL|wxNO_FULL_REPAINT_ON_RESIZE, _T("ID_PANEL_DEV_TEST"));
 	BoxSizerDevTest = new wxBoxSizer(wxHORIZONTAL);
@@ -162,20 +179,68 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	BoxSizerTestStart->Add(PanelDevTest, 1, wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	BoxSizerTest->Add(BoxSizerTestStart, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	BoxSizerMonitor = new wxBoxSizer(wxHORIZONTAL);
-	BoxSizerMonitor->Add(1,200,0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerMonitor->Add(1,200,0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 0);
 	PanelPlayback = new wxPanel(PanelTest, ID_PANEL_PLAYBACK, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL|wxNO_FULL_REPAINT_ON_RESIZE, _T("ID_PANEL_PLAYBACK"));
-	BoxSizerPlayback = new wxBoxSizer(wxHORIZONTAL);
+	BoxSizerPlayback = new wxBoxSizer(wxVERTICAL);
+	StaticTextPBStreamTTL = new wxStaticText(PanelPlayback, ID_STATICTEXT_PB_STREAM_TTL, _("output stream"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_PB_STREAM_TTL"));
+	BoxSizerPlayback->Add(StaticTextPBStreamTTL, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerPBTTL = new wxBoxSizer(wxHORIZONTAL);
+	PanelPBInL = new RimPanel(PanelPlayback, ID_PANEL_PB_IN_L, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL|wxNO_FULL_REPAINT_ON_RESIZE, _T("ID_PANEL_PB_IN_L"));
+	BoxSizerPBInL = new wxBoxSizer(wxHORIZONTAL);
+	PanelPBInL->SetSizer(BoxSizerPBInL);
+	BoxSizerPBInL->Fit(PanelPBInL);
+	BoxSizerPBInL->SetSizeHints(PanelPBInL);
+	BoxSizerPBTTL->Add(PanelPBInL, 1, wxTOP|wxBOTTOM|wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 3);
+	PanelPBInR = new RimPanel(PanelPlayback, ID_PANEL_PB_IN_R, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_PB_IN_R"));
+	BoxSizerPBInR = new wxBoxSizer(wxVERTICAL);
+	BoxSizerGainTtl = new wxBoxSizer(wxHORIZONTAL);
+	StaticTextGainTtl = new wxStaticText(PanelPBInR, ID_STATICTEXT_GAIN_TTL, _("gain"), wxDefaultPosition, wxSize(50,18), wxALIGN_CENTRE, _T("ID_STATICTEXT_GAIN_TTL"));
+	BoxSizerGainTtl->Add(StaticTextGainTtl, 1, wxBOTTOM|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerPBInR->Add(BoxSizerGainTtl, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerBtnsLay = new wxBoxSizer(wxHORIZONTAL);
+	BoxSizerBtnsLay->Add(1,-1,1, wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerGainBtns = new wxBoxSizer(wxVERTICAL);
+	StaticTextOutGain = new wxStaticText(PanelPBInR, ID_STATICTEXT_GAIN, _("0 dB"), wxDefaultPosition, wxSize(50,18), wxALIGN_CENTRE, _T("ID_STATICTEXT_GAIN"));
+	BoxSizerGainBtns->Add(StaticTextOutGain, 1, wxTOP|wxBOTTOM|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	ButtonOutGainUp = new GButton(PanelPBInR, ID_BUTTON_OUT_GAIN_UP, _("+"), wxDefaultPosition, wxSize(50,40), 0, wxDefaultValidator, _T("ID_BUTTON_OUT_GAIN_UP"));
+	BoxSizerGainBtns->Add(ButtonOutGainUp, 0, wxTOP|wxBOTTOM|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	ButtonOutGainDwn = new GButton(PanelPBInR, ID_BUTTON_OUT_GAIN_DWN, _("-"), wxDefaultPosition, wxSize(50,40), 0, wxDefaultValidator, _T("ID_BUTTON_OUT_GAIN_DWN"));
+	BoxSizerGainBtns->Add(ButtonOutGainDwn, 0, wxBOTTOM|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerBtnsLay->Add(BoxSizerGainBtns, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 0);
+	BoxSizerBtnsLay->Add(1,-1,1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	BoxSizerPBInR->Add(BoxSizerBtnsLay, 0, wxBOTTOM|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	PanelPBInR->SetSizer(BoxSizerPBInR);
+	BoxSizerPBInR->Fit(PanelPBInR);
+	BoxSizerPBInR->SetSizeHints(PanelPBInR);
+	BoxSizerPBTTL->Add(PanelPBInR, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 3);
+	BoxSizerPlayback->Add(BoxSizerPBTTL, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
 	PanelPlayback->SetSizer(BoxSizerPlayback);
 	BoxSizerPlayback->Fit(PanelPlayback);
 	BoxSizerPlayback->SetSizeHints(PanelPlayback);
 	BoxSizerMonitor->Add(PanelPlayback, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	PanelRecording = new wxPanel(PanelTest, ID_PANEL_RECORDING, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER|wxTAB_TRAVERSAL|wxNO_FULL_REPAINT_ON_RESIZE, _T("ID_PANEL_RECORDING"));
-	BoxSizerRecording = new wxBoxSizer(wxHORIZONTAL);
+	BoxSizerRecording = new wxBoxSizer(wxVERTICAL);
+	StaticTextRecStreamTTL = new wxStaticText(PanelRecording, ID_STATICTEXT_REC_STREAM_TTL, _("input stream"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_REC_STREAM_TTL"));
+	BoxSizerRecording->Add(StaticTextRecStreamTTL, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerRecTTL = new wxBoxSizer(wxHORIZONTAL);
+	PanelRecInL = new RimPanel(PanelRecording, ID_PANEL_REC_IN_L, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL|wxNO_FULL_REPAINT_ON_RESIZE|wxFULL_REPAINT_ON_RESIZE, _T("ID_PANEL_REC_IN_L"));
+	BoxSizerRecInL = new wxBoxSizer(wxHORIZONTAL);
+	PanelRecInL->SetSizer(BoxSizerRecInL);
+	BoxSizerRecInL->Fit(PanelRecInL);
+	BoxSizerRecInL->SetSizeHints(PanelRecInL);
+	BoxSizerRecTTL->Add(PanelRecInL, 1, wxTOP|wxBOTTOM|wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 3);
+	Panel1RecInR = new RimPanel(PanelRecording, ID_PANEL_REC_IN_R, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_REC_IN_R"));
+	BoxSizerRecInR = new wxBoxSizer(wxHORIZONTAL);
+	Panel1RecInR->SetSizer(BoxSizerRecInR);
+	BoxSizerRecInR->Fit(Panel1RecInR);
+	BoxSizerRecInR->SetSizeHints(Panel1RecInR);
+	BoxSizerRecTTL->Add(Panel1RecInR, 5, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 3);
+	BoxSizerRecording->Add(BoxSizerRecTTL, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
 	PanelRecording->SetSizer(BoxSizerRecording);
 	BoxSizerRecording->Fit(PanelRecording);
 	BoxSizerRecording->SetSizeHints(PanelRecording);
-	BoxSizerMonitor->Add(PanelRecording, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
-	BoxSizerTest->Add(BoxSizerMonitor, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerMonitor->Add(PanelRecording, 3, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerTest->Add(BoxSizerMonitor, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	PanelTest->SetSizer(BoxSizerTest);
 	BoxSizerTest->Fit(PanelTest);
 	BoxSizerTest->SetSizeHints(PanelTest);
@@ -193,6 +258,8 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	Connect(ID_CHOICE_OUTPUT_DEVICE,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&AudioDevicesPanel::OnChoiceOutputDeviceSelect);
 	Connect(ID_BUTTON_TST_DEV_START,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AudioDevicesPanel::OnButtonDevTestStartClick);
 	Connect(ID_BUTTON_TST_DEV_STOP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AudioDevicesPanel::OnButtonDevTestStopClick);
+	Connect(ID_BUTTON_OUT_GAIN_UP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AudioDevicesPanel::OnButtonOutGainUpClick);
+	Connect(ID_BUTTON_OUT_GAIN_DWN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AudioDevicesPanel::OnButtonOutGainDwnClick);
 	Connect(ID_TIMER_AUDIO_MONITOR,wxEVT_TIMER,(wxObjectEventFunction)&AudioDevicesPanel::OnTimerAudioMonitorTrigger);
 	//*)
 
@@ -201,6 +268,8 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	Connect(ID_BUTTON_SCAN_AUDIO_SYS, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AudioDevicesPanel::OnButtonScanAudioSysClick);
     Connect(ID_BUTTON_TST_DEV_START, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AudioDevicesPanel::OnButtonDevTestStartClick);
 	Connect(ID_BUTTON_TST_DEV_STOP, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AudioDevicesPanel::OnButtonDevTestStopClick);
+	Connect(ID_BUTTON_OUT_GAIN_UP, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AudioDevicesPanel::OnButtonOutGainUpClick);
+	Connect(ID_BUTTON_OUT_GAIN_DWN, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AudioDevicesPanel::OnButtonOutGainDwnClick);
 
 	mNumInputChannels = -1;
 	mPrevNumInputChannels = -1;
@@ -208,11 +277,15 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	mNumOutputChannels = -1;
 	mPrevNumOutputChannels = -1;
 	mVuMeterOut = NULL;
-	 
+
 	ButtonDevTestStop->enable(false);
 	ButtonDevTestStart->enable(true);
 
 	PopulateAll();
+
+	//load output gain
+	gPrefs->Read(wxT("/Parameters/OutputStreamGain"), &mOutputStreamGain);
+	UpdateOutputGain();
 }
 
 AudioDevicesPanel::~AudioDevicesPanel()
@@ -224,15 +297,15 @@ AudioDevicesPanel::~AudioDevicesPanel()
 void AudioDevicesPanel::PopulateAll()
 {
 	PopulateHostsChoices();
-	
+
 	PopulateInDevicesChoices();
-	
+
 	PopulateOutDevicesChoices();
-	
+
 	ShowInDevChannels();
-	
+
 	ShowOutDevChannels();
-	
+
 }
 
 void AudioDevicesPanel::PopulateHostsChoices()
@@ -582,17 +655,25 @@ void AudioDevicesPanel::BuildTestUI()
 
 		if (mPrevNumInputChannels > 0)
 		{
-			mVuMeterIn = new VuMeter(PanelRecording, ID_VUMETER_OUT, wxT(""), wxT("dB"), wxDefaultPosition, wxSize(30 * mNumInputChannels, 120));
+			mVuMeterIn = new VuMeter(PanelRecInL, ID_VUMETER_OUT, wxT(""), wxT("dB"), wxDefaultPosition, wxSize(30 * mNumInputChannels, 120));
+			//mVuMeterIn = new VuMeter(PanelRecording, ID_VUMETER_OUT, wxT(""), wxT("dB"), wxDefaultPosition, wxSize(30 * mNumInputChannels, 120));
 			// configure vu meters
+			mVuMeterIn->setRange(mNumInputChannels, -120, 5, -6, -24);
+			mVuMeterIn->SetBackColour(wxColour(215, 215, 215));
+			mVuMeterIn->SetNeedleColour(wxColour(255, 255, 255));
+			mVuMeterIn->EnableTicks(true, false);
 			LevelMetrics li;
 			li.numChannels = mNumInputChannels;
-			mVuMeterIn->setRange(mNumInputChannels, -120, 5, -6, -24);
-			mVuMeterIn->SetBackColour(wxColour(220, 220, 220));
-			mVuMeterIn->SetNeedleColour(wxColour(255, 255, 255));
+			for (int nCh = 0; nCh < mNumInputChannels; nCh++)
+			{
+				li.peak[nCh] = -115;
+				li.rms[nCh] = -115;
+			}
 			mVuMeterIn->SetValue(li);
-			mVuMeterIn->EnableTicks(true, false);
-			BoxSizerRecording->Add(mVuMeterIn, 0, wxEXPAND |wxALL | wxALIGN_LEFT | wxALIGN_TOP, 5);
-			BoxSizerRecording->Fit(PanelRecording);
+			BoxSizerRecInL->Add(mVuMeterIn, 0, wxEXPAND | wxALL | wxALIGN_LEFT | wxALIGN_TOP, 5);
+			BoxSizerRecInL->Fit(PanelRecInL);
+			//BoxSizerRecording->Add(mVuMeterIn, 0, wxEXPAND | wxALL | wxALIGN_LEFT | wxALIGN_TOP, 5);
+			//BoxSizerRecording->Fit(PanelRecording);
 		}
 	}
 
@@ -608,15 +689,29 @@ void AudioDevicesPanel::BuildTestUI()
 
 		if (mPrevNumOutputChannels > 0)
 		{
-			mVuMeterOut = new VuMeter(PanelPlayback, ID_VUMETER_OUT, wxT(""), wxT("dB"), wxDefaultPosition, wxSize(30 * mNumOutputChannels, 120));
+			//mVuMeterOut = new VuMeter(PanelPlayback, ID_VUMETER_OUT, wxT(""), wxT("dB"), wxDefaultPosition, wxSize(30 * mNumOutputChannels, 120));
+			mVuMeterOut = new VuMeter(PanelPBInL, ID_VUMETER_OUT, wxT(""), wxT("dB"), wxDefaultPosition, wxSize(30 * mNumOutputChannels, 120));
 			mVuMeterOut->setRange(mNumOutputChannels, -120, 5, -6, -24);
-			mVuMeterOut->SetBackColour(wxColour( 220, 220 , 220));
+			mVuMeterOut->SetBackColour(wxColour( 215, 215 , 215));
 			mVuMeterOut->SetNeedleColour(wxColour(255, 255, 255));
 			mVuMeterOut->EnableTicks(true, false);
-			BoxSizerPlayback->Add(mVuMeterOut, 0, wxEXPAND | wxALL | wxALIGN_LEFT | wxALIGN_TOP, 5);
-			BoxSizerPlayback->Fit(PanelPlayback);
+			LevelMetrics lo;
+			lo.numChannels = mNumOutputChannels;
+			for (int nCh = 0; nCh < mNumOutputChannels; nCh++)
+			{
+				lo.peak[nCh] = -115;
+				lo.rms[nCh] = -115;
+			}
+			mVuMeterOut->SetValue(lo);
+			//BoxSizerPlayback->Add(mVuMeterOut, 0, wxEXPAND | wxALL | wxALIGN_LEFT | wxALIGN_TOP, 5);
+			//BoxSizerPlayback->Fit(PanelPlayback);
+			BoxSizerPBInL->Add(mVuMeterOut, 0, wxEXPAND | wxALL | wxALIGN_LEFT | wxALIGN_TOP, 5);
+			BoxSizerPBInL->Layout();
+			BoxSizerPBInL->Fit(PanelPBInL);
 		}
 	}
+	BoxSizerRecording->Layout();
+	BoxSizerPlayback->Layout();
 	BoxSizerTest->Layout();
 }
 
@@ -658,3 +753,45 @@ void AudioDevicesPanel::OnTimerAudioMonitorTrigger(wxTimerEvent& event)
 	}
 }
 
+void AudioDevicesPanel::OnButtonOutGainUpClick(wxCommandEvent& event)
+{
+	mCtrlDwn = wxGetKeyState(WXK_CONTROL);
+	
+	if (mCtrlDwn)
+		mOutputStreamGain += 1;
+	else
+		mOutputStreamGain += 0.1;
+
+	UpdateOutputGain( true );
+}
+
+void AudioDevicesPanel::OnButtonOutGainDwnClick(wxCommandEvent& event)
+{
+	mCtrlDwn = wxGetKeyState(WXK_CONTROL);
+
+	if (mCtrlDwn)
+		mOutputStreamGain -= 1;
+	else
+		mOutputStreamGain -= 0.1;
+
+	UpdateOutputGain( true );
+}
+
+void AudioDevicesPanel::UpdateOutputGain(bool write)
+{
+	wxString gnStr;
+	gnStr.Printf(wxT("%g dB"), mOutputStreamGain);
+	StaticTextOutGain->SetLabel(gnStr);
+	
+	//send to audio engine
+	AudioParam msg;
+	msg.paramIdx = kOutputGain;
+	msg.value = mOutputStreamGain;
+	gAudioIO->SetParameter(msg, false);
+
+	if (write)
+	{
+		gPrefs->Write(wxT("/Parameters/OutputStreamGain"), mOutputStreamGain);
+		gPrefs->Flush();
+	}
+}
