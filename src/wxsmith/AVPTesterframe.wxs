@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxFrame" name="AVPTesterFrame">
+		<title>AVPreserve - ADC Test Set</title>
+		<icon>UI\favicon.ico</icon>
+		<object class="wxPanel" name="ID_PANEL_MAIN_UI" variable="PanelMainUI" member="yes">
+			<fg>#000000</fg>
+			<bg>#DCDCDC</bg>
+			<object class="wxBoxSizer" variable="BoxSizerMain" member="yes">
+				<orient>wxVERTICAL</orient>
+			</object>
+		</object>
+		<object class="wxMenuBar" variable="MenuBarMain" member="no">
+			<object class="wxMenu" variable="Menu1" member="no">
+				<label>&amp;File</label>
+				<object class="wxMenuItem" name="idMenuQuit" variable="MenuItem1" member="no">
+					<label>Quit</label>
+					<accel>Alt-F4</accel>
+					<help>Quit the application</help>
+					<handler function="OnQuit" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="Menu3" member="yes">
+				<label>&amp;Settings</label>
+				<object class="wxMenuItem" name="ID_MENUITEM_ADEVICES" variable="MenuItemDevices" member="yes">
+					<label>&amp;Devices</label>
+					<handler function="OnMenuItemDevicesSelected" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="Menu2" member="no">
+				<label>Help</label>
+				<object class="wxMenuItem" name="idMenuAbout" variable="MenuItem2" member="no">
+					<label>About</label>
+					<accel>F1</accel>
+					<help>Show info about this application</help>
+					<handler function="OnAbout" entry="EVT_MENU" />
+				</object>
+			</object>
+		</object>
+		<object class="wxStatusBar" name="ID_STATUSBAR1" variable="StatusBar1" member="yes">
+			<fields>1</fields>
+			<widths>-1</widths>
+			<styles>wxSB_NORMAL</styles>
+		</object>
+		<object class="wxToolBar" name="ID_TOOLBAR1" variable="ToolBar1" member="yes" />
+	</object>
+</wxsmith>

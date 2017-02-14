@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Devices">
+      <UniqueIdentifier>{73e1643a-ac4a-4f30-9781-7d9bfdf59333}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Devices">
+      <UniqueIdentifier>{92404818-114e-4585-9894-89cd738d5dcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System">
+      <UniqueIdentifier>{1a178f38-14b9-4b46-bde1-aa68fcf6da3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System">
+      <UniqueIdentifier>{9de7d454-7a57-47e0-aab1-521ede18bb63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Widgets">
+      <UniqueIdentifier>{bf265039-ee49-494e-9c1b-efea3f7b701f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Widgets">
+      <UniqueIdentifier>{33a3bb4a-b05c-4b88-8953-9860c223d543}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AudioIO">
+      <UniqueIdentifier>{63f80e60-653b-46d6-9fb7-0843578506d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AudioIO">
+      <UniqueIdentifier>{6f432dae-dae9-4c6f-9a8c-51f0f8a44ed3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\AVPTesterApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\AVPTesterMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Devices\ADevicesManager.cpp">
+      <Filter>Source Files\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\System\Prefs.cpp">
+      <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\AudioDevicesPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Widgets\RimPanel.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Widgets\GButton.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\AudioIO\AudioEngine.cpp">
+      <Filter>Source Files\AudioIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Widgets\VuMeter.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\AudioIO\LevelAnalyser.cpp">
+      <Filter>Source Files\AudioIO</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\AVPTesterApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\AVPTesterMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Devices\ADevicesManager.h">
+      <Filter>Header Files\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\System\Prefs.h">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\AudioDevicesPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Widgets\RimPanel.h">
+      <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Widgets\QPxColours.h">
+      <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Widgets\GButton.h">
+      <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\AudioIO\AudioEngine.h">
+      <Filter>Header Files\AudioIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\AudioIO\LevelAnalyser.h">
+      <Filter>Header Files\AudioIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Widgets\VuMeter.h">
+      <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\resource.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

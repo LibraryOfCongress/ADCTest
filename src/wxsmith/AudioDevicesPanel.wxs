@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxPanel" name="AudioDevicesPanel">
+		<fg>#000000</fg>
+		<bg>#DCDCDC</bg>
+		<id_arg>0</id_arg>
+		<object class="wxBoxSizer" variable="BoxSizerMain" member="no">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<object class="wxStaticText" name="ID_STATICTEXT_LINE_UP" variable="StaticTextLineUp" member="yes">
+					<label></label>
+					<size>-1,2</size>
+					<bg>#B4B4B4</bg>
+					<style>wxNO_BORDER</style>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+			</object>
+			<object class="sizeritem">
+				<object class="wxBoxSizer" variable="BoxSizerDevicesSetttingsTitle" member="no">
+					<object class="sizeritem">
+						<object class="wxStaticText" name="ID_STATICTEXT_GEN_SET_TTL" variable="StaticTextGenSettingsTitle" member="yes">
+							<label>audio devices settings</label>
+						</object>
+						<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+						<border>2</border>
+					</object>
+				</object>
+				<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>5</border>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_SYS_GEN_SET" subclass="RimPanel" variable="PanelSysGenSettings" member="yes">
+					<style>wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE</style>
+					<object class="wxBoxSizer" variable="BoxSizerGenSettings" member="no">
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerRescan" member="no">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxButton" name="ID_BUTTON_SCAN_AUDIO_SYS" subclass="GButton" variable="ButtonScanAudioSys" member="yes">
+										<label>Scan system</label>
+										<size>200,22</size>
+										<handler function="OnButtonScanAudioSysClick" entry="EVT_BUTTON" />
+									</object>
+									<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>4</border>
+								</object>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>1</border>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>5</border>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_HOSTS" subclass="RimPanel" variable="PanelHosts" member="yes">
+					<style>wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE</style>
+					<object class="wxBoxSizer" variable="BoxSizerHosts" member="no">
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerHostAPIIn" member="no">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT_IN_HOSTS" variable="StaticTextInHosts" member="yes">
+										<label>host API</label>
+									</object>
+									<flag>wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>4</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxChoice" name="ID_CHOICE_HOST" variable="ChoiceHost" member="yes">
+										<size>200,-1</size>
+										<handler function="OnChoiceHostSelect" entry="EVT_CHOICE" />
+									</object>
+									<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>1</border>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerSRateInner" member="no">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT_SYS_SRATE" variable="StaticTextSysSampleRate" member="yes">
+										<label>sample rate</label>
+										<size>200,-1</size>
+									</object>
+									<flag>wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>4</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxChoice" name="ID_CHOICE_SYS_SRATE" variable="ChoiceSystemSampleRate" member="yes">
+										<size>200,-1</size>
+										<handler function="OnChoiceSystemSampleRateSelect" entry="EVT_CHOICE" />
+									</object>
+									<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>1</border>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>5</border>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_INPUT_DEVS" subclass="RimPanel" variable="PanelInputDevices" member="yes">
+					<style>wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE</style>
+					<object class="wxBoxSizer" variable="BoxSizerInputDevices" member="no">
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerInputDevice" member="no">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT_IN_DEVS" variable="StaticTextInDevices" member="yes">
+										<label>input devices</label>
+									</object>
+									<flag>wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>4</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxChoice" name="ID_CHOICE_INPUT_DEVICE" variable="ChoiceInputDevice" member="yes">
+										<size>300,-1</size>
+										<handler function="OnChoiceInputDeviceSelect" entry="EVT_CHOICE" />
+									</object>
+									<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>1</border>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerInputChannels" member="no">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT_IN_CHANS" variable="StaticTextInChannels" member="yes">
+										<label>audio channels</label>
+									</object>
+									<flag>wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>4</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxTextCtrl" name="ID_TEXTCTRL_IN_CHANS" variable="TextCtrlInChannels" member="yes">
+										<value>0</value>
+										<size>75,-1</size>
+										<bg>#DCDCDC</bg>
+										<style>wxTE_READONLY|wxTE_CENTRE</style>
+									</object>
+									<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>1</border>
+						</object>
+						<object class="spacer">
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>5</border>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_OUTPUT_DEVS" subclass="RimPanel" variable="PanelOutputDevices" member="yes">
+					<style>wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE</style>
+					<object class="wxBoxSizer" variable="BoxSizerOutputDevices" member="no">
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerOutputDevice" member="no">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT_OUT_DEVS" variable="StaticTextOutDevices" member="yes">
+										<label>output devices</label>
+									</object>
+									<flag>wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>4</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxChoice" name="ID_CHOICE_OUTPUT_DEVICE" variable="ChoiceOutputDevice" member="yes">
+										<size>300,-1</size>
+										<handler function="OnChoiceOutputDeviceSelect" entry="EVT_CHOICE" />
+									</object>
+									<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>1</border>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerOutputChannels" member="no">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT_OUT_CHANS" variable="StaticTextOutChannels" member="yes">
+										<label>audio channels</label>
+									</object>
+									<flag>wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>4</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxTextCtrl" name="ID_TEXTCTRL_OUT_CHANS" variable="TextCtrlOutChannels" member="yes">
+										<value>0</value>
+										<size>75,-1</size>
+										<bg>#DCDCDC</bg>
+										<style>wxTE_READONLY|wxTE_CENTRE</style>
+									</object>
+									<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>1</border>
+						</object>
+						<object class="spacer">
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>5</border>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_TEST" subclass="RimPanel" variable="PanelTest" member="yes">
+					<style>wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE</style>
+					<object class="wxBoxSizer" variable="BoxSizerTest" member="yes">
+						<orient>wxVERTICAL</orient>
+						<object class="sizeritem">
+							<object class="wxStaticText" name="ID_STATICTEXT_DEV_TST_TTL" variable="StaticTextDevTestTitle" member="yes">
+								<label>Audio devices test</label>
+							</object>
+							<flag>wxTOP|wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>5</border>
+						</object>
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerTestStart" member="no">
+								<object class="sizeritem">
+									<object class="wxPanel" name="ID_PANEL_DEV_TEST" subclass="RimPanel" variable="PanelDevTest" member="yes">
+										<style>wxTAB_TRAVERSAL|wxNO_FULL_REPAINT_ON_RESIZE</style>
+										<object class="wxBoxSizer" variable="BoxSizerDevTest" member="no">
+											<object class="sizeritem">
+												<object class="wxButton" name="ID_BUTTON_TST_DEV_START" subclass="GButton" variable="ButtonDevTestStart" member="yes">
+													<label>Start test</label>
+													<size>100,22</size>
+													<handler function="OnButtonDevTestStartClick" entry="EVT_BUTTON" />
+												</object>
+												<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
+												<object class="wxButton" name="ID_BUTTON_TST_DEV_STOP" subclass="GButton" variable="ButtonDevTestStop" member="yes">
+													<label>Stop test</label>
+													<size>100,22</size>
+													<handler function="OnButtonDevTestStopClick" entry="EVT_BUTTON" />
+												</object>
+												<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+												<border>5</border>
+											</object>
+											<object class="spacer">
+												<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+												<border>5</border>
+												<option>1</option>
+											</object>
+										</object>
+									</object>
+									<flag>wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>5</border>
+						</object>
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerMonitor" member="yes">
+								<object class="spacer">
+									<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>1</border>
+									<size>1,200</size>
+								</object>
+								<object class="sizeritem">
+									<object class="wxPanel" name="ID_PANEL_PLAYBACK" variable="PanelPlayback" member="yes">
+										<style>wxSIMPLE_BORDER|wxTAB_TRAVERSAL|wxNO_FULL_REPAINT_ON_RESIZE</style>
+										<object class="wxBoxSizer" variable="BoxSizerPlayback" member="yes" />
+									</object>
+									<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxPanel" name="ID_PANEL_RECORDING" variable="PanelRecording" member="yes">
+										<style>wxSIMPLE_BORDER|wxTAB_TRAVERSAL|wxNO_FULL_REPAINT_ON_RESIZE</style>
+										<object class="wxBoxSizer" variable="BoxSizerRecording" member="yes" />
+									</object>
+									<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>5</border>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>5</border>
+				<option>2</option>
+			</object>
+		</object>
+		<object class="wxTimer" name="ID_TIMER_AUDIO_MONITOR" variable="TimerAudioMonitor" member="yes">
+			<interval>50</interval>
+			<handler function="OnTimerAudioMonitorTrigger" entry="EVT_TIMER" />
+		</object>
+	</object>
+</wxsmith>
