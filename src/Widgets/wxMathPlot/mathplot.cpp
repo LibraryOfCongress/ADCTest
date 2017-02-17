@@ -204,9 +204,9 @@ void mpInfoCoords::UpdateInfo(mpWindow& w, wxEvent& event)
 /* It seems that Windows port of wxWidgets don't support multi-line test to be drawn in a wxDC.
    wxGTK instead works perfectly with it.
    Info on wxForum: http://wxforum.shadonet.com/viewtopic.php?t=3451&highlight=drawtext+eol */
-#ifdef _WINDOWS
-        m_content.Printf(wxT("x = %f y = %f"), w.p2x(mouseX), w.p2y(mouseY));
-#else
+//#ifdef _WINDOWS
+//        m_content.Printf(wxT("x = %f y = %f"), w.p2x(mouseX), w.p2y(mouseY));
+//#else
 		//m_content.Printf(wxT("x = %f\ny = %f"), w.p2x(mouseX), w.p2y(mouseY));
 		float xleg;
 		if( m_logarithmic )
@@ -215,7 +215,7 @@ void mpInfoCoords::UpdateInfo(mpWindow& w, wxEvent& event)
             xleg = m_fstep*w.p2x(mouseX);
 
 		m_content.Printf(wxT("%.0f dB @ %.0f Hz"), w.p2y(mouseY), xleg);
-#endif
+//#endif
     }
 }
 

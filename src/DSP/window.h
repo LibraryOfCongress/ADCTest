@@ -73,7 +73,7 @@ void Window<T>::encache()
 
     case RectangularWindow:
 	for (i = 0; i < n; ++i) {
-	    mult[i] = mult[i] * 0.5;
+		mult[i] = mult[i] * 0.5;
 	}
 	break;
 

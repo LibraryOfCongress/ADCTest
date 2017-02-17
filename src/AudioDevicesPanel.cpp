@@ -11,7 +11,6 @@
 
 //(*IdInit(AudioDevicesPanel)
 const long AudioDevicesPanel::ID_STATICTEXT_LINE_UP = wxNewId();
-const long AudioDevicesPanel::ID_STATICTEXT_GEN_SET_TTL = wxNewId();
 const long AudioDevicesPanel::ID_BUTTON_SCAN_AUDIO_SYS = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_SYS_GEN_SET = wxNewId();
 const long AudioDevicesPanel::ID_STATICTEXT_IN_HOSTS = wxNewId();
@@ -51,9 +50,11 @@ const long AudioDevicesPanel::ID_STATICTEXT_RTA_AVG = wxNewId();
 const long AudioDevicesPanel::ID_SPIN_RTA_AVG = wxNewId();
 const long AudioDevicesPanel::ID_BUTTON_RESET_LTA = wxNewId();
 const long AudioDevicesPanel::ID_BUTTON_PLOT_RESET = wxNewId();
+const long AudioDevicesPanel::ID_STATICTEXT_CH_PK_LVL = wxNewId();
+const long AudioDevicesPanel::ID_PANEL_CHANNEL_LVLS = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_FFT_CTRLS = wxNewId();
-const long AudioDevicesPanel::ID_STATICLINE1 = wxNewId();
 const long AudioDevicesPanel::ID_RTA_FFT_PLOT = wxNewId();
+const long AudioDevicesPanel::ID_PANEL_FFT_PLOT = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_REC_IN_R = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_RECORDING = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_TEST = wxNewId();
@@ -91,29 +92,26 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	wxBoxSizer* BoxSizerRecInR;
 	wxBoxSizer* BoxSizerGenSettings;
 	wxBoxSizer* BoxSizerDevTest;
+	wxBoxSizer* BoxSizerBtnCntr;
 	wxBoxSizer* BoxSizerGainBtns;
+	wxBoxSizer* BoxSizerChannelLevels;
 	wxBoxSizer* BoxSizerBtnsLay;
+	wxBoxSizer* BoxSizerRTAPlot;
 	wxBoxSizer* BoxSizerRescan;
-	wxBoxSizer* BoxSizerGainTtl;
 	wxBoxSizer* BoxSizerTestStart;
 	wxBoxSizer* BoxSizerHostAPIIn;
-	wxBoxSizer* BoxSizerDevicesSetttingsTitle;
 
 	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
-	SetForegroundColour(wxColour(0,0,0));
-	SetBackgroundColour(wxColour(220,220,220));
+	SetForegroundColour(wxColour(128,64,64));
+	SetBackgroundColour(wxColour(210,210,210));
 	BoxSizerMain = new wxBoxSizer(wxVERTICAL);
 	StaticTextLineUp = new wxStaticText(this, ID_STATICTEXT_LINE_UP, wxEmptyString, wxDefaultPosition, wxSize(-1,2), wxNO_BORDER, _T("ID_STATICTEXT_LINE_UP"));
 	StaticTextLineUp->SetBackgroundColour(wxColour(180,180,180));
 	BoxSizerMain->Add(StaticTextLineUp, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
-	BoxSizerDevicesSetttingsTitle = new wxBoxSizer(wxHORIZONTAL);
-	StaticTextGenSettingsTitle = new wxStaticText(this, ID_STATICTEXT_GEN_SET_TTL, _("audio devices settings"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_GEN_SET_TTL"));
-	BoxSizerDevicesSetttingsTitle->Add(StaticTextGenSettingsTitle, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 2);
-	BoxSizerMain->Add(BoxSizerDevicesSetttingsTitle, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	PanelSysGenSettings = new RimPanel(this, ID_PANEL_SYS_GEN_SET, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE, _T("ID_PANEL_SYS_GEN_SET"));
 	BoxSizerGenSettings = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizerRescan = new wxBoxSizer(wxVERTICAL);
-	ButtonScanAudioSys = new GButton(PanelSysGenSettings, ID_BUTTON_SCAN_AUDIO_SYS, _("Scan system"), wxDefaultPosition, wxSize(200,22), 0, wxDefaultValidator, _T("ID_BUTTON_SCAN_AUDIO_SYS"));
+	ButtonScanAudioSys = new GButton(PanelSysGenSettings, ID_BUTTON_SCAN_AUDIO_SYS, _("Scan system"), wxDefaultPosition, wxSize(100,22), 0, wxDefaultValidator, _T("ID_BUTTON_SCAN_AUDIO_SYS"));
 	BoxSizerRescan->Add(ButtonScanAudioSys, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 4);
 	BoxSizerGenSettings->Add(BoxSizerRescan, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
 	PanelSysGenSettings->SetSizer(BoxSizerGenSettings);
@@ -123,17 +121,18 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	PanelHosts = new RimPanel(this, ID_PANEL_HOSTS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE, _T("ID_PANEL_HOSTS"));
 	BoxSizerHosts = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizerHostAPIIn = new wxBoxSizer(wxVERTICAL);
-	StaticTextInHosts = new wxStaticText(PanelHosts, ID_STATICTEXT_IN_HOSTS, _("host API"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_IN_HOSTS"));
-	BoxSizerHostAPIIn->Add(StaticTextInHosts, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 4);
-	ChoiceHost = new wxChoice(PanelHosts, ID_CHOICE_HOST, wxDefaultPosition, wxSize(200,-1), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_HOST"));
+	StaticTextInHosts = new wxStaticText(PanelHosts, ID_STATICTEXT_IN_HOSTS, _("host API"), wxDefaultPosition, wxSize(300,-1), 0, _T("ID_STATICTEXT_IN_HOSTS"));
+	BoxSizerHostAPIIn->Add(StaticTextInHosts, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 4);
+	ChoiceHost = new wxChoice(PanelHosts, ID_CHOICE_HOST, wxDefaultPosition, wxSize(300,-1), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_HOST"));
 	BoxSizerHostAPIIn->Add(ChoiceHost, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
-	BoxSizerHosts->Add(BoxSizerHostAPIIn, 1, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerHosts->Add(BoxSizerHostAPIIn, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
 	BoxSizerSRateInner = new wxBoxSizer(wxVERTICAL);
 	StaticTextSysSampleRate = new wxStaticText(PanelHosts, ID_STATICTEXT_SYS_SRATE, _("sample rate"), wxDefaultPosition, wxSize(200,-1), 0, _T("ID_STATICTEXT_SYS_SRATE"));
 	BoxSizerSRateInner->Add(StaticTextSysSampleRate, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 4);
 	ChoiceSystemSampleRate = new wxChoice(PanelHosts, ID_CHOICE_SYS_SRATE, wxDefaultPosition, wxSize(200,-1), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_SYS_SRATE"));
 	BoxSizerSRateInner->Add(ChoiceSystemSampleRate, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
-	BoxSizerHosts->Add(BoxSizerSRateInner, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+	BoxSizerHosts->Add(BoxSizerSRateInner, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+	BoxSizerHosts->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	PanelHosts->SetSizer(BoxSizerHosts);
 	BoxSizerHosts->Fit(PanelHosts);
 	BoxSizerHosts->SetSizeHints(PanelHosts);
@@ -141,15 +140,15 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	PanelInputDevices = new RimPanel(this, ID_PANEL_INPUT_DEVS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE, _T("ID_PANEL_INPUT_DEVS"));
 	BoxSizerInputDevices = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizerInputDevice = new wxBoxSizer(wxVERTICAL);
-	StaticTextInDevices = new wxStaticText(PanelInputDevices, ID_STATICTEXT_IN_DEVS, _("input devices"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_IN_DEVS"));
-	BoxSizerInputDevice->Add(StaticTextInDevices, 0, wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 4);
+	StaticTextInDevices = new wxStaticText(PanelInputDevices, ID_STATICTEXT_IN_DEVS, _("input devices"), wxDefaultPosition, wxSize(300,-1), 0, _T("ID_STATICTEXT_IN_DEVS"));
+	BoxSizerInputDevice->Add(StaticTextInDevices, 0, wxLEFT|wxALIGN_LEFT|wxALIGN_TOP, 4);
 	ChoiceInputDevice = new wxChoice(PanelInputDevices, ID_CHOICE_INPUT_DEVICE, wxDefaultPosition, wxSize(300,-1), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_INPUT_DEVICE"));
 	BoxSizerInputDevice->Add(ChoiceInputDevice, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
-	BoxSizerInputDevices->Add(BoxSizerInputDevice, 1, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerInputDevices->Add(BoxSizerInputDevice, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
 	BoxSizerInputChannels = new wxBoxSizer(wxVERTICAL);
 	StaticTextInChannels = new wxStaticText(PanelInputDevices, ID_STATICTEXT_IN_CHANS, _("audio channels"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_IN_CHANS"));
 	BoxSizerInputChannels->Add(StaticTextInChannels, 0, wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 4);
-	TextCtrlInChannels = new wxTextCtrl(PanelInputDevices, ID_TEXTCTRL_IN_CHANS, _("0"), wxDefaultPosition, wxSize(75,-1), wxTE_READONLY|wxTE_CENTRE, wxDefaultValidator, _T("ID_TEXTCTRL_IN_CHANS"));
+	TextCtrlInChannels = new wxTextCtrl(PanelInputDevices, ID_TEXTCTRL_IN_CHANS, _("0"), wxDefaultPosition, wxSize(80,-1), wxTE_READONLY|wxTE_CENTRE, wxDefaultValidator, _T("ID_TEXTCTRL_IN_CHANS"));
 	TextCtrlInChannels->SetBackgroundColour(wxColour(220,220,220));
 	BoxSizerInputChannels->Add(TextCtrlInChannels, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	BoxSizerInputDevices->Add(BoxSizerInputChannels, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
@@ -161,15 +160,15 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	PanelOutputDevices = new RimPanel(this, ID_PANEL_OUTPUT_DEVS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE, _T("ID_PANEL_OUTPUT_DEVS"));
 	BoxSizerOutputDevices = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizerOutputDevice = new wxBoxSizer(wxVERTICAL);
-	StaticTextOutDevices = new wxStaticText(PanelOutputDevices, ID_STATICTEXT_OUT_DEVS, _("output devices"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_OUT_DEVS"));
-	BoxSizerOutputDevice->Add(StaticTextOutDevices, 0, wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 4);
+	StaticTextOutDevices = new wxStaticText(PanelOutputDevices, ID_STATICTEXT_OUT_DEVS, _("output devices"), wxDefaultPosition, wxSize(300,-1), 0, _T("ID_STATICTEXT_OUT_DEVS"));
+	BoxSizerOutputDevice->Add(StaticTextOutDevices, 0, wxLEFT|wxALIGN_LEFT|wxALIGN_TOP, 4);
 	ChoiceOutputDevice = new wxChoice(PanelOutputDevices, ID_CHOICE_OUTPUT_DEVICE, wxDefaultPosition, wxSize(300,-1), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_OUTPUT_DEVICE"));
 	BoxSizerOutputDevice->Add(ChoiceOutputDevice, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
-	BoxSizerOutputDevices->Add(BoxSizerOutputDevice, 1, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerOutputDevices->Add(BoxSizerOutputDevice, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
 	BoxSizerOutputChannels = new wxBoxSizer(wxVERTICAL);
 	StaticTextOutChannels = new wxStaticText(PanelOutputDevices, ID_STATICTEXT_OUT_CHANS, _("audio channels"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_OUT_CHANS"));
 	BoxSizerOutputChannels->Add(StaticTextOutChannels, 0, wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 4);
-	TextCtrlOutChannels = new wxTextCtrl(PanelOutputDevices, ID_TEXTCTRL_OUT_CHANS, _("0"), wxDefaultPosition, wxSize(75,-1), wxTE_READONLY|wxTE_CENTRE, wxDefaultValidator, _T("ID_TEXTCTRL_OUT_CHANS"));
+	TextCtrlOutChannels = new wxTextCtrl(PanelOutputDevices, ID_TEXTCTRL_OUT_CHANS, _("0"), wxDefaultPosition, wxSize(80,-1), wxTE_READONLY|wxTE_CENTRE, wxDefaultValidator, _T("ID_TEXTCTRL_OUT_CHANS"));
 	TextCtrlOutChannels->SetBackgroundColour(wxColour(220,220,220));
 	BoxSizerOutputChannels->Add(TextCtrlOutChannels, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	BoxSizerOutputDevices->Add(BoxSizerOutputChannels, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
@@ -180,14 +179,14 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	BoxSizerMain->Add(PanelOutputDevices, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	PanelTest = new RimPanel(this, ID_PANEL_TEST, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE, _T("ID_PANEL_TEST"));
 	BoxSizerTest = new wxBoxSizer(wxVERTICAL);
-	StaticTextDevTestTitle = new wxStaticText(PanelTest, ID_STATICTEXT_DEV_TST_TTL, _("Audio devices test"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_DEV_TST_TTL"));
+	StaticTextDevTestTitle = new wxStaticText(PanelTest, ID_STATICTEXT_DEV_TST_TTL, _("Audio devices calibration"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_DEV_TST_TTL"));
 	BoxSizerTest->Add(StaticTextDevTestTitle, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	BoxSizerTestStart = new wxBoxSizer(wxHORIZONTAL);
 	PanelDevTest = new RimPanel(PanelTest, ID_PANEL_DEV_TEST, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL|wxNO_FULL_REPAINT_ON_RESIZE, _T("ID_PANEL_DEV_TEST"));
 	BoxSizerDevTest = new wxBoxSizer(wxHORIZONTAL);
-	ButtonDevTestStart = new GButton(PanelDevTest, ID_BUTTON_TST_DEV_START, _("Start test"), wxDefaultPosition, wxSize(100,22), 0, wxDefaultValidator, _T("ID_BUTTON_TST_DEV_START"));
+	ButtonDevTestStart = new GButton(PanelDevTest, ID_BUTTON_TST_DEV_START, _("Start"), wxDefaultPosition, wxSize(100,22), 0, wxDefaultValidator, _T("ID_BUTTON_TST_DEV_START"));
 	BoxSizerDevTest->Add(ButtonDevTestStart, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 5);
-	ButtonDevTestStop = new GButton(PanelDevTest, ID_BUTTON_TST_DEV_STOP, _("Stop test"), wxDefaultPosition, wxSize(100,22), 0, wxDefaultValidator, _T("ID_BUTTON_TST_DEV_STOP"));
+	ButtonDevTestStop = new GButton(PanelDevTest, ID_BUTTON_TST_DEV_STOP, _("Stop"), wxDefaultPosition, wxSize(100,22), 0, wxDefaultValidator, _T("ID_BUTTON_TST_DEV_STOP"));
 	BoxSizerDevTest->Add(ButtonDevTestStop, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	BoxSizerDevTest->Add(-1,-1,1, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	PanelDevTest->SetSizer(BoxSizerDevTest);
@@ -210,20 +209,18 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	BoxSizerPBTTL->Add(PanelPBInL, 1, wxTOP|wxBOTTOM|wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 3);
 	PanelPBInR = new RimPanel(PanelPlayback, ID_PANEL_PB_IN_R, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_PB_IN_R"));
 	BoxSizerPBInR = new wxBoxSizer(wxVERTICAL);
-	BoxSizerGainTtl = new wxBoxSizer(wxHORIZONTAL);
-	StaticTextGainTtl = new wxStaticText(PanelPBInR, ID_STATICTEXT_GAIN_TTL, _("gain"), wxDefaultPosition, wxSize(50,18), wxALIGN_CENTRE, _T("ID_STATICTEXT_GAIN_TTL"));
-	BoxSizerGainTtl->Add(StaticTextGainTtl, 1, wxBOTTOM|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
-	BoxSizerPBInR->Add(BoxSizerGainTtl, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	BoxSizerBtnsLay = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizerBtnsLay->Add(1,-1,1, wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	BoxSizerGainBtns = new wxBoxSizer(wxVERTICAL);
-	StaticTextOutGain = new wxStaticText(PanelPBInR, ID_STATICTEXT_GAIN, _("0 dB"), wxDefaultPosition, wxSize(50,18), wxALIGN_CENTRE, _T("ID_STATICTEXT_GAIN"));
-	BoxSizerGainBtns->Add(StaticTextOutGain, 1, wxTOP|wxBOTTOM|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
-	ButtonOutGainUp = new GButton(PanelPBInR, ID_BUTTON_OUT_GAIN_UP, _("+"), wxDefaultPosition, wxSize(50,40), 0, wxDefaultValidator, _T("ID_BUTTON_OUT_GAIN_UP"));
+	StaticTextGainTtl = new wxStaticText(PanelPBInR, ID_STATICTEXT_GAIN_TTL, _("gain"), wxDefaultPosition, wxSize(40,18), wxALIGN_CENTRE, _T("ID_STATICTEXT_GAIN_TTL"));
+	BoxSizerGainBtns->Add(StaticTextGainTtl, 0, wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	StaticTextOutGain = new wxStaticText(PanelPBInR, ID_STATICTEXT_GAIN, _("0 dB"), wxDefaultPosition, wxSize(40,18), wxALIGN_CENTRE, _T("ID_STATICTEXT_GAIN"));
+	BoxSizerGainBtns->Add(StaticTextOutGain, 0, wxBOTTOM|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	ButtonOutGainUp = new GButton(PanelPBInR, ID_BUTTON_OUT_GAIN_UP, _("+"), wxDefaultPosition, wxSize(40,30), 0, wxDefaultValidator, _T("ID_BUTTON_OUT_GAIN_UP"));
 	BoxSizerGainBtns->Add(ButtonOutGainUp, 0, wxTOP|wxBOTTOM|wxALIGN_LEFT|wxALIGN_TOP, 5);
-	ButtonOutGainDwn = new GButton(PanelPBInR, ID_BUTTON_OUT_GAIN_DWN, _("-"), wxDefaultPosition, wxSize(50,40), 0, wxDefaultValidator, _T("ID_BUTTON_OUT_GAIN_DWN"));
+	ButtonOutGainDwn = new GButton(PanelPBInR, ID_BUTTON_OUT_GAIN_DWN, _("-"), wxDefaultPosition, wxSize(40,30), 0, wxDefaultValidator, _T("ID_BUTTON_OUT_GAIN_DWN"));
 	BoxSizerGainBtns->Add(ButtonOutGainDwn, 0, wxBOTTOM|wxALIGN_LEFT|wxALIGN_TOP, 5);
-	BoxSizerBtnsLay->Add(BoxSizerGainBtns, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 0);
+	BoxSizerBtnsLay->Add(BoxSizerGainBtns, 0, wxTOP|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	BoxSizerBtnsLay->Add(1,-1,1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
 	BoxSizerPBInR->Add(BoxSizerBtnsLay, 0, wxBOTTOM|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	PanelPBInR->SetSizer(BoxSizerPBInR);
@@ -246,51 +243,75 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	BoxSizerRecInL->Fit(PanelRecInL);
 	BoxSizerRecInL->SetSizeHints(PanelRecInL);
 	BoxSizerRecTTL->Add(PanelRecInL, 1, wxTOP|wxBOTTOM|wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 3);
-	Panel1RecInR = new RimPanel(PanelRecording, ID_PANEL_REC_IN_R, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_REC_IN_R"));
+	Panel1RecInR = new wxPanel(PanelRecording, ID_PANEL_REC_IN_R, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_REC_IN_R"));
 	BoxSizerRecInR = new wxBoxSizer(wxVERTICAL);
+	BoxSizerFFTPlot = new wxBoxSizer(wxHORIZONTAL);
 	PanelFFTCtrls = new RimPanel(Panel1RecInR, ID_PANEL_FFT_CTRLS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_FFT_CTRLS"));
-	BoxSizerFFTCtrls = new wxBoxSizer(wxHORIZONTAL);
-	BoxSizerFFTCtrls->Add(5,-1,0, wxALIGN_LEFT|wxALIGN_TOP, 1);
-	BoxSizerRefCh = new wxBoxSizer(wxHORIZONTAL);
+	BoxSizerFFTCtrls = new wxBoxSizer(wxVERTICAL);
+	BoxSizerRefCh = new wxBoxSizer(wxVERTICAL);
 	StaticTextRefCh = new wxStaticText(PanelFFTCtrls, ID_STATICTEXT_REF_CH, _(" channel "), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE, _T("ID_STATICTEXT_REF_CH"));
-	BoxSizerRefCh->Add(StaticTextRefCh, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 1);
-	SpinRefCh = new awohSpin(PanelFFTCtrls,ID_SPIN_REF_CH,wxDefaultPosition,wxSize(50,-1));
-	BoxSizerRefCh->Add(SpinRefCh, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 1);
-	BoxSizerFFTCtrls->Add(BoxSizerRefCh, 0, wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
-	BoxSizerFFTCtrls->Add(20,-1,0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 0);
-	BoxSizerFFTSize = new wxBoxSizer(wxHORIZONTAL);
-	StaticTextRTALength = new wxStaticText(PanelFFTCtrls, ID_STATICTEXT_RTA_LENGTH, _(" resolution "), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_RTA_LENGTH"));
-	BoxSizerFFTSize->Add(StaticTextRTALength, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 1);
-	SpinFFTLen = new awohSpin(PanelFFTCtrls,ID_SPIN_FFT_LENGTH,wxDefaultPosition,wxSize(50,-1));
-	BoxSizerFFTSize->Add(SpinFFTLen, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 1);
-	BoxSizerFFTCtrls->Add(BoxSizerFFTSize, 0, wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
-	BoxSizerFFTCtrls->Add(20,-1,0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 0);
-	BoxSizerAvgOn = new wxBoxSizer(wxHORIZONTAL);
-	StaticTextRTAAvg = new wxStaticText(PanelFFTCtrls, ID_STATICTEXT_RTA_AVG, _(" average "), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_RTA_AVG"));
-	BoxSizerAvgOn->Add(StaticTextRTAAvg, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 1);
-	SpinRTAvg = new awohSpin(PanelFFTCtrls,ID_SPIN_RTA_AVG,wxDefaultPosition,wxSize(50,-1));
-	BoxSizerAvgOn->Add(SpinRTAvg, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 2);
-	ButtonResetLTA = new GButton(PanelFFTCtrls, ID_BUTTON_RESET_LTA, _("reset avg"), wxDefaultPosition, wxSize(60,18), wxNO_BORDER, wxDefaultValidator, _T("ID_BUTTON_RESET_LTA"));
-	BoxSizerAvgOn->Add(ButtonResetLTA, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 2);
-	BoxSizerFFTCtrls->Add(BoxSizerAvgOn, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
-	BoxSizerAxesCtrls = new wxBoxSizer(wxHORIZONTAL);
-	ButtonPlotReset = new GButton(PanelFFTCtrls, ID_BUTTON_PLOT_RESET, _("reset plot"), wxDefaultPosition, wxSize(60,18), wxNO_BORDER, wxDefaultValidator, _T("ID_BUTTON_PLOT_RESET"));
+	StaticTextRefCh->SetBackgroundColour(wxColour(215,215,215));
+	BoxSizerRefCh->Add(StaticTextRefCh, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	SpinRefCh = new awohSpin(PanelFFTCtrls,ID_SPIN_REF_CH,wxDefaultPosition,wxSize(40,-1));
+	BoxSizerRefCh->Add(SpinRefCh, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 4);
+	BoxSizerFFTCtrls->Add(BoxSizerRefCh, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerFFTCtrls->Add(-1,10,0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	BoxSizerFFTSize = new wxBoxSizer(wxVERTICAL);
+	StaticTextRTALength = new wxStaticText(PanelFFTCtrls, ID_STATICTEXT_RTA_LENGTH, _(" resolution "), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE, _T("ID_STATICTEXT_RTA_LENGTH"));
+	StaticTextRTALength->SetBackgroundColour(wxColour(215,215,215));
+	BoxSizerFFTSize->Add(StaticTextRTALength, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	SpinFFTLen = new awohSpin(PanelFFTCtrls,ID_SPIN_FFT_LENGTH,wxDefaultPosition,wxSize(40,-1));
+	BoxSizerFFTSize->Add(SpinFFTLen, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 4);
+	BoxSizerFFTCtrls->Add(BoxSizerFFTSize, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerFFTCtrls->Add(-1,10,0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	BoxSizerAvgOn = new wxBoxSizer(wxVERTICAL);
+	StaticTextRTAAvg = new wxStaticText(PanelFFTCtrls, ID_STATICTEXT_RTA_AVG, _(" average "), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE, _T("ID_STATICTEXT_RTA_AVG"));
+	StaticTextRTAAvg->SetBackgroundColour(wxColour(215,215,215));
+	BoxSizerAvgOn->Add(StaticTextRTAAvg, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	SpinRTAvg = new awohSpin(PanelFFTCtrls,ID_SPIN_RTA_AVG,wxDefaultPosition,wxSize(40,-1));
+	BoxSizerAvgOn->Add(SpinRTAvg, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 4);
+	BoxSizerFFTCtrls->Add(BoxSizerAvgOn, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerFFTCtrls->Add(-1,10,0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	BoxSizerBtnCntr = new wxBoxSizer(wxHORIZONTAL);
+	BoxSizerBtnCntr->Add(-1,-1,1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	BoxSizerAxesCtrls = new wxBoxSizer(wxVERTICAL);
+	ButtonResetLTA = new GButton(PanelFFTCtrls, ID_BUTTON_RESET_LTA, _("reset avg"), wxDefaultPosition, wxSize(82,18), wxNO_BORDER, wxDefaultValidator, _T("ID_BUTTON_RESET_LTA"));
+	BoxSizerAxesCtrls->Add(ButtonResetLTA, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 2);
+	BoxSizerAxesCtrls->Add(-1,10,1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	ButtonPlotReset = new GButton(PanelFFTCtrls, ID_BUTTON_PLOT_RESET, _("reset plot"), wxDefaultPosition, wxSize(82,18), wxNO_BORDER, wxDefaultValidator, _T("ID_BUTTON_PLOT_RESET"));
 	BoxSizerAxesCtrls->Add(ButtonPlotReset, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 2);
-	BoxSizerFFTCtrls->Add(BoxSizerAxesCtrls, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerBtnCntr->Add(BoxSizerAxesCtrls, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	BoxSizerBtnCntr->Add(-1,-1,1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	BoxSizerFFTCtrls->Add(BoxSizerBtnCntr, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	BoxSizerFFTCtrls->Add(-1,30,1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	PanelChannelLevels = new RimPanel(PanelFFTCtrls, ID_PANEL_CHANNEL_LVLS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_CHANNEL_LVLS"));
+	BoxSizerChannelLevels = new wxBoxSizer(wxVERTICAL);
+	StaticTextChPkLvl = new wxStaticText(PanelChannelLevels, ID_STATICTEXT_CH_PK_LVL, _("peak:\nrms:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_CH_PK_LVL"));
+	StaticTextChPkLvl->SetForegroundColour(wxColour(128,64,64));
+	StaticTextChPkLvl->SetBackgroundColour(wxColour(210,210,210));
+	BoxSizerChannelLevels->Add(StaticTextChPkLvl, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	PanelChannelLevels->SetSizer(BoxSizerChannelLevels);
+	BoxSizerChannelLevels->Fit(PanelChannelLevels);
+	BoxSizerChannelLevels->SetSizeHints(PanelChannelLevels);
+	BoxSizerFFTCtrls->Add(PanelChannelLevels, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 4);
 	PanelFFTCtrls->SetSizer(BoxSizerFFTCtrls);
 	BoxSizerFFTCtrls->Fit(PanelFFTCtrls);
 	BoxSizerFFTCtrls->SetSizeHints(PanelFFTCtrls);
-	BoxSizerRecInR->Add(PanelFFTCtrls, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
-	StaticLine1 = new wxStaticLine(Panel1RecInR, ID_STATICLINE1, wxDefaultPosition, wxSize(-1,1), wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
-	BoxSizerRecInR->Add(StaticLine1, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
-	BoxSizerFFTPlot = new wxBoxSizer(wxHORIZONTAL);
-	mRTAMagPLot = new mpWindow(Panel1RecInR,ID_RTA_FFT_PLOT,wxDefaultPosition,wxDefaultSize);
-	BoxSizerFFTPlot->Add(mRTAMagPLot, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
-	BoxSizerRecInR->Add(BoxSizerFFTPlot, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerFFTPlot->Add(PanelFFTCtrls, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	PanelFFTPlot = new RimPanel(Panel1RecInR, ID_PANEL_FFT_PLOT, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_FFT_PLOT"));
+	BoxSizerRTAPlot = new wxBoxSizer(wxVERTICAL);
+	BoxSizerRTAPlot->Add(500,1,0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	mRTAMagPLot = new mpWindow(PanelFFTPlot,ID_RTA_FFT_PLOT,wxDefaultPosition,wxDefaultSize);
+	BoxSizerRTAPlot->Add(mRTAMagPLot, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 4);
+	PanelFFTPlot->SetSizer(BoxSizerRTAPlot);
+	BoxSizerRTAPlot->Fit(PanelFFTPlot);
+	BoxSizerRTAPlot->SetSizeHints(PanelFFTPlot);
+	BoxSizerFFTPlot->Add(PanelFFTPlot, 1, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerRecInR->Add(BoxSizerFFTPlot, 1, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
 	Panel1RecInR->SetSizer(BoxSizerRecInR);
 	BoxSizerRecInR->Fit(Panel1RecInR);
 	BoxSizerRecInR->SetSizeHints(Panel1RecInR);
-	BoxSizerRecTTL->Add(Panel1RecInR, 5, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 3);
+	BoxSizerRecTTL->Add(Panel1RecInR, 7, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 3);
 	BoxSizerRecording->Add(BoxSizerRecTTL, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
 	PanelRecording->SetSizer(BoxSizerRecording);
 	BoxSizerRecording->Fit(PanelRecording);
@@ -331,8 +352,12 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	Connect(ID_BUTTON_RESET_LTA, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AudioDevicesPanel::OnButtonResetLTAClick);
 	Connect(ID_BUTTON_PLOT_RESET, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AudioDevicesPanel::OnButtonPlotResetClick);
 
+	PanelFFTCtrls->EnableGradient(false);
+	PanelFFTPlot->EnableGradient(false);
+	PanelChannelLevels->setBGColours(210, 210, 210, 210, 210, 210);
+
 	SpinRefCh->Connect(wxEVT_COMMAND_AWOHSPIN, (wxObjectEventFunction)&AudioDevicesPanel::OnSpinFFTReference, 0, this);
-	SpinRefCh->setBGColour(200, 200, 200, wxALPHA_OPAQUE);
+	SpinRefCh->setBGColour(215, 215, 215, wxALPHA_OPAQUE);
 	SpinRefCh->setFGColour(128, 64, 64, wxALPHA_OPAQUE);
 	mSelectedChannel = 0;
 
@@ -344,16 +369,16 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	SpinFFTLen->appendValues(wxT("8192"), 8192);
 	SpinFFTLen->appendValues(wxT("16384"), 16384);
 	SpinFFTLen->appendValues(wxT("32768"), 32768);
-	SpinFFTLen->setBGColour(200, 200, 200, wxALPHA_OPAQUE);;
+	SpinFFTLen->setBGColour(215, 215, 215, wxALPHA_OPAQUE);;
 	SpinFFTLen->setFGColour(128, 64, 64, wxALPHA_OPAQUE);
 
 	SpinRTAvg->Connect(wxEVT_COMMAND_AWOHSPIN, (wxObjectEventFunction)&AudioDevicesPanel::OnSpinRTAvg, 0, this);
-	SpinRTAvg->appendValues(wxT("fastest"), 100);
+	SpinRTAvg->appendValues(wxT("vfast"), 100);
 	SpinRTAvg->appendValues(wxT("fast"), 50);
-	SpinRTAvg->appendValues(wxT("medium "), 10);
+	SpinRTAvg->appendValues(wxT("med "), 10);
 	SpinRTAvg->appendValues(wxT("slow"), 1);
-	SpinRTAvg->appendValues(wxT("freeze"), 0);
-	SpinRTAvg->setBGColour(200, 200, 200, wxALPHA_OPAQUE);
+	SpinRTAvg->appendValues(wxT("stop"), 0);
+	SpinRTAvg->setBGColour(215, 215, 215, wxALPHA_OPAQUE);
 	SpinRTAvg->setFGColour(128, 64, 64, wxALPHA_OPAQUE);
 
 	mNumInputChannels = -1;
@@ -365,7 +390,7 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 
 	mRTAMagPLot->EnableDoubleBuffer(true);
 	mRTAMagPLot->SetMPScrollbars(false);
-	mRTAMagPLot->SetColourTheme(wxColor( 220,220, 220), wxColor( 128, 64, 64 ), wxColor(64,64,64));
+	mRTAMagPLot->SetColourTheme(wxColor( 220,220, 220), wxColor( 128, 64, 64 ), wxColor(200,2000,2000));
 	mRTAMagPLot->SetMargins(20, 20, 20, 40);
 
 	ButtonDevTestStop->enable(false);
@@ -893,6 +918,9 @@ void AudioDevicesPanel::OnTimerAudioMonitorTrigger(wxTimerEvent& event)
 		if (nLInData)
 		{
 			mVuMeterIn->SetValue(lIn);
+			wxString textLevels;
+			textLevels.Printf(wxT("peak: %0.1f dB\nrms:  %0.1fdB"), lIn.peak[mSelectedChannel], lIn.rms[mSelectedChannel]);
+			StaticTextChPkLvl->SetLabel(textLevels);
 		}
 	}
 
@@ -976,7 +1004,7 @@ AudioDevicesPanel::ConfigurePlot(size_t RTALength, double sampleRate )
 	mSampleRate = sampleRate;
 
 	wxColour mInPlotClr(128, 64, 64);
-	wxColour mPlotTextColour(0, 0, 0);
+	wxColour mPlotTextColour(128, 128, 128);
 
 	//////////////////////////////////////////////////////////////////
 	double fstep = (double)mSampleRate / (double)mRTALength;
@@ -1016,7 +1044,7 @@ AudioDevicesPanel::ConfigurePlot(size_t RTALength, double sampleRate )
 	((mpScaleY*)(mRTAMagPLot->GetLayer(1)))->SetTicks(false);
 
 	mRTAMagPLot->Refresh();
-	mRTAMagPLot->Fit(0, mMaxXcord, -120, 6);
+	mRTAMagPLot->Fit(0, mMaxXcord, -145, 6);
 
 	mRTAMagPLot->EnableMousePanZoom(true);
 	mRTAMagPLot->EnableDrawingMode(false);
@@ -1085,5 +1113,5 @@ void AudioDevicesPanel::OnButtonResetLTAClick(wxCommandEvent& event)
 
 void AudioDevicesPanel::OnButtonPlotResetClick(wxCommandEvent& event)
 {
-	mRTAMagPLot->Fit(0, mMaxXcord, -120, 6);
+	mRTAMagPLot->Fit(0, mMaxXcord, -145, 6);
 }

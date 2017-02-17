@@ -15,6 +15,7 @@ RimPanel::RimPanel(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wx
     mBGColourTop = wxColour(RPANEL_BG_TOP_R,RPANEL_BG_TOP_G,RPANEL_BG_TOP_B);
     mBGColourBottom = wxColour(RPANEL_BG_BOT_R,RPANEL_BG_BOT_G,RPANEL_BG_BOT_B);
     mFGColour = wxColour(RPANEL_BD_R,RPANEL_BD_G,RPANEL_BD_B);
+	mEnabledGradient = true;
 }
 
 RimPanel::~RimPanel()
@@ -31,6 +32,11 @@ void RimPanel::setBGColours( unsigned char redT, unsigned char greenT, unsigned 
     Refresh();
 }
 
+void RimPanel::EnableGradient(bool enabled)
+{
+	mEnabledGradient = enabled;
+}
+
 void RimPanel::paintEvent(wxPaintEvent & evt)
 {
     // depending on your system you may need to look at double-buffered dcs
@@ -44,7 +50,8 @@ void RimPanel::render(wxDC&  dc)
 	int w = rect.GetWidth();
 	int h = rect.GetHeight();
 
-    dc.GradientFillLinear(rect, mBGColourTop, mBGColourBottom, wxSOUTH);
+	if( mEnabledGradient )
+	    dc.GradientFillLinear(rect, mBGColourTop, mBGColourBottom, wxSOUTH);
 
     dc.SetBrush( wxBrush(mBGColourBottom, wxBRUSHSTYLE_TRANSPARENT ));
     dc.SetPen( wxPen(mFGColour, 1, wxSOLID) );

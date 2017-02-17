@@ -104,6 +104,7 @@ AudioIO::StartDevicesTest()
 		bIsStopped = false;
 		mThread = std::make_unique<AudioThread>();
 		mThread->Create();
+		mThread->SetPriority(wxPRIORITY_MAX);
 		mThread->Run();
 	}
 }
@@ -229,7 +230,7 @@ PaError AudioIO::OpenStream()
 		captureParameters.hostApiSpecificStreamInfo = NULL;
 		captureParameters.channelCount = mNoCaptureChannels;
 		captureDeviceInfo = Pa_GetDeviceInfo(captureParameters.device);
-		captureParameters.suggestedLatency = captureDeviceInfo->defaultHighInputLatency;
+		captureParameters.suggestedLatency = 0.50;// captureDeviceInfo->defaultHighInputLatency;
 	}
 
 	//configure playback stream parameters
@@ -241,7 +242,7 @@ PaError AudioIO::OpenStream()
 		playbackParameters.hostApiSpecificStreamInfo = NULL;
 		playbackParameters.channelCount = mNoPlaybackChannels;
 		playbackDeviceInfo = Pa_GetDeviceInfo(playbackParameters.device);
-		playbackParameters.suggestedLatency = playbackDeviceInfo->defaultLowOutputLatency;
+		playbackParameters.suggestedLatency = 0.50; playbackDeviceInfo->defaultHighOutputLatency;
 	}
 
 	err = Pa_OpenStream(&mPortStreamV19,
@@ -249,7 +250,7 @@ PaError AudioIO::OpenStream()
 						playbackEnabled ? &playbackParameters : NULL,
 						mCaptureSampleRate,
 						mCaptureFrameSize,
-						paClipOff,
+						paClipOff|paDitherOff,
 						NULL, 
 						NULL);
 
@@ -341,17 +342,15 @@ int AudioIO::doIODevicesTest()
 			}
 
 			err = Pa_WriteStream(mPortStreamV19, mOutputBuffer, mCaptureFrameSize);
-
 			if (err != paNoError)
 			{
-				errMsg.Printf(wxT("ERROR!: %s"), Pa_GetErrorText(err));
+				break;
 			}
 
 			err = Pa_ReadStream(mPortStreamV19, mInputBuffer, mCaptureFrameSize);
-
 			if (err != paNoError)
 			{
-				errMsg.Printf(wxT("ERROR!: %s"), Pa_GetErrorText(err));
+				break;
 			}
 			/////////////////////////////////////////////////////////////////////////////
 
@@ -368,6 +367,11 @@ int AudioIO::doIODevicesTest()
 		}
 	}
 
+	if (err != paNoError)
+	{
+		errMsg.Printf(wxT("ERROR!: %s"), Pa_GetErrorText(err));
+		wxMessageBox(errMsg);
+	}
 
 	//deallocate buffers
 	delete[] mInputBuffer;
@@ -462,6 +466,12 @@ AudioIO::ProcessParameter(AudioParam param)
 {
 	switch (param.paramIdx)
 	{
+		case kFFTRefChannel:
+		{
+			mSelectedChannel = (int)param.value;
+		}
+		break;
+
 		case kOutputGain:
 		{
 			mOutputGain = pow(10, (param.value / 20.0));
@@ -512,7 +522,7 @@ AudioIO::doRTA(float* InterleavedBuffer)
 
 	for (size_t i = 0; i < mCaptureFrameSize; i++)
 	{
-		mDeintBuffer[i] = InterleavedBuffer[i*mNoCaptureChannels];
+		mDeintBuffer[i] = InterleavedBuffer[i*mNoCaptureChannels + mSelectedChannel ];
 	}
 
 

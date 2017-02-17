@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxFrame" name="AVPTesterFrame">
-		<title>AVPreserve - ADC Test Set</title>
+		<title>Devices calibration prototype</title>
 		<icon>UI\favicon.ico</icon>
+		<style>wxCAPTION|wxCLOSE_BOX|wxMAXIMIZE_BOX|wxMINIMIZE_BOX</style>
 		<object class="wxPanel" name="ID_PANEL_MAIN_UI" variable="PanelMainUI" member="yes">
 			<fg>#000000</fg>
 			<bg>#DCDCDC</bg>

@@ -7,7 +7,6 @@
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include "Widgets/awohSpin.h"
-#include <wx/statline.h>
 #include <wx/panel.h>
 #include <wx/choice.h>
 #include <wx/button.h>
@@ -49,11 +48,12 @@ class AudioDevicesPanel: public wxPanel
 		GButton* ButtonOutGainDwn;
 		awohSpin* SpinRefCh;
 		GButton* ButtonDevTestStop;
+		wxPanel* Panel1RecInR;
 		wxStaticText* StaticTextRefCh;
-		wxStaticText* StaticTextGenSettingsTitle;
 		GButton* ButtonDevTestStart;
 		awohSpin* SpinFFTLen;
 		wxStaticText* StaticTextInHosts;
+		wxStaticText* StaticTextChPkLvl;
 		wxStaticText* StaticTextLineUp;
 		wxStaticText* StaticTextGainTtl;
 		RimPanel* PanelDevTest;
@@ -72,17 +72,17 @@ class AudioDevicesPanel: public wxPanel
 		RimPanel* PanelSysGenSettings;
 		wxChoice* ChoiceSystemSampleRate;
 		RimPanel* PanelRecInL;
-		RimPanel* Panel1RecInR;
 		wxBoxSizer* BoxSizerTest;
 		wxBoxSizer* BoxSizerRecording;
 		wxStaticText* StaticTextRecStreamTTL;
 		GButton* ButtonPlotReset;
-		wxStaticLine* StaticLine1;
 		GButton* ButtonOutGainUp;
 		wxStaticText* StaticTextRTAAvg;
 		wxStaticText* StaticTextOutChannels;
+		RimPanel* PanelFFTPlot;
 		mpWindow* mRTAMagPLot;
 		wxChoice* ChoiceInputDevice;
+		RimPanel* PanelChannelLevels;
 		wxBoxSizer* BoxSizerPlayback;
 		RimPanel* PanelOutputDevices;
 		RimPanel* PanelInputDevices;
@@ -104,7 +104,6 @@ class AudioDevicesPanel: public wxPanel
 
 		//(*Identifiers(AudioDevicesPanel)
 		static const long ID_STATICTEXT_LINE_UP;
-		static const long ID_STATICTEXT_GEN_SET_TTL;
 		static const long ID_BUTTON_SCAN_AUDIO_SYS;
 		static const long ID_PANEL_SYS_GEN_SET;
 		static const long ID_STATICTEXT_IN_HOSTS;
@@ -144,9 +143,11 @@ class AudioDevicesPanel: public wxPanel
 		static const long ID_SPIN_RTA_AVG;
 		static const long ID_BUTTON_RESET_LTA;
 		static const long ID_BUTTON_PLOT_RESET;
+		static const long ID_STATICTEXT_CH_PK_LVL;
+		static const long ID_PANEL_CHANNEL_LVLS;
 		static const long ID_PANEL_FFT_CTRLS;
-		static const long ID_STATICLINE1;
 		static const long ID_RTA_FFT_PLOT;
+		static const long ID_PANEL_FFT_PLOT;
 		static const long ID_PANEL_REC_IN_R;
 		static const long ID_PANEL_RECORDING;
 		static const long ID_PANEL_TEST;

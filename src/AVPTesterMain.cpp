@@ -71,7 +71,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     wxMenuBar* MenuBarMain;
     wxMenu* Menu2;
 
-    Create(parent, id, _("AVPreserve - ADC Test Set"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("id"));
+    Create(parent, id, _("Devices calibration prototype"), wxDefaultPosition, wxDefaultSize, wxCAPTION|wxCLOSE_BOX|wxMAXIMIZE_BOX|wxMINIMIZE_BOX, _T("id"));
     {
     	wxIcon FrameIcon;
     	FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("UI\\favicon.ico"))));
