@@ -43,6 +43,17 @@ const long AudioDevicesPanel::ID_PANEL_PB_IN_R = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_PLAYBACK = wxNewId();
 const long AudioDevicesPanel::ID_STATICTEXT_REC_STREAM_TTL = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_REC_IN_L = wxNewId();
+const long AudioDevicesPanel::ID_STATICTEXT_REF_CH = wxNewId();
+const long AudioDevicesPanel::ID_SPIN_REF_CH = wxNewId();
+const long AudioDevicesPanel::ID_STATICTEXT_RTA_LENGTH = wxNewId();
+const long AudioDevicesPanel::ID_SPIN_FFT_LENGTH = wxNewId();
+const long AudioDevicesPanel::ID_STATICTEXT_RTA_AVG = wxNewId();
+const long AudioDevicesPanel::ID_SPIN_RTA_AVG = wxNewId();
+const long AudioDevicesPanel::ID_BUTTON_RESET_LTA = wxNewId();
+const long AudioDevicesPanel::ID_BUTTON_PLOT_RESET = wxNewId();
+const long AudioDevicesPanel::ID_PANEL_FFT_CTRLS = wxNewId();
+const long AudioDevicesPanel::ID_STATICLINE1 = wxNewId();
+const long AudioDevicesPanel::ID_RTA_FFT_PLOT = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_REC_IN_R = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_RECORDING = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_TEST = wxNewId();
@@ -65,10 +76,16 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	wxBoxSizer* BoxSizerSRateInner;
 	wxBoxSizer* BoxSizerRecTTL;
 	wxBoxSizer* BoxSizerPBInR;
+	wxBoxSizer* BoxSizerAvgOn;
 	wxBoxSizer* BoxSizerInputDevice;
+	wxBoxSizer* BoxSizerFFTCtrls;
+	wxBoxSizer* BoxSizerAxesCtrls;
+	wxBoxSizer* BoxSizerRefCh;
 	wxBoxSizer* BoxSizerMain;
+	wxBoxSizer* BoxSizerFFTSize;
 	wxBoxSizer* BoxSizerHosts;
 	wxBoxSizer* BoxSizerPBTTL;
+	wxBoxSizer* BoxSizerFFTPlot;
 	wxBoxSizer* BoxSizerInputChannels;
 	wxBoxSizer* BoxSizerOutputChannels;
 	wxBoxSizer* BoxSizerRecInR;
@@ -230,7 +247,46 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	BoxSizerRecInL->SetSizeHints(PanelRecInL);
 	BoxSizerRecTTL->Add(PanelRecInL, 1, wxTOP|wxBOTTOM|wxLEFT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 3);
 	Panel1RecInR = new RimPanel(PanelRecording, ID_PANEL_REC_IN_R, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_REC_IN_R"));
-	BoxSizerRecInR = new wxBoxSizer(wxHORIZONTAL);
+	BoxSizerRecInR = new wxBoxSizer(wxVERTICAL);
+	PanelFFTCtrls = new RimPanel(Panel1RecInR, ID_PANEL_FFT_CTRLS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_FFT_CTRLS"));
+	BoxSizerFFTCtrls = new wxBoxSizer(wxHORIZONTAL);
+	BoxSizerFFTCtrls->Add(5,-1,0, wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerRefCh = new wxBoxSizer(wxHORIZONTAL);
+	StaticTextRefCh = new wxStaticText(PanelFFTCtrls, ID_STATICTEXT_REF_CH, _(" channel "), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE, _T("ID_STATICTEXT_REF_CH"));
+	BoxSizerRefCh->Add(StaticTextRefCh, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	SpinRefCh = new awohSpin(PanelFFTCtrls,ID_SPIN_REF_CH,wxDefaultPosition,wxSize(50,-1));
+	BoxSizerRefCh->Add(SpinRefCh, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerFFTCtrls->Add(BoxSizerRefCh, 0, wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerFFTCtrls->Add(20,-1,0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	BoxSizerFFTSize = new wxBoxSizer(wxHORIZONTAL);
+	StaticTextRTALength = new wxStaticText(PanelFFTCtrls, ID_STATICTEXT_RTA_LENGTH, _(" resolution "), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_RTA_LENGTH"));
+	BoxSizerFFTSize->Add(StaticTextRTALength, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	SpinFFTLen = new awohSpin(PanelFFTCtrls,ID_SPIN_FFT_LENGTH,wxDefaultPosition,wxSize(50,-1));
+	BoxSizerFFTSize->Add(SpinFFTLen, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerFFTCtrls->Add(BoxSizerFFTSize, 0, wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerFFTCtrls->Add(20,-1,0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	BoxSizerAvgOn = new wxBoxSizer(wxHORIZONTAL);
+	StaticTextRTAAvg = new wxStaticText(PanelFFTCtrls, ID_STATICTEXT_RTA_AVG, _(" average "), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_RTA_AVG"));
+	BoxSizerAvgOn->Add(StaticTextRTAAvg, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	SpinRTAvg = new awohSpin(PanelFFTCtrls,ID_SPIN_RTA_AVG,wxDefaultPosition,wxSize(50,-1));
+	BoxSizerAvgOn->Add(SpinRTAvg, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 2);
+	ButtonResetLTA = new GButton(PanelFFTCtrls, ID_BUTTON_RESET_LTA, _("reset avg"), wxDefaultPosition, wxSize(60,18), wxNO_BORDER, wxDefaultValidator, _T("ID_BUTTON_RESET_LTA"));
+	BoxSizerAvgOn->Add(ButtonResetLTA, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 2);
+	BoxSizerFFTCtrls->Add(BoxSizerAvgOn, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerAxesCtrls = new wxBoxSizer(wxHORIZONTAL);
+	ButtonPlotReset = new GButton(PanelFFTCtrls, ID_BUTTON_PLOT_RESET, _("reset plot"), wxDefaultPosition, wxSize(60,18), wxNO_BORDER, wxDefaultValidator, _T("ID_BUTTON_PLOT_RESET"));
+	BoxSizerAxesCtrls->Add(ButtonPlotReset, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 2);
+	BoxSizerFFTCtrls->Add(BoxSizerAxesCtrls, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	PanelFFTCtrls->SetSizer(BoxSizerFFTCtrls);
+	BoxSizerFFTCtrls->Fit(PanelFFTCtrls);
+	BoxSizerFFTCtrls->SetSizeHints(PanelFFTCtrls);
+	BoxSizerRecInR->Add(PanelFFTCtrls, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	StaticLine1 = new wxStaticLine(Panel1RecInR, ID_STATICLINE1, wxDefaultPosition, wxSize(-1,1), wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
+	BoxSizerRecInR->Add(StaticLine1, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	BoxSizerFFTPlot = new wxBoxSizer(wxHORIZONTAL);
+	mRTAMagPLot = new mpWindow(Panel1RecInR,ID_RTA_FFT_PLOT,wxDefaultPosition,wxDefaultSize);
+	BoxSizerFFTPlot->Add(mRTAMagPLot, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerRecInR->Add(BoxSizerFFTPlot, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
 	Panel1RecInR->SetSizer(BoxSizerRecInR);
 	BoxSizerRecInR->Fit(Panel1RecInR);
 	BoxSizerRecInR->SetSizeHints(Panel1RecInR);
@@ -239,7 +295,7 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	PanelRecording->SetSizer(BoxSizerRecording);
 	BoxSizerRecording->Fit(PanelRecording);
 	BoxSizerRecording->SetSizeHints(PanelRecording);
-	BoxSizerMonitor->Add(PanelRecording, 3, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerMonitor->Add(PanelRecording, 4, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	BoxSizerTest->Add(BoxSizerMonitor, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	PanelTest->SetSizer(BoxSizerTest);
 	BoxSizerTest->Fit(PanelTest);
@@ -260,6 +316,8 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	Connect(ID_BUTTON_TST_DEV_STOP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AudioDevicesPanel::OnButtonDevTestStopClick);
 	Connect(ID_BUTTON_OUT_GAIN_UP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AudioDevicesPanel::OnButtonOutGainUpClick);
 	Connect(ID_BUTTON_OUT_GAIN_DWN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AudioDevicesPanel::OnButtonOutGainDwnClick);
+	Connect(ID_BUTTON_RESET_LTA,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AudioDevicesPanel::OnButtonResetLTAClick);
+	Connect(ID_BUTTON_PLOT_RESET,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AudioDevicesPanel::OnButtonPlotResetClick);
 	Connect(ID_TIMER_AUDIO_MONITOR,wxEVT_TIMER,(wxObjectEventFunction)&AudioDevicesPanel::OnTimerAudioMonitorTrigger);
 	//*)
 
@@ -270,6 +328,33 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	Connect(ID_BUTTON_TST_DEV_STOP, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AudioDevicesPanel::OnButtonDevTestStopClick);
 	Connect(ID_BUTTON_OUT_GAIN_UP, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AudioDevicesPanel::OnButtonOutGainUpClick);
 	Connect(ID_BUTTON_OUT_GAIN_DWN, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AudioDevicesPanel::OnButtonOutGainDwnClick);
+	Connect(ID_BUTTON_RESET_LTA, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AudioDevicesPanel::OnButtonResetLTAClick);
+	Connect(ID_BUTTON_PLOT_RESET, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AudioDevicesPanel::OnButtonPlotResetClick);
+
+	SpinRefCh->Connect(wxEVT_COMMAND_AWOHSPIN, (wxObjectEventFunction)&AudioDevicesPanel::OnSpinFFTReference, 0, this);
+	SpinRefCh->setBGColour(200, 200, 200, wxALPHA_OPAQUE);
+	SpinRefCh->setFGColour(128, 64, 64, wxALPHA_OPAQUE);
+	mSelectedChannel = 0;
+
+	SpinFFTLen->Connect(wxEVT_COMMAND_AWOHSPIN, (wxObjectEventFunction)&AudioDevicesPanel::OnSpinFFTLength, 0, this);
+	SpinFFTLen->appendValues(wxT("512"), 512);
+	SpinFFTLen->appendValues(wxT("1024"), 1024);
+	SpinFFTLen->appendValues(wxT("2048"), 2048);
+	SpinFFTLen->appendValues(wxT("4096"), 4096);
+	SpinFFTLen->appendValues(wxT("8192"), 8192);
+	SpinFFTLen->appendValues(wxT("16384"), 16384);
+	SpinFFTLen->appendValues(wxT("32768"), 32768);
+	SpinFFTLen->setBGColour(200, 200, 200, wxALPHA_OPAQUE);;
+	SpinFFTLen->setFGColour(128, 64, 64, wxALPHA_OPAQUE);
+
+	SpinRTAvg->Connect(wxEVT_COMMAND_AWOHSPIN, (wxObjectEventFunction)&AudioDevicesPanel::OnSpinRTAvg, 0, this);
+	SpinRTAvg->appendValues(wxT("fastest"), 100);
+	SpinRTAvg->appendValues(wxT("fast"), 50);
+	SpinRTAvg->appendValues(wxT("medium "), 10);
+	SpinRTAvg->appendValues(wxT("slow"), 1);
+	SpinRTAvg->appendValues(wxT("freeze"), 0);
+	SpinRTAvg->setBGColour(200, 200, 200, wxALPHA_OPAQUE);
+	SpinRTAvg->setFGColour(128, 64, 64, wxALPHA_OPAQUE);
 
 	mNumInputChannels = -1;
 	mPrevNumInputChannels = -1;
@@ -278,14 +363,23 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	mPrevNumOutputChannels = -1;
 	mVuMeterOut = NULL;
 
+	mRTAMagPLot->EnableDoubleBuffer(true);
+	mRTAMagPLot->SetMPScrollbars(false);
+	mRTAMagPLot->SetColourTheme(wxColor( 220,220, 220), wxColor( 128, 64, 64 ), wxColor(64,64,64));
+	mRTAMagPLot->SetMargins(20, 20, 20, 40);
+
 	ButtonDevTestStop->enable(false);
 	ButtonDevTestStart->enable(true);
 
 	PopulateAll();
+	
+	RefreshUI();
+	
+	//ConfigureChannelSpin();
 
-	//load output gain
-	gPrefs->Read(wxT("/Parameters/OutputStreamGain"), &mOutputStreamGain);
-	UpdateOutputGain();
+	double sr;
+	gPrefs->Read(wxT("/AudioIO/InputDevSRate"), &sr);
+	ConfigurePlot(mRTALength, sr);
 }
 
 AudioDevicesPanel::~AudioDevicesPanel()
@@ -294,7 +388,66 @@ AudioDevicesPanel::~AudioDevicesPanel()
 	//*)
 }
 
-void AudioDevicesPanel::PopulateAll()
+void 
+AudioDevicesPanel::RefreshUI()
+{
+	//get saved calibration parameters and populate widgets
+	std::vector<AudioParam> params = gAudioIO->getCalibrationParameters();
+	size_t noParams = params.size();
+
+	for (size_t i = 0; i < noParams; i++)
+	{
+		AudioParam msg = params[i];
+
+		switch (msg.paramIdx)
+		{
+			case kOutputGain:
+			{
+				mOutputStreamGain = msg.value;
+				UpdateOutputGain(false);
+			}
+			break;
+
+			case kFFTLength:
+			{
+				mRTALength = (size_t)msg.value;
+				mRTAPlotSize = 1 + (mRTALength / 2);
+				SpinFFTLen->setValue(mRTALength);
+			}
+			break;
+
+			case kFFTAverage:
+			{
+				int LTASlope = (int)(msg.value);
+				SpinRTAvg->setValue(LTASlope);
+			}
+			break;
+
+			default:
+			break;
+		}
+	}
+
+}
+
+void 
+AudioDevicesPanel::ConfigureChannelSpin()
+{
+	SpinRefCh->clearValues();
+
+	int chIdx = 1;
+	for (size_t i = 0; i < mNumInputChannels; i++)
+	{
+		wxString vStr;
+		vStr.Printf(wxT("%d"), chIdx);
+		SpinRefCh->appendValues(vStr, i);
+		chIdx++;
+	}
+	SpinRefCh->setValue(0);
+}
+
+void 
+AudioDevicesPanel::PopulateAll()
 {
 	PopulateHostsChoices();
 
@@ -483,6 +636,9 @@ void AudioDevicesPanel::ShowInDevChannels()
 	gPrefs->Flush();
 
 	mNumInputChannels = nCh;
+	
+	ConfigureChannelSpin();
+	
 	BuildTestUI();
 }
 
@@ -606,8 +762,8 @@ void AudioDevicesPanel::OnButtonDevTestStartClick(wxCommandEvent& event)
     mAudioTestStarted = true;
     ButtonDevTestStop->enable(true);
     ButtonDevTestStart->enable(false);
-	gAudioIO->StartDevicesTest();
 	EnableSelectionTools(false);
+	gAudioIO->StartDevicesTest();
 	TimerAudioMonitor.Start(50, false);
 }
 
@@ -751,12 +907,28 @@ void AudioDevicesPanel::OnTimerAudioMonitorTrigger(wxTimerEvent& event)
 			mVuMeterOut->SetValue(lOut);
 		}
 	}
+
+	//RTA
+	bool newdata = false;
+	FFTPlotData vData = gAudioIO->GetFFTPlotData(&newdata);
+	if (newdata)
+	{
+		size_t vlen = vData.MagData.size();
+		if ( (vData.sampleRate != mSampleRate) || (vlen != mRTAPlotSize) )
+		{
+			size_t RTALength = 2 * (vlen - 1);
+			ConfigurePlot(RTALength, vData.sampleRate);
+		}
+
+		mFFTInMagLayer->SetData(mPlotXCoords, vData.MagData);
+		mRTAMagPLot->Refresh();
+	}
 }
 
 void AudioDevicesPanel::OnButtonOutGainUpClick(wxCommandEvent& event)
 {
 	mCtrlDwn = wxGetKeyState(WXK_CONTROL);
-	
+
 	if (mCtrlDwn)
 		mOutputStreamGain += 1;
 	else
@@ -782,16 +954,136 @@ void AudioDevicesPanel::UpdateOutputGain(bool write)
 	wxString gnStr;
 	gnStr.Printf(wxT("%g dB"), mOutputStreamGain);
 	StaticTextOutGain->SetLabel(gnStr);
-	
-	//send to audio engine
-	AudioParam msg;
-	msg.paramIdx = kOutputGain;
-	msg.value = mOutputStreamGain;
-	gAudioIO->SetParameter(msg, false);
 
 	if (write)
 	{
-		gPrefs->Write(wxT("/Parameters/OutputStreamGain"), mOutputStreamGain);
-		gPrefs->Flush();
+		//send to audio engine
+		AudioParam msg;
+		msg.paramIdx = kOutputGain;
+		msg.value = mOutputStreamGain;
+		gAudioIO->SetParameter(msg, false);
 	}
+}
+
+
+void
+AudioDevicesPanel::ConfigurePlot(size_t RTALength, double sampleRate )
+{
+	////////////////////////////////////////////////////////////
+	//FFT analysis of EQ response    //FFT analysis of EQ response
+	mRTALength = RTALength;
+	mRTAPlotSize = 1 + mRTALength / 2;
+	mSampleRate = sampleRate;
+
+	wxColour mInPlotClr(128, 64, 64);
+	wxColour mPlotTextColour(0, 0, 0);
+
+	//////////////////////////////////////////////////////////////////
+	double fstep = (double)mSampleRate / (double)mRTALength;
+	mRTAMagPLot->DelAllLayers(true, true);
+
+	// Create a mpFXYVector layer
+	mFFTInMagLayer = new mpFXYVector();
+	wxPen inVectorpen(mInPlotClr, 1, wxSOLID);
+	mFFTInMagLayer->SetPen(inVectorpen);
+	mFFTInMagLayer->SetDrawOutsideMargins(false);
+	mFFTInMagLayer->SetContinuity(true);
+
+	wxPen textPen(mPlotTextColour, 1, wxSOLID);
+	wxFont graphFont(6, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+	mpScaleXSpectrum* xaxis = new mpScaleXSpectrum(wxT("Frequency"), mpALIGN_BOTTOM, true, mpX_LOGF, fstep);
+	mpScaleY* yaxis = new mpScaleY(wxT("dB"), mpALIGN_LEFT, true);
+	xaxis->SetFont(graphFont);
+	xaxis->SetPen(textPen);
+	xaxis->SetDrawOutsideMargins(false);
+
+	yaxis->SetFont(graphFont);
+	yaxis->SetPen(textPen);
+	yaxis->SetDrawOutsideMargins(false);
+
+	mRTAMagPLot->AddLayer(xaxis);
+	mRTAMagPLot->AddLayer(yaxis);
+	mRTAMagPLot->AddLayer(mFFTInMagLayer);
+
+	mpInfoCoords *nfo;
+	wxBrush hatch(wxColour(200, 200, 200), wxSOLID);
+	mRTAMagPLot->AddLayer(nfo = new mpInfoCoords(wxRect(300, 0, 160, 20), wxTRANSPARENT_BRUSH, fstep)); //&hatch));
+	nfo->SetVisible(true);
+
+	ConfigureXAxis();
+
+	((mpScaleXSpectrum*)(mRTAMagPLot->GetLayer(0)))->SetTicks(false);
+	((mpScaleY*)(mRTAMagPLot->GetLayer(1)))->SetTicks(false);
+
+	mRTAMagPLot->Refresh();
+	mRTAMagPLot->Fit(0, mMaxXcord, -120, 6);
+
+	mRTAMagPLot->EnableMousePanZoom(true);
+	mRTAMagPLot->EnableDrawingMode(false);
+	mRTAMagPLot->EnableXSelectMode(false);
+}
+
+void
+AudioDevicesPanel::ConfigureXAxis()
+{
+	double xcord;
+	mPlotXCoords.clear();
+	mPlotXCoords.push_back(0);
+
+	for (size_t i = 1; i < mRTAPlotSize; i++)
+	{
+		xcord = log10((double)i);
+		mPlotXCoords.push_back((xcord));
+	}
+
+	mMaxXcord = xcord;
+
+	mRTAMagPLot->SetLogarithmic(true);
+	((mpScaleXSpectrum*)(mRTAMagPLot->GetLayer(0)))->SetLogarithmic(true);
+	((mpInfoCoords*)(mRTAMagPLot->GetLayer(3)))->SetLogarithmic(true);
+}
+
+void
+AudioDevicesPanel::OnSpinFFTReference(awohSpinEvent& event)
+{
+	mSelectedChannel = SpinRefCh->getNumericalValue();
+	//send to audio engine
+	AudioParam msg;
+	msg.paramIdx = kFFTRefChannel;
+	msg.value = (float)mSelectedChannel;
+	gAudioIO->SetParameter(msg, false);
+}
+
+void
+AudioDevicesPanel::OnSpinRTAvg(awohSpinEvent& event)
+{
+	float pVal = (float)SpinRTAvg->getNumericalValue();
+	//send to audio engine
+	AudioParam msg;
+	msg.paramIdx = kFFTAverage;
+	msg.value = pVal;
+	gAudioIO->SetParameter(msg, false);
+}
+
+void
+AudioDevicesPanel::OnSpinFFTLength(awohSpinEvent& event)
+{
+	float pVal = (float)SpinFFTLen->getNumericalValue();
+	//send to audio engine
+	AudioParam msg;
+	msg.paramIdx = kFFTLength;
+	msg.value = pVal;
+	gAudioIO->SetParameter(msg, false);
+}
+void AudioDevicesPanel::OnButtonResetLTAClick(wxCommandEvent& event)
+{
+	AudioParam msg;
+	msg.paramIdx = kFFTAverageReset;
+	msg.value = 1;
+	gAudioIO->SetParameter(msg, false);
+}
+
+void AudioDevicesPanel::OnButtonPlotResetClick(wxCommandEvent& event)
+{
+	mRTAMagPLot->Fit(0, mMaxXcord, -120, 6);
 }

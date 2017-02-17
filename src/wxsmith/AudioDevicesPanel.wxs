@@ -422,7 +422,155 @@
 													</object>
 													<object class="sizeritem">
 														<object class="wxPanel" name="ID_PANEL_REC_IN_R" subclass="RimPanel" variable="Panel1RecInR" member="yes">
-															<object class="wxBoxSizer" variable="BoxSizerRecInR" member="no" />
+															<object class="wxBoxSizer" variable="BoxSizerRecInR" member="no">
+																<orient>wxVERTICAL</orient>
+																<object class="sizeritem">
+																	<object class="wxPanel" name="ID_PANEL_FFT_CTRLS" subclass="RimPanel" variable="PanelFFTCtrls" member="yes">
+																		<object class="wxBoxSizer" variable="BoxSizerFFTCtrls" member="no">
+																			<object class="spacer">
+																				<flag>wxALIGN_LEFT|wxALIGN_TOP</flag>
+																				<border>1</border>
+																				<size>5,-1</size>
+																			</object>
+																			<object class="sizeritem">
+																				<object class="wxBoxSizer" variable="BoxSizerRefCh" member="no">
+																					<object class="sizeritem">
+																						<object class="wxStaticText" name="ID_STATICTEXT_REF_CH" variable="StaticTextRefCh" member="yes">
+																							<label> channel </label>
+																							<style>wxALIGN_CENTRE</style>
+																						</object>
+																						<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																						<border>1</border>
+																					</object>
+																					<object class="sizeritem">
+																						<object class="Custom" name="ID_SPIN_REF_CH" subclass="awohSpin" variable="SpinRefCh" member="yes">
+																							<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE));</creating_code>
+																							<include_file>Widgets/awohSpin.h</include_file>
+																							<local_include>1</local_include>
+																							<style></style>
+																							<size>50,-1</size>
+																							<bg>#6A6A6A</bg>
+																						</object>
+																						<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																						<border>1</border>
+																					</object>
+																				</object>
+																				<flag>wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																				<border>5</border>
+																			</object>
+																			<object class="spacer">
+																				<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																				<size>20,-1</size>
+																			</object>
+																			<object class="sizeritem">
+																				<object class="wxBoxSizer" variable="BoxSizerFFTSize" member="no">
+																					<object class="sizeritem">
+																						<object class="wxStaticText" name="ID_STATICTEXT_RTA_LENGTH" variable="StaticTextRTALength" member="yes">
+																							<label> resolution </label>
+																						</object>
+																						<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																						<border>1</border>
+																					</object>
+																					<object class="sizeritem">
+																						<object class="Custom" name="ID_SPIN_FFT_LENGTH" subclass="awohSpin" variable="SpinFFTLen" member="yes">
+																							<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE));</creating_code>
+																							<include_file>Widgets/awohSpin.h</include_file>
+																							<local_include>1</local_include>
+																							<style></style>
+																							<size>50,-1</size>
+																							<bg>#6A6A6A</bg>
+																						</object>
+																						<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																						<border>1</border>
+																					</object>
+																				</object>
+																				<flag>wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																				<border>5</border>
+																			</object>
+																			<object class="spacer">
+																				<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																				<size>20,-1</size>
+																			</object>
+																			<object class="sizeritem">
+																				<object class="wxBoxSizer" variable="BoxSizerAvgOn" member="no">
+																					<object class="sizeritem">
+																						<object class="wxStaticText" name="ID_STATICTEXT_RTA_AVG" variable="StaticTextRTAAvg" member="yes">
+																							<label> average </label>
+																						</object>
+																						<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																						<border>1</border>
+																					</object>
+																					<object class="sizeritem">
+																						<object class="Custom" name="ID_SPIN_RTA_AVG" subclass="awohSpin" variable="SpinRTAvg" member="yes">
+																							<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE));</creating_code>
+																							<include_file>Widgets/awohSpin.h</include_file>
+																							<local_include>1</local_include>
+																							<style></style>
+																							<size>50,-1</size>
+																						</object>
+																						<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																						<border>2</border>
+																					</object>
+																					<object class="sizeritem">
+																						<object class="wxButton" name="ID_BUTTON_RESET_LTA" subclass="GButton" variable="ButtonResetLTA" member="yes">
+																							<label>reset avg</label>
+																							<size>60,18</size>
+																							<style>wxNO_BORDER</style>
+																							<handler function="OnButtonResetLTAClick" entry="EVT_BUTTON" />
+																						</object>
+																						<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																						<border>2</border>
+																					</object>
+																				</object>
+																				<flag>wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																				<border>5</border>
+																			</object>
+																			<object class="sizeritem">
+																				<object class="wxBoxSizer" variable="BoxSizerAxesCtrls" member="no">
+																					<object class="sizeritem">
+																						<object class="wxButton" name="ID_BUTTON_PLOT_RESET" subclass="GButton" variable="ButtonPlotReset" member="yes">
+																							<label>reset plot</label>
+																							<size>60,18</size>
+																							<style>wxNO_BORDER</style>
+																							<handler function="OnButtonPlotResetClick" entry="EVT_BUTTON" />
+																						</object>
+																						<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																						<border>2</border>
+																					</object>
+																				</object>
+																				<flag>wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																				<border>5</border>
+																			</object>
+																		</object>
+																	</object>
+																	<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																	<border>1</border>
+																</object>
+																<object class="sizeritem">
+																	<object class="wxStaticLine" name="ID_STATICLINE1" variable="StaticLine1" member="yes">
+																		<size>-1,1</size>
+																	</object>
+																	<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																</object>
+																<object class="sizeritem">
+																	<object class="wxBoxSizer" variable="BoxSizerFFTPlot" member="no">
+																		<object class="sizeritem">
+																			<object class="Custom" name="ID_RTA_FFT_PLOT" subclass="mpWindow" variable="mRTAMagPLot" member="yes">
+																				<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE));</creating_code>
+																				<include_file>Widgets\\wxMathPlot\\mathplot.h</include_file>
+																				<local_include>1</local_include>
+																				<style></style>
+																			</object>
+																			<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																			<border>1</border>
+																			<option>1</option>
+																		</object>
+																	</object>
+																	<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																	<border>1</border>
+																	<option>1</option>
+																</object>
+															</object>
 														</object>
 														<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
 														<border>3</border>
@@ -436,7 +584,7 @@
 									</object>
 									<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
 									<border>5</border>
-									<option>3</option>
+									<option>4</option>
 								</object>
 							</object>
 							<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>

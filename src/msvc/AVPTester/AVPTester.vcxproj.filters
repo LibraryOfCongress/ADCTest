@@ -37,6 +37,24 @@
     <Filter Include="Source Files\AudioIO">
       <UniqueIdentifier>{6f432dae-dae9-4c6f-9a8c-51f0f8a44ed3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\DSP">
+      <UniqueIdentifier>{af5c0d48-7594-4328-92eb-c08aa016fcf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DSP">
+      <UniqueIdentifier>{d7e2745b-f515-4bb3-82aa-e7ec6ea25104}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DSP\adapters">
+      <UniqueIdentifier>{55ba0906-74e9-4946-ab43-4f9dfb2ef440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DSP\kissfft">
+      <UniqueIdentifier>{8731d3b9-c165-4f0e-9255-117d6f8e76a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DSP\adapters">
+      <UniqueIdentifier>{1d63f3e7-2a47-43e4-9568-a0441c479d32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DSP\kissfft">
+      <UniqueIdentifier>{ad5b1b5a-f461-44cf-b465-26d21325d406}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\AVPTesterApp.cpp">
@@ -71,6 +89,30 @@
     </ClCompile>
     <ClCompile Include="..\..\AudioIO\ParametersQueue.cpp">
       <Filter>Source Files\AudioIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Widgets\wxMathPlot\mathplot.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Widgets\awohSpin.cpp">
+      <Filter>Source Files\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\adapters\RingBuffer.cpp">
+      <Filter>Source Files\DSP\adapters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\adapters\RingBufferFloat.cpp">
+      <Filter>Source Files\DSP\adapters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\kissfft\tools\kiss_fftr.c">
+      <Filter>Source Files\DSP\kissfft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\kissfft\kiss_fft.c">
+      <Filter>Source Files\DSP\kissfft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\GenMetricQueue.cpp">
+      <Filter>Source Files\DSP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\KFFTWrapper.cpp">
+      <Filter>Source Files\DSP</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +154,39 @@
     </ClInclude>
     <ClInclude Include="..\..\AudioIO\ProcessParams.h">
       <Filter>Header Files\AudioIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Widgets\wxMathPlot\mathplot.h">
+      <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Widgets\awohSpin.h">
+      <Filter>Header Files\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DSP\GenMetricQueue.h">
+      <Filter>Header Files\DSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DSP\KFFTWrapper.h">
+      <Filter>Header Files\DSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DSP\window.h">
+      <Filter>Header Files\DSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DSP\adapters\RingBuffer.h">
+      <Filter>Header Files\DSP\adapters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DSP\adapters\RingBufferFloat.h">
+      <Filter>Header Files\DSP\adapters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DSP\kissfft\tools\kiss_fftr.h">
+      <Filter>Header Files\DSP\kissfft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DSP\kissfft\_kiss_fft_guts.h">
+      <Filter>Header Files\DSP\kissfft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DSP\kissfft\kiss_fft.h">
+      <Filter>Header Files\DSP\kissfft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DSP\kissfft\kissfft.hh">
+      <Filter>Header Files\DSP\kissfft</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

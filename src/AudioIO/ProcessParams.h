@@ -4,10 +4,15 @@
 #include <wx/wx.h>
 #include <vector>
 
-enum IOProcessoingParams
+enum IOCalibrationParams
 {
 	kOutputGain = 0,
-	kNumIOProcessingParams
+	kFFTRefChannel,
+	kFFTLength,
+	kFFTAverage,
+	kFFTAverageReset,
+	kFFTWindow,
+	kNumIOCalibrationParams
 };
 
 #endif

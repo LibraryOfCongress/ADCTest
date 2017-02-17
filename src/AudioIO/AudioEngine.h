@@ -11,6 +11,10 @@
 #include "LevelAnalyser.h"
 #include "ParametersQueue.h"
 #include "ProcessParams.h"
+#include "../DSP/adapters/RingBufferFloat.h"
+#include "../DSP/KFFTWrapper.h"
+#include "../DSP/Window.h"
+#include "../DSP/GenMetricQueue.h"
 
 #define safenew new
 
@@ -18,6 +22,11 @@ class AudioIO;
 class AudioThread;
 
 extern AudioIO *gAudioIO;
+
+struct FFTPlotData {
+	std::vector<float> MagData;
+	double sampleRate;
+};
 
 void InitAudioIO();
 void DeinitAudioIO();
@@ -36,7 +45,13 @@ class AudioIO
 
 		LevelAnalyser* GetInputsLevelAnalyser();
 		LevelAnalyser* GetOutputsLevelAnalyser();
-		void SetParameter(AudioParam msg, bool flushQueue);
+		FFTPlotData GetFFTPlotData(bool* newdata);
+
+		void SetParameter(AudioParam msg, bool flushQueue =  false);
+		double GetMasterSampleRate() { return mCaptureSampleRate; }
+
+		void LoadCalibrationSettings();
+		virtual std::vector<AudioParam> getCalibrationParameters();
 
 	protected:
 		PaError OpenStream();
@@ -46,14 +61,20 @@ class AudioIO
 		void DeleteLevelAnalysers();
 
 		void FlushParameterQueue();
-		void ProcessParameter(int paramID, double paramValue);
+		void ProcessParameter( AudioParam param);
+
+		//fft plot
+		void doRTA(float* InterleavedBuffer );
+		void initialiseFFT(size_t stftLength, WindowType wType);
+		void deInitialiseFFT();
+		void resetRTAAvg();
 
 		float* mInputBuffer;
 		float* mOutputBuffer;
 
 		size_t mNoPlaybackChannels;
 		size_t mNoCaptureChannels;
-		size_t mCaptureSampleRate;
+		double mCaptureSampleRate;
 		size_t mCaptureFrameSize;
 		PaStream *mPortStreamV19;
 		
@@ -65,8 +86,33 @@ class AudioIO
 		LevelAnalyser* mInputLevelMetric;
 		LevelAnalyser* mOutputLevelMetric;
 		ParametersQueue mParametersQueue;
+		std::vector<AudioParam> mCalibrationParameters;
 
 		double mOutputGain;
+
+		size_t mNewCaptureSampleRate;
+		size_t mSTFTLength;
+		size_t mNewSTFTLength;
+		size_t mSTFTHop;
+		size_t mSTFTBins;
+		WindowType mWType;
+		float mFStep;
+		volatile bool mIsInitialised;
+		volatile bool mReconfigureFFT;
+		//RTA Stuff
+		float* mDeintBuffer;
+		RingBufferFloat* mRTABuf;
+		float* mRTATimeFrame;
+		KFFTWrapper *mRTA;
+		float* mRTAMag;
+
+		int mSelectedChannel;
+		bool mLTAverageIsOn;
+		float mLTAverageSlope;
+		bool mResetLTA;
+
+		FFTPlotData mVizData;
+		GenMetricQueue< FFTPlotData > mVizDataQueue;
 
 	private:
 		int getInputDevIndex(const wxString &hostName = wxEmptyString, const wxString &devName = wxEmptyString);

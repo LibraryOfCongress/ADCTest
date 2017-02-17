@@ -192,10 +192,18 @@
     <ClCompile Include="..\..\AVPTesterApp.cpp" />
     <ClCompile Include="..\..\AVPTesterMain.cpp" />
     <ClCompile Include="..\..\Devices\ADevicesManager.cpp" />
+    <ClCompile Include="..\..\DSP\adapters\RingBuffer.cpp" />
+    <ClCompile Include="..\..\DSP\adapters\RingBufferFloat.cpp" />
+    <ClCompile Include="..\..\DSP\GenMetricQueue.cpp" />
+    <ClCompile Include="..\..\DSP\KFFTWrapper.cpp" />
+    <ClCompile Include="..\..\DSP\kissfft\kiss_fft.c" />
+    <ClCompile Include="..\..\DSP\kissfft\tools\kiss_fftr.c" />
     <ClCompile Include="..\..\System\Prefs.cpp" />
+    <ClCompile Include="..\..\Widgets\awohSpin.cpp" />
     <ClCompile Include="..\..\Widgets\GButton.cpp" />
     <ClCompile Include="..\..\Widgets\RimPanel.cpp" />
     <ClCompile Include="..\..\Widgets\VuMeter.cpp" />
+    <ClCompile Include="..\..\Widgets\wxMathPlot\mathplot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\AudioDevicesPanel.h" />
@@ -206,11 +214,22 @@
     <ClInclude Include="..\..\AVPTesterApp.h" />
     <ClInclude Include="..\..\AVPTesterMain.h" />
     <ClInclude Include="..\..\Devices\ADevicesManager.h" />
+    <ClInclude Include="..\..\DSP\adapters\RingBuffer.h" />
+    <ClInclude Include="..\..\DSP\adapters\RingBufferFloat.h" />
+    <ClInclude Include="..\..\DSP\GenMetricQueue.h" />
+    <ClInclude Include="..\..\DSP\KFFTWrapper.h" />
+    <ClInclude Include="..\..\DSP\kissfft\kissfft.hh" />
+    <ClInclude Include="..\..\DSP\kissfft\kiss_fft.h" />
+    <ClInclude Include="..\..\DSP\kissfft\tools\kiss_fftr.h" />
+    <ClInclude Include="..\..\DSP\kissfft\_kiss_fft_guts.h" />
+    <ClInclude Include="..\..\DSP\window.h" />
     <ClInclude Include="..\..\System\Prefs.h" />
+    <ClInclude Include="..\..\Widgets\awohSpin.h" />
     <ClInclude Include="..\..\Widgets\GButton.h" />
     <ClInclude Include="..\..\Widgets\QPxColours.h" />
     <ClInclude Include="..\..\Widgets\RimPanel.h" />
     <ClInclude Include="..\..\Widgets\VuMeter.h" />
+    <ClInclude Include="..\..\Widgets\wxMathPlot\mathplot.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\resource.rc" />

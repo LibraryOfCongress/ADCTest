@@ -34,9 +34,18 @@ AudioIO::AudioIO()
 ,mOutputLevelMetric(NULL)
 ,mOutputGain(0.5)
 ,mParametersQueue(128)
+,mVizDataQueue(4) 
+,mDeintBuffer(NULL)
+,mRTABuf(NULL)
+,mRTATimeFrame(NULL)
+,mRTA(NULL)
+,mRTAMag(NULL)
+,mNewSTFTLength(1024)
+,mSTFTLength(1024)
 {
 	mPortStreamV19 = NULL;
 	mEngineOK = false;
+	LoadCalibrationSettings();
 
 	//ctor
 }
@@ -46,10 +55,49 @@ AudioIO::~AudioIO()
     //dtor
 	StopDevicesTest();
 	DeleteLevelAnalysers();
+	deInitialiseFFT();
 	gAudioIO = nullptr;
 }
 
-void AudioIO::StartDevicesTest()
+void 
+AudioIO::LoadCalibrationSettings()
+{
+	mCalibrationParameters.reserve(kNumIOCalibrationParams);
+	for (size_t pix = 0; pix < kNumIOCalibrationParams; pix++)
+	{
+		AudioParam dum;
+		dum.paramIdx = pix;
+		mCalibrationParameters.push_back(dum);
+	}
+
+	AudioParam msg;
+	msg.write = false;
+	msg.paramIdx = kOutputGain;
+	gPrefs->Read(wxT("/Calibration/OutputStreamGain"), &msg.value);
+	SetParameter(msg);
+	msg.paramIdx = kFFTLength;
+	gPrefs->Read(wxT("/Calibration/RTALength"), &msg.value);
+	SetParameter(msg); 
+	msg.paramIdx = kFFTWindow;
+	gPrefs->Read(wxT("/Calibration/RTAWindow"), &msg.value);
+	SetParameter(msg); 
+	msg.paramIdx = kFFTAverage;
+	gPrefs->Read(wxT("/Calibration/RTAExAvg"), &msg.value);
+	SetParameter(msg);
+
+	FlushParameterQueue();
+}
+
+
+std::vector<AudioParam>
+AudioIO::getCalibrationParameters()
+{
+	std::vector<AudioParam> retV = mCalibrationParameters;
+	return retV;
+}
+
+void 
+AudioIO::StartDevicesTest()
 {
 	if (bIsStopped)
 	{
@@ -168,7 +216,7 @@ PaError AudioIO::OpenStream()
 		return paInvalidDevice;
 
 	//use channels and sample rate selected from devices panel
-	mCaptureSampleRate = gPrefs->Read(wxT("/AudioIO/InputDevSRate"), 44100L );
+	mCaptureSampleRate = gPrefs->Read(wxT("/AudioIO/InputDevSRate"), 44100.0 );
 	mNoCaptureChannels = gPrefs->Read(wxT("/AudioIO/InputDevChans"), 0L);
 	mNoPlaybackChannels = gPrefs->Read(wxT("/AudioIO/OutputDevChans"), 0L);
 
@@ -199,14 +247,14 @@ PaError AudioIO::OpenStream()
 	err = Pa_OpenStream(&mPortStreamV19,
 						captureEnabled ? &captureParameters : NULL,
 						playbackEnabled ? &playbackParameters : NULL,
-						(double)mCaptureSampleRate,
+						mCaptureSampleRate,
 						mCaptureFrameSize,
 						paClipOff,
 						NULL, 
 						NULL);
 
 	//create input and output meters:
-	CreateLevelAnalysers(mCaptureSampleRate, 50);
+	CreateLevelAnalysers((size_t)mCaptureSampleRate, 50);
 
 	return err;
 }
@@ -251,15 +299,19 @@ int AudioIO::doIODevicesTest()
 	}
 
 	bPAIsOpen = TRUE;
+	mSelectedChannel = 0;
 	
 	//allocate buffers
 	mInputBuffer = new float[mCaptureFrameSize * mNoCaptureChannels];
 	mOutputBuffer = new float[mCaptureFrameSize * mNoPlaybackChannels];
+	mDeintBuffer = new float[mCaptureFrameSize];
+
+	initialiseFFT(512, HanningWindow);
 
 	//sine wave parameters;
 	double twoPi = M_PI * 2;
 	double timeS = 0.0;
-	double dTime = 1 /(double)mCaptureSampleRate;
+	double dTime = 1.0 /mCaptureSampleRate;
 	double angleS = 0.0;
 	double freq = 1000.0;
 
@@ -306,6 +358,8 @@ int AudioIO::doIODevicesTest()
 			//process frames for level computation
 			mInputLevelMetric->process(mNoCaptureChannels, mCaptureFrameSize, mInputBuffer);
 			mOutputLevelMetric->process(mNoPlaybackChannels, mCaptureFrameSize, mOutputBuffer);
+			//spectrum of input signal
+			doRTA(mInputBuffer);
 		}
 		else
 		{
@@ -318,6 +372,9 @@ int AudioIO::doIODevicesTest()
 	//deallocate buffers
 	delete[] mInputBuffer;
 	delete[] mOutputBuffer;
+	delete[] mDeintBuffer;
+
+	deInitialiseFFT();
 
 	err = CloseStream();
 	if (err != paNoError)
@@ -395,26 +452,201 @@ AudioIO::FlushParameterQueue()
 
 	while (mParametersQueue.Get(msg))
 	{
-		ProcessParameter(msg.paramIdx, msg.value);
+		ProcessParameter(msg);
 		nPms++;
 	}
 }
 
-void AudioIO::ProcessParameter(int paramID, double paramValue)
+void 
+AudioIO::ProcessParameter(AudioParam param)
 {
-	switch (paramID)
+	switch (param.paramIdx)
 	{
 		case kOutputGain:
 		{
-			mOutputGain = pow(10, (paramValue / 20.0));
+			mOutputGain = pow(10, (param.value / 20.0));
+			gPrefs->Write(wxT("/Calibration/OutputStreamGain"), param.value);
+		}
+		break;
+
+		case kFFTLength:
+		{
+			mNewSTFTLength = (size_t)param.value;
+			gPrefs->Write(wxT("/Calibration/RTALength"), mNewSTFTLength);
+		}
+		break;
+
+		case kFFTAverage:
+		{
+			mLTAverageSlope = (float)param.value;
+			gPrefs->Write(wxT("/Calibration/RTAExAvg"), mLTAverageSlope);
+		}
+		break;
+
+		case kFFTAverageReset:
+		{
+			mResetLTA = (bool)param.value;
 		}
 		break;
 
 		default:
 		{}
 	}
+
+	size_t jj = mCalibrationParameters.size();
+
+	if (param.paramIdx < kNumIOCalibrationParams)
+		mCalibrationParameters[param.paramIdx] = param;
 }
 
+void
+AudioIO::doRTA(float* InterleavedBuffer)
+{
+	if (mResetLTA)
+		resetRTAAvg();
+
+	if (mSTFTLength != mNewSTFTLength)
+		initialiseFFT(mNewSTFTLength, HanningWindow);
+
+	float* dummyPhase = 0;
+
+	for (size_t i = 0; i < mCaptureFrameSize; i++)
+	{
+		mDeintBuffer[i] = InterleavedBuffer[i*mNoCaptureChannels];
+	}
+
+
+	mRTABuf->write(mDeintBuffer, mCaptureFrameSize);
+
+	while (mRTABuf->getReadSpace() >= (int)mSTFTLength)
+	{
+		mRTABuf->peek(mRTATimeFrame, mSTFTLength);
+		mRTABuf->skip(mSTFTHop);
+
+		mRTA->getFDData(mRTATimeFrame, mRTAMag, dummyPhase, true);
+
+		float valIn, valOut = 0;
+		float avgSlope = mLTAverageSlope / 100;
+		for (size_t i = 0; i < mSTFTBins; i++)
+		{
+			valIn = mRTAMag[i];
+			mVizData.MagData[i] = (avgSlope * valIn) + (1.0 - avgSlope) * mVizData.MagData[i];
+		}
+		mVizData.sampleRate = mCaptureSampleRate;
+		mVizDataQueue.Put(mVizData);
+	}
+}
+
+void
+AudioIO::initialiseFFT(size_t fftLength, WindowType wType)
+{
+	deInitialiseFFT();
+
+	////////////////////////////////////////////////////////////////////
+	//RTA Stuff
+	mSTFTLength = fftLength;
+	mSTFTBins = 1 + mSTFTLength / 2;
+	mSTFTHop = mSTFTLength / 2;
+	mWType = wType;
+
+	mRTATimeFrame = new float[mSTFTLength];
+	for (size_t i = 0; i < mSTFTLength; i++)		
+	{
+		mRTATimeFrame[i] = 0.0;
+	}
+
+	//configure ring buffers according to fft size and input frame size
+	size_t rtaAdapterBufferSize;
+
+	if (mSTFTLength >= mCaptureFrameSize)
+	{
+		rtaAdapterBufferSize = mSTFTLength + mSTFTHop;
+	}
+	else
+	{
+		rtaAdapterBufferSize = mCaptureFrameSize + mSTFTLength;
+	}
+
+	mRTABuf = new RingBufferFloat(rtaAdapterBufferSize);
+	mRTABuf->reset();
+	mRTABuf->zero(rtaAdapterBufferSize);
+
+	
+	mRTA = new KFFTWrapper(mSTFTLength, mSTFTHop, mWType);
+	mRTAMag = new float[mSTFTLength];
+
+	mVizData.MagData.resize(mSTFTBins);
+	mVizDataQueue.Clear();
+	resetRTAAvg();
+	mIsInitialised = true;
+	mResetLTA = true;
+	//reset();
+}
+
+void
+AudioIO::resetRTAAvg()
+{
+	if (mSTFTLength == 0)
+		return;
+
+	for (size_t i = 0; i < mSTFTBins; i++)
+	{
+		mRTAMag[i] = 0.0;
+		mVizData.MagData[i] = 0.0;
+	}
+
+	mResetLTA = false;
+}
+
+void
+AudioIO::deInitialiseFFT()
+{
+	mIsInitialised = false;
+
+	if (mRTATimeFrame)
+	{
+		delete mRTATimeFrame;
+		mRTATimeFrame = 0;
+	}
+
+	if (mRTABuf)
+	{
+		delete mRTABuf;
+		mRTABuf = 0;
+	}
+
+	if (mRTA)
+	{
+		delete mRTA;
+		mRTA = 0;
+	}
+
+	if (mRTAMag)
+	{
+		delete mRTAMag;
+		mRTAMag = 0;
+	}
+}
+
+FFTPlotData
+AudioIO::GetFFTPlotData(bool* newdata)
+{
+	FFTPlotData msg;
+	int numChanges = 0;
+
+	if (mVizDataQueue.Get(msg))
+	{
+		numChanges++;
+	}
+
+	if (numChanges > 0)
+		*newdata = true;
+
+	return msg;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 AudioThread::ExitCode AudioThread::Entry()
 {
 	gAudioIO->doIODevicesTest();

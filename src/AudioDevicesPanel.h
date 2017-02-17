@@ -2,9 +2,12 @@
 #define AUDIODEVICESPANEL_H
 
 //(*Headers(AudioDevicesPanel)
+#include "Widgets\wxMathPlot\mathplot.h"
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include "Widgets/awohSpin.h"
+#include <wx/statline.h>
 #include <wx/panel.h>
 #include <wx/choice.h>
 #include <wx/button.h>
@@ -22,6 +25,9 @@ class AudioDevicesPanel: public wxPanel
 		AudioDevicesPanel(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
 		virtual ~AudioDevicesPanel();
 
+		void RefreshUI();
+		void ConfigureChannelSpin();
+
 		void PopulateAll();
 		void PopulateHostsChoices();
 		void PopulateInDevicesChoices();
@@ -37,12 +43,16 @@ class AudioDevicesPanel: public wxPanel
 		//(*Declarations(AudioDevicesPanel)
 		RimPanel* PanelPBInR;
 		wxPanel* PanelRecording;
+		wxStaticText* StaticTextRTALength;
 		wxPanel* PanelPlayback;
 		wxStaticText* StaticTextDevTestTitle;
 		GButton* ButtonOutGainDwn;
+		awohSpin* SpinRefCh;
 		GButton* ButtonDevTestStop;
+		wxStaticText* StaticTextRefCh;
 		wxStaticText* StaticTextGenSettingsTitle;
 		GButton* ButtonDevTestStart;
+		awohSpin* SpinFFTLen;
 		wxStaticText* StaticTextInHosts;
 		wxStaticText* StaticTextLineUp;
 		wxStaticText* StaticTextGainTtl;
@@ -57,6 +67,7 @@ class AudioDevicesPanel: public wxPanel
 		wxStaticText* StaticTextInChannels;
 		wxStaticText* StaticTextPBStreamTTL;
 		RimPanel* PanelHosts;
+		RimPanel* PanelFFTCtrls;
 		wxBoxSizer* BoxSizerRecInL;
 		RimPanel* PanelSysGenSettings;
 		wxChoice* ChoiceSystemSampleRate;
@@ -65,8 +76,12 @@ class AudioDevicesPanel: public wxPanel
 		wxBoxSizer* BoxSizerTest;
 		wxBoxSizer* BoxSizerRecording;
 		wxStaticText* StaticTextRecStreamTTL;
+		GButton* ButtonPlotReset;
+		wxStaticLine* StaticLine1;
 		GButton* ButtonOutGainUp;
+		wxStaticText* StaticTextRTAAvg;
 		wxStaticText* StaticTextOutChannels;
+		mpWindow* mRTAMagPLot;
 		wxChoice* ChoiceInputDevice;
 		wxBoxSizer* BoxSizerPlayback;
 		RimPanel* PanelOutputDevices;
@@ -75,6 +90,8 @@ class AudioDevicesPanel: public wxPanel
 		wxBoxSizer* BoxSizerMonitor;
 		wxChoice* ChoiceOutputDevice;
 		wxTextCtrl* TextCtrlInChannels;
+		GButton* ButtonResetLTA;
+		awohSpin* SpinRTAvg;
 		RimPanel* PanelTest;
 		wxChoice* ChoiceHost;
 		wxBoxSizer* BoxSizerPBInL;
@@ -119,6 +136,17 @@ class AudioDevicesPanel: public wxPanel
 		static const long ID_PANEL_PLAYBACK;
 		static const long ID_STATICTEXT_REC_STREAM_TTL;
 		static const long ID_PANEL_REC_IN_L;
+		static const long ID_STATICTEXT_REF_CH;
+		static const long ID_SPIN_REF_CH;
+		static const long ID_STATICTEXT_RTA_LENGTH;
+		static const long ID_SPIN_FFT_LENGTH;
+		static const long ID_STATICTEXT_RTA_AVG;
+		static const long ID_SPIN_RTA_AVG;
+		static const long ID_BUTTON_RESET_LTA;
+		static const long ID_BUTTON_PLOT_RESET;
+		static const long ID_PANEL_FFT_CTRLS;
+		static const long ID_STATICLINE1;
+		static const long ID_RTA_FFT_PLOT;
 		static const long ID_PANEL_REC_IN_R;
 		static const long ID_PANEL_RECORDING;
 		static const long ID_PANEL_TEST;
@@ -140,11 +168,18 @@ class AudioDevicesPanel: public wxPanel
 		void OnTimerAudioMonitorTrigger(wxTimerEvent& event);
 		void OnButtonOutGainUpClick(wxCommandEvent& event);
 		void OnButtonOutGainDwnClick(wxCommandEvent& event);
+		void OnButtonResetLTAClick(wxCommandEvent& event);
+		void OnButtonPlotResetClick(wxCommandEvent& event);
 		//*)
+		void OnSpinRTAvg(awohSpinEvent& event);
+		void OnSpinFFTLength(awohSpinEvent& event);
+		void OnSpinFFTReference(awohSpinEvent& event);
 
 		DECLARE_EVENT_TABLE()
 
 		void UpdateOutputGain( bool write = false);
+		void ConfigurePlot(size_t RTALength, double sampleRate);
+		void ConfigureXAxis();
 
 		bool mAudioTestStarted;
 		int mNumInputChannels;
@@ -154,6 +189,15 @@ class AudioDevicesPanel: public wxPanel
 
 		double mOutputStreamGain;
 		bool mCtrlDwn;
+
+		mpFXYVector* mFFTInMagLayer;
+		std::vector<float> mPlotXCoords;
+		float mMaxXcord;
+		double mRTALength;
+		double mRTAPlotSize;
+		double mSampleRate;
+		int mSelectedChannel;
 };
 
 #endif
+
