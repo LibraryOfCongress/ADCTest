@@ -2,7 +2,7 @@
 <wxsmith>
 	<object class="wxPanel" name="AudioDevicesPanel">
 		<fg>#804040</fg>
-		<bg>#D2D2D2</bg>
+		<bg>#C8C8C8</bg>
 		<id_arg>0</id_arg>
 		<object class="wxBoxSizer" variable="BoxSizerMain" member="no">
 			<orient>wxVERTICAL</orient>

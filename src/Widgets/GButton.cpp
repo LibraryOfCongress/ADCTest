@@ -47,6 +47,7 @@ GButton::GButton(wxWindow *parent,
 	//defaults
 	setBGColour( BTN_BG_R, BTN_BG_G, BTN_BG_B );
     setFGColour( MAIN_TXT_R, MAIN_TXT_G, MAIN_TXT_B );
+	//setFGColour(255, 255, 255);
     setBDColour( MAIN_BD_R, MAIN_BD_G, MAIN_BD_B );
     setLEDColour( 200, 0, 0 );
     setAsToggle(false);
@@ -99,6 +100,12 @@ GButton::~GButton()
     }
 }
 
+void GButton::SetLbText(wxString label)
+{
+	mText = label;
+	Refresh();
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 bool GButton::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize &size, const wxString& button,
 					 const wxString& hover, const wxString& click)
@@ -129,7 +136,7 @@ bool GButton::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const 
 	allowClick = true;
 	focused = false;
 
-	wxFont defaultFont( 8, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Calibri"));
+	wxFont defaultFont( 10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Arial"));
     setFont( defaultFont );
 
 	return true;

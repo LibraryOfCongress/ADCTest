@@ -68,7 +68,7 @@ echo #define PA_USE_DS 1 &gt;&gt;!CFG!
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <AdditionalIncludeDirectories>..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\portaudio-v19\src\common;..\..\..\lib-src\portaudio-v19\src\os\win;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;PAWIN_USE_WDMKS_DEVICE_INFO;PA_USE_ASIO=0;PA_USE_DS=1;PA_USE_WMME=1;PA_USE_WASAPI=1;PA_USE_WDMKS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -143,7 +143,7 @@ echo #define PA_USE_DS 1 &gt;&gt;!CFG!
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\portaudio-v19\src\common;..\..\..\lib-src\portaudio-v19\src\os\win;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;PAWIN_USE_WDMKS_DEVICE_INFO;PA_USE_ASIO=0;PA_USE_DS=1;PA_USE_WMME=1;PA_USE_WASAPI=1;PA_USE_WDMKS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -207,36 +207,15 @@ lib /OUT:"$(TargetPath)" "!INTDIR!/*.obj" !LIBS!
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_cpuload.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_debugprint.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_dither.c" />
-    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_dynload.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_front.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_process.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_ringbuffer.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_stream.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_trace.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\wmme\pa_win_wmme.c" />
-    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\dsound\pa_win_ds.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\dsound\pa_win_ds_dynlink.c" />
-    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\asio\iasiothiscallresolver.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\asio\pa_asio.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\wasapi\pa_win_wasapi.c" />
-    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\jack\pa_jack.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\jack\pa_jack_dynload.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\os\win\pa_win_coinitialize.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\os\win\pa_win_hostapis.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\os\win\pa_win_util.c" />
@@ -250,7 +229,6 @@ lib /OUT:"$(TargetPath)" "!INTDIR!/*.obj" !LIBS!
     <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\common\pa_cpuload.h" />
     <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\common\pa_debugprint.h" />
     <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\common\pa_dither.h" />
-    <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\common\pa_dynload.h" />
     <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\common\pa_endianness.h" />
     <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\common\pa_hostapi.h" />
     <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\common\pa_memorybarrier.h" />
@@ -261,14 +239,6 @@ lib /OUT:"$(TargetPath)" "!INTDIR!/*.obj" !LIBS!
     <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\common\pa_types.h" />
     <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\common\pa_util.h" />
     <CustomBuild Include="..\..\..\lib-src\portaudio-v19\src\hostapi\dsound\pa_win_ds_dynlink.h" />
-    <CustomBuild Include="..\..\..\lib-src\portaudio-v19\src\hostapi\asio\iasiothiscallresolver.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\lib-src\portaudio-v19\src\hostapi\jack\pa_jack_dynload.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CustomBuild>
     <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\os\win\pa_win_coinitialize.h" />
     <ClInclude Include="..\..\..\lib-src\portaudio-v19\include\pa_win_waveformat.h" />
     <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\os\win\pa_win_wdmks_utils.h" />

@@ -55,6 +55,12 @@
     <Filter Include="Header Files\DSP\kissfft">
       <UniqueIdentifier>{ad5b1b5a-f461-44cf-b465-26d21325d406}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SigGen">
+      <UniqueIdentifier>{f7342840-cecf-4bc4-a3b0-a182af6188d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SigGen">
+      <UniqueIdentifier>{30cea169-b4b8-4ed4-8ed7-ea0971f8abce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\AVPTesterApp.cpp">
@@ -112,6 +118,24 @@
       <Filter>Source Files\DSP</Filter>
     </ClCompile>
     <ClCompile Include="..\..\DSP\KFFTWrapper.cpp">
+      <Filter>Source Files\DSP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SigGen\TestSignalGenerator.cpp">
+      <Filter>Source Files\SigGen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SigGen\WavFileWriter.cpp">
+      <Filter>Source Files\SigGen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SigGen\AudioFileWriter.cpp">
+      <Filter>Source Files\SigGen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\AudioDevicesDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\TestManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\FFTAnalyser.cpp">
       <Filter>Source Files\DSP</Filter>
     </ClCompile>
   </ItemGroup>
@@ -187,6 +211,24 @@
     </ClInclude>
     <ClInclude Include="..\..\DSP\kissfft\kissfft.hh">
       <Filter>Header Files\DSP\kissfft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SigGen\TestSignalGenerator.h">
+      <Filter>Header Files\SigGen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SigGen\AudioFileWriter.h">
+      <Filter>Header Files\SigGen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SigGen\WavFileWriter.h">
+      <Filter>Header Files\SigGen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\AudioDevicesDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\TestManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DSP\FFTAnalyser.h">
+      <Filter>Header Files\DSP</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

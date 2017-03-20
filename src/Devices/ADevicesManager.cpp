@@ -1,8 +1,10 @@
 #include "ADevicesManager.h"
 #include "..\System\Prefs.h"
 
+//#define USE_PORTMIXER
+
 #ifdef USE_PORTMIXER
-#include "portaudio19/portmixer.h"
+#include "portmixer.h"
 #endif
 
 #include <wx/choice.h>
@@ -37,13 +39,6 @@ const std::vector<ADeviceMap> &ADevicesManager::GetOutputDeviceMaps()
 	return mOutputADeviceMaps;
 }
 
-const std::vector<AHostAPIMap> &ADevicesManager::GetHostAPIMaps()
-{
-	if (!m_inited)
-		Init();
-
-	return mHostAPIMaps;
-}
 
 wxString MakeDeviceSourceString(const ADeviceMap *map)
 {
@@ -56,7 +51,8 @@ wxString MakeDeviceSourceString(const ADeviceMap *map)
 	return ret;
 }
 
-ADeviceMap* ADevicesManager::GetDefaultDevice(int hostIndex, int isInput)
+ADeviceMap* 
+ADevicesManager::GetDefaultDevice(int hostIndex, int isInput)
 {
    if (hostIndex < 0 || hostIndex >= Pa_GetHostApiCount()) {
       return NULL;
@@ -76,15 +72,41 @@ ADeviceMap* ADevicesManager::GetDefaultDevice(int hostIndex, int isInput)
    return NULL;
 }
 
-ADeviceMap* ADevicesManager::GetDefaultOutputDevice(int hostIndex)
+ADeviceMap* 
+ADevicesManager::GetDefaultDevice(wxString hostName, int isInput)
 {
-	return GetDefaultDevice(hostIndex, 0);
+	if( (hostName.IsEmpty()) || (Pa_GetHostApiCount() <= 0) ) 
+	{
+		return NULL;
+	}
+
+	//check hosts list
+	int nHosts = Pa_GetHostApiCount();
+	int hostIndex = -1;
+	AHostAPIMap mp;
+	for (int i = 0; i < nHosts; ++i)
+	{
+		if (hostName == wxSafeConvertMB2WX(Pa_GetHostApiInfo(i)->name))
+		{
+			hostIndex = i;
+		}
+	}
+
+	const struct PaHostApiInfo *apiinfo = Pa_GetHostApiInfo(hostIndex);   // get info on API
+	std::vector<ADeviceMap> & maps = isInput ? mInputADeviceMaps : mOutputADeviceMaps;
+	size_t i;
+	int targetDevice = isInput ? apiinfo->defaultInputDevice : apiinfo->defaultOutputDevice;
+
+	for (i = 0; i < maps.size(); i++) {
+		if (maps[i].deviceIndex == targetDevice)
+			return &maps[i];
+	}
+
+	wxLogDebug(wxT("GetDefaultDevice() no default device"));
+	return NULL;
+
 }
 
-ADeviceMap* ADevicesManager::GetDefaultInputDevice(int hostIndex)
-{
-	return GetDefaultDevice(hostIndex, 1);
-}
 
 //--------------- Device Enumeration --------------------------
 
@@ -100,6 +122,7 @@ static int DummyPaStreamCallback(
 	return 0;
 }
 
+/*
 static void FillHostDeviceInfo(ADeviceMap *map, const PaDeviceInfo *info, int deviceIndex, int isInput, std::vector<double> &desiredSRates)
 {
 	wxString hostapiName = wxSafeConvertMB2WX(Pa_GetHostApiInfo(info->hostApi)->name);
@@ -111,7 +134,7 @@ static void FillHostDeviceInfo(ADeviceMap *map, const PaDeviceInfo *info, int de
 	map->deviceString = infoName;
 	map->hostString   = hostapiName;
 	map->numChannels  = isInput ? info->maxInputChannels : info->maxOutputChannels;
-
+	map->defaultRate = info->defaultSampleRate;
 	//check if sample rates are supported
 	PaError err;
 	PaStreamParameters testParams;
@@ -227,50 +250,166 @@ static void AddSources(int deviceIndex, int rate, std::vector<ADeviceMap> *maps,
                  wxString(wxSafeConvertMB2WX(Pa_GetErrorText((PaError)error))));
 	}
 }
+*/
+
+static void FillHostDeviceInfo(ADeviceMap *map, const PaDeviceInfo *info, int deviceIndex, int isInput)
+{
+	wxString hostapiName = wxSafeConvertMB2WX(Pa_GetHostApiInfo(info->hostApi)->name);
+	wxString infoName = wxSafeConvertMB2WX(info->name);
+
+	map->deviceIndex = deviceIndex;
+	map->hostIndex = info->hostApi;
+	map->deviceString = infoName;
+	map->hostString = hostapiName;
+	map->numChannels = isInput ? info->maxInputChannels : info->maxOutputChannels;
+}
+
+static void AddSourcesFromStream(int deviceIndex, const PaDeviceInfo *info, std::vector<ADeviceMap> *maps, PaStream *stream)
+{
+#ifdef USE_PORTMIXER
+	int i;
+#endif
+	ADeviceMap map;
+
+	map.sourceIndex = -1;
+	map.totalSources = 0;
+	// Only inputs have sources, so we call FillHostDeviceInfo with a 1 to indicate this
+	FillHostDeviceInfo(&map, info, deviceIndex, 1);
+
+#ifdef USE_PORTMIXER
+	PxMixer *portMixer = Px_OpenMixer(stream, 0);
+	if (!portMixer) {
+		maps->push_back(map);
+		return;
+	}
+
+	//if there is only one source, we don't need to concatenate the source
+	//or enumerate, because it is something meaningless like 'master'
+	//(as opposed to 'mic in' or 'line in'), and the user doesn't have any choice.
+	//note that some devices have no input sources at all but are still valid.
+	//the behavior we do is the same for 0 and 1 source cases.
+	map.totalSources = Px_GetNumInputSources(portMixer);
+#endif
+
+	if (map.totalSources <= 1) {
+		map.sourceIndex = 0;
+		maps->push_back(map);
+	}
+#ifdef USE_PORTMIXER
+	else {
+		//open up a stream with the device so portmixer can get the info out of it.
+		for (i = 0; i < map.totalSources; i++) {
+			map.sourceIndex = i;
+			map.sourceString = wxString(wxSafeConvertMB2WX(Px_GetInputSourceName(portMixer, i)));
+			maps->push_back(map);
+		}
+	}
+	Px_CloseMixer(portMixer);
+#endif
+}
+
+static bool IsInputDeviceAMapperDevice(const PaDeviceInfo *info)
+{
+	// For Windows only, portaudio returns the default mapper object
+	// as the first index after a NEW hostApi index is detected (true for MME and DS)
+	// this is a bit of a hack, but there's no other way to find out which device is a mapper,
+	// I've looked at string comparisons, but if the system is in a different language this breaks.
+#ifdef __WXMSW__
+	static int lastHostApiTypeId = -1;
+	int hostApiTypeId = Pa_GetHostApiInfo(info->hostApi)->type;
+	if (hostApiTypeId != lastHostApiTypeId &&
+		(hostApiTypeId == paMME || hostApiTypeId == paDirectSound)) {
+		lastHostApiTypeId = hostApiTypeId;
+		return true;
+	}
+#endif
+
+	return false;
+}
+
+static void AddSources(int deviceIndex, int rate, std::vector<ADeviceMap> *maps, int isInput)
+{
+	int error = 0;
+	ADeviceMap map;
+	const PaDeviceInfo *info = Pa_GetDeviceInfo(deviceIndex);
+
+	// This tries to open the device with the samplerate worked out above, which
+	// will be the highest available for play and record on the device, or
+	// 44.1kHz if the info cannot be fetched.
+
+	PaStream *stream = NULL;
+
+	PaStreamParameters parameters;
+
+	parameters.device = deviceIndex;
+	parameters.sampleFormat = paFloat32;
+	parameters.hostApiSpecificStreamInfo = NULL;
+	parameters.channelCount = 1;
+
+	// If the device is for input, open a stream so we can use portmixer to query
+	// the number of inputs.  We skip this for outputs because there are no 'sources'
+	// and some platforms (e.g. XP) have the same device for input and output, (while
+	// Vista/Win7 seperate these into two devices with the same names (but different
+	// portaudio indecies)
+	// Also, for mapper devices we don't want to keep any sources, so check for it here
+	if (isInput && !IsInputDeviceAMapperDevice(info)) {
+		if (info)
+			parameters.suggestedLatency = info->defaultLowInputLatency;
+		else
+			parameters.suggestedLatency = 10.0;
+
+		error = Pa_OpenStream(&stream,
+			&parameters,
+			NULL,
+			rate, paFramesPerBufferUnspecified,
+			paClipOff | paDitherOff,
+			DummyPaStreamCallback, NULL);
+	}
+
+	if (stream && !error) {
+		AddSourcesFromStream(deviceIndex, info, maps, stream);
+		Pa_CloseStream(stream);
+	}
+	else {
+		map.sourceIndex = -1;
+		map.totalSources = 0;
+		FillHostDeviceInfo(&map, info, deviceIndex, isInput);
+		maps->push_back(map);
+	}
+
+	if (error) {
+		wxLogDebug(wxT("PortAudio stream error creating device list: ") +
+			map.hostString + wxT(":") + map.deviceString + wxT(": ") +
+			wxString(wxSafeConvertMB2WX(Pa_GetErrorText((PaError)error))));
+	}
+}
 
 
 /// Gets a NEW list of devices by terminating and restarting portaudio
 /// Assumes that ADevicesManager is only used on the main thread.
 void ADevicesManager::Rescan()
 {
-	ADeviceMap* defaultInDev = NULL;
-	ADeviceMap* defaultOutDev = NULL;
-
 	//specify desired sample rates
-	std::vector<double> defaultSRates;
-	defaultSRates.push_back(8000); 
-	defaultSRates.push_back(11025);
-	defaultSRates.push_back(16000);
-	defaultSRates.push_back(22050);
-	defaultSRates.push_back(32000);
-	defaultSRates.push_back(44100);
-	defaultSRates.push_back(48000);
-	defaultSRates.push_back(88200);
-	defaultSRates.push_back(96000);
-	defaultSRates.push_back(176400);
-	defaultSRates.push_back(192000);
+	std::vector<double> supportedSRates;
+	supportedSRates.push_back(8000); 
+	supportedSRates.push_back(11025);
+	supportedSRates.push_back(16000);
+	supportedSRates.push_back(22050);
+	supportedSRates.push_back(32000);
+	supportedSRates.push_back(44100);
+	supportedSRates.push_back(48000);
+	supportedSRates.push_back(88200);
+	supportedSRates.push_back(96000);
+	supportedSRates.push_back(176400);
+	supportedSRates.push_back(192000);
 
 	// get rid of the previous scan info
 	this->mInputADeviceMaps.clear();
 	this->mOutputADeviceMaps.clear();
-	this->mHostAPIMaps.clear();
 
 	Pa_Initialize();
-	// FIXME: TRAP_ERR PaErrorCode not handled in ReScan()
     
-	// Populate hosts list
 	int nHosts = Pa_GetHostApiCount();
-
-	for (int i = 0; i < nHosts; ++i)
-	{
-		AHostAPIMap mp;
-		mp.name = wxSafeConvertMB2WX(Pa_GetHostApiInfo(i)->name);
-		mp.deviceCount = Pa_GetHostApiInfo(i)->deviceCount;
-		mp.defaultInIdx = Pa_GetHostApiInfo(i)->defaultInputDevice;
-		mp.defaultOutIdx = Pa_GetHostApiInfo(i)->defaultOutputDevice;
-		mHostAPIMaps.push_back(mp);
-	}
-	
 	int nDevices = Pa_GetDeviceCount();
 
     //The heirarchy for devices is Host/device/source.
@@ -281,39 +420,56 @@ void ADevicesManager::Rescan()
         const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
         if (info->maxOutputChannels > 0)
         {
-            AddSources(i, info->defaultSampleRate, &mOutputADeviceMaps, 0, defaultSRates);
+            //AddSources(i, info->defaultSampleRate, &mOutputADeviceMaps, 0, supportedSRates);
+			AddSources(i, info->defaultSampleRate, &mOutputADeviceMaps, 0);
         }
 
         if (info->maxInputChannels > 0)
         {
-            AddSources(i, info->defaultSampleRate, &mInputADeviceMaps, 1, defaultSRates);
+            //AddSources(i, info->defaultSampleRate, &mInputADeviceMaps, 1, supportedSRates);
+			AddSources(i, info->defaultSampleRate, &mInputADeviceMaps, 1);
         }
     }
-
-	if (nDevices > 0)
-	{
-		defaultInDev = GetDefaultDevice(0, 1);
-		defaultOutDev = GetDefaultDevice(0, 0);
-	}
-
-	Pa_Terminate();
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//check if devices are already available in the system prefs
-	//if no device is present or if the preferred one is not available, reset to default in/out devices
-	
-	//check input device 
-	wxString curHostString = gPrefs->Read(wxT("/AudioIO/InputHostName"), wxT(""));
-	wxString curDevString = gPrefs->Read(wxT("/AudioIO/InputDevName"), wxT(""));
-	if (curHostString.IsEmpty() || curDevString.IsEmpty() )
-	{
-		if( defaultInDev )
-			gPrefs->Write(wxT("/AudioIO/InputHostName"), defaultInDev->hostString);
-		
-		if( defaultOutDev )
-			gPrefs->Write(wxT("/AudioIO/InputDevName"), defaultInDev->deviceString);
+	//if no device is present or if any of the preferred one is not available, reset to default in/out devices
 
-		gPrefs->Write(wxT("/AudioIO/InputDevSRate"), 48000);
+	//check API Host 
+	wxString curHostString = gPrefs->Read(wxT("/AudioIO/AudioHostName"), wxT(""));
+	if (curHostString.IsEmpty())
+	{
+		PaHostApiIndex dHindex = Pa_GetDefaultHostApi();
+		const PaHostApiInfo* dHInfo = Pa_GetHostApiInfo(dHindex);
+		ADeviceMap* defaultInDev = GetDefaultDevice(dHindex, 1);
+		ADeviceMap* defaultOutDev = GetDefaultDevice(dHindex, 0);
+
+		//if no host name is in the preferences, then it means that this is the first time the application is started
+		// or that something really wrong has occurred.
+		//in any case, try to use defaults annd exit.
+		gPrefs->Write(wxT("/AudioIO/AudioHostName"), defaultInDev->hostString);
+		gPrefs->Write(wxT("/AudioIO/InputDevName"), defaultInDev->deviceString);
+		gPrefs->Write(wxT("/AudioIO/InputDevChans"), defaultInDev->numChannels);
+		gPrefs->Write(wxT("/AudioIO/OutputDevName"), defaultOutDev->deviceString);
+		gPrefs->Write(wxT("/AudioIO/OutputDevChans"), defaultOutDev->numChannels);
+		gPrefs->Write(wxT("/AudioIO/AudioSRate"), defaultInDev->defaultRate);
+
+		Pa_Terminate();
+		m_inited = true;
+		return;
+	}
+
+	///////////////////////////////////
+	//check input device 
+	bool found = false;
+	wxString inDevString = gPrefs->Read(wxT("/AudioIO/InputDevName"), wxT(""));
+	ADeviceMap* currentHostDefaultInDev = GetDefaultDevice(curHostString, 1);
+
+	if ( inDevString.IsEmpty() && currentHostDefaultInDev )
+	{
+		gPrefs->Write(wxT("/AudioIO/InputDevName"), currentHostDefaultInDev->deviceString);
+		gPrefs->Write(wxT("/AudioIO/InputDevChans"), currentHostDefaultInDev->numChannels);
+		gPrefs->Write(wxT("/AudioIO/AudioSRate"), currentHostDefaultInDev->defaultRate);
 	}
 	else
 	{
@@ -321,35 +477,29 @@ void ADevicesManager::Rescan()
 		for (size_t i = 0; i < mInputADeviceMaps.size(); i++)
 		{
 			ADeviceMap dev = mInputADeviceMaps[i];
-			if ((dev.hostString == curHostString) && (dev.deviceString == curDevString))
+			if ((dev.hostString == curHostString) && (dev.deviceString == inDevString))
 			{
 				found = true;
 			}
 		}
 
-		if( found == false )
+		if( (found == false) && (currentHostDefaultInDev) )
 		{
-			if (defaultInDev)
-			{
-				gPrefs->Write(wxT("/AudioIO/InputDevIdx"), defaultInDev->deviceIndex);
-				gPrefs->Write(wxT("/AudioIO/InputHostName"), defaultInDev->hostString);
-				gPrefs->Write(wxT("/AudioIO/InputDevName"), defaultInDev->deviceString);
-				gPrefs->Write(wxT("/AudioIO/InputDevSRate"), 48000);
-			}
+			gPrefs->Write(wxT("/AudioIO/InputDevName"), currentHostDefaultInDev->deviceString);
+			gPrefs->Write(wxT("/AudioIO/AudioSRate"), currentHostDefaultInDev->defaultRate);
 		}
 	}
 
+
+	///////////////////////////////////
 	//check output device 
-	curHostString = gPrefs->Read(wxT("/AudioIO/OutputHostName"), wxT(""));
-	curDevString = gPrefs->Read(wxT("/AudioIO/OutputDevName"), wxT(""));
-	if (curHostString.IsEmpty() || curDevString.IsEmpty())
+	wxString outDevString = gPrefs->Read(wxT("/AudioIO/OutputDevName"), wxT(""));
+	ADeviceMap* currentHostDefaultOutDev = GetDefaultDevice(curHostString, 0);
+
+	if (outDevString.IsEmpty() && currentHostDefaultOutDev )
 	{
-		if (defaultOutDev)
-		{
-			gPrefs->Write(wxT("/AudioIO/OutputHostName"), defaultOutDev->hostString);
-			gPrefs->Write(wxT("/AudioIO/OutputDevName"), defaultOutDev->deviceString);
-			gPrefs->Write(wxT("/AudioIO/OutputDevSRate"), 48000);
-		}
+		gPrefs->Write(wxT("/AudioIO/OutputDevName"), currentHostDefaultOutDev->deviceString);
+		gPrefs->Write(wxT("/AudioIO/OutputDevChans"), currentHostDefaultOutDev->numChannels);
 	}
 	else
 	{
@@ -357,24 +507,21 @@ void ADevicesManager::Rescan()
 		for (size_t i = 0; i < mOutputADeviceMaps.size(); i++)
 		{
 			ADeviceMap dev = mOutputADeviceMaps[i];
-			if ((dev.hostString == curHostString) && (dev.deviceString == curDevString))
+			if ((dev.hostString == curHostString) && (dev.deviceString == outDevString))
 			{
 				found = true;
 			}
 		}
 
-		if (found == false)
+		if ( (found == false) && (currentHostDefaultOutDev) )
 		{
-			if (defaultOutDev)
-			{
-				gPrefs->Write(wxT("/AudioIO/OutputDevIdx"), defaultOutDev->deviceIndex);
-				gPrefs->Write(wxT("/AudioIO/OutputHostName"), defaultOutDev->hostString);
-				gPrefs->Write(wxT("/AudioIO/OutputDevName"), defaultOutDev->deviceString);
-				gPrefs->Write(wxT("/AudioIO/OutputDevSRate"), 48000);
-			}
+			gPrefs->Write(wxT("/AudioIO/OutputDevName"), currentHostDefaultOutDev->deviceString);
+			gPrefs->Write(wxT("/AudioIO/OutputDevChans"), currentHostDefaultOutDev->numChannels);
+
 		}
 	}
 
+	Pa_Terminate(); 
 	m_inited = true;
 }
 

@@ -1,36 +1,330 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxFrame" name="AVPTesterFrame">
-		<title>Devices calibration prototype</title>
+		<title>ADC Performance Test Tool</title>
+		<centered>1</centered>
 		<icon>UI\favicon.ico</icon>
-		<style>wxCAPTION|wxCLOSE_BOX|wxMAXIMIZE_BOX|wxMINIMIZE_BOX</style>
-		<object class="wxPanel" name="ID_PANEL_MAIN_UI" variable="PanelMainUI" member="yes">
-			<fg>#000000</fg>
-			<bg>#DCDCDC</bg>
-			<object class="wxBoxSizer" variable="BoxSizerMain" member="yes">
-				<orient>wxVERTICAL</orient>
+		<id_arg>0</id_arg>
+		<style>wxCAPTION|wxCLOSE_BOX</style>
+		<object class="wxBoxSizer" variable="BoxSizerFrame" member="no">
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_MAIN_UI" variable="PanelMainUI" member="yes">
+					<fg>#000000</fg>
+					<bg>#D2D2D2</bg>
+					<object class="wxBoxSizer" variable="BoxSizerMainUI" member="yes">
+						<orient>wxVERTICAL</orient>
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerLogo" member="no">
+								<object class="sizeritem">
+									<object class="wxStaticBitmap" name="ID_STATICBITMAP_FADGI" variable="StaticBitmapFADGI" member="yes">
+										<bitmap>UI\fadgi.bmp</bitmap>
+										<style>wxNO_BORDER</style>
+									</object>
+									<flag>wxBOTTOM|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+						</object>
+						<object class="sizeritem">
+							<object class="wxPanel" name="ID_PANEL_LIST" subclass="RimPanel" variable="PanelList" member="yes">
+								<object class="wxBoxSizer" variable="BoxSizerLists" member="no">
+									<object class="sizeritem">
+										<object class="wxPanel" name="ID_PANEL_TST_LST" subclass="RimPanel" variable="PanelTestList" member="yes">
+											<object class="wxBoxSizer" variable="BoxSizerTestList" member="no">
+												<orient>wxVERTICAL</orient>
+												<object class="sizeritem">
+													<object class="wxStaticText" name="ID_STATICTEXT_PROC_TTL" variable="StaticTextProcTtl" member="yes">
+														<label>  Tests</label>
+														<size>-1,21</size>
+														<fg>#FFFFFF</fg>
+														<bg>#4EB7DF</bg>
+														<font>
+															<size>11</size>
+															<style>normal</style>
+															<weight>bold</weight>
+															<underlined>0</underlined>
+															<family>swiss</family>
+															<face>Arial Narrow</face>
+														</font>
+													</object>
+													<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+													<border>1</border>
+												</object>
+												<object class="sizeritem">
+													<object class="wxListView" name="ID_LISTVIEW_TESTS" variable="ListViewTests" member="yes">
+														<size>300,200</size>
+														<bg>#C8C8C8</bg>
+														<font>
+															<size>10</size>
+															<style>normal</style>
+															<weight>normal</weight>
+															<underlined>0</underlined>
+															<family>swiss</family>
+															<face>Arial Narrow</face>
+														</font>
+														<style>wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxLC_NO_SORT_HEADER|wxNO_BORDER</style>
+														<handler function="OnListViewTestsItemSelect" entry="EVT_LIST_ITEM_SELECTED" />
+														<handler function="OnListViewTestsItemActivated" entry="EVT_LIST_ITEM_ACTIVATED" />
+														<handler function="OnListViewTestsItemRClick" entry="EVT_LIST_ITEM_RIGHT_CLICK" />
+													</object>
+													<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+													<border>1</border>
+												</object>
+												<object class="sizeritem">
+													<object class="wxStaticText" name="ID_STATICTEXT_LINE1" variable="StaticTextLine1" member="yes">
+														<label></label>
+														<size>-1,2</size>
+														<fg>#FFFFFF</fg>
+														<bg>#4EB7DF</bg>
+														<font>
+															<size>11</size>
+															<style>normal</style>
+															<weight>bold</weight>
+															<underlined>0</underlined>
+															<family>swiss</family>
+															<face>Arial Narrow</face>
+														</font>
+													</object>
+													<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+												</object>
+												<object class="sizeritem">
+													<object class="wxPanel" name="ID_PANEL_CTRL_BTNS" variable="PanelCtrlBtns" member="yes">
+														<bg>#BEBEBE</bg>
+														<object class="wxBoxSizer" variable="BoxSizerCtrlBtns" member="no">
+															<object class="spacer">
+																<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																<size>1,-1</size>
+															</object>
+															<object class="spacer">
+																<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																<option>1</option>
+															</object>
+															<object class="sizeritem">
+																<object class="wxButton" name="ID_BUTTON_START_TESTS" subclass="GButton" variable="ButtonStartTests" member="yes">
+																	<label>Start tests</label>
+																	<size>300,20</size>
+																	<fg>#FFFFFF</fg>
+																	<handler function="OnButtonStartTestsClick" entry="EVT_BUTTON" />
+																</object>
+																<flag>wxTOP|wxBOTTOM|wxLEFT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																<border>2</border>
+															</object>
+															<object class="spacer">
+																<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																<option>1</option>
+															</object>
+															<object class="spacer">
+																<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																<size>1,-1</size>
+															</object>
+														</object>
+													</object>
+													<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+													<border>1</border>
+													<option>1</option>
+												</object>
+											</object>
+										</object>
+										<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+										<border>4</border>
+									</object>
+									<object class="sizeritem">
+										<object class="wxPanel" name="ID_PANEL_PRMS_LST" subclass="RimPanel" variable="PanelParamsLst" member="yes">
+											<object class="wxBoxSizer" variable="BoxSizerTestParams" member="no">
+												<orient>wxVERTICAL</orient>
+												<object class="sizeritem">
+													<object class="wxStaticText" name="ID_STATICTEXT_PARAMS_TTL" variable="StaticTextParamsTtl" member="yes">
+														<label>  Parameters</label>
+														<size>-1,21</size>
+														<fg>#FFFFFF</fg>
+														<bg>#4EB7DF</bg>
+														<font>
+															<size>11</size>
+															<style>normal</style>
+															<weight>bold</weight>
+															<underlined>0</underlined>
+															<family>swiss</family>
+															<face>Arial Narrow</face>
+														</font>
+													</object>
+													<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+													<border>1</border>
+												</object>
+												<object class="sizeritem">
+													<object class="wxListView" name="ID_LISTVIEW_PARAMETERS" variable="ListViewParameters" member="yes">
+														<size>275,200</size>
+														<bg>#C8C8C8</bg>
+														<font>
+															<size>10</size>
+															<style>normal</style>
+															<weight>normal</weight>
+															<underlined>0</underlined>
+															<family>swiss</family>
+															<face>Arial Narrow</face>
+														</font>
+														<style>wxLC_REPORT|wxLC_NO_HEADER|wxNO_BORDER</style>
+														<handler function="OnListViewParametersItemSelect" entry="EVT_LIST_ITEM_SELECTED" />
+														<handler function="OnListViewParametersItemActivated" entry="EVT_LIST_ITEM_ACTIVATED" />
+													</object>
+													<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+													<border>1</border>
+												</object>
+												<object class="sizeritem">
+													<object class="wxStaticText" name="ID_STATICTEXT_LINE2" variable="StaticTextLine2" member="yes">
+														<label></label>
+														<size>-1,2</size>
+														<fg>#FFFFFF</fg>
+														<bg>#4EB7DF</bg>
+														<font>
+															<size>11</size>
+															<style>normal</style>
+															<weight>bold</weight>
+															<underlined>0</underlined>
+															<family>swiss</family>
+															<face>Arial Narrow</face>
+														</font>
+													</object>
+													<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+												</object>
+												<object class="sizeritem">
+													<object class="wxPanel" name="ID_PANEL_PARAMS_BTNS" variable="PanelParamsBtns" member="yes">
+														<bg>#BEBEBE</bg>
+														<object class="wxBoxSizer" variable="BoxSizerParamsBtns" member="no" />
+													</object>
+													<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+													<border>1</border>
+													<option>1</option>
+												</object>
+											</object>
+										</object>
+										<flag>wxTOP|wxBOTTOM|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+										<border>4</border>
+									</object>
+								</object>
+							</object>
+							<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>5</border>
+						</object>
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<size>-1,5</size>
+						</object>
+						<object class="sizeritem">
+							<object class="wxPanel" name="ID_PANEL_BOTTOM" subclass="RimPanel" variable="PanelBottom" member="yes">
+								<bg>#D2D2D2</bg>
+								<object class="wxBoxSizer" variable="BoxSizerBottom" member="no">
+									<orient>wxVERTICAL</orient>
+									<object class="sizeritem">
+										<object class="wxPanel" name="ID_PANEL_LOG" subclass="RimPanel" variable="PanelLog" member="yes">
+											<bg>#D2D2D2</bg>
+											<object class="wxBoxSizer" variable="BoxSizerLog" member="no">
+												<orient>wxVERTICAL</orient>
+												<object class="sizeritem">
+													<object class="wxStaticText" name="ID_STATICTEXT_TH_LOG" variable="StaticTextThLog" member="yes">
+														<label>  Process log</label>
+														<size>-1,21</size>
+														<fg>#FFFFFF</fg>
+														<bg>#4EB7DF</bg>
+														<font>
+															<size>11</size>
+															<style>normal</style>
+															<weight>bold</weight>
+															<underlined>0</underlined>
+															<family>swiss</family>
+															<face>Arial Narrow</face>
+														</font>
+													</object>
+													<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+													<border>1</border>
+												</object>
+												<object class="sizeritem">
+													<object class="wxTextCtrl" name="ID_TEXTCTRL_LOG" variable="TextCtrlLog" member="yes">
+														<size>-1,100</size>
+														<bg>#C8C8C8</bg>
+														<font>
+															<size>10</size>
+															<style>normal</style>
+															<weight>normal</weight>
+															<underlined>0</underlined>
+															<family>swiss</family>
+															<face>Arial Narrow</face>
+														</font>
+														<style>wxTE_MULTILINE|wxTE_READONLY|wxNO_BORDER</style>
+													</object>
+													<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+													<border>1</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxStaticText" name="ID_STATICTEXT_LINE3" variable="StaticTextLine3" member="yes">
+														<label></label>
+														<size>-1,2</size>
+														<fg>#FFFFFF</fg>
+														<bg>#4EB7DF</bg>
+														<font>
+															<size>11</size>
+															<style>normal</style>
+															<weight>bold</weight>
+															<underlined>0</underlined>
+															<family>swiss</family>
+															<face>Arial Narrow</face>
+														</font>
+													</object>
+													<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+												</object>
+											</object>
+										</object>
+										<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+										<border>4</border>
+									</object>
+								</object>
+							</object>
+							<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>5</border>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<option>1</option>
 			</object>
 		</object>
 		<object class="wxMenuBar" variable="MenuBarMain" member="no">
-			<object class="wxMenu" variable="Menu1" member="no">
+			<object class="wxMenu" variable="MenuFile" member="no">
 				<label>&amp;File</label>
-				<object class="wxMenuItem" name="idMenuQuit" variable="MenuItem1" member="no">
+				<object class="wxMenuItem" name="ID_MENUITEM_FOPEN" variable="MenuItemFOpen" member="yes">
+					<label>&amp;Open File</label>
+					<accel>Ctrl-o</accel>
+					<handler function="OnMenuItemFOpenSelected" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_MENUITEM_FSAVE" variable="MenuItemFSave" member="yes">
+					<label>&amp;Save File</label>
+					<accel>Ctrl-s</accel>
+					<handler function="OnMenuItemFSaveSelected" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="idMenuQuit" variable="MenuItemQuit" member="no">
 					<label>Quit</label>
 					<accel>Alt-F4</accel>
 					<help>Quit the application</help>
 					<handler function="OnQuit" entry="EVT_MENU" />
 				</object>
 			</object>
-			<object class="wxMenu" variable="Menu3" member="yes">
+			<object class="wxMenu" variable="MenuSettings" member="yes">
 				<label>&amp;Settings</label>
 				<object class="wxMenuItem" name="ID_MENUITEM_ADEVICES" variable="MenuItemDevices" member="yes">
 					<label>&amp;Devices</label>
+					<accel>Ctrl-d</accel>
 					<handler function="OnMenuItemDevicesSelected" entry="EVT_MENU" />
 				</object>
 			</object>
 			<object class="wxMenu" variable="Menu2" member="no">
 				<label>Help</label>
-				<object class="wxMenuItem" name="idMenuAbout" variable="MenuItem2" member="no">
+				<object class="wxMenuItem" name="ID_MENUITEM_OPEN_GUIDE" variable="MenuItemOpenManual" member="yes">
+					<label>Manual</label>
+					<handler function="OnMenuItemOpenManualSelected" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="idMenuAbout" variable="MenuItemInfo" member="no">
 					<label>About</label>
 					<accel>F1</accel>
 					<help>Show info about this application</help>
@@ -38,7 +332,7 @@
 				</object>
 			</object>
 		</object>
-		<object class="wxStatusBar" name="ID_STATUSBAR1" variable="StatusBar1" member="yes">
+		<object class="wxStatusBar" name="ID_STATUSBAR_MAIN" variable="StatusBarMain" member="yes">
 			<fields>1</fields>
 			<widths>-1</widths>
 			<styles>wxSB_NORMAL</styles>

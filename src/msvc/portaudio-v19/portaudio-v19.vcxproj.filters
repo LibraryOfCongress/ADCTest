@@ -19,14 +19,8 @@
     <Filter Include="Source Files\hostapi\dsound">
       <UniqueIdentifier>{c619afcf-fc0e-4719-9e37-911112afd62b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\hostapi\asio">
-      <UniqueIdentifier>{2e862f84-fad5-49a4-a2cb-118e9f25bcd9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\hostapi\wasapi">
       <UniqueIdentifier>{3a2787ea-5b2a-4df4-b2fe-634d927c4ac1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\hostapi\jack">
-      <UniqueIdentifier>{4e7c02ff-7a17-4205-a517-e9955f2ceed3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\os">
       <UniqueIdentifier>{a07c4ece-33a3-42d9-b5e0-fac694f72301}</UniqueIdentifier>
@@ -54,9 +48,6 @@
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_dither.c">
       <Filter>Source Files\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_dynload.c">
-      <Filter>Source Files\common</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_front.c">
       <Filter>Source Files\common</Filter>
     </ClCompile>
@@ -75,29 +66,14 @@
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\wmme\pa_win_wmme.c">
       <Filter>Source Files\hostapi\wmme</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c">
-      <Filter>Source Files\hostapi\wdmks</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\dsound\pa_win_ds.c">
       <Filter>Source Files\hostapi\dsound</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\dsound\pa_win_ds_dynlink.c">
       <Filter>Source Files\hostapi\dsound</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\asio\iasiothiscallresolver.cpp">
-      <Filter>Source Files\hostapi\asio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\asio\pa_asio.cpp">
-      <Filter>Source Files\hostapi\asio</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\wasapi\pa_win_wasapi.c">
       <Filter>Source Files\hostapi\wasapi</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\jack\pa_jack.c">
-      <Filter>Source Files\hostapi\jack</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\jack\pa_jack_dynload.c">
-      <Filter>Source Files\hostapi\jack</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\os\win\pa_win_coinitialize.c">
       <Filter>Source Files\os</Filter>
@@ -132,9 +108,6 @@
       <Filter>Source Files\common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\common\pa_dither.h">
-      <Filter>Source Files\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\common\pa_dynload.h">
       <Filter>Source Files\common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\common\pa_endianness.h">
@@ -189,12 +162,6 @@
   <ItemGroup>
     <CustomBuild Include="..\..\..\lib-src\portaudio-v19\src\hostapi\dsound\pa_win_ds_dynlink.h">
       <Filter>Source Files\hostapi\dsound</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\lib-src\portaudio-v19\src\hostapi\asio\iasiothiscallresolver.h">
-      <Filter>Source Files\hostapi\asio</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\lib-src\portaudio-v19\src\hostapi\jack\pa_jack_dynload.h">
-      <Filter>Source Files\hostapi\jack</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

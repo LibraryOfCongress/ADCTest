@@ -39,9 +39,6 @@ void InitPreferences()
 
 	wxConfigBase::Set(gPrefs);
 
-	// We introduced new file-based preferences in version 1.3.1; the
-	// first time this version of Audacity is run we try to migrate
-	// old preferences.
 	bool newPrefsInitialized = false;
 	gPrefs->Read(wxT("/NewPrefsInitialized"), &newPrefsInitialized, false);
 	int versionNumber = 0;
@@ -53,15 +50,11 @@ void InitPreferences()
 		gPrefs->Write(wxT("/NewPrefsInitialized"), true);
         gPrefs->Write(wxT("/Version"), versionNumber);
 		gPrefs->Write(wxT("/Directories/DataDumpDir"), exePath );
-		gPrefs->Write(wxT("/AudioIO/InputDevIdx"), -1);
-		gPrefs->Write(wxT("/AudioIO/InputHostName"), wxT(""));
+		gPrefs->Write(wxT("/AudioIO/AudioSRate"), 48000.0);
+		gPrefs->Write(wxT("/AudioIO/AudioHostName"), wxT(""));
 		gPrefs->Write(wxT("/AudioIO/InputDevName"), wxT("") );
-		gPrefs->Write(wxT("/AudioIO/InputDevSRate"), 48000.0 );
 		gPrefs->Write(wxT("/AudioIO/InputDevChans"), 1 );
-		gPrefs->Write(wxT("/AudioIO/OutputDevIdx"), -1 );
-		gPrefs->Write(wxT("/AudioIO/OutputHostName"), wxT(""));
-		gPrefs->Write(wxT("/AudioIO/OutputDevName"), wxT("") );
-		gPrefs->Write(wxT("/AudioIO/OutputDevSRate"), 48000.0 );
+		gPrefs->Write(wxT("/AudioIO/OutputDevName"), wxT(""));
 		gPrefs->Write(wxT("/AudioIO/OutputDevChans"), 1 );
 		gPrefs->Write(wxT("/Calibration/OutputStreamGain"), -6.0);
 		gPrefs->Write(wxT("/Calibration/RTALength"), 4096);

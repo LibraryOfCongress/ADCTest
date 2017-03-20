@@ -29,15 +29,16 @@ class AudioDevicesPanel: public wxPanel
 
 		void PopulateAll();
 		void PopulateHostsChoices();
-		void PopulateInDevicesChoices();
-		void PopulateOutDevicesChoices();
-		void ShowInDevChannels();
-		void ShowOutDevChannels();
+		void PopulateDevicesChoices();
+
 		void UpdateSRateChoice();
 
 		void EnableSelectionTools(bool enabled);
 
 		void BuildTestUI();
+
+		void StartCalibration();
+		void StopCalibration();
 
 		//(*Declarations(AudioDevicesPanel)
 		RimPanel* PanelPBInR;
@@ -157,7 +158,6 @@ class AudioDevicesPanel: public wxPanel
 		static const long ID_VUMETER_OUT;
 
 	private:
-
 		//(*Handlers(AudioDevicesPanel)
 		void OnChoiceInputDeviceSelect(wxCommandEvent& event);
 		void OnChoiceOutputDeviceSelect(wxCommandEvent& event);
@@ -176,7 +176,12 @@ class AudioDevicesPanel: public wxPanel
 		void OnSpinFFTLength(awohSpinEvent& event);
 		void OnSpinFFTReference(awohSpinEvent& event);
 
+		void OnChoice(wxCommandEvent& event);
+
 		DECLARE_EVENT_TABLE()
+
+		void HandleInputDevSelection(int selIdx);
+		void HandleOutputDevSelection(int selIdx);
 
 		void UpdateOutputGain( bool write = false);
 		void ConfigurePlot(size_t RTALength, double sampleRate);

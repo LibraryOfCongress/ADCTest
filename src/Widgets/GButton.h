@@ -64,6 +64,7 @@ class GButton: public wxPanel
 			        const wxString& click);
 
         void setFont(wxFont& font);
+		void SetLbText(wxString label);
         void enable( bool enabled );
         void setAsToggle( bool isToggle );
         void setBGColour( unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha=wxALPHA_OPAQUE );

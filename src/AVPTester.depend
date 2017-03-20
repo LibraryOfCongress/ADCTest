@@ -1,49 +1,17 @@
 # depslib dependency file v1.0
-1484247452 source:c:\users\chris\desktop\proj\awohlib\apps\avptester\avptesterapp.cpp
-	"AVPTesterApp.h"
-	"System/Prefs.h"
-	"Devices/AudioInput.h"
-	"AVPTesterMain.h"
-	<wx/image.h>
+1489247309 source:c:\users\chris\desktop\avpreserve\software\local\src\audiodevicesdialog.cpp
+	"AudioDevicesDialog.h"
+	<wx/intl.h>
+	<wx/string.h>
 
-1484160557 c:\users\chris\desktop\proj\awohlib\apps\avptester\avptesterapp.h
-	<wx/app.h>
+1489247264 c:\users\chris\desktop\avpreserve\software\local\src\audiodevicesdialog.h
+	<wx/sizer.h>
+	"AudioDevicesPanel.h"
+	<wx/dialog.h>
 
-1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\app.h
-	"wx/event.h"
-	"wx/eventfilter.h"
-	"wx/build.h"
-	"wx/cmdargs.h"
-	"wx/init.h"
-	"wx/intl.h"
-	"wx/log.h"
-	"wx/unix/app.h"
-	"wx/msw/app.h"
-	"wx/motif/app.h"
-	"wx/dfb/app.h"
-	"wx/gtk/app.h"
-	"wx/gtk1/app.h"
-	"wx/x11/app.h"
-	"wx/osx/app.h"
-	"wx/cocoa/app.h"
-	"wx/os2/app.h"
-	"wx/univ/theme.h"
-
-1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\event.h
+1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\sizer.h
 	"wx/defs.h"
-	"wx/cpp.h"
-	"wx/object.h"
-	"wx/clntdata.h"
-	"wx/gdicmn.h"
-	"wx/cursor.h"
-	"wx/mousestate.h"
-	"wx/dynarray.h"
-	"wx/thread.h"
-	"wx/tracker.h"
-	"wx/typeinfo.h"
-	"wx/any.h"
-	"wx/meta/convertible.h"
-	"wx/meta/removeref.h"
+	"wx/window.h"
 
 1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\defs.h
 	"wx/platform.h"
@@ -79,7 +47,7 @@
 
 1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\compiler.h
 
-1376575657 c:\mingw\wxwidgets-2.9.5\lib\gcc_lib\mswud\wx\setup.h
+1376575657 c:\mingw\wxwidgets-2.9.5\lib\gcc_lib\mswu\wx\setup.h
 
 1376575658 c:\mingw\wxwidgets-2.9.5\include\wx\msw\wince\libraries.h
 
@@ -171,6 +139,46 @@
 1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\msw\winundef.h
 
 1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\features.h
+
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\window.h
+	"wx/event.h"
+	"wx/list.h"
+	"wx/cursor.h"
+	"wx/font.h"
+	"wx/colour.h"
+	"wx/region.h"
+	"wx/utils.h"
+	"wx/intl.h"
+	"wx/validate.h"
+	"wx/palette.h"
+	"wx/accel.h"
+	"wx/access.h"
+	"wx/msw/window.h"
+	"wx/motif/window.h"
+	"wx/gtk/window.h"
+	"wx/gtk1/window.h"
+	"wx/x11/window.h"
+	"wx/dfb/window.h"
+	"wx/osx/window.h"
+	"wx/cocoa/window.h"
+	"wx/os2/window.h"
+	"wx/univ/window.h"
+
+1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\event.h
+	"wx/defs.h"
+	"wx/cpp.h"
+	"wx/object.h"
+	"wx/clntdata.h"
+	"wx/gdicmn.h"
+	"wx/cursor.h"
+	"wx/mousestate.h"
+	"wx/dynarray.h"
+	"wx/thread.h"
+	"wx/tracker.h"
+	"wx/typeinfo.h"
+	"wx/any.h"
+	"wx/meta/convertible.h"
+	"wx/meta/removeref.h"
 
 1376575646 c:\mingw\wxwidgets-2.9.5\include\wx\object.h
 	"wx/memory.h"
@@ -655,75 +663,6 @@
 
 1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\msw\microwin.h
 
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\window.h
-	"wx/event.h"
-	"wx/list.h"
-	"wx/cursor.h"
-	"wx/font.h"
-	"wx/colour.h"
-	"wx/region.h"
-	"wx/utils.h"
-	"wx/intl.h"
-	"wx/validate.h"
-	"wx/palette.h"
-	"wx/accel.h"
-	"wx/access.h"
-	"wx/msw/window.h"
-	"wx/motif/window.h"
-	"wx/gtk/window.h"
-	"wx/gtk1/window.h"
-	"wx/x11/window.h"
-	"wx/dfb/window.h"
-	"wx/osx/window.h"
-	"wx/cocoa/window.h"
-	"wx/os2/window.h"
-	"wx/univ/window.h"
-
-1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\font.h
-	"wx/defs.h"
-	"wx/fontenc.h"
-	"wx/gdiobj.h"
-	"wx/gdicmn.h"
-	"wx/msw/font.h"
-	"wx/motif/font.h"
-	"wx/gtk/font.h"
-	"wx/gtk1/font.h"
-	"wx/x11/font.h"
-	"wx/dfb/font.h"
-	"wx/osx/font.h"
-	"wx/cocoa/font.h"
-	"wx/os2/font.h"
-
-1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\msw\font.h
-	"wx/gdicmn.h"
-
-1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\font.h
-
-1376575660 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\font.h
-
-1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\font.h
-	"wx/hash.h"
-
-1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\hash.h
-	"wx/defs.h"
-	"wx/string.h"
-	"wx/object.h"
-
-1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\x11\font.h
-
-1376575663 c:\mingw\wxwidgets-2.9.5\include\wx\dfb\font.h
-	"wx/dfb/dfbptr.h"
-
-1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\dfb\dfbptr.h
-
-1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\font.h
-
-1376575654 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\font.h
-
-1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\font.h
-	"wx/gdiobj.h"
-	"wx/os2/private.h"
-
 1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\colour.h
 	"wx/defs.h"
 	"wx/gdiobj.h"
@@ -812,6 +751,205 @@
 1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\colour.h
 	"wx/object.h"
 
+1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\imagbmp.h
+	"wx/image.h"
+
+1376575646 c:\mingw\wxwidgets-2.9.5\include\wx\imagpng.h
+	"wx/defs.h"
+	"wx/image.h"
+	"wx/versioninfo.h"
+
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\versioninfo.h
+	"wx/string.h"
+
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\imaggif.h
+	"wx/image.h"
+
+1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\imagpcx.h
+	"wx/image.h"
+
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\imagjpeg.h
+	"wx/defs.h"
+	"wx/image.h"
+	"wx/versioninfo.h"
+
+1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\imagtga.h
+	"wx/image.h"
+
+1376575646 c:\mingw\wxwidgets-2.9.5\include\wx\imagtiff.h
+	"wx/defs.h"
+	"wx/image.h"
+	"wx/versioninfo.h"
+
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\imagpnm.h
+	"wx/image.h"
+
+1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\imagxpm.h
+	"wx/image.h"
+
+1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\imagiff.h
+	"wx/image.h"
+
+1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\x11\cursor.h
+	"wx/gdiobj.h"
+	"wx/gdicmn.h"
+	"wx/colour.h"
+
+1376575663 c:\mingw\wxwidgets-2.9.5\include\wx\dfb\cursor.h
+	"wx/gdiobj.h"
+	"wx/gdicmn.h"
+
+1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\cursor.h
+	"wx/bitmap.h"
+
+1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\bitmap.h
+	"wx/string.h"
+	"wx/gdicmn.h"
+	"wx/colour.h"
+	"wx/image.h"
+	"wx/variant.h"
+	"wx/msw/bitmap.h"
+	"wx/x11/bitmap.h"
+	"wx/gtk/bitmap.h"
+	"wx/gtk1/bitmap.h"
+	"wx/x11/bitmap.h"
+	"wx/dfb/bitmap.h"
+	"wx/osx/bitmap.h"
+	"wx/cocoa/bitmap.h"
+	"wx/os2/bitmap.h"
+	"wx/generic/mask.h"
+
+1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\bitmap.h
+	"wx/msw/gdiimage.h"
+	"wx/math.h"
+	"wx/palette.h"
+
+1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\x11\bitmap.h
+	"wx/defs.h"
+	"wx/object.h"
+	"wx/string.h"
+	"wx/palette.h"
+	"wx/gdiobj.h"
+
+1376575660 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\bitmap.h
+
+1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\bitmap.h
+	"wx/defs.h"
+	"wx/object.h"
+	"wx/string.h"
+	"wx/palette.h"
+	"wx/gdiobj.h"
+
+1376575663 c:\mingw\wxwidgets-2.9.5\include\wx\dfb\bitmap.h
+	"wx/dfb/dfbptr.h"
+
+1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\dfb\dfbptr.h
+
+1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\bitmap.h
+	"wx/palette.h"
+
+1376575654 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\bitmap.h
+	"wx/palette.h"
+
+1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\bitmap.h
+	"wx/os2/private.h"
+	"wx/os2/gdiimage.h"
+	"wx/gdicmn.h"
+	"wx/palette.h"
+
+1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\gdiimage.h
+	"wx/gdiobj.h"
+	"wx/gdicmn.h"
+	"wx/list.h"
+
+1376575652 c:\mingw\wxwidgets-2.9.5\include\wx\generic\mask.h
+
+1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\cursor.h
+	"wx/bitmap.h"
+
+1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\cursor.h
+	"wx/bitmap.h"
+
+1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\utils.h
+	"wx/object.h"
+	"wx/list.h"
+	"wx/filefn.h"
+	"wx/hashmap.h"
+	"wx/versioninfo.h"
+	"wx/meta/implicitconversion.h"
+	"wx/gdicmn.h"
+	"wx/mousestate.h"
+	"wx/longlong.h"
+	"wx/platinfo.h"
+	<direct.h>
+	<dirent.h>
+	<unistd.h>
+	<stdio.h>
+
+1376575665 c:\mingw\wxwidgets-2.9.5\include\wx\meta\implicitconversion.h
+	"wx/defs.h"
+	"wx/meta/if.h"
+
+1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\mousestate.h
+	"wx/gdicmn.h"
+	"wx/kbdstate.h"
+
+1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\kbdstate.h
+	"wx/defs.h"
+
+1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\platinfo.h
+	"wx/string.h"
+
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\tracker.h
+	"wx/defs.h"
+
+1376575665 c:\mingw\wxwidgets-2.9.5\include\wx\meta\convertible.h
+
+1376575665 c:\mingw\wxwidgets-2.9.5\include\wx\meta\removeref.h
+
+1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\font.h
+	"wx/defs.h"
+	"wx/fontenc.h"
+	"wx/gdiobj.h"
+	"wx/gdicmn.h"
+	"wx/msw/font.h"
+	"wx/motif/font.h"
+	"wx/gtk/font.h"
+	"wx/gtk1/font.h"
+	"wx/x11/font.h"
+	"wx/dfb/font.h"
+	"wx/osx/font.h"
+	"wx/cocoa/font.h"
+	"wx/os2/font.h"
+
+1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\msw\font.h
+	"wx/gdicmn.h"
+
+1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\font.h
+
+1376575660 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\font.h
+
+1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\font.h
+	"wx/hash.h"
+
+1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\hash.h
+	"wx/defs.h"
+	"wx/string.h"
+	"wx/object.h"
+
+1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\x11\font.h
+
+1376575663 c:\mingw\wxwidgets-2.9.5\include\wx\dfb\font.h
+	"wx/dfb/dfbptr.h"
+
+1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\font.h
+
+1376575654 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\font.h
+
+1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\font.h
+	"wx/gdiobj.h"
+	"wx/os2/private.h"
+
 1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\region.h
 	"wx/gdiobj.h"
 	"wx/gdicmn.h"
@@ -851,39 +989,6 @@
 1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\region.h
 	"wx/list.h"
 	"wx/os2/private.h"
-
-1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\utils.h
-	"wx/object.h"
-	"wx/list.h"
-	"wx/filefn.h"
-	"wx/hashmap.h"
-	"wx/versioninfo.h"
-	"wx/meta/implicitconversion.h"
-	"wx/gdicmn.h"
-	"wx/mousestate.h"
-	"wx/longlong.h"
-	"wx/platinfo.h"
-	<direct.h>
-	<dirent.h>
-	<unistd.h>
-	<stdio.h>
-
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\versioninfo.h
-	"wx/string.h"
-
-1376575665 c:\mingw\wxwidgets-2.9.5\include\wx\meta\implicitconversion.h
-	"wx/defs.h"
-	"wx/meta/if.h"
-
-1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\mousestate.h
-	"wx/gdicmn.h"
-	"wx/kbdstate.h"
-
-1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\kbdstate.h
-	"wx/defs.h"
-
-1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\platinfo.h
-	"wx/string.h"
 
 1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\validate.h
 	"wx/defs.h"
@@ -982,66 +1087,6 @@
 	"wx/string.h"
 	"wx/gdiobj.h"
 	"wx/bitmap.h"
-
-1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\bitmap.h
-	"wx/string.h"
-	"wx/gdicmn.h"
-	"wx/colour.h"
-	"wx/image.h"
-	"wx/variant.h"
-	"wx/msw/bitmap.h"
-	"wx/x11/bitmap.h"
-	"wx/gtk/bitmap.h"
-	"wx/gtk1/bitmap.h"
-	"wx/x11/bitmap.h"
-	"wx/dfb/bitmap.h"
-	"wx/osx/bitmap.h"
-	"wx/cocoa/bitmap.h"
-	"wx/os2/bitmap.h"
-	"wx/generic/mask.h"
-
-1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\bitmap.h
-	"wx/msw/gdiimage.h"
-	"wx/math.h"
-	"wx/palette.h"
-
-1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\x11\bitmap.h
-	"wx/defs.h"
-	"wx/object.h"
-	"wx/string.h"
-	"wx/palette.h"
-	"wx/gdiobj.h"
-
-1376575660 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\bitmap.h
-
-1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\bitmap.h
-	"wx/defs.h"
-	"wx/object.h"
-	"wx/string.h"
-	"wx/palette.h"
-	"wx/gdiobj.h"
-
-1376575663 c:\mingw\wxwidgets-2.9.5\include\wx\dfb\bitmap.h
-	"wx/dfb/dfbptr.h"
-
-1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\bitmap.h
-	"wx/palette.h"
-
-1376575654 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\bitmap.h
-	"wx/palette.h"
-
-1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\bitmap.h
-	"wx/os2/private.h"
-	"wx/os2/gdiimage.h"
-	"wx/gdicmn.h"
-	"wx/palette.h"
-
-1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\gdiimage.h
-	"wx/gdiobj.h"
-	"wx/gdicmn.h"
-	"wx/list.h"
-
-1376575652 c:\mingw\wxwidgets-2.9.5\include\wx\generic\mask.h
 
 1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\dfb\brush.h
 	"wx/defs.h"
@@ -1158,156 +1203,209 @@
 1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\univ\window.h
 	"wx/bitmap.h"
 
-1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\imagbmp.h
-	"wx/image.h"
+1488532408 c:\users\chris\desktop\avpreserve\software\local\src\audiodevicespanel.h
+	"Widgets\wxMathPlot\mathplot.h"
+	<wx/sizer.h>
+	<wx/stattext.h>
+	<wx/textctrl.h>
+	"Widgets/awohSpin.h"
+	<wx/panel.h>
+	<wx/choice.h>
+	<wx/button.h>
+	<wx/timer.h>
+	"Widgets/RimPanel.h"
+	"Widgets/GButton.h"
+	"Widgets/VuMeter.h"
 
-1376575646 c:\mingw\wxwidgets-2.9.5\include\wx\imagpng.h
+1469633059 c:\users\chris\desktop\avpreserve\software\local\src\widgets\wxmathplot\mathplot.h
+	<vector>
+	<wx/defs.h>
+	<wx/menu.h>
+	<wx/scrolwin.h>
+	<wx/event.h>
+	<wx/dynarray.h>
+	<wx/pen.h>
+	<wx/dcmemory.h>
+	<wx/string.h>
+	<wx/print.h>
+	<wx/image.h>
+	<deque>
+	<crtdbg.h>
+
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\menu.h
 	"wx/defs.h"
-	"wx/image.h"
-	"wx/versioninfo.h"
+	"wx/list.h"
+	"wx/window.h"
+	"wx/menuitem.h"
+	"wx/univ/menu.h"
+	"wx/msw/menu.h"
+	"wx/motif/menu.h"
+	"wx/gtk/menu.h"
+	"wx/gtk1/menu.h"
+	"wx/osx/menu.h"
+	"wx/cocoa/menu.h"
+	"wx/os2/menu.h"
 
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\imaggif.h
-	"wx/image.h"
-
-1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\imagpcx.h
-	"wx/image.h"
-
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\imagjpeg.h
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\menuitem.h
 	"wx/defs.h"
-	"wx/image.h"
-	"wx/versioninfo.h"
+	"wx/object.h"
+	"wx/univ/menuitem.h"
+	"wx/msw/menuitem.h"
+	"wx/motif/menuitem.h"
+	"wx/gtk/menuitem.h"
+	"wx/gtk1/menuitem.h"
+	"wx/osx/menuitem.h"
+	"wx/cocoa/menuitem.h"
+	"wx/os2/menuitem.h"
 
-1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\imagtga.h
-	"wx/image.h"
+1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\univ\menuitem.h
 
-1376575646 c:\mingw\wxwidgets-2.9.5\include\wx\imagtiff.h
+1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\menuitem.h
+	"wx/ownerdrw.h"
+	"wx/bitmap.h"
+
+1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\ownerdrw.h
 	"wx/defs.h"
-	"wx/image.h"
-	"wx/versioninfo.h"
-
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\imagpnm.h
-	"wx/image.h"
-
-1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\imagxpm.h
-	"wx/image.h"
-
-1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\imagiff.h
-	"wx/image.h"
-
-1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\x11\cursor.h
-	"wx/gdiobj.h"
-	"wx/gdicmn.h"
+	"wx/font.h"
 	"wx/colour.h"
+	"wx/msw/ownerdrw.h"
+	"wx/os2/ownerdrw.h"
 
-1376575663 c:\mingw\wxwidgets-2.9.5\include\wx\dfb\cursor.h
-	"wx/gdiobj.h"
-	"wx/gdicmn.h"
+1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\msw\ownerdrw.h
 
-1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\cursor.h
+1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\ownerdrw.h
+
+1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\menuitem.h
 	"wx/bitmap.h"
 
-1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\cursor.h
+1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\menuitem.h
 	"wx/bitmap.h"
 
-1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\cursor.h
+1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\menuitem.h
 	"wx/bitmap.h"
 
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\tracker.h
+1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\menuitem.h
 	"wx/defs.h"
+	"wx/bitmap.h"
 
-1376575665 c:\mingw\wxwidgets-2.9.5\include\wx\meta\convertible.h
+1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\menuitem.h
+	"wx/hashmap.h"
+	"wx/bitmap.h"
+	"wx/cocoa/ObjcRef.h"
 
-1376575665 c:\mingw\wxwidgets-2.9.5\include\wx\meta\removeref.h
+1376575654 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\objcref.h
+	"wx/osx/core/cfref.h"
 
-1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\eventfilter.h
+1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\menuitem.h
 	"wx/defs.h"
+	"wx/os2/private.h"
+	"wx/ownerdrw.h"
+	"wx/bitmap.h"
 
-1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\build.h
-	"wx/version.h"
+1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\univ\menu.h
+	"wx/accel.h"
+	"wx/dynarray.h"
 
-1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\cmdargs.h
+1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\menu.h
+	"wx/accel.h"
+	"wx/dynarray.h"
 	"wx/arrstr.h"
 
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\init.h
-	"wx/defs.h"
-	"wx/chartype.h"
-	"wx/msw/init.h"
+1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\menu.h
+	"wx/colour.h"
+	"wx/font.h"
+	"wx/arrstr.h"
 
-1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\init.h
-	"wx/msw/wrapwin.h"
+1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\menu.h
 
-1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\unix\app.h
-	<signal.h>
+1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\menu.h
 
-1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\msw\app.h
-	"wx/event.h"
-	"wx/icon.h"
+1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\menu.h
+	"wx/arrstr.h"
 
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\icon.h
-	"wx/iconloc.h"
-	"wx/msw/icon.h"
-	"wx/motif/icon.h"
-	"wx/generic/icon.h"
-	"wx/generic/icon.h"
-	"wx/generic/icon.h"
-	"wx/generic/icon.h"
-	"wx/osx/icon.h"
-	"wx/generic/icon.h"
-	"wx/cocoa/icon.h"
-	"wx/os2/icon.h"
-	"wx/variant.h"
+1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\menu.h
+	"wx/cocoa/NSMenu.h"
+	"wx/accel.h"
 
-1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\iconloc.h
-	"wx/string.h"
-
-1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\icon.h
-	"wx/msw/gdiimage.h"
-
-1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\icon.h
-	"wx/bitmap.h"
-
-1376575652 c:\mingw\wxwidgets-2.9.5\include\wx\generic\icon.h
-	"wx/bitmap.h"
-
-1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\icon.h
-	"wx/bitmap.h"
-
-1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\icon.h
-	"wx/gdicmn.h"
-	"wx/gdiobj.h"
-
-1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\icon.h
-	"wx/bitmap.h"
-	"wx/os2/gdiimage.h"
-
-1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\app.h
-	"wx/event.h"
+1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\nsmenu.h
 	"wx/hashmap.h"
+	"wx/cocoa/ObjcAssociate.h"
 
-1376575663 c:\mingw\wxwidgets-2.9.5\include\wx\dfb\app.h
-	"wx/dfb/dfbptr.h"
-	"wx/vidmode.h"
+1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\menu.h
+	"wx/accel.h"
+	"wx/list.h"
+	"wx/dynarray.h"
 
-1376575646 c:\mingw\wxwidgets-2.9.5\include\wx\vidmode.h
+1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\scrolwin.h
+	"wx/panel.h"
+	"wx/gtk/scrolwin.h"
+	"wx/gtk1/scrolwin.h"
+	"wx/generic/scrolwin.h"
 
-1376575660 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\app.h
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\panel.h
+	"wx/window.h"
+	"wx/containr.h"
+	"wx/univ/panel.h"
+	"wx/msw/panel.h"
+	"wx/generic/panelg.h"
 
-1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\app.h
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\containr.h
+	"wx/defs.h"
+	"wx/event.h"
+
+1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\univ\panel.h
+
+1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\panel.h
+
+1376575652 c:\mingw\wxwidgets-2.9.5\include\wx\generic\panelg.h
+	"wx/bitmap.h"
+
+1376575660 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\scrolwin.h
+
+1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\scrolwin.h
+
+1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\generic\scrolwin.h
+
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\dcmemory.h
+	"wx/dc.h"
+	"wx/bitmap.h"
+
+1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\print.h
+	"wx/defs.h"
+	"wx/msw/printwin.h"
+	"wx/osx/printmac.h"
+	"wx/os2/printos2.h"
+	"wx/generic/printps.h"
+
+1376575658 c:\mingw\wxwidgets-2.9.5\include\wx\msw\printwin.h
+	"wx/prntbase.h"
+
+1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\prntbase.h
+	"wx/defs.h"
+	"wx/event.h"
+	"wx/cmndata.h"
+	"wx/panel.h"
+	"wx/scrolwin.h"
+	"wx/dialog.h"
 	"wx/frame.h"
-	"wx/icon.h"
-	"wx/strconv.h"
+	"wx/dc.h"
 
-1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\frame.h
+1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\cmndata.h
+	"wx/defs.h"
+	"wx/gdicmn.h"
+	"wx/stream.h"
+
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\dialog.h
+	"wx/defs.h"
 	"wx/toplevel.h"
-	"wx/statusbr.h"
-	"wx/univ/frame.h"
-	"wx/msw/frame.h"
-	"wx/gtk/frame.h"
-	"wx/gtk1/frame.h"
-	"wx/motif/frame.h"
-	"wx/osx/frame.h"
-	"wx/cocoa/frame.h"
-	"wx/os2/frame.h"
+	"wx/univ/dialog.h"
+	"wx/msw/dialog.h"
+	"wx/motif/dialog.h"
+	"wx/gtk/dialog.h"
+	"wx/gtk1/dialog.h"
+	"wx/osx/dialog.h"
+	"wx/cocoa/dialog.h"
+	"wx/os2/dialog.h"
 
 1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\toplevel.h
 	"wx/nonownedwnd.h"
@@ -1358,9 +1456,42 @@
 	"wx/icon.h"
 	"wx/dynarray.h"
 
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\containr.h
-	"wx/defs.h"
-	"wx/event.h"
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\icon.h
+	"wx/iconloc.h"
+	"wx/msw/icon.h"
+	"wx/motif/icon.h"
+	"wx/generic/icon.h"
+	"wx/generic/icon.h"
+	"wx/generic/icon.h"
+	"wx/generic/icon.h"
+	"wx/osx/icon.h"
+	"wx/generic/icon.h"
+	"wx/cocoa/icon.h"
+	"wx/os2/icon.h"
+	"wx/variant.h"
+
+1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\iconloc.h
+	"wx/string.h"
+
+1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\icon.h
+	"wx/msw/gdiimage.h"
+
+1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\icon.h
+	"wx/bitmap.h"
+
+1376575652 c:\mingw\wxwidgets-2.9.5\include\wx\generic\icon.h
+	"wx/bitmap.h"
+
+1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\icon.h
+	"wx/bitmap.h"
+
+1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\icon.h
+	"wx/gdicmn.h"
+	"wx/gdiobj.h"
+
+1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\icon.h
+	"wx/bitmap.h"
+	"wx/os2/gdiimage.h"
 
 1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\weakref.h
 	"wx/tracker.h"
@@ -1404,6 +1535,44 @@
 
 1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\univ\inphand.h
 	"wx/univ/inpcons.h"
+
+1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\univ\dialog.h
+
+1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\dialog.h
+	"wx/panel.h"
+
+1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\dialog.h
+
+1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\dialog.h
+
+1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\dialog.h
+
+1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\dialog.h
+	"wx/panel.h"
+
+1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\dialog.h
+	"wx/defs.h"
+	"wx/panel.h"
+	"wx/cocoa/NSPanel.h"
+
+1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\nspanel.h
+	"wx/hashmap.h"
+	"wx/cocoa/ObjcAssociate.h"
+
+1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\dialog.h
+	"wx/panel.h"
+
+1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\frame.h
+	"wx/toplevel.h"
+	"wx/statusbr.h"
+	"wx/univ/frame.h"
+	"wx/msw/frame.h"
+	"wx/gtk/frame.h"
+	"wx/gtk1/frame.h"
+	"wx/motif/frame.h"
+	"wx/osx/frame.h"
+	"wx/cocoa/frame.h"
+	"wx/os2/frame.h"
 
 1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\statusbr.h
 	"wx/defs.h"
@@ -1598,9 +1767,6 @@
 	"wx/cocoa/ObjcAssociate.h"
 	"wx/cocoa/ObjcRef.h"
 
-1376575654 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\objcref.h
-	"wx/osx/core/cfref.h"
-
 1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\button.h
 	"wx/control.h"
 
@@ -1668,109 +1834,142 @@
 
 1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\wxrsc.h
 
-1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\x11\app.h
+1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\printmac.h
+	"wx/prntbase.h"
+
+1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\printos2.h
+	"wx/prntbase.h"
+
+1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\generic\printps.h
+	"wx/prntbase.h"
+
+1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\stattext.h
+	"wx/defs.h"
+	"wx/control.h"
+	"wx/univ/stattext.h"
+	"wx/msw/stattext.h"
+	"wx/motif/stattext.h"
+	"wx/gtk/stattext.h"
+	"wx/gtk1/stattext.h"
+	"wx/osx/stattext.h"
+	"wx/cocoa/stattext.h"
+	"wx/os2/stattext.h"
+
+1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\univ\stattext.h
+	"wx/generic/stattextg.h"
+
+1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\generic\stattextg.h
+	"wx/stattext.h"
+
+1376575658 c:\mingw\wxwidgets-2.9.5\include\wx\msw\stattext.h
+
+1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\stattext.h
+
+1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\stattext.h
+
+1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\stattext.h
+
+1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\stattext.h
+
+1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\stattext.h
+	"wx/cocoa/NSTextField.h"
+
+1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\nstextfield.h
+	"wx/hashmap.h"
+	"wx/cocoa/ObjcAssociate.h"
+
+1376575660 c:\mingw\wxwidgets-2.9.5\include\wx\os2\stattext.h
+	"wx/control.h"
+
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\textctrl.h
+	"wx/defs.h"
+	"wx/control.h"
+	"wx/textentry.h"
+	"wx/dynarray.h"
 	"wx/gdicmn.h"
-	"wx/event.h"
+	"wx/ioswrap.h"
+	"wx/x11/textctrl.h"
+	"wx/univ/textctrl.h"
+	"wx/msw/wince/textctrlce.h"
+	"wx/msw/textctrl.h"
+	"wx/motif/textctrl.h"
+	"wx/gtk/textctrl.h"
+	"wx/gtk1/textctrl.h"
+	"wx/osx/textctrl.h"
+	"wx/cocoa/textctrl.h"
+	"wx/os2/textctrl.h"
 
-1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\app.h
-	"wx/defs.h"
-	"wx/object.h"
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\textentry.h
+	"wx/filefn.h"
 	"wx/gdicmn.h"
-	"wx/event.h"
+	"wx/gtk/textentry.h"
+	"wx/osx/textentry.h"
+	"wx/msw/textentry.h"
+	"wx/motif/textentry.h"
+	"wx/os2/textentry.h"
 
-1376575654 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\app.h
-	"wx/osx/core/cfref.h"
+1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\textentry.h
 
-1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\app.h
-	<types.h>
-	<sys/ioctl.h>
-	<sys/select.h>
-	<sys/time.h>
-	<sys/types.h>
-	<unistd.h>
-	<utils.h>
-	<types.h>
-	"wx/event.h"
-	"wx/icon.h"
+1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\textentry.h
+	"wx/control.h"
 
-1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\univ\theme.h
-	"wx/string.h"
+1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\textentry.h
 
-1330216387 c:\users\chris\desktop\proj\awohlib\apps\avptester\system\prefs.h
-	"wx/config.h"
-	"wx/fileconf.h"
+1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\textentry.h
 
-1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\config.h
-	"wx/confbase.h"
-	"wx/msw/regconf.h"
-	"wx/os2/iniconf.h"
-	"wx/fileconf.h"
+1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\textentry.h
 
-1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\confbase.h
-	"wx/defs.h"
-	"wx/string.h"
-	"wx/object.h"
-	"wx/base64.h"
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\ioswrap.h
+	"wx/beforestd.h"
+	<iostream.h>
+	<iostream>
+	"wx/afterstd.h"
+	"wx/msw/winundef.h"
 
-1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\base64.h
-	"wx/string.h"
-	"wx/buffer.h"
-
-1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\regconf.h
-	"wx/defs.h"
-	"wx/msw/registry.h"
-	"wx/object.h"
-	"wx/confbase.h"
-	"wx/buffer.h"
-
-1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\msw\registry.h
-	"wx/defs.h"
-
-1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\iniconf.h
-
-1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\fileconf.h
-	"wx/defs.h"
-	"wx/textfile.h"
-	"wx/string.h"
-	"wx/confbase.h"
-	"wx/filename.h"
-
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\textfile.h
-	"wx/defs.h"
-	"wx/textbuf.h"
-	"wx/file.h"
-
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\textbuf.h
-	"wx/defs.h"
+1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\x11\textctrl.h
+	"wx/univ/textctrl.h"
+	"wx/scrolwin.h"
 	"wx/arrstr.h"
-	"wx/convauto.h"
-	"wx/string.h"
+
+1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\univ\textctrl.h
+	"wx/scrolwin.h"
+	"wx/univ/inphand.h"
+
+1376575658 c:\mingw\wxwidgets-2.9.5\include\wx\msw\wince\textctrlce.h
 	"wx/dynarray.h"
 
-1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\convauto.h
-	"wx/strconv.h"
-	"wx/fontenc.h"
+1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\textctrl.h
 
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\file.h
-	"wx/defs.h"
-	"wx/string.h"
-	"wx/filefn.h"
-	"wx/convauto.h"
+1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\textctrl.h
 
-1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\filename.h
-	"wx/arrstr.h"
-	"wx/filefn.h"
-	"wx/datetime.h"
-	"wx/intl.h"
-	"wx/longlong.h"
-	"wx/file.h"
+1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\textctrl.h
 
-1484247910 c:\users\chris\desktop\proj\awohlib\apps\avptester\devices\audioinput.h
+1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\textctrl.h
+
+1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\textctrl.h
+	"wx/control.h"
+	"wx/textctrl.h"
+
+1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\textctrl.h
+	"wx/cocoa/NSTextField.h"
+
+1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\textctrl.h
+
+1465661168 c:\users\chris\desktop\avpreserve\software\local\src\widgets\awohspin.h
+	<wx/sizer.h>
+	<wx/stattext.h>
+	<wx/panel.h>
+	<wx/button.h>
+	"GButton.h"
+	<vector>
+
+1487080873 c:\users\chris\desktop\avpreserve\software\local\src\widgets\gbutton.h
 	<wx/wx.h>
-	"portaudio19/portaudio.h"
-	"sndfile.h"
-	"LevelAnalyser.h"
-	<wx/xml/xml.h>
+	<wx/panel.h>
+	<wx/string.h>
+	<wx/dcbuffer.h>
+	<wx/msgdlg.h>
+	<wx/image.h>
 
 1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\wx.h
 	"wx/defs.h"
@@ -1853,32 +2052,103 @@
 	"wx/validate.h"
 	"wx/valtext.h"
 
+1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\app.h
+	"wx/event.h"
+	"wx/eventfilter.h"
+	"wx/build.h"
+	"wx/cmdargs.h"
+	"wx/init.h"
+	"wx/intl.h"
+	"wx/log.h"
+	"wx/unix/app.h"
+	"wx/msw/app.h"
+	"wx/motif/app.h"
+	"wx/dfb/app.h"
+	"wx/gtk/app.h"
+	"wx/gtk1/app.h"
+	"wx/x11/app.h"
+	"wx/osx/app.h"
+	"wx/cocoa/app.h"
+	"wx/os2/app.h"
+	"wx/univ/theme.h"
+
+1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\eventfilter.h
+	"wx/defs.h"
+
+1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\build.h
+	"wx/version.h"
+
+1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\cmdargs.h
+	"wx/arrstr.h"
+
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\init.h
+	"wx/defs.h"
+	"wx/chartype.h"
+	"wx/msw/init.h"
+
+1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\init.h
+	"wx/msw/wrapwin.h"
+
+1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\unix\app.h
+	<signal.h>
+
+1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\msw\app.h
+	"wx/event.h"
+	"wx/icon.h"
+
+1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\app.h
+	"wx/event.h"
+	"wx/hashmap.h"
+
+1376575663 c:\mingw\wxwidgets-2.9.5\include\wx\dfb\app.h
+	"wx/dfb/dfbptr.h"
+	"wx/vidmode.h"
+
+1376575646 c:\mingw\wxwidgets-2.9.5\include\wx\vidmode.h
+
+1376575660 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\app.h
+
+1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\app.h
+	"wx/frame.h"
+	"wx/icon.h"
+	"wx/strconv.h"
+
+1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\x11\app.h
+	"wx/gdicmn.h"
+	"wx/event.h"
+
+1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\app.h
+	"wx/defs.h"
+	"wx/object.h"
+	"wx/gdicmn.h"
+	"wx/event.h"
+
+1376575654 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\app.h
+	"wx/osx/core/cfref.h"
+
+1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\app.h
+	<types.h>
+	<sys/ioctl.h>
+	<sys/select.h>
+	<sys/time.h>
+	<sys/types.h>
+	<unistd.h>
+	<utils.h>
+	<types.h>
+	"wx/event.h"
+	"wx/icon.h"
+
+1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\univ\theme.h
+	"wx/string.h"
+
 1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\module.h
 	"wx/object.h"
 	"wx/list.h"
 	"wx/arrstr.h"
 	"wx/dynarray.h"
 
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\panel.h
-	"wx/window.h"
-	"wx/containr.h"
-	"wx/univ/panel.h"
-	"wx/msw/panel.h"
-	"wx/generic/panelg.h"
-
-1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\univ\panel.h
-
-1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\panel.h
-
-1376575652 c:\mingw\wxwidgets-2.9.5\include\wx\generic\panelg.h
-	"wx/bitmap.h"
-
 1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\dcclient.h
 	"wx/dc.h"
-
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\dcmemory.h
-	"wx/dc.h"
-	"wx/bitmap.h"
 
 1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\dcprint.h
 	"wx/defs.h"
@@ -1887,145 +2157,6 @@
 1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\dcscreen.h
 	"wx/defs.h"
 	"wx/dc.h"
-
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\menuitem.h
-	"wx/defs.h"
-	"wx/object.h"
-	"wx/univ/menuitem.h"
-	"wx/msw/menuitem.h"
-	"wx/motif/menuitem.h"
-	"wx/gtk/menuitem.h"
-	"wx/gtk1/menuitem.h"
-	"wx/osx/menuitem.h"
-	"wx/cocoa/menuitem.h"
-	"wx/os2/menuitem.h"
-
-1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\univ\menuitem.h
-
-1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\menuitem.h
-	"wx/ownerdrw.h"
-	"wx/bitmap.h"
-
-1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\ownerdrw.h
-	"wx/defs.h"
-	"wx/font.h"
-	"wx/colour.h"
-	"wx/msw/ownerdrw.h"
-	"wx/os2/ownerdrw.h"
-
-1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\msw\ownerdrw.h
-
-1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\ownerdrw.h
-
-1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\menuitem.h
-	"wx/bitmap.h"
-
-1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\menuitem.h
-	"wx/bitmap.h"
-
-1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\menuitem.h
-	"wx/bitmap.h"
-
-1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\menuitem.h
-	"wx/defs.h"
-	"wx/bitmap.h"
-
-1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\menuitem.h
-	"wx/hashmap.h"
-	"wx/bitmap.h"
-	"wx/cocoa/ObjcRef.h"
-
-1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\menuitem.h
-	"wx/defs.h"
-	"wx/os2/private.h"
-	"wx/ownerdrw.h"
-	"wx/bitmap.h"
-
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\menu.h
-	"wx/defs.h"
-	"wx/list.h"
-	"wx/window.h"
-	"wx/menuitem.h"
-	"wx/univ/menu.h"
-	"wx/msw/menu.h"
-	"wx/motif/menu.h"
-	"wx/gtk/menu.h"
-	"wx/gtk1/menu.h"
-	"wx/osx/menu.h"
-	"wx/cocoa/menu.h"
-	"wx/os2/menu.h"
-
-1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\univ\menu.h
-	"wx/accel.h"
-	"wx/dynarray.h"
-
-1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\menu.h
-	"wx/accel.h"
-	"wx/dynarray.h"
-	"wx/arrstr.h"
-
-1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\menu.h
-	"wx/colour.h"
-	"wx/font.h"
-	"wx/arrstr.h"
-
-1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\menu.h
-
-1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\menu.h
-
-1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\menu.h
-	"wx/arrstr.h"
-
-1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\menu.h
-	"wx/cocoa/NSMenu.h"
-	"wx/accel.h"
-
-1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\nsmenu.h
-	"wx/hashmap.h"
-	"wx/cocoa/ObjcAssociate.h"
-
-1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\menu.h
-	"wx/accel.h"
-	"wx/list.h"
-	"wx/dynarray.h"
-
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\dialog.h
-	"wx/defs.h"
-	"wx/toplevel.h"
-	"wx/univ/dialog.h"
-	"wx/msw/dialog.h"
-	"wx/motif/dialog.h"
-	"wx/gtk/dialog.h"
-	"wx/gtk1/dialog.h"
-	"wx/osx/dialog.h"
-	"wx/cocoa/dialog.h"
-	"wx/os2/dialog.h"
-
-1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\univ\dialog.h
-
-1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\dialog.h
-	"wx/panel.h"
-
-1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\dialog.h
-
-1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\dialog.h
-
-1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\dialog.h
-
-1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\dialog.h
-	"wx/panel.h"
-
-1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\dialog.h
-	"wx/defs.h"
-	"wx/panel.h"
-	"wx/cocoa/NSPanel.h"
-
-1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\nspanel.h
-	"wx/hashmap.h"
-	"wx/cocoa/ObjcAssociate.h"
-
-1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\dialog.h
-	"wx/panel.h"
 
 1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\msgdlg.h
 	"wx/defs.h"
@@ -2257,18 +2388,6 @@
 	"wx/dynarray.h"
 	"wx/arrstr.h"
 
-1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\scrolwin.h
-	"wx/panel.h"
-	"wx/gtk/scrolwin.h"
-	"wx/gtk1/scrolwin.h"
-	"wx/generic/scrolwin.h"
-
-1376575660 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\scrolwin.h
-
-1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\scrolwin.h
-
-1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\generic\scrolwin.h
-
 1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\listbox.h
 	"wx/dynarray.h"
 
@@ -2346,84 +2465,6 @@
 	"wx/osx/combobox.h"
 	"wx/cocoa/combobox.h"
 	"wx/os2/combobox.h"
-
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\textctrl.h
-	"wx/defs.h"
-	"wx/control.h"
-	"wx/textentry.h"
-	"wx/dynarray.h"
-	"wx/gdicmn.h"
-	"wx/ioswrap.h"
-	"wx/x11/textctrl.h"
-	"wx/univ/textctrl.h"
-	"wx/msw/wince/textctrlce.h"
-	"wx/msw/textctrl.h"
-	"wx/motif/textctrl.h"
-	"wx/gtk/textctrl.h"
-	"wx/gtk1/textctrl.h"
-	"wx/osx/textctrl.h"
-	"wx/cocoa/textctrl.h"
-	"wx/os2/textctrl.h"
-
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\textentry.h
-	"wx/filefn.h"
-	"wx/gdicmn.h"
-	"wx/gtk/textentry.h"
-	"wx/osx/textentry.h"
-	"wx/msw/textentry.h"
-	"wx/motif/textentry.h"
-	"wx/os2/textentry.h"
-
-1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\textentry.h
-
-1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\textentry.h
-	"wx/control.h"
-
-1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\textentry.h
-
-1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\textentry.h
-
-1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\textentry.h
-
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\ioswrap.h
-	"wx/beforestd.h"
-	<iostream.h>
-	<iostream>
-	"wx/afterstd.h"
-	"wx/msw/winundef.h"
-
-1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\x11\textctrl.h
-	"wx/univ/textctrl.h"
-	"wx/scrolwin.h"
-	"wx/arrstr.h"
-
-1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\univ\textctrl.h
-	"wx/scrolwin.h"
-	"wx/univ/inphand.h"
-
-1376575658 c:\mingw\wxwidgets-2.9.5\include\wx\msw\wince\textctrlce.h
-	"wx/dynarray.h"
-
-1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\textctrl.h
-
-1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\textctrl.h
-
-1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\textctrl.h
-
-1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\textctrl.h
-
-1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\textctrl.h
-	"wx/control.h"
-	"wx/textctrl.h"
-
-1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\textctrl.h
-	"wx/cocoa/NSTextField.h"
-
-1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\nstextfield.h
-	"wx/hashmap.h"
-	"wx/cocoa/ObjcAssociate.h"
-
-1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\textctrl.h
 
 1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\univ\combobox.h
 	"wx/combo.h"
@@ -2548,40 +2589,6 @@
 
 1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\scrolbar.h
 	"wx/scrolbar.h"
-
-1376575650 c:\mingw\wxwidgets-2.9.5\include\wx\stattext.h
-	"wx/defs.h"
-	"wx/control.h"
-	"wx/univ/stattext.h"
-	"wx/msw/stattext.h"
-	"wx/motif/stattext.h"
-	"wx/gtk/stattext.h"
-	"wx/gtk1/stattext.h"
-	"wx/osx/stattext.h"
-	"wx/cocoa/stattext.h"
-	"wx/os2/stattext.h"
-
-1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\univ\stattext.h
-	"wx/generic/stattextg.h"
-
-1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\generic\stattextg.h
-	"wx/stattext.h"
-
-1376575658 c:\mingw\wxwidgets-2.9.5\include\wx\msw\stattext.h
-
-1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\stattext.h
-
-1376575661 c:\mingw\wxwidgets-2.9.5\include\wx\gtk\stattext.h
-
-1376575662 c:\mingw\wxwidgets-2.9.5\include\wx\gtk1\stattext.h
-
-1376575653 c:\mingw\wxwidgets-2.9.5\include\wx\osx\stattext.h
-
-1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\stattext.h
-	"wx/cocoa/NSTextField.h"
-
-1376575660 c:\mingw\wxwidgets-2.9.5\include\wx\os2\stattext.h
-	"wx/control.h"
 
 1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\statbmp.h
 	"wx/defs.h"
@@ -2833,10 +2840,6 @@
 1376575646 c:\mingw\wxwidgets-2.9.5\include\wx\layout.h
 	"wx/object.h"
 
-1376575651 c:\mingw\wxwidgets-2.9.5\include\wx\sizer.h
-	"wx/defs.h"
-	"wx/window.h"
-
 1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\choicdlg.h
 	"wx/generic/choicdgg.h"
 
@@ -2929,6 +2932,24 @@
 	"wx/control.h"
 	"wx/filectrl.h"
 
+1376575647 c:\mingw\wxwidgets-2.9.5\include\wx\filename.h
+	"wx/arrstr.h"
+	"wx/filefn.h"
+	"wx/datetime.h"
+	"wx/intl.h"
+	"wx/longlong.h"
+	"wx/file.h"
+
+1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\file.h
+	"wx/defs.h"
+	"wx/string.h"
+	"wx/filefn.h"
+	"wx/convauto.h"
+
+1376575648 c:\mingw\wxwidgets-2.9.5\include\wx\convauto.h
+	"wx/strconv.h"
+	"wx/fontenc.h"
+
 1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\msw\filedlg.h
 
 1376575664 c:\mingw\wxwidgets-2.9.5\include\wx\motif\filedlg.h
@@ -2973,242 +2994,15 @@
 1376575655 c:\mingw\wxwidgets-2.9.5\include\wx\cocoa\mdi.h
 	"wx/frame.h"
 
-1313600164 c:\users\chris\desktop\proj\awohlib\apps\avptester\devices\levelanalyser.h
-
-1376575663 c:\mingw\wxwidgets-2.9.5\include\wx\xml\xml.h
-	"wx/defs.h"
-	"wx/string.h"
-	"wx/object.h"
-	"wx/list.h"
-	"wx/versioninfo.h"
-
-1485119055 c:\users\chris\desktop\proj\awohlib\apps\avptester\avptestermain.h
-	<wx/sizer.h>
-	<wx/menu.h>
-	<wx/textctrl.h>
-	<wx/toolbar.h>
-	<wx/panel.h>
-	<wx/frame.h>
-	<wx/statusbr.h>
-
-1485123104 source:c:\users\chris\desktop\proj\awohlib\apps\avptester\avptestermain.cpp
-	"AVPTesterMain.h"
-	<wx/msgdlg.h>
-	"Devices/ADevicesManager.h"
-	<wx/intl.h>
-	<wx/string.h>
-
-1485081634 source:c:\users\chris\desktop\proj\awohlib\apps\avptester\devices\audioinput.cpp
-	"AudioInput.h"
-	"../System/Prefs.h"
-
-1313600431 source:c:\users\chris\desktop\proj\awohlib\apps\avptester\devices\levelanalyser.cpp
-	"LevelAnalyser.h"
-	<math.h>
-
-1353751060 source:c:\users\chris\desktop\proj\awohlib\apps\avptester\resource.rc
-	"wx/msw/wx.rc"
-
-1376575658 c:\mingw\wxwidgets-2.9.5\include\wx\msw\wx.rc
-	<windows.h>
-	"wx/msw/wince/wince.rc"
-	"wx/msw/rcdefs.h"
-
-1376575658 c:\mingw\wxwidgets-2.9.5\include\wx\msw\wince\wince.rc
-	<commctrl.h>
-	"wx/msw/wince/resources.h"
-	"wx/msw/wince/smartphone.rc"
-
-1376575658 c:\mingw\wxwidgets-2.9.5\include\wx\msw\wince\resources.h
-
-1376575658 c:\mingw\wxwidgets-2.9.5\include\wx\msw\wince\smartphone.rc
-	<aygshell.h>
-
-1376575658 c:\mingw\wxwidgets-2.9.5\include\wx\msw\rcdefs.h
-
-1484250834 source:c:\users\chris\desktop\proj\awohlib\apps\avptester\system\prefs.cpp
-	<wx/defs.h>
-	<wx/msgdlg.h>
-	<wx/app.h>
-	<wx/config.h>
-	<wx/intl.h>
-	<wx/fileconf.h>
-	<wx/filename.h>
-	<wx/stdpaths.h>
-	"Prefs.h"
-
-1376575649 c:\mingw\wxwidgets-2.9.5\include\wx\stdpaths.h
-	"wx/defs.h"
-	"wx/string.h"
-	"wx/filefn.h"
-	"wx/msw/stdpaths.h"
-	"wx/osx/core/stdpaths.h"
-	"wx/os2/stdpaths.h"
-	"wx/unix/stdpaths.h"
-
-1376575657 c:\mingw\wxwidgets-2.9.5\include\wx\msw\stdpaths.h
-
-1376575654 c:\mingw\wxwidgets-2.9.5\include\wx\osx\core\stdpaths.h
-	"wx/unix/stdpaths.h"
-
-1376575656 c:\mingw\wxwidgets-2.9.5\include\wx\unix\stdpaths.h
-
-1376575659 c:\mingw\wxwidgets-2.9.5\include\wx\os2\stdpaths.h
-
-1485127534 source:c:\users\chris\desktop\proj\awohlib\apps\avptester\devices\adevicesmanager.cpp
-	"ADevicesManager.h"
-	"portaudio19/portmixer.h"
-	<wx/choice.h>
-	<wx/event.h>
-	<wx/intl.h>
-	<wx/settings.h>
-	<wx/sizer.h>
-	<wx/statbmp.h>
-	<wx/tooltip.h>
-
-1485127534 c:\users\chris\desktop\proj\awohlib\apps\avptester\devices\adevicesmanager.h
-	<vector>
-	"wx/wx.h"
-	"portaudio19/portaudio.h"
-	"portaudio19/pa_win_wasapi.h"
-
-1485082019 source:c:\users\chris\desktop\proj\awohlib\apps\avptester\audiodevicespanel.cpp
-	"AudioDevicesPanel.h"
-	<wx/intl.h>
-	<wx/string.h>
-
-1484997911 c:\users\chris\desktop\proj\awohlib\apps\avptester\audiodevicespanel.h
-	<wx/sizer.h>
-	<wx/panel.h>
-
-1376575657 c:\mingw\wxwidgets-2.9.5\lib\gcc_lib\mswu\wx\setup.h
-
-1485512368 source:c:\users\chris\desktop\avpreserve\software\avptester\src\audiodevicespanel.cpp
-	"AudioDevicesPanel.h"
-	"Devices\ADevicesManager.h"
-	"System\Prefs.h"
-	<wx/intl.h>
-	<wx/string.h>
-
-1486926716 c:\users\chris\desktop\avpreserve\software\avptester\src\audiodevicespanel.h
-	<wx/sizer.h>
-	<wx/stattext.h>
-	<wx/textctrl.h>
-	<wx/panel.h>
-	<wx/choice.h>
-	<wx/button.h>
-	"Widgets/RimPanel.h"
-	"Widgets/GButton.h"
-
-1485081634 source:c:\users\chris\desktop\avpreserve\software\avptester\src\devices\audioinput.cpp
-	"AudioInput.h"
-	"../System/Prefs.h"
-
-1484247910 c:\users\chris\desktop\avpreserve\software\avptester\src\devices\audioinput.h
-	<wx/wx.h>
-	"portaudio19/portaudio.h"
-	"sndfile.h"
-	"LevelAnalyser.h"
-	<wx/xml/xml.h>
-
-1313600164 c:\users\chris\desktop\avpreserve\software\avptester\src\devices\levelanalyser.h
-
-1330216387 c:\users\chris\desktop\avpreserve\software\avptester\src\system\prefs.h
-	"wx/config.h"
-	"wx/fileconf.h"
-
-1313600431 source:c:\users\chris\desktop\avpreserve\software\avptester\src\devices\levelanalyser.cpp
-	"LevelAnalyser.h"
-	<math.h>
-
-1353751060 source:c:\users\chris\desktop\avpreserve\software\avptester\src\resource.rc
-	"wx/msw/wx.rc"
-
-1485456449 source:c:\users\chris\desktop\avpreserve\software\avptester\src\system\prefs.cpp
-	<wx/defs.h>
-	<wx/msgdlg.h>
-	<wx/app.h>
-	<wx/config.h>
-	<wx/intl.h>
-	<wx/fileconf.h>
-	<wx/filename.h>
-	<wx/stdpaths.h>
-	"Prefs.h"
-
-1485341954 source:c:\users\chris\desktop\avpreserve\software\avptester\src\avptesterapp.cpp
-	"AVPTesterApp.h"
-	"AVPTesterMain.h"
-	<wx/image.h>
-
-1484160557 c:\users\chris\desktop\avpreserve\software\avptester\src\avptesterapp.h
-	<wx/app.h>
-
-1486921717 c:\users\chris\desktop\avpreserve\software\avptester\src\avptestermain.h
-	<wx/sizer.h>
-	<wx/menu.h>
-	<wx/toolbar.h>
-	<wx/panel.h>
-	<wx/frame.h>
-	<wx/statusbr.h>
-	"AudioDevicesPanel.h"
-
-1461055990 c:\users\chris\desktop\avpreserve\software\avptester\src\widgets\rimpanel.h
+1487327156 c:\users\chris\desktop\avpreserve\software\local\src\widgets\rimpanel.h
 	<wx/window.h>
 	<wx/panel.h>
 	<wx/dcbuffer.h>
 
-1439937155 c:\users\chris\desktop\avpreserve\software\avptester\src\widgets\gbutton.h
+1487080873 c:\users\chris\desktop\avpreserve\software\local\src\widgets\vumeter.h
 	<wx/wx.h>
-	<wx/panel.h>
-	<wx/string.h>
 	<wx/dcbuffer.h>
-	<wx/msgdlg.h>
-	<wx/image.h>
+	"../AudioIO/LevelAnalyser.h"
 
-1485464391 c:\users\chris\desktop\avpreserve\software\avptester\src\devices\adevicesmanager.h
-	<vector>
-	"wx/wx.h"
-	"portaudio.h"
-	"pa_win_wasapi.h"
-
-1485166455 c:\users\chris\desktop\avpreserve\software\avptester\lib-src\portaudio-v19\include\portaudio.h
-
-1485166455 c:\users\chris\desktop\avpreserve\software\avptester\lib-src\portaudio-v19\include\pa_win_wasapi.h
-	"portaudio.h"
-	"pa_win_waveformat.h"
-
-1485166455 c:\users\chris\desktop\avpreserve\software\avptester\lib-src\portaudio-v19\include\pa_win_waveformat.h
-
-1485384614 source:c:\users\chris\desktop\avpreserve\software\avptester\src\avptestermain.cpp
-	"AVPTesterMain.h"
-	<wx/msgdlg.h>
-	"System/Prefs.h"
-	"Devices/ADevicesManager.h"
-	<wx/bitmap.h>
-	<wx/icon.h>
-	<wx/intl.h>
-	<wx/image.h>
-	<wx/string.h>
-
-1485508497 source:c:\users\chris\desktop\avpreserve\software\avptester\src\devices\adevicesmanager.cpp
-	"ADevicesManager.h"
-	"..\System\Prefs.h"
-	"portaudio19/portmixer.h"
-	<wx/choice.h>
-	<wx/event.h>
-	<wx/intl.h>
-	<wx/settings.h>
-	<wx/sizer.h>
-	<wx/statbmp.h>
-	<wx/tooltip.h>
-
-1485444108 source:c:\users\chris\desktop\avpreserve\software\avptester\src\widgets\gbutton.cpp
-	"GButton.h"
-	"QPxColours.h"
-
-1485444186 c:\users\chris\desktop\avpreserve\software\avptester\src\widgets\qpxcolours.h
-
-1485278179 source:c:\users\chris\desktop\avpreserve\software\avptester\src\widgets\rimpanel.cpp
-	"RimPanel.h"
-	"QPxColours.h"
+1487080873 c:\users\chris\desktop\avpreserve\software\local\src\audioio\levelanalyser.h
 

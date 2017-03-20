@@ -11,22 +11,40 @@
 #include "LevelAnalyser.h"
 #include "ParametersQueue.h"
 #include "ProcessParams.h"
-#include "../DSP/adapters/RingBufferFloat.h"
-#include "../DSP/KFFTWrapper.h"
-#include "../DSP/Window.h"
-#include "../DSP/GenMetricQueue.h"
+
+#include "../DSP/FFTAnalyser.h"
+#include "../TestManager.h"
 
 #define safenew new
 
+class AVPTesterFrame;
 class AudioIO;
 class AudioThread;
+class AudioTestThread;
+
+typedef struct AudioThreadEvent {
+	int  processID;
+	int  eventID;
+	int  eventRange;
+	int  eventCounter;
+	wxString eventMessage;
+	wxString debugInfo;
+	bool threadFinished;
+}AudioThreadEvent;
+
+enum eventcode
+{
+	AVP_PROCESS_FILE_ERROR = -4,
+	AVP_PROCESS_CONFIG_ERROR,
+	AVP_PROCESS_AUDIO_ERROR,
+	AVP_PROCESS_TERM_FAIL,
+	AVP_PROCESS_TERM_OK,
+	AVP_PROCESS_START,
+	AVP_PROCESS_STAGE
+};
 
 extern AudioIO *gAudioIO;
 
-struct FFTPlotData {
-	std::vector<float> MagData;
-	double sampleRate;
-};
 
 void InitAudioIO();
 void DeinitAudioIO();
@@ -37,11 +55,27 @@ class AudioIO
         AudioIO();
         virtual ~AudioIO();
 
-		void StartDevicesTest();
-		void StopDevicesTest();
-		int  doIODevicesTest();
+		void SetParent(AVPTesterFrame* parent);
+
+		void StartDevicesCalibration();
+		void StopDevicesCalibration();
+		int  doIODevicesCalibration();
+		
+		TestManager* GetTestManager() { return mTestManager;  }
+		void StartTestProcedure();
+		void StopTestProcedure();
+		int  doADCTest();
+
+		void reportEvent(int processID, 
+						 int eventID, 
+						 wxString message, 
+						 bool killProcess = false,
+						 wxString debugInfo = wxEmptyString, 
+						 int eRange = 0,
+						 int eCount = 0);
 
 		std::unique_ptr<AudioThread> mThread;
+		std::unique_ptr<AudioTestThread> mADCTestThread;
 
 		LevelAnalyser* GetInputsLevelAnalyser();
 		LevelAnalyser* GetOutputsLevelAnalyser();
@@ -54,28 +88,41 @@ class AudioIO
 		virtual std::vector<AudioParam> getCalibrationParameters();
 
 	protected:
-		PaError OpenStream();
-		PaError CloseStream();
 
 		int CreateLevelAnalysers(size_t srate, size_t interval);
 		void DeleteLevelAnalysers();
+		
+		////////////////////////////////////////////////////////////////////////
+		//ADC Test procedure 
+		//Loads chosen I/O configuration
+		bool GetCurrentIOConfiguration( double& sampleRate, //test sample rate
+										int& captureDeviceIdx, //input device (ADC-DUT) PortAudio Index
+										int& captureChannels, 
+										int& playbackDeviceIdx,//Output device (DAC) PortAudio Index 
+										int& playbackChannels);
+		
+		//opens selected I/O devices
+		PaError OpenDevices(double sampleRate, 
+							int captureDeviceIdx, 
+							int captureChannels,
+							int playbackDeviceIdx,
+							int playbackChannels);
+		
+		PaError CloseDevices();
+
+		//Plays test signal and records response  
+		int PlaybackAcquire(wxString testFile, wxString responseFile);
+		
 
 		void FlushParameterQueue();
 		void ProcessParameter( AudioParam param);
 
-		//fft plot
-		void doRTA(float* InterleavedBuffer );
-		void initialiseFFT(size_t stftLength, WindowType wType);
-		void deInitialiseFFT();
-		void resetRTAAvg();
+		AVPTesterFrame* mParent;
 
-		float* mInputBuffer;
-		float* mOutputBuffer;
-
-		size_t mNoPlaybackChannels;
-		size_t mNoCaptureChannels;
-		double mCaptureSampleRate;
 		size_t mCaptureFrameSize;
+		double mCaptureSampleRate;
+		int mNoPlaybackChannels;
+		int mNoCaptureChannels;
 		PaStream *mPortStreamV19;
 		
 		bool bPAIsOpen;
@@ -85,34 +132,16 @@ class AudioIO
 
 		LevelAnalyser* mInputLevelMetric;
 		LevelAnalyser* mOutputLevelMetric;
+		FFTAnalyser* mFFTrta;
+		size_t mSTFTLength;
+
 		ParametersQueue mParametersQueue;
 		std::vector<AudioParam> mCalibrationParameters;
 
 		double mOutputGain;
-
-		size_t mNewCaptureSampleRate;
-		size_t mSTFTLength;
-		size_t mNewSTFTLength;
-		size_t mSTFTHop;
-		size_t mSTFTBins;
-		WindowType mWType;
-		float mFStep;
-		volatile bool mIsInitialised;
-		volatile bool mReconfigureFFT;
-		//RTA Stuff
-		float* mDeintBuffer;
-		RingBufferFloat* mRTABuf;
-		float* mRTATimeFrame;
-		KFFTWrapper *mRTA;
-		float* mRTAMag;
-
 		int mSelectedChannel;
-		bool mLTAverageIsOn;
-		float mLTAverageSlope;
-		bool mResetLTA;
 
-		FFTPlotData mVizData;
-		GenMetricQueue< FFTPlotData > mVizDataQueue;
+		TestManager* mTestManager;
 
 	private:
 		int getInputDevIndex(const wxString &hostName = wxEmptyString, const wxString &devName = wxEmptyString);

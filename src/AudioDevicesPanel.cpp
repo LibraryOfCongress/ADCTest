@@ -66,6 +66,7 @@ const long AudioDevicesPanel::ID_VUMETER_OUT = wxNewId();
 BEGIN_EVENT_TABLE(AudioDevicesPanel,wxPanel)
 	//(*EventTable(AudioDevicesPanel)
 	//*)
+	EVT_CHOICE(wxID_ANY, AudioDevicesPanel::OnChoice)
 END_EVENT_TABLE()
 
 AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSize& size)
@@ -103,7 +104,7 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 
 	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
 	SetForegroundColour(wxColour(128,64,64));
-	SetBackgroundColour(wxColour(210,210,210));
+	SetBackgroundColour(wxColour(200,200,200));
 	BoxSizerMain = new wxBoxSizer(wxVERTICAL);
 	StaticTextLineUp = new wxStaticText(this, ID_STATICTEXT_LINE_UP, wxEmptyString, wxDefaultPosition, wxSize(-1,2), wxNO_BORDER, _T("ID_STATICTEXT_LINE_UP"));
 	StaticTextLineUp->SetBackgroundColour(wxColour(180,180,180));
@@ -411,6 +412,7 @@ AudioDevicesPanel::~AudioDevicesPanel()
 {
 	//(*Destroy(AudioDevicesPanel)
 	//*)
+	StopCalibration();
 }
 
 void 
@@ -452,7 +454,6 @@ AudioDevicesPanel::RefreshUI()
 			break;
 		}
 	}
-
 }
 
 void 
@@ -461,7 +462,7 @@ AudioDevicesPanel::ConfigureChannelSpin()
 	SpinRefCh->clearValues();
 
 	int chIdx = 1;
-	for (size_t i = 0; i < mNumInputChannels; i++)
+	for (int i = 0; i < mNumInputChannels; i++)
 	{
 		wxString vStr;
 		vStr.Printf(wxT("%d"), chIdx);
@@ -475,42 +476,42 @@ void
 AudioDevicesPanel::PopulateAll()
 {
 	PopulateHostsChoices();
-
-	PopulateInDevicesChoices();
-
-	PopulateOutDevicesChoices();
-
-	ShowInDevChannels();
-
-	ShowOutDevChannels();
-
+	PopulateDevicesChoices();
+	UpdateSRateChoice();
 }
 
 void AudioDevicesPanel::PopulateHostsChoices()
 {
-	const std::vector<ADeviceMap> &inMaps = ADevicesManager::Instance()->GetInputDeviceMaps();
+	wxArrayString hosts;
+	size_t i;
 
-	//fill hosts combo
-	wxArrayString hostsIn;
-	ChoiceHost->Clear();
+	const std::vector<ADeviceMap> &inMaps = ADevicesManager::Instance()->GetInputDeviceMaps();
+	const std::vector<ADeviceMap> &outMaps = ADevicesManager::Instance()->GetOutputDeviceMaps();
 
 	// go over our lists add the host to the list if it isn't there yet
-	for (size_t j = 0; j < inMaps.size(); j++)
-		if (hostsIn.Index(inMaps[j].hostString) == wxNOT_FOUND)
-			hostsIn.Add(inMaps[j].hostString);
-
-	ChoiceHost->Clear();
-	ChoiceHost->Append(hostsIn);
-
-	if (hostsIn.GetCount() == 0)
+	for (i = 0; i < inMaps.size(); i++)
 	{
-		ChoiceHost->Enable(false);
-		return;
+		if (hosts.Index(inMaps[i].hostString) == wxNOT_FOUND)
+			hosts.Add(inMaps[i].hostString);
 	}
 
+	for (i = 0; i < outMaps.size(); i++)
+	{
+		if (hosts.Index(outMaps[i].hostString) == wxNOT_FOUND)	
+			hosts.Add(outMaps[i].hostString);
+	}
+
+	ChoiceHost->Clear();
+	ChoiceHost->Append(hosts);
+
+	if (hosts.GetCount() == 0)
+		ChoiceHost->Enable(false);
+
+	ChoiceHost->InvalidateBestSize();
+	ChoiceHost->SetMaxSize(ChoiceHost->GetBestSize());
 
 	//see if the preferred host api is in the list
-	wxString prefInHost = gPrefs->Read(wxT("/AudioIO/InputHostName"), wxT(""));
+	wxString prefInHost = gPrefs->Read(wxT("/AudioIO/AudioHostName"), wxT(""));
 	int itemIdx = ChoiceHost->FindString(prefInHost);
 
 	if (itemIdx != wxNOT_FOUND)
@@ -521,52 +522,22 @@ void AudioDevicesPanel::PopulateHostsChoices()
 	}
 }
 
-void AudioDevicesPanel::PopulateInDevicesChoices()
+void AudioDevicesPanel::OnChoiceHostSelect(wxCommandEvent& event)
 {
-	const std::vector<ADeviceMap> &inMaps  = ADevicesManager::Instance()->GetInputDeviceMaps();
+	int hostSelectionIndex;
+	hostSelectionIndex = ChoiceHost->GetSelection();
+	wxString newHost = ChoiceHost->GetString(hostSelectionIndex);
 
-	//read what is the current selected host
-	int hostSelectionIndex = ChoiceHost->GetCurrentSelection();
+	//change the host and switch to correct devices.
+	gPrefs->Write(wxT("/AudioIO/AudioHostName"), newHost);
+	gPrefs->Flush();
 
-	if (hostSelectionIndex < 0)
-		return;
-
-	wxString hostIn = ChoiceHost->GetString(hostSelectionIndex);
-
-	// Make sure in dev list is clear in case no host was found
-	ChoiceInputDevice->Clear();
-
-	// Repopulate the Input device list available to the user
-	for (size_t i = 0; i < inMaps.size(); i++)
-	{
-		if (hostIn == inMaps[i].hostString)
-		{
-			ChoiceInputDevice->Append(inMaps[i].deviceString);
-		}
-	}
-
-	ChoiceInputDevice->Enable(ChoiceInputDevice->GetCount() ? true : false);
-
-	//see if the preferred device is in the list
-	wxString prefInDev = gPrefs->Read(wxT("/AudioIO/InputDevName"), wxT(""));
-	int itemIdx = ChoiceInputDevice->FindString(prefInDev);
-
-	if (itemIdx != wxNOT_FOUND)
-		ChoiceInputDevice->SetSelection(itemIdx);
-	else
-	{
-		ChoiceInputDevice->SetSelection(0);
-		gPrefs->Write(wxT("/AudioIO/InputDevName"), ChoiceInputDevice->GetString(0) );
-	}
-
-
-	UpdateSRateChoice();
+	// populate the devices
+	PopulateDevicesChoices();
 }
 
-void AudioDevicesPanel::PopulateOutDevicesChoices()
+void AudioDevicesPanel::PopulateDevicesChoices()
 {
-	const std::vector<ADeviceMap> &outMaps = ADevicesManager::Instance()->GetOutputDeviceMaps();
-
 	//read what is the current selected host
 	int hostSelectionIndex = ChoiceHost->GetCurrentSelection();
 
@@ -575,7 +546,41 @@ void AudioDevicesPanel::PopulateOutDevicesChoices()
 
 	wxString host = ChoiceHost->GetString(hostSelectionIndex);
 
-	// Make sure in dev list is clear in case no host was found
+	//////////////////////////////////////////////////////////////////////////////
+	// input devices
+	const std::vector<ADeviceMap> &inMaps = ADevicesManager::Instance()->GetInputDeviceMaps();	
+	ChoiceInputDevice->Clear();
+
+	// Repopulate the Input device list available to the user
+	for (size_t i = 0; i < inMaps.size(); i++)
+	{
+		if (host == inMaps[i].hostString)
+		{
+			ChoiceInputDevice->Append(inMaps[i].deviceString);
+		}
+	}
+
+	ChoiceInputDevice->Enable(ChoiceInputDevice->GetCount() ? true : false);
+	//see if the preferred device is in the list
+	wxString prefInDev = gPrefs->Read(wxT("/AudioIO/InputDevName"), wxT(""));
+	wxString prefInDevCh = gPrefs->Read(wxT("/AudioIO/InputDevChans"), wxT(""));
+	int itemIdx = ChoiceInputDevice->FindString(prefInDev);
+
+	if (itemIdx != wxNOT_FOUND)
+	{
+		ChoiceInputDevice->SetSelection(itemIdx);
+		HandleInputDevSelection(itemIdx);// TextCtrlInChannels->SetValue(prefInDevCh);
+	}	
+	else
+	{
+		ChoiceInputDevice->SetSelection(0);
+		HandleInputDevSelection(0);
+	}
+	
+	//////////////////////////////////////////////////////////////////////
+	// output devices
+	const std::vector<ADeviceMap> &outMaps = ADevicesManager::Instance()->GetOutputDeviceMaps();
+
 	ChoiceOutputDevice->Clear();
 
 	// Repopulate the Input device list available to the user
@@ -591,181 +596,148 @@ void AudioDevicesPanel::PopulateOutDevicesChoices()
 
 	//see if the preferred device is in the list
 	wxString prefOutDev = gPrefs->Read(wxT("/AudioIO/OutputDevName"), wxT(""));
-	int itemIdx = ChoiceOutputDevice->FindString(prefOutDev);
+	wxString prefOutDevCh = gPrefs->Read(wxT("/AudioIO/OutputDevChans"), wxT(""));
+	itemIdx = ChoiceOutputDevice->FindString(prefOutDev);
 
 	if (itemIdx != wxNOT_FOUND)
+	{
 		ChoiceOutputDevice->SetSelection(itemIdx);
+		HandleOutputDevSelection(itemIdx); //TextCtrlOutChannels->SetValue(prefOutDevCh);
+	}
 	else
 	{
 		ChoiceOutputDevice->SetSelection(0);
-		gPrefs->Write(wxT("/AudioIO/OutputDevName"), ChoiceOutputDevice->GetString(0));
+		HandleOutputDevSelection(0);
 	}
-
-	UpdateSRateChoice();
 }
 
 void AudioDevicesPanel::OnChoiceInputDeviceSelect(wxCommandEvent& event)
 {
 	int devSelectionIndex;
 	devSelectionIndex = ChoiceInputDevice->GetSelection();
+	HandleInputDevSelection(devSelectionIndex);
+}
 
-	wxString newDevice = ChoiceInputDevice->GetString(devSelectionIndex);
+void 
+AudioDevicesPanel::HandleInputDevSelection(int selIdx)
+{
+	if( selIdx < 0 )
+		selIdx = ChoiceInputDevice->GetSelection();
 
-	//change the host and switch to correct devices.
-	gPrefs->Write(wxT("/AudioIO/InputDevName"), newDevice);
+	wxString devIn = ChoiceInputDevice->GetString(selIdx);
+
+	int hostIdx = ChoiceHost->GetCurrentSelection();
+	wxString host = ChoiceHost->GetString(hostIdx);
+
+	//find max supported channels for this device
+	const std::vector<ADeviceMap> &inMaps = ADevicesManager::Instance()->GetInputDeviceMaps();
+	int nCh = -1;
+	for (size_t i = 0; i < inMaps.size(); i++)
+	{
+		if ( (host == inMaps[i].hostString) && (devIn == inMaps[i].deviceString) )
+		{
+			nCh = inMaps[i].numChannels;
+		}
+	}
+
+	//write the new configuration to the preferences file.
+	//this will be used by the Audio Engine to open the stream
+	gPrefs->Write(wxT("/AudioIO/InputDevName"), devIn);
+	gPrefs->Write(wxT("/AudioIO/InputDevChans"), nCh);
 	gPrefs->Flush();
+	
+	mNumInputChannels = nCh;
+	wxString nChTxt;
+	nChTxt.Printf(wxT("%d"), nCh);
+	TextCtrlInChannels->SetValue(nChTxt);
 
-	ShowInDevChannels();
+	//Rebuild the metering UI to handle max channels
+	BuildTestUI();
+
+	//update the channel spin control on the FFT panel
+	ConfigureChannelSpin();
 }
 
 void AudioDevicesPanel::OnChoiceOutputDeviceSelect(wxCommandEvent& event)
 {
 	int devSelectionIndex;
 	devSelectionIndex = ChoiceOutputDevice->GetSelection();
-
-	wxString newDevice = ChoiceOutputDevice->GetString(devSelectionIndex);
-
-	//change the host and switch to correct devices.
-	gPrefs->Write(wxT("/AudioIO/OutputDevName"), newDevice);
-	gPrefs->Flush();
-
-	ShowOutDevChannels();
+	HandleOutputDevSelection(devSelectionIndex);
 }
 
-void AudioDevicesPanel::ShowInDevChannels()
+void
+AudioDevicesPanel::HandleOutputDevSelection(int selIdx)
 {
-	const std::vector<ADeviceMap> &inMaps = ADevicesManager::Instance()->GetInputDeviceMaps();
+	if (selIdx < 0)
+		selIdx = ChoiceOutputDevice->GetSelection();
 
-	//read what is the current selected host
-	int devSelectionIndex = ChoiceInputDevice->GetCurrentSelection();
+	wxString devOut = ChoiceOutputDevice->GetString(selIdx);
 
-	if (devSelectionIndex < 0)
-		return;
+	int hostIdx = ChoiceHost->GetCurrentSelection();
+	wxString host = ChoiceHost->GetString(hostIdx);
 
-	wxString devIn = ChoiceInputDevice->GetString(devSelectionIndex);
-
-	// Repopulate the Input device list available to the user
-	int nCh = -1;
-	for (size_t i = 0; i < inMaps.size(); i++)
-	{
-		if (devIn == inMaps[i].deviceString)
-		{
-			nCh = inMaps[i].numChannels;
-		}
-	}
-
-	wxString nChTxt;
-	nChTxt.Printf(wxT("%d"), nCh);
-	TextCtrlInChannels->SetValue(nChTxt);
-	gPrefs->Write(wxT("/AudioIO/InputDevChans"), nCh);
-	gPrefs->Flush();
-
-	mNumInputChannels = nCh;
-	
-	ConfigureChannelSpin();
-	
-	BuildTestUI();
-}
-
-void AudioDevicesPanel::ShowOutDevChannels()
-{
+	//find max supported channels for this device
 	const std::vector<ADeviceMap> &outMaps = ADevicesManager::Instance()->GetOutputDeviceMaps();
-
-	//read what is the current selected host
-	int devSelectionIndex = ChoiceOutputDevice->GetCurrentSelection();
-
-	if (devSelectionIndex < 0)
-		return;
-
-	wxString devOut = ChoiceOutputDevice->GetString(devSelectionIndex);
-
-	// Repopulate the Input device list available to the user
 	int nCh = -1;
 	for (size_t i = 0; i < outMaps.size(); i++)
 	{
-		if (devOut == outMaps[i].deviceString)
+		if ((host == outMaps[i].hostString) && (devOut == outMaps[i].deviceString))
 		{
 			nCh = outMaps[i].numChannels;
 		}
 	}
 
-	wxString nChTxt;
-	nChTxt.Printf(wxT("%d"), nCh);
-	TextCtrlOutChannels->SetValue(nChTxt);
+	//write the new configuration to the preferences file.
+	//this will be used by the Audio Engine to open the stream
+	gPrefs->Write(wxT("/AudioIO/OutputDevName"), devOut);
 	gPrefs->Write(wxT("/AudioIO/OutputDevChans"), nCh);
 	gPrefs->Flush();
 
 	mNumOutputChannels = nCh;
+	wxString nChTxt;
+	nChTxt.Printf(wxT("%d"), nCh);
+	TextCtrlOutChannels->SetValue(nChTxt);
+
+	//Rebuild the metering UI to handle max channels
 	BuildTestUI();
 }
 
 void AudioDevicesPanel::OnButtonScanAudioSysClick(wxCommandEvent& event)
 {
+	EnableSelectionTools(false);
 	ADevicesManager::Instance()->Rescan();
 	PopulateAll();
+	EnableSelectionTools(true);
 }
 
 void AudioDevicesPanel::UpdateSRateChoice()
 {
-	int hostSelectionIndex;
-	int devSelectionIndex;
-
-	const std::vector<ADeviceMap> &inMaps = ADevicesManager::Instance()->GetInputDeviceMaps();
-	hostSelectionIndex = ChoiceHost->GetCurrentSelection();
-	wxString hostIn = ChoiceHost->GetString(hostSelectionIndex);
-	devSelectionIndex = ChoiceInputDevice->GetCurrentSelection();
-	wxString devIn = ChoiceInputDevice->GetString(devSelectionIndex);
-	ADeviceMap iMap;
-	for (size_t i = 0; i < inMaps.size(); i++)
-	{
-		if ( (hostIn == inMaps[i].hostString) && (devIn == inMaps[i].deviceString) )
-		{
-			iMap = inMaps[i];
-			break;
-		}
-	}
-	std::vector<double> inputSRates = iMap.supportedRates;
-
-	/////////////////////////////////////////////////////////////
-	const std::vector<ADeviceMap> &outMaps = ADevicesManager::Instance()->GetOutputDeviceMaps();
-	devSelectionIndex = ChoiceOutputDevice->GetCurrentSelection();
-	wxString devOut = ChoiceOutputDevice->GetString(devSelectionIndex);
-	ADeviceMap oMap;
-	for (size_t i = 0; i < outMaps.size(); i++)
-	{
-		if (devOut == outMaps[i].deviceString)
-		{
-			oMap = outMaps[i];
-			break;
-		}
-	}
-	std::vector<double> outputSRates = oMap.supportedRates;
-
-	/////////////////////////////////////////////////////////////////////////////////////////
-	//populate the choice widget.
-
 	wxArrayString SRArray;
-
-	for (size_t i = 0; i < inputSRates.size(); i++)
-	{
-		wxString usr;
-		usr.Printf(wxT("%g"), inputSRates[i]);
-		SRArray.Add(usr);
-	}
-
+	SRArray.Add(wxT("8000"));
+	SRArray.Add(wxT("11025"));
+	SRArray.Add(wxT("16000"));
+	SRArray.Add(wxT("22050"));
+	SRArray.Add(wxT("32000"));
+	SRArray.Add(wxT("44100"));
+	SRArray.Add(wxT("48000"));
+	SRArray.Add(wxT("88200"));
+	SRArray.Add(wxT("96000"));
+	SRArray.Add(wxT("176400"));
+	SRArray.Add(wxT("192000"));
+	
 	ChoiceSystemSampleRate->Clear();
 	ChoiceSystemSampleRate->Append(SRArray);
 
 	//see if the preferred sample rate  is in the list
-	wxString prefSRate = gPrefs->Read(wxT("/AudioIO/InputDevSRate"), wxT(""));
+	wxString prefSRate = gPrefs->Read(wxT("/AudioIO/AudioSRate"), wxT(""));
 	int itemIdx = ChoiceSystemSampleRate->FindString(prefSRate);
 
 	if (itemIdx != wxNOT_FOUND)
 		ChoiceSystemSampleRate->SetSelection(itemIdx);
 	else
 	{
-		ChoiceSystemSampleRate->SetSelection(0);
-		gPrefs->Write(wxT("/AudioIO/InputDevSRate"), ChoiceSystemSampleRate->GetString(0));
+		ChoiceSystemSampleRate->SetSelection(5);
+		gPrefs->Write(wxT("/AudioIO/AudioSRate"), ChoiceSystemSampleRate->GetString(5));
 	}
 }
 
@@ -776,48 +748,43 @@ void AudioDevicesPanel::OnChoiceSystemSampleRateSelect(wxCommandEvent& event)
 	wxString newSRate = ChoiceSystemSampleRate->GetString(SRateSelectionIndex);
 
 	//change the host and switch to correct devices.
-	gPrefs->Write(wxT("/AudioIO/InputDevSRate"), newSRate);
+	gPrefs->Write(wxT("/AudioIO/AudioSRate"), newSRate);
 	gPrefs->Flush();
-
-	UpdateSRateChoice();
 }
 
 void AudioDevicesPanel::OnButtonDevTestStartClick(wxCommandEvent& event)
 {
-    mAudioTestStarted = true;
-    ButtonDevTestStop->enable(true);
-    ButtonDevTestStart->enable(false);
-	EnableSelectionTools(false);
-	gAudioIO->StartDevicesTest();
-	TimerAudioMonitor.Start(50, false);
+	StartCalibration();
 }
 
 void AudioDevicesPanel::OnButtonDevTestStopClick(wxCommandEvent& event)
 {
+	StopCalibration();
+}
+
+
+void 
+AudioDevicesPanel::StartCalibration()
+{
+	mAudioTestStarted = true;
+	ButtonDevTestStop->enable(true);
+	ButtonDevTestStart->enable(false);
+	EnableSelectionTools(false);
+	gAudioIO->StartDevicesCalibration();
+	TimerAudioMonitor.Start(50, false);
+}
+
+void 
+AudioDevicesPanel::StopCalibration()
+{
 	TimerAudioMonitor.Stop();
 	mVuMeterIn->Reset();
 	mVuMeterOut->Reset();
-    mAudioTestStarted = false;
-    ButtonDevTestStop->enable(false);
-    ButtonDevTestStart->enable(true);
-	gAudioIO->StopDevicesTest();
+	mAudioTestStarted = false;
+	ButtonDevTestStop->enable(false);
+	ButtonDevTestStart->enable(true);
+	gAudioIO->StopDevicesCalibration();
 	EnableSelectionTools(true);
-}
-
-void AudioDevicesPanel::OnChoiceHostSelect(wxCommandEvent& event)
-{
-	int hostSelectionIndex;
-	hostSelectionIndex = ChoiceHost->GetSelection();
-	wxString newHost = ChoiceHost->GetString(hostSelectionIndex);
-
-	//change the host and switch to correct devices.
-	gPrefs->Write(wxT("/AudioIO/InputHostName"), newHost);
-	gPrefs->Write(wxT("/AudioIO/OutputHostName"), newHost);
-	gPrefs->Flush();
-
-	// populate the devices
-	PopulateInDevicesChoices();
-	PopulateOutDevicesChoices();
 }
 
 void AudioDevicesPanel::BuildTestUI()
@@ -1103,6 +1070,7 @@ AudioDevicesPanel::OnSpinFFTLength(awohSpinEvent& event)
 	msg.value = pVal;
 	gAudioIO->SetParameter(msg, false);
 }
+
 void AudioDevicesPanel::OnButtonResetLTAClick(wxCommandEvent& event)
 {
 	AudioParam msg;
@@ -1114,4 +1082,9 @@ void AudioDevicesPanel::OnButtonResetLTAClick(wxCommandEvent& event)
 void AudioDevicesPanel::OnButtonPlotResetClick(wxCommandEvent& event)
 {
 	mRTAMagPLot->Fit(0, mMaxXcord, -145, 6);
+}
+
+void AudioDevicesPanel::OnChoice(wxCommandEvent &event)
+{
+	wxObject *eventObject = event.GetEventObject();
 }

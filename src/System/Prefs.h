@@ -9,7 +9,7 @@
 #include "wx/config.h"
 #include "wx/fileconf.h"
 
-#define RELEASE_VERSION 170
+#define RELEASE_VERSION 200
 
 void InitPreferences();
 void FinishPreferences();

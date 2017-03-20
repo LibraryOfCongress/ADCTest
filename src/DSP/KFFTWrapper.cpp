@@ -148,11 +148,11 @@ KFFTWrapper::getFDData( kiss_fft_scalar* sclTData, float* FFTMag, float* FFTPhas
     float absVal, re, im, lgAbsVal;
     for( size_t i = 0; i < (1+mFFTLength/2); i++ )
     {
-		float vRand = 0;// 1e-18*((float)rand() + 1);
+		float vRand = 1e-32*((float)rand() + 1);
         re = mFDSigIn[i].r;
         im = mFDSigIn[i].i;
         absVal = (sqrtf( re*re + im*im )/(float)((float)mFFTLength/2));
-		lgAbsVal = 20 * log10(absVal);// +vRand);
+		lgAbsVal = 20 * log10(absVal + vRand );
         FFTMag[ i ] = lgAbsVal;
     }
 

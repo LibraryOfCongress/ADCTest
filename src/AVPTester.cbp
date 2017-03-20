@@ -108,18 +108,31 @@
 		<Unit filename="AVPTesterApp.h" />
 		<Unit filename="AVPTesterMain.cpp" />
 		<Unit filename="AVPTesterMain.h" />
+		<Unit filename="AudioDevicesDialog.cpp" />
+		<Unit filename="AudioDevicesDialog.h" />
 		<Unit filename="AudioDevicesPanel.cpp" />
 		<Unit filename="AudioDevicesPanel.h" />
 		<Unit filename="AudioIO/AudioEngine.cpp" />
 		<Unit filename="AudioIO/AudioEngine.h" />
+		<Unit filename="DSP/FFTAnalyser.cpp" />
+		<Unit filename="DSP/FFTAnalyser.h" />
+		<Unit filename="DSP/GenMetricQueue.cpp" />
+		<Unit filename="DSP/GenMetricQueue.h" />
+		<Unit filename="DSP/KFFTWrapper.cpp" />
+		<Unit filename="DSP/KFFTWrapper.h" />
+		<Unit filename="DSP/window.h" />
 		<Unit filename="Devices/ADevicesManager.cpp" />
 		<Unit filename="Devices/ADevicesManager.h" />
 		<Unit filename="Devices/AudioInput.cpp" />
 		<Unit filename="Devices/AudioInput.h" />
 		<Unit filename="Devices/LevelAnalyser.cpp" />
 		<Unit filename="Devices/LevelAnalyser.h" />
+		<Unit filename="SigGen/TestSignalGenerator.cpp" />
+		<Unit filename="SigGen/TestSignalGenerator.h" />
 		<Unit filename="System/Prefs.cpp" />
 		<Unit filename="System/Prefs.h" />
+		<Unit filename="TestManager.cpp" />
+		<Unit filename="TestManager.h" />
 		<Unit filename="Widgets/GButton.cpp" />
 		<Unit filename="Widgets/GButton.h" />
 		<Unit filename="Widgets/QPxColours.h" />
@@ -129,6 +142,7 @@
 			<Option compilerVar="WINDRES" />
 		</Unit>
 		<Unit filename="wxsmith/AVPTesterframe.wxs" />
+		<Unit filename="wxsmith/AudioDevicesDialog.wxs" />
 		<Unit filename="wxsmith/AudioDevicesPanel.wxs" />
 		<Extensions>
 			<code_completion />
@@ -139,6 +153,7 @@
 				<resources>
 					<wxFrame wxs="wxsmith/AVPTesterframe.wxs" src="AVPTesterMain.cpp" hdr="AVPTesterMain.h" fwddecl="0" i18n="1" name="AVPTesterFrame" language="CPP" />
 					<wxPanel wxs="wxsmith/AudioDevicesPanel.wxs" src="AudioDevicesPanel.cpp" hdr="AudioDevicesPanel.h" fwddecl="0" i18n="1" name="AudioDevicesPanel" language="CPP" />
+					<wxDialog wxs="wxsmith/AudioDevicesDialog.wxs" src="AudioDevicesDialog.cpp" hdr="AudioDevicesDialog.h" fwddecl="0" i18n="1" name="AudioDevicesDialog" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>

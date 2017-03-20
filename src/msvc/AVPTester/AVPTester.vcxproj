@@ -91,14 +91,14 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\wxWidgets-3.1.0\lib\vc_lib\mswud;..\..\..\lib-src\wxWidgets-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\lib-src\libsndfile\include;..\..\..\lib-src\portmixer\include;..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\wxWidgets-3.1.0\lib\vc_lib\mswud;..\..\..\lib-src\wxWidgets-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\..\lib-src\wxWidgets-3.1.0\lib\vc_lib;$(SolutionDir)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wxmsw31ud_core.lib;wxbase31ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;shlwapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;version.lib;wsock32.lib;wininet.lib;portaudio-v19.lib;msvcrtd.lib;vcruntimed.lib;ucrtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxmsw31ud_core.lib;wxbase31ud.lib;wxbase31ud_xml.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;portaudio-v19.lib;libsndfile.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;winmm.lib;oleacc.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;msvcrtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
     <ResourceCompile>
@@ -146,7 +146,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\wxWidgets-3.1.0\lib\vc_lib\mswu;..\..\..\lib-src\wxWidgets-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\lib-src\libsndfile\include;..\..\..\lib-src\portmixer\include;..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\wxWidgets-3.1.0\lib\vc_lib\mswu;..\..\..\lib-src\wxWidgets-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -155,7 +155,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\..\lib-src\wxWidgets-3.1.0\lib\vc_lib;$(SolutionDir)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wxmsw31u_core.lib;wxbase31u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;portaudio-v19.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winmm.lib;shell32.lib;comctl32.lib;uuid.lib;ole32.lib;rpcrt4.lib;winspool.lib;oleaut32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>wxmsw31u_core.lib;wxbase31u.lib;wxbase31u_xml.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;portaudio-v19.lib;libsndfile.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;winmm.lib;oleacc.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;msvcrt.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>MSVCRT.LIB</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -185,6 +185,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\AudioDevicesDialog.cpp" />
     <ClCompile Include="..\..\AudioDevicesPanel.cpp" />
     <ClCompile Include="..\..\AudioIO\AudioEngine.cpp" />
     <ClCompile Include="..\..\AudioIO\LevelAnalyser.cpp" />
@@ -194,11 +195,16 @@
     <ClCompile Include="..\..\Devices\ADevicesManager.cpp" />
     <ClCompile Include="..\..\DSP\adapters\RingBuffer.cpp" />
     <ClCompile Include="..\..\DSP\adapters\RingBufferFloat.cpp" />
+    <ClCompile Include="..\..\DSP\FFTAnalyser.cpp" />
     <ClCompile Include="..\..\DSP\GenMetricQueue.cpp" />
     <ClCompile Include="..\..\DSP\KFFTWrapper.cpp" />
     <ClCompile Include="..\..\DSP\kissfft\kiss_fft.c" />
     <ClCompile Include="..\..\DSP\kissfft\tools\kiss_fftr.c" />
+    <ClCompile Include="..\..\SigGen\AudioFileWriter.cpp" />
+    <ClCompile Include="..\..\SigGen\TestSignalGenerator.cpp" />
+    <ClCompile Include="..\..\SigGen\WavFileWriter.cpp" />
     <ClCompile Include="..\..\System\Prefs.cpp" />
+    <ClCompile Include="..\..\TestManager.cpp" />
     <ClCompile Include="..\..\Widgets\awohSpin.cpp" />
     <ClCompile Include="..\..\Widgets\GButton.cpp" />
     <ClCompile Include="..\..\Widgets\RimPanel.cpp" />
@@ -206,6 +212,7 @@
     <ClCompile Include="..\..\Widgets\wxMathPlot\mathplot.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\AudioDevicesDialog.h" />
     <ClInclude Include="..\..\AudioDevicesPanel.h" />
     <ClInclude Include="..\..\AudioIO\AudioEngine.h" />
     <ClInclude Include="..\..\AudioIO\LevelAnalyser.h" />
@@ -216,6 +223,7 @@
     <ClInclude Include="..\..\Devices\ADevicesManager.h" />
     <ClInclude Include="..\..\DSP\adapters\RingBuffer.h" />
     <ClInclude Include="..\..\DSP\adapters\RingBufferFloat.h" />
+    <ClInclude Include="..\..\DSP\FFTAnalyser.h" />
     <ClInclude Include="..\..\DSP\GenMetricQueue.h" />
     <ClInclude Include="..\..\DSP\KFFTWrapper.h" />
     <ClInclude Include="..\..\DSP\kissfft\kissfft.hh" />
@@ -223,7 +231,11 @@
     <ClInclude Include="..\..\DSP\kissfft\tools\kiss_fftr.h" />
     <ClInclude Include="..\..\DSP\kissfft\_kiss_fft_guts.h" />
     <ClInclude Include="..\..\DSP\window.h" />
+    <ClInclude Include="..\..\SigGen\AudioFileWriter.h" />
+    <ClInclude Include="..\..\SigGen\TestSignalGenerator.h" />
+    <ClInclude Include="..\..\SigGen\WavFileWriter.h" />
     <ClInclude Include="..\..\System\Prefs.h" />
+    <ClInclude Include="..\..\TestManager.h" />
     <ClInclude Include="..\..\Widgets\awohSpin.h" />
     <ClInclude Include="..\..\Widgets\GButton.h" />
     <ClInclude Include="..\..\Widgets\QPxColours.h" />

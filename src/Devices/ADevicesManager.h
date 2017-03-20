@@ -15,6 +15,7 @@ typedef struct ADeviceMap {
    wxString sourceString;
    wxString deviceString;
    wxString hostString;
+   double defaultRate;
    std::vector<double> supportedRates;
 } ADeviceMap;
 
@@ -36,9 +37,6 @@ public:
    /// Gets a NEW list of devices by terminating and restarting portaudio
    void Rescan();
 
-   ADeviceMap* GetDefaultOutputDevice(int hostIndex);
-   ADeviceMap* GetDefaultInputDevice(int hostIndex);
-
    const std::vector<ADeviceMap> &GetInputDeviceMaps();
    const std::vector<ADeviceMap> &GetOutputDeviceMaps();
    const std::vector<AHostAPIMap> &GetHostAPIMaps();
@@ -52,6 +50,7 @@ public:
    void Init();
 
    ADeviceMap* GetDefaultDevice(int hostIndex, int isInput);
+   ADeviceMap* GetDefaultDevice(wxString hostName, int isInput);
 
    bool m_inited;
 
