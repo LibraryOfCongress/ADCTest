@@ -108,6 +108,8 @@
 		<Unit filename="AVPTesterApp.h" />
 		<Unit filename="AVPTesterMain.cpp" />
 		<Unit filename="AVPTesterMain.h" />
+		<Unit filename="Analysers/StepsFrequencyResponse.cpp" />
+		<Unit filename="Analysers/StepsFrequencyResponse.h" />
 		<Unit filename="AudioDevicesDialog.cpp" />
 		<Unit filename="AudioDevicesDialog.h" />
 		<Unit filename="AudioDevicesPanel.cpp" />
@@ -127,6 +129,8 @@
 		<Unit filename="Devices/AudioInput.h" />
 		<Unit filename="Devices/LevelAnalyser.cpp" />
 		<Unit filename="Devices/LevelAnalyser.h" />
+		<Unit filename="SigGen/OctaveToneGenerator.cpp" />
+		<Unit filename="SigGen/OctaveToneGenerator.h" />
 		<Unit filename="SigGen/TestSignalGenerator.cpp" />
 		<Unit filename="SigGen/TestSignalGenerator.h" />
 		<Unit filename="System/Prefs.cpp" />

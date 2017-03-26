@@ -185,6 +185,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Analysers\StepsFrequencyResponse.cpp" />
     <ClCompile Include="..\..\AudioDevicesDialog.cpp" />
     <ClCompile Include="..\..\AudioDevicesPanel.cpp" />
     <ClCompile Include="..\..\AudioIO\AudioEngine.cpp" />
@@ -197,9 +198,11 @@
     <ClCompile Include="..\..\DSP\adapters\RingBufferFloat.cpp" />
     <ClCompile Include="..\..\DSP\FFTAnalyser.cpp" />
     <ClCompile Include="..\..\DSP\GenMetricQueue.cpp" />
+    <ClCompile Include="..\..\DSP\HFFilter.cpp" />
     <ClCompile Include="..\..\DSP\KFFTWrapper.cpp" />
     <ClCompile Include="..\..\DSP\kissfft\kiss_fft.c" />
     <ClCompile Include="..\..\DSP\kissfft\tools\kiss_fftr.c" />
+    <ClCompile Include="..\..\DSP\Utils\MathUtilities.cpp" />
     <ClCompile Include="..\..\SigGen\AudioFileWriter.cpp" />
     <ClCompile Include="..\..\SigGen\TestSignalGenerator.cpp" />
     <ClCompile Include="..\..\SigGen\WavFileWriter.cpp" />
@@ -212,6 +215,7 @@
     <ClCompile Include="..\..\Widgets\wxMathPlot\mathplot.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Analysers\StepsFrequencyResponse.h" />
     <ClInclude Include="..\..\AudioDevicesDialog.h" />
     <ClInclude Include="..\..\AudioDevicesPanel.h" />
     <ClInclude Include="..\..\AudioIO\AudioEngine.h" />
@@ -225,11 +229,13 @@
     <ClInclude Include="..\..\DSP\adapters\RingBufferFloat.h" />
     <ClInclude Include="..\..\DSP\FFTAnalyser.h" />
     <ClInclude Include="..\..\DSP\GenMetricQueue.h" />
+    <ClInclude Include="..\..\DSP\HFFilter.h" />
     <ClInclude Include="..\..\DSP\KFFTWrapper.h" />
     <ClInclude Include="..\..\DSP\kissfft\kissfft.hh" />
     <ClInclude Include="..\..\DSP\kissfft\kiss_fft.h" />
     <ClInclude Include="..\..\DSP\kissfft\tools\kiss_fftr.h" />
     <ClInclude Include="..\..\DSP\kissfft\_kiss_fft_guts.h" />
+    <ClInclude Include="..\..\DSP\Utils\MathUtilities.h" />
     <ClInclude Include="..\..\DSP\window.h" />
     <ClInclude Include="..\..\SigGen\AudioFileWriter.h" />
     <ClInclude Include="..\..\SigGen\TestSignalGenerator.h" />

@@ -10,12 +10,15 @@
 typedef struct TestDescriptor {
 	wxString ID;
 	wxString name;
+	wxString alias;
 	wxString enabled;
 }TestDescriptor;
 
 typedef struct TestParameter {
 	wxString name;
 	wxString type;
+	wxString alias;
+	wxString units;
 	wxString value;
 	wxString editable;
 }TestParameter;

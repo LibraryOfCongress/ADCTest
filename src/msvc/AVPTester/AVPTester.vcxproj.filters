@@ -61,6 +61,18 @@
     <Filter Include="Header Files\SigGen">
       <UniqueIdentifier>{30cea169-b4b8-4ed4-8ed7-ea0971f8abce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\DSP\Utilities">
+      <UniqueIdentifier>{93c9f977-0508-4a1b-9800-13be17d6b02d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DSP\Utilities">
+      <UniqueIdentifier>{2ee25b5f-b848-4835-ad3d-b5a76cb2808f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Analysers">
+      <UniqueIdentifier>{0e3d6e82-cc9e-437e-9548-ce4f8a1c665c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Analysers">
+      <UniqueIdentifier>{3c835eef-98de-4b14-816b-f543774e3a38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\AVPTesterApp.cpp">
@@ -136,6 +148,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\DSP\FFTAnalyser.cpp">
+      <Filter>Source Files\DSP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\Utils\MathUtilities.cpp">
+      <Filter>Source Files\DSP\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Analysers\StepsFrequencyResponse.cpp">
+      <Filter>Source Files\Analysers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\HFFilter.cpp">
       <Filter>Source Files\DSP</Filter>
     </ClCompile>
   </ItemGroup>
@@ -228,6 +249,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\DSP\FFTAnalyser.h">
+      <Filter>Header Files\DSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DSP\Utils\MathUtilities.h">
+      <Filter>Header Files\DSP\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Analysers\StepsFrequencyResponse.h">
+      <Filter>Header Files\Analysers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DSP\HFFilter.h">
       <Filter>Header Files\DSP</Filter>
     </ClInclude>
   </ItemGroup>

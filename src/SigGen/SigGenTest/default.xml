@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FADGIProject version="1.0" title="temporary">
   <procedures>
-    <test id="1" name="single tone 440Hz" enabled="true">
+    <test id="1" name="stepfreqresp" alias="stepped sine frequency response" enabled="true">
       <paramters>
-        <parameter name="signal" type="string" value="sine" editable="false"/>
-        <parameter name="frequency" type="float" value="440" editable="true"/>
-        <parameter name="level" type="float" value="0" editable="true"/>
-        <parameter name="workfolder" type="path" editable="true" value="C:\Users\chris\Desktop\AVPreserve\Software\local\src\msvc\AVPTester\Debug"/>
+        <parameter name="signal" type="string" value="octsine" units="" alias="octave stepped sine" editable="false"/>
+        <parameter name="chidx" type="int" value="12" units="" alias="test channel" editable="true"/>
+        <parameter name="freqstart" type="double" value="20" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="freqstop" type="double" value="20000" units="Hz" alias="stop frequency" editable="true"/>
+        <parameter name="octsteps" type="int" value="12" units="" alias="steps per octave" editable="true"/>
+        <parameter name="inttime" type="double" value="500" units="mS" alias="integration time" editable="true"/>        
+        <parameter name="transtime" type="double" value="125" units="mS" alias="transient time" editable="true"/>        
+        <parameter name="bursttime" type="double" value="250" units="mS" alias="burst pause" editable="true"/>        
+        <parameter name="level" type="double" value="0" units="dBFS" alias="signal level" editable="true"/>        
+	<parameter name="workfolder" type="path" editable="true" value="C:\Users\chris\Desktop\AVPreserve\Software\local\src\SigGen\SigGenTest"/>
         <parameter name="testfile" type="string" value="440.wav" editable="true"/>
         <parameter name="resultfile" type="string" value="440_res.wav" editable="true"/>
       </paramters>
