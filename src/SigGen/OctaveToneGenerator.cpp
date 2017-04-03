@@ -1,4 +1,5 @@
 #include "OctaveToneGenerator.h"
+#include "../DSP/Utils/MathUtilities.h"
 
 #define T_PI 3.1415926535897932384626433832795028841971693993751
 
@@ -6,6 +7,7 @@ OctaveToneGenerator::OctaveToneGenerator(double sampleRate, int channels)
 :mParamsNode(NULL)
 ,mSampleRate(sampleRate)
 ,mNoChannels(channels)
+,mSelectedChannelIdx(0)
 {
     //ctor
 	mSeparator = wxT("\\");
@@ -25,7 +27,7 @@ OctaveToneGenerator::generateSignal(wxXmlNode* parameters)
 
 	generateFrequenciesList();
 
-	bRes = writeTestFile();
+	bRes = writeSignalFile();
 
 	return bRes;
 }
@@ -43,6 +45,7 @@ OctaveToneGenerator::setParameters( wxXmlNode* paramsNode )
 	mTransientTime = 250;
 	mBurstIntervalTime = 250;
 	mSignalLevel = 0;
+	mSelectedChannelIdx = 0;
 
 	//get parameters from xml node
 	wxXmlNode* parameterNode = mParamsNode->GetChildren();
@@ -50,6 +53,13 @@ OctaveToneGenerator::setParameters( wxXmlNode* paramsNode )
 	{
 		wxString pName = parameterNode->GetAttribute(wxT("name"));
 
+		if (pName == wxT("chidx"))
+		{
+			wxString value = parameterNode->GetAttribute(wxT("value"));
+			double dChIdx;
+			value.ToDouble(&dChIdx);
+			mSelectedChannelIdx = (int)dChIdx;
+		}
 		if (pName == wxT("freqstart"))
 		{
 			wxString value = parameterNode->GetAttribute(wxT("value"));
@@ -90,7 +100,7 @@ OctaveToneGenerator::setParameters( wxXmlNode* paramsNode )
 		{
 			mFolderPath = parameterNode->GetAttribute(wxT("value"));
 		}
-		else if (pName == wxT("testfile"))
+		else if (pName == wxT("signalfile"))
 		{
 			mFileName = parameterNode->GetAttribute(wxT("value"));
 		}
@@ -104,37 +114,11 @@ OctaveToneGenerator::setParameters( wxXmlNode* paramsNode )
 void 
 OctaveToneGenerator::generateFrequenciesList()
 {
-	mFrequencies.clear();
-	double baseFreq = 1000;
-	int lowOct = -6* mStepsPerOctave;
-	int hiOct = 6* mStepsPerOctave;
-
-	for (int i = lowOct; i < hiOct; i++)
-	{
-		double fc = baseFreq*(pow(2, (double)i / mStepsPerOctave));
-		if ((fc >= mStartFreq) && (fc <= mStopFreq + 500))
-		{
-			fc = ceil(fc);
-
-			if (fc > 1e3)
-			{
-				fc = 10 * ceil(fc / 10) + 4;
-			}
-
-			if (fc > 10e3)
-			{
-				fc = 100 * ceil(fc / 100) + 44;
-			}
-
-			mFrequencies.push_back(fc);
-			fprintf(stderr, "%g\t", fc);
-		}
-	}
-	wxMilliSleep(2000);
+	mFrequencies = MathUtilities::calculateOctaveFreqs(mStartFreq, mStopFreq, 1000, mStepsPerOctave, 5);
 }
 
 bool 
-OctaveToneGenerator::writeTestFile()
+OctaveToneGenerator::writeSignalFile()
 {
 	bool bRes = false;
 	size_t sampleSilence = 1e-3 * mBurstIntervalTime * mSampleRate;
@@ -167,7 +151,7 @@ OctaveToneGenerator::writeTestFile()
 			}
 			
 			//write tone burst
-			size_t totalTSamples = 2 * mTransientTime + sampleTone;
+			size_t totalTSamples = 2 * sampleTransient + sampleTone;
 			double freq = mFrequencies[fIdx];
 			double linLevel = pow(10, (mSignalLevel / 20.0));
 			double twoPi = T_PI * 2;
@@ -175,30 +159,36 @@ OctaveToneGenerator::writeTestFile()
 			double timeS = dTime;
 			double angleS = 0;
 			
-			float* aFrame = new float[2];
 			size_t tCount = 0;
 			while (tCount < totalTSamples)
 			{
+				memset(toneBuffer, 0, sizeof(float)*mNoChannels*writeLength);
+
 				for (size_t i = 0; i < writeLength; i++)
 				{
 					angleS = freq*timeS;
-					//if (angleS == 1.0)
-						//angleS = 0.0;
 
 					double sig = (linLevel*sin(twoPi*angleS));
 
-					for (int j = 0; j < mNoChannels; j++)
+					if (mSelectedChannelIdx == -1)
+					//do both channels
 					{
-						toneBuffer[mNoChannels* i + j] = (float)sig;
+						for (int j = 0; j < mNoChannels; j++)
+						{
+							toneBuffer[mNoChannels* i + j] = (float)sig;
+						}
 					}
+					else
+					//only selected channel
+					{
+						toneBuffer[mNoChannels* i + mSelectedChannelIdx] = (float)sig;
+					}
+
 					timeS = (double)tCount / mSampleRate;// += dTime;
 					tCount++;
 				}
 				writer->writeAudioFrames(toneBuffer, writeLength);
-				//tCount += writeLength;
 			}
-
-			delete[] aFrame;
 		}
 
 		//write lead-out silence;

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FADGIProject version="1.0" title="temporary">
+  <procedures>
+    <test id="0" name="freqresp_left_ch" alias="frequency response 3 steps/oct" enabled="true">
+      <paramters>
+        <parameter name="signal" type="string" value="octsine" units="" alias="octave stepped sine" editable="false"/>
+        <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
+        <parameter name="freqstart" type="double" value="20" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="freqstop" type="double" value="20000" units="Hz" alias="stop frequency" editable="true"/>
+        <parameter name="octsteps" type="int" value="3" units="" alias="steps per octave" editable="true"/>
+        <parameter name="detectionlevel" type="double" value="-50" units="dB" alias="signal detection threshold" editable="true"/>
+        <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
+        <parameter name="transtime" type="double" value="10" units="mS" alias="transient time" editable="true"/>
+        <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
+        <parameter name="level" type="double" value="-10" units="dBFS" alias="signal level" editable="true"/>
+        <parameter name="workfolder" type="path" editable="true" value=""/>
+        <parameter name="signalfile" type="string" value="freqresp_l_sig.wav" editable="true"/>
+        <parameter name="responsefile" type="string" value="freqresp_l_resp.wav" editable="true"/>
+        <parameter name="resultsfile" type="string" value="freqresp_l.xml" editable="true"/>
+      </paramters>
+    </test>
+    <test id="1" name="freqresp_right_ch" alias="frequency response 3 steps/oct" enabled="true">
+      <paramters>
+        <parameter name="signal" type="string" value="octsine" units="" alias="octave stepped sine" editable="false"/>
+        <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
+        <parameter name="freqstart" type="double" value="20" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="freqstop" type="double" value="20000" units="Hz" alias="stop frequency" editable="true"/>
+        <parameter name="octsteps" type="int" value="3" units="" alias="steps per octave" editable="true"/>
+        <parameter name="detectionlevel" type="double" value="-50" units="dB" alias="signal detection threshold" editable="true"/>
+        <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
+        <parameter name="transtime" type="double" value="10" units="mS" alias="transient time" editable="true"/>
+        <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
+        <parameter name="level" type="double" value="-10" units="dBFS" alias="signal level" editable="true"/>
+        <parameter name="workfolder" type="path" editable="true" value=""/>
+        <parameter name="signalfile" type="string" value="freqresp_r_sig.wav" editable="true"/>
+        <parameter name="responsefile" type="string" value="freqresp_r_resp.wav" editable="true"/>
+        <parameter name="resultsfile" type="string" value="freqresp_r.xml" editable="true"/>
+      </paramters>
+    </test>
+  </procedures>
+</FADGIProject>

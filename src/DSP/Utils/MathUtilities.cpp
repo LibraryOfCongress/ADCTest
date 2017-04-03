@@ -29,9 +29,9 @@ double MathUtilities::princarg(double ang)
     return ValOut;
 }
 
-void MathUtilities::getAlphaNorm(const double *data, unsigned int len, unsigned int alpha, double* ANorm)
+void MathUtilities::getAlphaNorm(const double *data, size_t len, size_t alpha, double* ANorm)
 {
-    unsigned int i;
+    size_t i;
     double temp = 0.0;
     double a=0.0;
 
@@ -47,9 +47,9 @@ void MathUtilities::getAlphaNorm(const double *data, unsigned int len, unsigned 
     *ANorm = a;
 }
 
-void MathUtilities::getMinAlphaNormRealPosIn(double *pData, unsigned int uLen, unsigned int alpha, double &Min, double &ANorm)
+void MathUtilities::getMinAlphaNormRealPosIn(double *pData, size_t uLen, size_t alpha, double &Min, double &ANorm)
 {
-	unsigned int i;
+	size_t i;
 	double temp = 0.0;
 	double a=0.0;
 
@@ -73,10 +73,10 @@ void MathUtilities::getMinAlphaNormRealPosIn(double *pData, unsigned int uLen, u
 	ANorm = a;
 }
 
-double MathUtilities::getAlphaNorm( const std::vector <double> &data, unsigned int alpha )
+double MathUtilities::getAlphaNorm( const std::vector <double> &data, size_t alpha )
 {
-    unsigned int i;
-    unsigned int len = data.size();
+    size_t i;
+    size_t len = data.size();
     double temp = 0.0;
     double a=0.0;
 
@@ -101,7 +101,7 @@ double MathUtilities::round(double x)
 
 double MathUtilities::median( const std::vector<double> &src )
 {
-    unsigned int i, j;
+    size_t i, j;
     double tmp = 0.0;
     double tempMedian;
     double medianVal;
@@ -145,9 +145,9 @@ double MathUtilities::median( const std::vector<double> &src )
     return medianVal;
 }
 
-double MathUtilities::median(const double *src, unsigned int len)
+double MathUtilities::median(const double *src, size_t len)
 {
-    unsigned int i, j;
+    size_t i, j;
     double tmp = 0.0;
     double tempMedian;
     double medianVal;
@@ -190,9 +190,9 @@ double MathUtilities::median(const double *src, unsigned int len)
     return medianVal;
 }
 
-double MathUtilities::sum(const double *src, unsigned int len)
+double MathUtilities::sum(const double *src, size_t len)
 {
-    unsigned int i ;
+    size_t i ;
     double retVal =0.0;
 
     for(  i = 0; i < len; i++)
@@ -203,7 +203,7 @@ double MathUtilities::sum(const double *src, unsigned int len)
     return retVal;
 }
 
-double MathUtilities::mean(const double *src, unsigned int len)
+double MathUtilities::mean(const double *src, size_t len)
 {
     double retVal =0.0;
 
@@ -215,8 +215,8 @@ double MathUtilities::mean(const double *src, unsigned int len)
 }
 
 double MathUtilities::mean(const std::vector<double> &src,
-                           unsigned int start,
-                           unsigned int count)
+                           size_t start,
+                           size_t count)
 {
     double sum = 0.;
 
@@ -228,9 +228,9 @@ double MathUtilities::mean(const std::vector<double> &src,
     return sum / count;
 }
 
-void MathUtilities::getFrameMinMax(const double *data, unsigned int len, double *min, double *max)
+void MathUtilities::getFrameMinMax(const double *data, size_t len, double *min, double *max)
 {
-    unsigned int i;
+    size_t i;
     double temp = 0.0;
 
     if (len == 0) {
@@ -256,10 +256,38 @@ void MathUtilities::getFrameMinMax(const double *data, unsigned int len, double 
     }
 }
 
-int MathUtilities::getMax( double* pData, unsigned int Length, double* pMax )
+void MathUtilities::getFrameMinMax(const float *data, size_t len, float *min, float *max)
 {
-	unsigned int index = 0;
-	unsigned int i;
+	size_t i;
+	float temp = 0.0;
+
+	if (len == 0) {
+		*min = *max = 0;
+		return;
+	}
+
+	*min = data[0];
+	*max = data[0];
+
+	for (i = 0; i < len; i++)
+	{
+		temp = data[i];
+
+		if (temp < *min)
+		{
+			*min = temp;
+		}
+		if (temp > *max)
+		{
+			*max = temp;
+		}
+	}
+}
+
+int MathUtilities::getMax( double* pData, size_t Length, double* pMax )
+{
+	size_t index = 0;
+	size_t i;
 	double temp = 0.0;
 
 	double max = pData[0];
@@ -284,8 +312,8 @@ int MathUtilities::getMax( double* pData, unsigned int Length, double* pMax )
 
 int MathUtilities::getMax( const std::vector<double> & data, double* pMax )
 {
-	unsigned int index = 0;
-	unsigned int i;
+	size_t index = 0;
+	size_t i;
 	double temp = 0.0;
 
 	double max = data[0];
@@ -380,9 +408,9 @@ void MathUtilities::normalise(std::vector<double> &data, NormaliseType type)
     case NormaliseUnitSum:
     {
         double sum = 0.0;
-        for (int i = 0; i < data.size(); ++i) sum += data[i];
+        for (size_t i = 0; i < data.size(); ++i) sum += data[i];
         if (sum != 0.0) {
-            for (int i = 0; i < data.size(); ++i) data[i] /= sum;
+            for (size_t i = 0; i < data.size(); ++i) data[i] /= sum;
         }
     }
     break;
@@ -390,11 +418,11 @@ void MathUtilities::normalise(std::vector<double> &data, NormaliseType type)
     case NormaliseUnitMax:
     {
         double max = 0.0;
-        for (int i = 0; i < data.size(); ++i) {
+        for (size_t i = 0; i < data.size(); ++i) {
             if (fabs(data[i]) > max) max = fabs(data[i]);
         }
         if (max != 0.0) {
-            for (int i = 0; i < data.size(); ++i) data[i] /= max;
+            for (size_t i = 0; i < data.size(); ++i) data[i] /= max;
         }
     }
     break;
@@ -624,13 +652,13 @@ MathUtilities::ClipZeroToOne(float z)
 }
 
 
-unsigned int
-MathUtilities::getFrameZeroCrossings( const double* data, unsigned int len )
+size_t
+MathUtilities::getFrameZeroCrossings( const double* data, size_t len )
 {
-    unsigned int zc = 0;
+    size_t zc = 0;
 
     double val = 0;
-    for( unsigned int binIdx = 0; binIdx < len - 1; binIdx++ )
+    for( size_t binIdx = 0; binIdx < len - 1; binIdx++ )
     {
         val = data[ binIdx ] * data[ binIdx + 1];
 
@@ -639,4 +667,40 @@ MathUtilities::getFrameZeroCrossings( const double* data, unsigned int len )
     }
 
     return zc;
+}
+
+
+std::vector<double> 
+MathUtilities::calculateOctaveFreqs(double startFreq,
+	double stopFreq,
+	double baseFreq,
+	int stepsPerOctave,
+	double offset)
+{
+	std::vector<double> freqs;
+
+	int lowOct = -6 * stepsPerOctave;
+	int hiOct = 6 * stepsPerOctave;
+
+	for (int i = lowOct; i < hiOct; i++)
+	{
+		double fc = ceil(baseFreq*(pow(2, (double)i / (double)stepsPerOctave)));
+		
+		if ((fc >= startFreq- startFreq/10.0) && (fc <= stopFreq + stopFreq/10.0))
+		{
+			if (fc > 1e3)
+			{
+				fc = 10.0 * ceil(fc / 10.0) + offset;
+			}
+
+			if (fc > 10e3)
+			{
+				fc = 100.0 * ceil(fc / 100.0) + 10.0*offset;
+			}
+			fprintf(stderr, "%g\t", fc);
+			freqs.push_back(fc);
+		}
+	}
+
+	return freqs;
 }

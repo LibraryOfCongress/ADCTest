@@ -327,7 +327,7 @@ int AudioIO::doIODevicesCalibration()
 						
 						double sig = (float)(mOutputGain*sin(twoPi*angleS));
 
-						for (size_t j = 0; j < playbackChannels; j++)
+						for (int j = 0; j < playbackChannels; j++)
 						{
 							OutputBuffer[playbackChannels* i + j] = (float)sig;
 						}
@@ -551,13 +551,17 @@ AudioIO::doADCTest()
 			if (mTestManager->IsTestEnabled(tIdx))
 			{
 				wxString pbFile = wxEmptyString;
-				int errCode = mTestManager->GenerateTestFile(tIdx, mCaptureSampleRate, playbackChannels, pbFile);
+				int errCode = mTestManager->GenerateSignalFile(tIdx, mCaptureSampleRate, playbackChannels, pbFile);
 				
-				wxString recFile = mTestManager->GetResultsFilePath(tIdx);
-			
+				reportEvent(2, AVP_PROCESS_STAGE, wxT("generating signal file"), false, wxEmptyString, noTests, tIdx);
+				wxString recFile = mTestManager->GetResponseFilePath(tIdx);
+
+				reportEvent(2, AVP_PROCESS_STAGE, wxT("playback and response acquisition"), false, wxEmptyString, noTests, tIdx);
 				errorCode = PlaybackAcquire(pbFile, recFile);
 
 				//analyse
+				reportEvent(2, AVP_PROCESS_STAGE, wxT("response analysis"), false, wxEmptyString, noTests, tIdx);
+				mTestManager->AnalyseResponse(tIdx);
 			}
 		}
 	}
@@ -689,7 +693,7 @@ AudioIO::CloseDevices()
 }
 
 int 
-AudioIO::PlaybackAcquire(wxString testFile, wxString responseFile)
+AudioIO::PlaybackAcquire(wxString signalFile, wxString responseFile)
 {
 	int errorCode = -1;
 	mCaptureSampleRate = 0;
@@ -706,12 +710,12 @@ AudioIO::PlaybackAcquire(wxString testFile, wxString responseFile)
 
 	////////////////////////////////////////////////////////////////
 	//playback file
-	std::string testFilePath(testFile.mbc_str());
+	std::string signalFilePath(signalFile.mbc_str());
 	SNDFILE* sndOutFile = NULL;
 	SF_INFO  sndOutFileInfo;
 	sndOutFileInfo.format = 0;
 	sndOutFileInfo.frames = 0;
-	sndOutFile = sf_open((const char*)testFilePath.c_str(), SFM_READ, &sndOutFileInfo);
+	sndOutFile = sf_open((const char*)signalFilePath.c_str(), SFM_READ, &sndOutFileInfo);
 	size_t outFileFrames = sndOutFileInfo.frames;
 	double sRate = sndOutFileInfo.samplerate;
 

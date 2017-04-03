@@ -157,6 +157,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Analysers\SegmentLocator.h" />
     <ClInclude Include="..\..\Analysers\StepsFrequencyResponse.h" />
     <ClInclude Include="..\..\DSP\HFFilter.h" />
     <ClInclude Include="..\..\DSP\Utils\MathUtilities.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Analysers\SegmentLocator.cpp" />
     <ClCompile Include="..\..\Analysers\StepsFrequencyResponse.cpp" />
     <ClCompile Include="..\..\DSP\HFFilter.cpp" />
     <ClCompile Include="..\..\DSP\Utils\MathUtilities.cpp" />

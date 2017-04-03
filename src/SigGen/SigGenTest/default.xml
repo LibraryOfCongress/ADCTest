@@ -8,33 +8,14 @@
         <parameter name="freqstart" type="double" value="20" units="Hz" alias="start frequency" editable="true"/>
         <parameter name="freqstop" type="double" value="20000" units="Hz" alias="stop frequency" editable="true"/>
         <parameter name="octsteps" type="int" value="12" units="" alias="steps per octave" editable="true"/>
-        <parameter name="inttime" type="double" value="500" units="mS" alias="integration time" editable="true"/>        
-        <parameter name="transtime" type="double" value="125" units="mS" alias="transient time" editable="true"/>        
-        <parameter name="bursttime" type="double" value="250" units="mS" alias="burst pause" editable="true"/>        
-        <parameter name="level" type="double" value="0" units="dBFS" alias="signal level" editable="true"/>        
+        <parameter name="inttime" type="double" value="100" units="mS" alias="integration time" editable="true"/>        
+        <parameter name="transtime" type="double" value="25" units="mS" alias="transient time" editable="true"/>        
+        <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>        
+        <parameter name="level" type="double" value="-20" units="dBFS" alias="signal level" editable="true"/>        
 	<parameter name="workfolder" type="path" editable="true" value="C:\Users\chris\Desktop\AVPreserve\Software\local\src\SigGen\SigGenTest"/>
-        <parameter name="testfile" type="string" value="440.wav" editable="true"/>
-        <parameter name="resultfile" type="string" value="440_res.wav" editable="true"/>
-      </paramters>
-    </test>
-    <test id="2" name="single tone 1000Hz" enabled="true">
-      <paramters>
-        <parameter name="signal" type="string" value="sine" editable="false"/>
-        <parameter name="frequency" type="float" value="1000" editable="true"/>
-        <parameter name="level" type="float" value="-6" editable="true"/>
-        <parameter name="workfolder" type="path" editable="true" value="C:\Users\chris\Desktop\AVPreserve\Software\local\src\msvc\AVPTester\Debug"/>
-        <parameter name="testfile" type="string" value="1000.wav" editable="true"/>
-        <parameter name="resultfile" type="string" value="1000_res.wav" editable="true"/>
-      </paramters>
-    </test>
-    <test id="3" name="single tone 5000Hz" enabled="true">
-      <paramters>
-        <parameter name="signal" type="string" value="sine" editable="false"/>
-        <parameter name="frequency" type="float" value="5000" editable="true"/>
-        <parameter name="level" type="float" value="-18" editable="true"/>
-        <parameter name="workfolder" type="path" editable="true" value="C:\Users\chris\Desktop\AVPreserve\Software\local\src\msvc\AVPTester\Debug"/>
-        <parameter name="testfile" type="string" value="5000.wav" editable="true"/>
-        <parameter name="resultfile" type="string" value="5000_res.wav" editable="true"/>
+        <parameter name="signalfile" type="string" value="steps.wav" editable="true"/>
+        <parameter name="responsefile" type="string" value="steps.wav" editable="true"/>
+        <parameter name="resultsfile" type="string" value="freqresp.xml" editable="true"/>
       </paramters>
     </test>
   </procedures>

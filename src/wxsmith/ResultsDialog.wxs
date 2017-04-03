@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="ResultsDialog">
+		<title>frequency response</title>
+		<pos>0,0</pos>
+		<bg>#C8C8C8</bg>
+		<id_arg>0</id_arg>
+		<style>wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU|wxRESIZE_BORDER|wxCLOSE_BOX|wxMAXIMIZE_BOX|wxMINIMIZE_BOX|wxFULL_REPAINT_ON_RESIZE</style>
+		<object class="wxBoxSizer" variable="BoxSizerMain" member="no">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_TOP" subclass="RimPanel" variable="PanelTop" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerTop" member="no">
+						<object class="sizeritem">
+							<object class="wxStaticText" name="ID_STATICTEXT_RESULTSINFO" variable="StaticTextResultsInfo" member="yes">
+								<label>INFO</label>
+								<size>-1,50</size>
+								<fg>#804040</fg>
+								<font>
+									<size>12</size>
+									<style>normal</style>
+									<weight>normal</weight>
+									<underlined>0</underlined>
+									<family>swiss</family>
+									<face>Arial Narrow</face>
+								</font>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>5</border>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>5</border>
+			</object>
+			<object class="spacer">
+				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<size>600,1</size>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_MID" subclass="RimPanel" variable="PanelMiddle" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerMId" member="no">
+						<object class="spacer">
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<size>1,400</size>
+						</object>
+						<object class="sizeritem">
+							<object class="Custom" name="ID_RTA_FFT_PLOT" subclass="mpWindow" variable="mRTAMagPLot" member="yes">
+								<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE));</creating_code>
+								<include_file>Widgets\\wxMathPlot\\mathplot.h</include_file>
+								<local_include>1</local_include>
+								<style></style>
+								<size>600,400</size>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>5</border>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_BTM" subclass="RimPanel" variable="PanelBottom" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerBtm" member="no" />
+				</object>
+				<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>5</border>
+			</object>
+		</object>
+	</object>
+</wxsmith>

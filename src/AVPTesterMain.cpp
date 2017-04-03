@@ -15,6 +15,7 @@
 #include "Devices/ADevicesManager.h"
 #include "AudioIO/AudioEngine.h"
 
+
 //(*InternalHeaders(AVPTesterFrame)
 #include <wx/bitmap.h>
 #include <wx/icon.h>
@@ -88,6 +89,7 @@ END_EVENT_TABLE()
 
 AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
 :mADevicesDialog(NULL)
+,mResultsDialog(NULL)
 {
     //(*Initialize(AVPTesterFrame)
     wxBoxSizer* BoxSizerParamsBtns;
@@ -307,6 +309,11 @@ AVPTesterFrame::~AVPTesterFrame()
 		mADevicesDialog = NULL;
 	}
 
+	if (mResultsDialog) {
+		delete mResultsDialog;
+		mResultsDialog = NULL;
+	}
+
     DeinitAudioIO();
 	FinishPreferences();
 }
@@ -314,6 +321,8 @@ AVPTesterFrame::~AVPTesterFrame()
 void AVPTesterFrame::BuildUI()
 {
 	mADevicesDialog = new AudioDevicesDialog(this);
+	mResultsDialog = new ResultsDialog(this);
+	mResultsDialog->Show(false);
 
 	//set up test list
 
@@ -540,6 +549,32 @@ void AVPTesterFrame::OnListViewTestsItemSelect(wxListEvent& event)
 
 void AVPTesterFrame::OnListViewTestsItemActivated(wxListEvent& event)
 {
+	TestDescriptor dsc = mTestDescriptors[mSelectedTestIdx];
+	TestManager* tm = gAudioIO->GetTestManager();
+	std::vector<TestParameter> params = tm->GetTestParameters(dsc.ID);
+
+	wxString wSeparator = wxT("\\");
+	wxString wFolder=wxEmptyString;
+	wxString wFileName = wxEmptyString;
+	for (size_t paramIdx = 0; paramIdx < params.size(); paramIdx++)
+	{
+		TestParameter prm = params[paramIdx];
+		if (prm.name == wxT("workfolder"))
+			wFolder = prm.value;
+
+		if (prm.name == wxT("resultsfile"))
+			wFileName = prm.value;
+	}
+
+	wxString filePath = wFolder + wSeparator + wFileName;	
+	if (wxFileName::FileExists(filePath))
+	{
+		mResultsDialog->OpenResultsFile(filePath);
+		mResultsDialog->Show(true);
+		mResultsDialog->EnablePanZoom(true);
+	}
+	else
+		wxMessageBox(wxT("No results are available for this test"), wxT("missing .."));
 }
 
 void AVPTesterFrame::OnListViewTestsItemRClick(wxListEvent& event)

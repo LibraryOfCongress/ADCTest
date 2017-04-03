@@ -19,7 +19,8 @@ void ParseProject(wxXmlNode* pNode)
 		if (testname == wxT("stepfreqresp"))
 		{
 			wxXmlNode* testParams = testNode->GetChildren();
-			//mTestGen->generateSignal(testParams);
+			
+			mTestGen->generateSignal(testParams);
 
 			mAnalyser->analyseSignal(testParams);
 		}

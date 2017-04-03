@@ -111,7 +111,7 @@ class AudioIO
 		PaError CloseDevices();
 
 		//Plays test signal and records response  
-		int PlaybackAcquire(wxString testFile, wxString responseFile);
+		int PlaybackAcquire(wxString signalFile, wxString responseFile);
 		
 
 		void FlushParameterQueue();

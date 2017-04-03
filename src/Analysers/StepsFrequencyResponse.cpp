@@ -9,7 +9,8 @@ StepsFrequencyResponse::StepsFrequencyResponse()
 ,mNoChannels(0)
 ,mRespFileFrames(0)
 ,mDetectionWLen(0)
-,mLogDetectionThreshold(-40)
+,mLogDetectionThreshold(-60)
+,mLocator(NULL)
 {
     //ctor
 	mSeparator = wxT("\\");
@@ -18,6 +19,10 @@ StepsFrequencyResponse::StepsFrequencyResponse()
 StepsFrequencyResponse::~StepsFrequencyResponse()
 {
     //dtor
+	if( mLocator ){
+		delete mLocator;
+		mLocator = NULL;
+	}
 }
 
 bool
@@ -57,7 +62,14 @@ StepsFrequencyResponse::setParameters(wxXmlNode* paramsNode)
 	while (parameterNode)
 	{
 		wxString pName = parameterNode->GetAttribute(wxT("name"));
-
+		
+		if (pName == wxT("chidx"))
+		{
+			wxString value = parameterNode->GetAttribute(wxT("value"));
+			double dChIdx;
+			value.ToDouble(&dChIdx);
+			mSelectedChannel = (int)dChIdx;
+		}
 		if (pName == wxT("freqstart"))
 		{
 			wxString value = parameterNode->GetAttribute(wxT("value"));
@@ -73,6 +85,11 @@ StepsFrequencyResponse::setParameters(wxXmlNode* paramsNode)
 			wxString value = parameterNode->GetAttribute(wxT("value"));
 			double bdm; value.ToDouble(&bdm);
 			mStepsPerOctave = (int)bdm;
+		}
+		else if (pName == wxT("detectionlevel"))
+		{
+			wxString value = parameterNode->GetAttribute(wxT("value"));
+			value.ToDouble(&mLogDetectionThreshold);
 		}
 		else if (pName == wxT("inttime"))
 		{
@@ -98,14 +115,17 @@ StepsFrequencyResponse::setParameters(wxXmlNode* paramsNode)
 		{
 			mFolderPath = parameterNode->GetAttribute(wxT("value"));
 		}
-		else if (pName == wxT("resultfile"))
+		else if (pName == wxT("responsefile"))
 		{
 			mFileName = parameterNode->GetAttribute(wxT("value"));
+		}
+		else if (pName == wxT("resultsfile"))
+		{
+			mResultsFileName = parameterNode->GetAttribute(wxT("value"));
 		}
 
 		parameterNode = parameterNode->GetNext();
 	}
-
 }
 
 bool 
@@ -129,127 +149,155 @@ StepsFrequencyResponse::openResponseFile()
 		mSampleRate = respFileInfo.samplerate;
 		mNoChannels = respFileInfo.channels;
 		mDetectionWLen = (size_t)MathUtilities::nextPowerOfTwo(int((1e-3) * mSampleRate));
+		mSampleTransient = 1e-3 * mTransientTime * mSampleRate;
+		mSampleTone = 1e-3 * mIntegrationTime * mSampleRate;
 		
+		//find segments in file
 		std::vector<size_t> onsets = getOnsets(respFile);
 
+		std::vector<FreqPoint> results = analyseSegments(respFile, onsets);
+
 		sf_close(respFile);
+
+		writeResultsToFile(results);
 	}
 		
-
 	return bRes;
 }
 
 std::vector<size_t> 
 StepsFrequencyResponse::getOnsets(SNDFILE* afile)
 {
-	//debug wav file
+	if (mLocator) {
+		delete mLocator;
+		mLocator = NULL;
+	}
+	mLocator = new SegmentLocator(mSampleRate, mNoChannels);
+	mLocator->Reset();
+	mLocator->SetDetectionParameters(mLogDetectionThreshold);
+	mLocator->SetLPFilterparameters(50, 12);
 
 
-	std::vector<size_t> onsets;
-	double detectionThresholdLinear = pow(10, (mLogDetectionThreshold / 20.0));
+	std::string dbgPath = "dbg.wav";
+	WavFileWriter* dbgWriter = new WavFileWriter(dbgPath, 2, (size_t)mSampleRate, 1);
+
 	float* windowBuffer = new float[mDetectionWLen*mNoChannels];
-	float* rectBuffer = new float[mDetectionWLen];
-	float* lpBuffer = new float[mDetectionWLen];
-	
-	HFFilter* lpFilter = new HFFilter();
-	lpFilter->Configure(mSampleRate);		
-	lpFilter->UpdateSlope(12);
-	lpFilter->UpdateFrequency(10);
-
 	size_t count = 0;
-	bool signalDetected = false; 
 	while (count < mRespFileFrames)
 	{
 		sf_count_t read = sf_readf_float(afile, windowBuffer, mDetectionWLen);
+		int point = mLocator->ProcesSignal(windowBuffer, mSelectedChannel, mDetectionWLen);
 
-		for (size_t i = 0; i < mDetectionWLen; i++)
-		{
-			rectBuffer[i] = fabs(windowBuffer[ mNoChannels * i + mSelectedChannel]);
-		}
-		lpFilter->Process(rectBuffer, mDetectionWLen);
+		if (point >= 0)
+			windowBuffer[point] = -1;
 
-		//threshold decision
-		for (size_t j = 0; j < mDetectionWLen; j++)
-		{
-			float val = rectBuffer[j];
-			if (!signalDetected && (val >= detectionThresholdLinear) )
-			{
-				signalDetected = true;
-				onsets.push_back(count + j);
-			}
+		dbgWriter->writeAudioFrames(windowBuffer, mDetectionWLen);
 
-			if (val < detectionThresholdLinear)
-				signalDetected = false;
-		}
 		count += read;
 	}
-
-	delete [] windowBuffer;
-	delete [] rectBuffer;
-	delete [] lpBuffer;
-	delete lpFilter;
-
-	/////////////////////////////////////////////////////////////////////////////////////////
-	//dump test onset
-	/*
-	sf_seek(afile, 0, SEEK_SET);
-	std::string dbgPath = "dbg.wav";
-	WavFileWriter* dbgWriter = new WavFileWriter(dbgPath, 1, (size_t)mSampleRate, 1);
-	float* dbgBuffer = new float[mDetectionWLen];
-
-	std::vector<size_t>::iterator it = onsets.begin();
-	size_t OPos = *it;
-	size_t dbgCount = 0;
-	while (dbgCount < mRespFileFrames)
-	{
-		sf_count_t read = sf_readf_float(afile, windowBuffer, mDetectionWLen);
-
-		for (size_t i = 0; i < mDetectionWLen; i++)
-		{
-			if (dbgCount == OPos)
-			{
-				dbgBuffer[i] = -1;
-				it++;
-
-				if (it < onsets.end())
-				{
-					OPos = *it;
-				}
-			}
-			else
-			{
-				dbgBuffer[i] = fabs(windowBuffer[mNoChannels * i + mSelectedChannel]);
-			}
-			dbgCount++;
-		}
-
-		dbgWriter->writeAudioFrames(dbgBuffer, mDetectionWLen);
-	}
-
+	
+	delete[] windowBuffer;
 	delete dbgWriter;
-	delete[] dbgBuffer;
-	delete[] windowBuffer;*/
-	/////////////////////////////////////////////////////////////////////////////////////////
 
-	return onsets;
+	return mLocator->GetOnsets();
 }
 
 void
 StepsFrequencyResponse::generateFrequenciesList()
 {
-	mFrequencies.clear();
-	double baseFreq = 1000;
-	int lowOct = -6 * mStepsPerOctave;
-	int hiOct = 6 * mStepsPerOctave;
-
-	for (int i = lowOct; i < hiOct; i++)
-	{
-		double fc = baseFreq*(pow(2, (double)i / mStepsPerOctave));
-		if ((fc >= mStartFreq) && (fc <= mStopFreq + 500))
-		{
-			mFrequencies.push_back(fc);
-			//fprintf(stderr, "%g\t", fc);
-		}
-	}
+	mFrequencies = MathUtilities::calculateOctaveFreqs(mStartFreq, mStopFreq, 1000, mStepsPerOctave, 5);
 }
 
+
+std::vector<FreqPoint>
+StepsFrequencyResponse::analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets)
+{
+	//std::string dbgPath = "dbg.wav";
+	//WavFileWriter* dbgWriter = new WavFileWriter(dbgPath, 1, (size_t)mSampleRate, 1);
+
+	std::vector<FreqPoint> results;
+	size_t noSegments = onsets.size();
+
+	for (size_t i = 0; i < noSegments; i++)
+	{
+		size_t on = onsets[i];
+		sf_count_t seeked = sf_seek(afile, on+mSampleTransient, SEEK_SET);
+
+		float* fileBuffer = new float[mSampleTone*mNoChannels];
+		float* channelBuffer = new float[mSampleTone*mNoChannels];
+
+		sf_count_t read = sf_readf_float(afile, fileBuffer, mSampleTone);
+
+		for (size_t j = 0; j < mSampleTone; j++)
+		{
+			channelBuffer[j] = fileBuffer[mNoChannels * j + mSelectedChannel];
+		}
+
+		//get max and min
+		float min = 0;
+		float max = 0;
+		MathUtilities::getFrameMinMax(channelBuffer, mSampleTone, &min, &max);
+		//dbgWriter->writeAudioFrames(channelBuffer, sampleTone);
+
+		FreqPoint point;
+		point.timeStamp = 0;
+		point.timeStampSamples = on;
+		point.frequency = mFrequencies[i];
+		point.peakValue = 20 * log10(max);
+
+		results.push_back(point);
+
+
+		delete [] fileBuffer;
+		delete[] channelBuffer;
+	}
+
+//	delete dbgWriter;
+
+	return results;
+}
+
+bool 
+StepsFrequencyResponse::writeResultsToFile(std::vector<FreqPoint> &results)
+{
+	bool wResults = false;
+	wxString filePath = mFolderPath + mSeparator + mResultsFileName;
+	wxString channelInfo;
+	channelInfo.Printf(wxT("%d"), mSelectedChannel);
+
+	wxXmlNode* resultsNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("FADGIResults"));
+	resultsNode->AddAttribute(wxT("title"), wxT("frequency response"));
+	resultsNode->AddAttribute(wxT("type"), wxT("discretefreqresp"));
+	resultsNode->AddAttribute(wxT("channelindex"),channelInfo);
+
+	wxXmlNode* dataNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("dataset"));
+	dataNode->AddAttribute(wxT("id"), wxT("0"));
+	
+	//add points
+	size_t nPoints = results.size();
+	for (size_t pIdx = 0; pIdx < nPoints; pIdx++)
+	{
+		wxXmlNode* pointNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("point"));
+		wxString value;
+		FreqPoint pn = results[pIdx];
+		
+		value.Printf(wxT("%g"), pn.frequency);
+		pointNode->AddAttribute(wxT("frequency"), value);
+		value.Printf(wxT("%g"), pn.peakValue);
+		pointNode->AddAttribute(wxT("level"), value);
+
+		dataNode->AddChild(pointNode);
+	}
+
+	resultsNode->AddChild(dataNode);
+
+	wxXmlDocument* writeSchema = new wxXmlDocument();
+	writeSchema->SetRoot(resultsNode);
+	writeSchema->Save(filePath);
+	writeSchema->DetachRoot();
+	delete writeSchema;
+
+	delete resultsNode;
+
+	return wResults;
+}

@@ -5,7 +5,10 @@
 #include <wx/xml/xml.h>
 #include <vector>
 
-#include "SigGen/TestSignalGenerator.h"
+#include "SigGen\TestSignalGenerator.h"
+#include "SigGen\OctaveToneGenerator.h"
+
+#include "Analysers\StepsFrequencyResponse.h"
 
 typedef struct TestDescriptor {
 	wxString ID;
@@ -40,9 +43,10 @@ class TestManager
 
 		int GetNumberOfTest() { return mNumberOfTests; }
 		bool IsTestEnabled(int testIndex);
-		int GenerateTestFile(int testIndex, double sampleRate, int Channels, wxString&);
-		wxString GetTestFilePath(int testIdx); 
-		wxString GetResultsFilePath(int testIdx);
+		int GenerateSignalFile(int testIndex, double sampleRate, int Channels, wxString&);
+		wxString GetSignalFilePath(int testIdx); 
+		wxString GetResponseFilePath(int testIdx);
+		int AnalyseResponse(int testIndex);
 
 
     protected:

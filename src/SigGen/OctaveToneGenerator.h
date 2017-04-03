@@ -18,7 +18,7 @@ class OctaveToneGenerator
 	protected:
 		void generateFrequenciesList();
 		void setParameters( wxXmlNode* paramsNode );
-		bool writeTestFile();
+		bool writeSignalFile();
 
     protected:
         wxXmlNode* mParamsNode;
@@ -29,6 +29,7 @@ class OctaveToneGenerator
 		wxString mFilePath;
 
     private:
+		int mSelectedChannelIdx;
 		double mStartFreq;
 		double mStopFreq;
 		int mStepsPerOctave;

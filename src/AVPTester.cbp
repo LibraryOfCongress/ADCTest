@@ -129,6 +129,8 @@
 		<Unit filename="Devices/AudioInput.h" />
 		<Unit filename="Devices/LevelAnalyser.cpp" />
 		<Unit filename="Devices/LevelAnalyser.h" />
+		<Unit filename="ResultsDialog.cpp" />
+		<Unit filename="ResultsDialog.h" />
 		<Unit filename="SigGen/OctaveToneGenerator.cpp" />
 		<Unit filename="SigGen/OctaveToneGenerator.h" />
 		<Unit filename="SigGen/TestSignalGenerator.cpp" />
@@ -148,6 +150,7 @@
 		<Unit filename="wxsmith/AVPTesterframe.wxs" />
 		<Unit filename="wxsmith/AudioDevicesDialog.wxs" />
 		<Unit filename="wxsmith/AudioDevicesPanel.wxs" />
+		<Unit filename="wxsmith/ResultsDialog.wxs" />
 		<Extensions>
 			<code_completion />
 			<envvars />
@@ -158,6 +161,7 @@
 					<wxFrame wxs="wxsmith/AVPTesterframe.wxs" src="AVPTesterMain.cpp" hdr="AVPTesterMain.h" fwddecl="0" i18n="1" name="AVPTesterFrame" language="CPP" />
 					<wxPanel wxs="wxsmith/AudioDevicesPanel.wxs" src="AudioDevicesPanel.cpp" hdr="AudioDevicesPanel.h" fwddecl="0" i18n="1" name="AudioDevicesPanel" language="CPP" />
 					<wxDialog wxs="wxsmith/AudioDevicesDialog.wxs" src="AudioDevicesDialog.cpp" hdr="AudioDevicesDialog.h" fwddecl="0" i18n="1" name="AudioDevicesDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/ResultsDialog.wxs" src="ResultsDialog.cpp" hdr="ResultsDialog.h" fwddecl="0" i18n="1" name="ResultsDialog" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>

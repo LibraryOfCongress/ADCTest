@@ -159,6 +159,15 @@
     <ClCompile Include="..\..\DSP\HFFilter.cpp">
       <Filter>Source Files\DSP</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\ResultsDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\SigGen\OctaveToneGenerator.cpp">
+      <Filter>Source Files\SigGen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Analysers\SegmentLocator.cpp">
+      <Filter>Source Files\Analysers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\AVPTesterApp.h">
@@ -259,6 +268,15 @@
     </ClInclude>
     <ClInclude Include="..\..\DSP\HFFilter.h">
       <Filter>Header Files\DSP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ResultsDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SigGen\OctaveToneGenerator.h">
+      <Filter>Header Files\SigGen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Analysers\SegmentLocator.h">
+      <Filter>Header Files\Analysers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -226,10 +226,23 @@ TestManager::IsTestEnabled(int testIndex)
 }
 
 int 
-TestManager::GenerateTestFile(int testIndex, double sampleRate, int Channels, wxString& testFilePath)
+TestManager::GenerateSignalFile(int testIndex, double sampleRate, int Channels, wxString& signalFilePath)
 {
-	wxString outputFile = GetTestFilePath(testIndex);
+	wxString outputFile = GetSignalFilePath(testIndex);
+	signalFilePath = outputFile;
 
+	wxString signalType = GetParameterValue(testIndex, wxT("signal"));
+
+	if (signalType == wxT("octsine"))
+	{
+		OctaveToneGenerator* mSigGen = new OctaveToneGenerator(sampleRate, Channels);
+		wxXmlNode* testNode = GetTestNode(testIndex);
+		wxXmlNode* sigGenParams = testNode->GetChildren();
+		mSigGen->generateSignal(sigGenParams);
+		delete mSigGen;
+	}
+	
+	/*
 	double freq, level;
 	wxString freqTxt = GetParameterValue(testIndex, wxT("frequency"));
 	wxString levelTxt = GetParameterValue(testIndex, wxT("level"));
@@ -239,32 +252,42 @@ TestManager::GenerateTestFile(int testIndex, double sampleRate, int Channels, wx
 	TestSignalGenerator* SigGen = new TestSignalGenerator;
 	SigGen->CreateTestSignal(sampleRate, Channels, 1, freq, level, outputFile);
 	delete SigGen;
-
-	testFilePath = outputFile;
+	*/
 
 	return 1;
 }
 
 wxString
-TestManager::GetTestFilePath(int testIndex)
+TestManager::GetSignalFilePath(int testIndex)
 {
 	wxString workFolder = GetParameterValue(testIndex, wxT("workfolder"));
-	wxString testFile = GetParameterValue( testIndex, wxT("testfile" ));
+	wxString signalFile = GetParameterValue( testIndex, wxT("signalfile" ));
 
-	wxString resPath = workFolder + wxT("\\") + testFile;
+	wxString resPath = workFolder + wxT("\\") + signalFile;
 	return resPath;
 }
 
 wxString
-TestManager::GetResultsFilePath(int testIndex)
+TestManager::GetResponseFilePath(int testIndex)
 {
 	wxString workFolder = GetParameterValue(testIndex, wxT("workfolder"));
-	wxString testFile = GetParameterValue(testIndex, wxT("resultfile"));
+	wxString responseFile = GetParameterValue(testIndex, wxT("responsefile"));
 
-	wxString resPath = workFolder + wxT("\\") + testFile;
+	wxString resPath = workFolder + wxT("\\") + responseFile;
 	return resPath;
 }
 
+int
+TestManager::AnalyseResponse(int testIndex)
+{
+	wxXmlNode* testNode = GetTestNode(testIndex);
+	wxXmlNode* testParams = testNode->GetChildren();
+	StepsFrequencyResponse* mAnalyser = new StepsFrequencyResponse();
+	mAnalyser->analyseSignal(testParams);
+	delete mAnalyser;
+
+	return 1;
+}
 ///////////////////
 //helpers
 

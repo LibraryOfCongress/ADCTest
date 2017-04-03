@@ -27,6 +27,7 @@
 #include "AudioDevicesDialog.h"
 #include "Widgets\GButton.h"
 #include "TestManager.h"
+#include "ResultsDialog.h"
 
 //threads ID
 enum {
@@ -128,6 +129,7 @@ class AVPTesterFrame: public wxFrame
         //*)
 
 		AudioDevicesDialog* mADevicesDialog;
+		ResultsDialog* mResultsDialog;
 
         DECLARE_EVENT_TABLE()
 
