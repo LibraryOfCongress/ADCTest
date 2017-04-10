@@ -94,7 +94,7 @@ FFTAnalyser::initialiseFFT(size_t sampleRate, size_t frameLength, size_t channel
 	mRTABuf->zero(rtaAdapterBufferSize);
 
 
-	mRTA = new KFFTWrapper(mSTFTLength, mSTFTHop, mWType);
+	mRTA = new KFFTWrapper(mSTFTLength, mWType);
 	mRTAMag = new float[mSTFTLength];
 
 	mVizData.MagData.resize(mSTFTBins);
@@ -148,7 +148,7 @@ FFTAnalyser::doRTA(float* InterleavedBuffer, size_t sampleRate, size_t frameLeng
 
 	if ((mCaptureSampleRate != sampleRate) || (mCaptureFrameSize != frameLength) || (mNoCaptureChannels != channels) || (mSTFTLength != FFTLength))
 	{
-		initialiseFFT(sampleRate, frameLength, channels, FFTLength, HanningWindow);
+		initialiseFFT(sampleRate, frameLength, channels, FFTLength, Kaiser7Window);
 		mResetLTA = true;
 	}
 	
@@ -171,7 +171,7 @@ FFTAnalyser::doRTA(float* InterleavedBuffer, size_t sampleRate, size_t frameLeng
 		mRTABuf->peek(mRTATimeFrame, mSTFTLength);
 		mRTABuf->skip(mSTFTHop);
 
-		mRTA->getFDData(mRTATimeFrame, mRTAMag, dummyPhase, true);
+		mRTA->getFDData(mRTATimeFrame, mRTAMag, dummyPhase, true, true);
 
 		float valIn, valOut = 0;
 		float avgSlope = mLTAverageSlope / 100;

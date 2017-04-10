@@ -138,6 +138,7 @@ class AudioIO
 		ParametersQueue mParametersQueue;
 		std::vector<AudioParam> mCalibrationParameters;
 
+		double mToneLevel;
 		double mOutputGain;
 		int mSelectedChannel;
 

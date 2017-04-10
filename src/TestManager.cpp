@@ -241,18 +241,15 @@ TestManager::GenerateSignalFile(int testIndex, double sampleRate, int Channels, 
 		mSigGen->generateSignal(sigGenParams);
 		delete mSigGen;
 	}
-	
-	/*
-	double freq, level;
-	wxString freqTxt = GetParameterValue(testIndex, wxT("frequency"));
-	wxString levelTxt = GetParameterValue(testIndex, wxT("level"));
-	freqTxt.ToDouble(&freq);
-	levelTxt.ToDouble(&level);
+	else if (signalType == wxT("singlesine"))
+	{
+		SingleSineToneGenerator* mSigGen = new SingleSineToneGenerator(sampleRate, Channels);
+		wxXmlNode* testNode = GetTestNode(testIndex);
+		wxXmlNode* sigGenParams = testNode->GetChildren();
+		mSigGen->generateSignal(sigGenParams);
+		delete mSigGen;
+	}
 
-	TestSignalGenerator* SigGen = new TestSignalGenerator;
-	SigGen->CreateTestSignal(sampleRate, Channels, 1, freq, level, outputFile);
-	delete SigGen;
-	*/
 
 	return 1;
 }
@@ -282,9 +279,22 @@ TestManager::AnalyseResponse(int testIndex)
 {
 	wxXmlNode* testNode = GetTestNode(testIndex);
 	wxXmlNode* testParams = testNode->GetChildren();
-	StepsFrequencyResponse* mAnalyser = new StepsFrequencyResponse();
-	mAnalyser->analyseSignal(testParams);
-	delete mAnalyser;
+	wxString analyserType = GetParameterValue(testIndex, wxT("analyser"));
+
+	if (analyserType == wxT("stepfreq"))
+	{
+		StepsFrequencyResponse* mAnalyser = new StepsFrequencyResponse();
+		//mAnalyser->analyseSignal(testParams);
+		mAnalyser->analyseSignal(testNode);
+		delete mAnalyser;
+	}
+	else if (analyserType == wxT("thdn"))
+	{
+		THDNoise* mAnalyser = new THDNoise();
+		//mAnalyser->analyseSignal(testParams);
+		mAnalyser->analyseSignal(testNode);
+		delete mAnalyser;
+	}
 
 	return 1;
 }

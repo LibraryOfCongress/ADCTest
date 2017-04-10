@@ -187,6 +187,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Analysers\SegmentLocator.cpp" />
     <ClCompile Include="..\..\Analysers\StepsFrequencyResponse.cpp" />
+    <ClCompile Include="..\..\Analysers\THDNoise.cpp" />
     <ClCompile Include="..\..\AudioDevicesDialog.cpp" />
     <ClCompile Include="..\..\AudioDevicesPanel.cpp" />
     <ClCompile Include="..\..\AudioIO\AudioEngine.cpp" />
@@ -207,6 +208,7 @@
     <ClCompile Include="..\..\ResultsDialog.cpp" />
     <ClCompile Include="..\..\SigGen\AudioFileWriter.cpp" />
     <ClCompile Include="..\..\SigGen\OctaveToneGenerator.cpp" />
+    <ClCompile Include="..\..\SigGen\SingleSineToneGenerator.cpp" />
     <ClCompile Include="..\..\SigGen\TestSignalGenerator.cpp" />
     <ClCompile Include="..\..\SigGen\WavFileWriter.cpp" />
     <ClCompile Include="..\..\System\Prefs.cpp" />
@@ -220,6 +222,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Analysers\SegmentLocator.h" />
     <ClInclude Include="..\..\Analysers\StepsFrequencyResponse.h" />
+    <ClInclude Include="..\..\Analysers\THDNoise.h" />
     <ClInclude Include="..\..\AudioDevicesDialog.h" />
     <ClInclude Include="..\..\AudioDevicesPanel.h" />
     <ClInclude Include="..\..\AudioIO\AudioEngine.h" />
@@ -244,6 +247,7 @@
     <ClInclude Include="..\..\ResultsDialog.h" />
     <ClInclude Include="..\..\SigGen\AudioFileWriter.h" />
     <ClInclude Include="..\..\SigGen\OctaveToneGenerator.h" />
+    <ClInclude Include="..\..\SigGen\SingleSineToneGenerator.h" />
     <ClInclude Include="..\..\SigGen\TestSignalGenerator.h" />
     <ClInclude Include="..\..\SigGen\WavFileWriter.h" />
     <ClInclude Include="..\..\System\Prefs.h" />

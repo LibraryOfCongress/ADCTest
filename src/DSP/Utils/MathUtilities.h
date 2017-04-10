@@ -68,6 +68,8 @@ public:
     static float ToDBNorm(float v, float range);
     static float ClipZeroToOne(float z);
 
+	static double bessel_i0(double x);
+
 	static std::vector<double> calculateOctaveFreqs(double startFreq,
 													double stopFreq,
 													double baseFreq,

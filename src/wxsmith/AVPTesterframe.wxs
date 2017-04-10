@@ -153,7 +153,7 @@
 												</object>
 												<object class="sizeritem">
 													<object class="wxListView" name="ID_LISTVIEW_PARAMETERS" variable="ListViewParameters" member="yes">
-														<size>275,200</size>
+														<size>350,200</size>
 														<bg>#C8C8C8</bg>
 														<font>
 															<size>10</size>

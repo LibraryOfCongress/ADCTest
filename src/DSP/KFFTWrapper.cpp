@@ -1,26 +1,33 @@
 #include "KFFTWrapper.h"
 
-KFFTWrapper::KFFTWrapper(size_t fftLength, size_t fftIncrement, WindowType wType)
+KFFTWrapper::KFFTWrapper(size_t fftLength, WindowType wType)
 :mFFTLength(fftLength)
-,mFFTIncrement(fftIncrement)
 ,mWType(wType)
 ,mFFTCfgFwd(0)
 ,mFFTCfgInv(0)
 ,mTDSigIn(0)
 ,mFDSigIn(0)
 ,mFFTWindow(0)
-,mForwardRingBuffer(0)
-,mInverseRingBuffer(0)
 {
     //ctor
-    size_t adapterBufferSize = (mFFTLength+mFFTIncrement);
-    mForwardRingBuffer = new RingBufferFloat(adapterBufferSize);
-    mForwardRingBuffer->reset();
-
-	mInverseRingBuffer = new RingBufferFloat(adapterBufferSize);
-    mInverseRingBuffer->reset();
-
     mFFTWindow = new Window<float>(mWType, mFFTLength);
+
+	//calculate chosen window average level:
+	float* dWin = new float[mFFTLength];
+	for (size_t i = 0; i < mFFTLength; i++)
+	{
+		dWin[i] = 1;
+	}
+	mFFTWindow->cut(dWin);
+	
+	mWindowAvgLevel = 0; 
+	for (size_t i = 0; i < mFFTLength; i++)
+	{
+		mWindowAvgLevel += dWin[i];
+	}
+	
+	mWindowAvgLevel /= mFFTLength;
+
     mWindowedBuffer = new float[ mFFTLength ];
 
     mTDSigIn = new kiss_fft_scalar[mFFTLength];
@@ -33,18 +40,6 @@ KFFTWrapper::KFFTWrapper(size_t fftLength, size_t fftIncrement, WindowType wType
 KFFTWrapper::~KFFTWrapper()
 {
     //dtor
-    if( mForwardRingBuffer )
-    {
-        delete mForwardRingBuffer;
-        mForwardRingBuffer = 0;
-    }
-
-    if( mInverseRingBuffer )
-    {
-        delete mInverseRingBuffer;
-        mInverseRingBuffer = 0;
-    }
-
     if( mFFTWindow )
     {
         delete mFFTWindow;
@@ -88,50 +83,10 @@ KFFTWrapper::~KFFTWrapper()
     }
 }
 
-void
-KFFTWrapper::ingestFrame( float* tdSigIn, size_t frameSize )
-{
-    mForwardRingBuffer->write( tdSigIn, frameSize );
-}
+
 
 bool
-KFFTWrapper::getFDData( float* FFTMag, float* FFTPhase, bool doWindow)
-{
-    bool res = false;
-
-    if( mForwardRingBuffer->getReadSpace() >= mFFTLength )
-    {
-        mForwardRingBuffer->peek( mTDSigIn, mFFTLength );
-
-        if( doWindow )
-        {
-            mFFTWindow->cut( mTDSigIn, mWindowedBuffer );
-            kiss_fftr( mFFTCfgFwd, mWindowedBuffer, mFDSigIn );
-        }
-        else
-        {
-            kiss_fftr( mFFTCfgFwd, mTDSigIn, mFDSigIn );
-        }
-
-        float absVal, re, im, lgAbsVal;
-        for( size_t i = 0; i < (1+mFFTLength/2); i++ )
-        {
-            float vRand = 1e-7*((float)rand()+1);
-            re = mFDSigIn[i].r;
-            im = mFDSigIn[i].i;
-            absVal = (sqrtf( re*re + im*im ));
-            lgAbsVal = 20*log10(absVal+vRand);
-            FFTMag[ i ] = lgAbsVal;
-        }
-
-        mForwardRingBuffer->skip( mFFTIncrement );
-        res = true;
-    }
-   return res;
-}
-
-bool
-KFFTWrapper::getFDData( kiss_fft_scalar* sclTData, float* FFTMag, float* FFTPhase, bool doWindow)
+KFFTWrapper::getFDData( kiss_fft_scalar* sclTData, float* FFTMag, float* FFTPhase, bool doWindow, bool doLog)
 {
     bool res = true;
 
@@ -149,11 +104,17 @@ KFFTWrapper::getFDData( kiss_fft_scalar* sclTData, float* FFTMag, float* FFTPhas
     for( size_t i = 0; i < (1+mFFTLength/2); i++ )
     {
 		float vRand = 1e-32*((float)rand() + 1);
-        re = mFDSigIn[i].r;
-        im = mFDSigIn[i].i;
-        absVal = (sqrtf( re*re + im*im )/(float)((float)mFFTLength/2));
-		lgAbsVal = 20 * log10(absVal + vRand );
-        FFTMag[ i ] = lgAbsVal;
+        re = mFDSigIn[i].r / (float)(mFFTLength/2);
+        im = mFDSigIn[i].i / (float)(mFFTLength/2);
+		//absVal = (sqrtf( re*re + im*im )/(float)(mFFTLength/2)) + vRand;
+		absVal = vRand + sqrt( re*re + im*im )/ mWindowAvgLevel;
+
+		lgAbsVal = 20 * log10(absVal);
+
+		if(doLog)
+			FFTMag[ i ] = lgAbsVal;
+		else
+			FFTMag[i] = absVal;
     }
 
    return res;
@@ -184,18 +145,6 @@ KFFTWrapper::setFDData( kiss_fft_cpx* cpxFData, kiss_fft_scalar* sclTData, bool 
         kiss_fftri( mFFTCfgInv, cpxFData, sclTData );
 }
 
-bool
-KFFTWrapper::expellFrame( float* tdSigOut, size_t frameSize )
-{
-    bool res = false;
-    if( mInverseRingBuffer->getReadSpace()>= frameSize )
-    {
-        mInverseRingBuffer->peek(tdSigOut,frameSize);
-        mInverseRingBuffer->skip(frameSize);
-        res = true;
-    }
-   return res;
-}
 
 void
 KFFTWrapper::pol2Cart( size_t dataLength, float* mag, float* phase, kiss_fft_cpx* cpxData )

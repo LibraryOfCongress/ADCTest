@@ -669,6 +669,19 @@ MathUtilities::getFrameZeroCrossings( const double* data, size_t len )
     return zc;
 }
 
+double 
+MathUtilities::bessel_i0(double x)
+{
+	double y = 1.0, s = 1.0, x2 = x*x;
+	int n = 1;
+	while (s > y*1.0e-9)
+		{
+		s *= x2 / 4.0 / (n*n);
+		y += s;
+		n++;
+	}
+	return y;
+}
 
 std::vector<double> 
 MathUtilities::calculateOctaveFreqs(double startFreq,

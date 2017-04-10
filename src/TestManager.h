@@ -7,8 +7,10 @@
 
 #include "SigGen\TestSignalGenerator.h"
 #include "SigGen\OctaveToneGenerator.h"
+#include "SigGen\SingleSineToneGenerator.h"
 
 #include "Analysers\StepsFrequencyResponse.h"
+#include "Analysers\THDNoise.h"
 
 typedef struct TestDescriptor {
 	wxString ID;

@@ -1,12 +1,3 @@
-/* -*- c-basic-offset: 4 indent-tabs-mode: nil -*-  vi:set ts=8 sts=4 sw=4: */
-
-/*
-    QM DSP library
-    Centre for Digital Music, Queen Mary, University of London.
-    This file Copyright 2006 Chris Cannam.
-    All rights reserved.
-*/
-
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
 
@@ -14,8 +5,7 @@
 #include <iostream>
 #include <map>
 #include <wx/wx.h>
-
-//#define M_PI       3.14159265358979323846
+#include "Utils\MathUtilities.h"
 
 enum WindowType {
     RectangularWindow = 0,
@@ -24,7 +14,8 @@ enum WindowType {
     HanningWindow,
     BlackmanWindow,
     GaussianWindow,
-    ParzenWindow
+    ParzenWindow,
+	Kaiser7Window
 };
 
 template <typename T>
@@ -71,50 +62,61 @@ void Window<T>::encache()
 
     switch (m_type) {
 
-    case RectangularWindow:
-	for (i = 0; i < n; ++i) {
-		mult[i] = mult[i] * 0.5;
-	}
-	break;
+		case RectangularWindow:
+		for (i = 0; i < n; ++i) {
+			mult[i] = mult[i] * 0.5;
+		}
+		break;
 
-    case BartlettWindow:
-	for (i = 0; i < n/2; ++i) {
-	    mult[i] = mult[i] * (i / T(n/2));
-	    mult[i + n/2] = mult[i + n/2] * (1.0 - (i / T(n/2)));
-	}
-	break;
+		case BartlettWindow:
+		for (i = 0; i < n/2; ++i) {
+			mult[i] = mult[i] * (i / T(n/2));
+			mult[i + n/2] = mult[i + n/2] * (1.0 - (i / T(n/2)));
+		}
+		break;
 
-    case HammingWindow:
-	for (i = 0; i < n; ++i) {
-	    mult[i] = mult[i] * (0.54 - 0.46 * cos(2 * M_PI * i / n));
-	}
-	break;
+		case HammingWindow:
+		for (i = 0; i < n; ++i) {
+			mult[i] = mult[i] * (0.54 - 0.46 * cos(2 * M_PI * i / n));
+		}
+		break;
 
-    case HanningWindow:
-	for (i = 0; i < n; ++i) {
-	    mult[i] = mult[i] * (0.50 - 0.50 * cos(2 * M_PI * i / n));
-	}
-	break;
+		case HanningWindow:
+		for (i = 0; i < n; ++i) {
+			mult[i] = mult[i] * (0.50 - 0.50 * cos(2 * M_PI * i / n));
+		}
+		break;
 
-    case BlackmanWindow:
-	for (i = 0; i < n; ++i) {
-	    mult[i] = mult[i] * (0.42 - 0.50 * cos(2 * M_PI * i / n)
-				 + 0.08 * cos(4 * M_PI * i / n));
-	}
-	break;
+		case BlackmanWindow:
+		for (i = 0; i < n; ++i) {
+			mult[i] = mult[i] * (0.42 - 0.50 * cos(2 * M_PI * i / n)
+					 + 0.08 * cos(4 * M_PI * i / n));
+		}
+		break;
 
-    case GaussianWindow:
-	for (i = 0; i < n; ++i) {
-	    mult[i] = mult[i] * exp((-1.0 / (n*n)) * ((T(2*i) - n) *
-						      (T(2*i) - n)));
-	}
-	break;
+		case GaussianWindow:
+		for (i = 0; i < n; ++i) {
+			mult[i] = mult[i] * exp((-1.0 / (n*n)) * ((T(2*i) - n) *
+								  (T(2*i) - n)));
+		}
+		break;
 
-    case ParzenWindow:
-	for (i = 0; i < n; ++i) {
-	    mult[i] = mult[i] * (1.0 - fabs((T(2*i) - n) / T(n + 1)));
-	}
-	break;
+		case ParzenWindow:
+		for (i = 0; i < n; ++i) {
+			mult[i] = mult[i] * (1.0 - fabs((T(2*i) - n) / T(n + 1)));
+		}
+		break;
+
+		case Kaiser7Window:
+		{
+			double beta = M_PI*7;
+			double bb = MathUtilities::bessel_i0(beta);
+			for (i = 0; i < n; ++i)
+			{
+				mult[i] = mult[i]* T(MathUtilities::bessel_i0(beta*sqrt(4.0*i*(n - 1 - i)) / (n - 1)) / bb);
+			}
+		}
+		break;
     }
 
     m_cache = mult;

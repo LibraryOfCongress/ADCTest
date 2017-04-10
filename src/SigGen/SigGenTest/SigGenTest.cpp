@@ -3,12 +3,16 @@
 
 #include "stdafx.h"
 #include "../OctaveToneGenerator.h"
+#include "../SingleSineToneGenerator.h"
 #include "../../Analysers/StepsFrequencyResponse.h"
+#include "../../Analysers/THDNoise.h"
 
 void ParseProject(wxXmlNode* pNode)
 {
 	OctaveToneGenerator* mTestGen = new OctaveToneGenerator(48000, 2);
-	StepsFrequencyResponse* mAnalyser = new StepsFrequencyResponse();
+	SingleSineToneGenerator* mTHDGen = new SingleSineToneGenerator(48000, 2);
+	StepsFrequencyResponse* mFreqResponse = new StepsFrequencyResponse();
+	THDNoise* mTHDNoise = new THDNoise();
 
 	wxXmlNode* testsListNode = pNode->GetChildren();
 	
@@ -16,19 +20,19 @@ void ParseProject(wxXmlNode* pNode)
 	while(testNode)
 	{
 		wxString testname = testNode->GetAttribute(wxT("name"));
-		if (testname == wxT("stepfreqresp"))
+		if (testname == wxT("thdn_1k_left_ch"))
 		{
 			wxXmlNode* testParams = testNode->GetChildren();
 			
-			mTestGen->generateSignal(testParams);
+			mTHDGen->generateSignal(testParams);
 
-			mAnalyser->analyseSignal(testParams);
+			mTHDNoise->analyseSignal(testParams);
 		}
 		testNode = testNode->GetNext();
 	}
 
 	delete mTestGen;
-	delete mAnalyser;
+	delete mFreqResponse;
 
 }
 

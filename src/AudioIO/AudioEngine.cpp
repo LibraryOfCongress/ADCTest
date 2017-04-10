@@ -40,7 +40,7 @@ AudioIO::AudioIO()
 ,mIsSafe(true)
 ,mInputLevelMetric(NULL)
 ,mOutputLevelMetric(NULL)
-,mOutputGain(0.5)
+,mOutputGain(1)
 ,mParametersQueue(128)
 ,mSTFTLength(1024)
 ,mParent(NULL)
@@ -51,6 +51,7 @@ AudioIO::AudioIO()
 	mEngineOK = false;
 
 	mFFTrta = new FFTAnalyser();
+
 	LoadCalibrationSettings();
 
 	mTestManager = new TestManager;
@@ -102,6 +103,7 @@ AudioIO::LoadCalibrationSettings()
 	gPrefs->Read(wxT("/Calibration/RTAExAvg"), &msg.value);
 	SetParameter(msg);
 
+	mToneLevel = pow(10, (-3 / 20.0));
 	FlushParameterQueue();
 }
 
@@ -325,7 +327,7 @@ int AudioIO::doIODevicesCalibration()
 						if (angleS == 1.0)
 							angleS = 0.0;
 						
-						double sig = (float)(mOutputGain*sin(twoPi*angleS));
+						double sig = mOutputGain*(mToneLevel*sin(twoPi*angleS));
 
 						for (int j = 0; j < playbackChannels; j++)
 						{

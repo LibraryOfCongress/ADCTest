@@ -5,37 +5,42 @@
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
 #include <vector>
-
 #include "sndfile.h"
+
+#include "FADGIAnalyser.h"
 #include "../DSP/HFFilter.h"
 #include "SegmentLocator.h"
-
-typedef struct FreqPoint {
-	double timeStamp;
-	size_t timeStampSamples;
-	double frequency;
-	double peakValue;
-}FreqPoint;
 
 class StepsFrequencyResponse
 {
     public:
         StepsFrequencyResponse();
         virtual ~StepsFrequencyResponse();
-		bool analyseSignal(wxXmlNode* parameters);
+		bool analyseSignal(wxXmlNode* testDescriptionNode);
 
 	protected:
-		void generateFrequenciesList();
-		void setParameters( wxXmlNode* paramsNode );
+		//extract analysis parameters from test xml description 
+		void setParameters( wxXmlNode* testDescriptionNode);
+
+		//open .WAV file of recorded DUT response
 		bool openResponseFile();
+
+		//analyse response and find beginnning of signal
 		std::vector<size_t> getOnsets(SNDFILE* afile);
-		std::vector<FreqPoint> analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets);
-		bool writeResultsToFile(std::vector<FreqPoint> &results);
+
+		//analyse response 
+		void analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets);
+
+		//serialise metrics to xml file
+		bool writeResultsToFile();
+
+		void generateFrequenciesList();
 
     protected:
         wxXmlNode* mParamsNode;
         double mSampleRate;
 		int mNoChannels;
+		wxString mTestTitle;
 		wxString mFolderPath;
 		wxString mFileName;
 		wxString mFilePath;
@@ -64,6 +69,14 @@ class StepsFrequencyResponse
 		double mLogDetectionThreshold;
 
 		SegmentLocator* mLocator;
+
+		//Result from FFT analysis
+		std::vector<FreqPoint> mFrequencyResponse;
+		//true if frequency response also serialised to file
+		bool mWriteFResp;
+
+		double mLowerAmplitudeLimit;
+		double mUpperAmplitudeLimit;
 };
 
 #endif // STEPSFREQUENCYRESPONSE_H

@@ -929,6 +929,9 @@ void AudioDevicesPanel::OnButtonOutGainUpClick(wxCommandEvent& event)
 	else
 		mOutputStreamGain += 0.1;
 
+	if (mOutputStreamGain > 0)
+		mOutputStreamGain = 0;
+
 	UpdateOutputGain( true );
 }
 

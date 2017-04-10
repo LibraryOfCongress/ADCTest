@@ -60,7 +60,7 @@ SegmentLocator::ProcesSignal(float* signal, int channelIdx, size_t frameLength)
 	for (size_t i = 0; i < frameLength; i++)
 	{
 		float val = fabs(signal[mNoChannels * i + channelIdx]);
-		rectBuffer[i] = fabs(val);
+		rectBuffer[i] = (val);
 	}
 
 	mLPFilter->Process(rectBuffer, frameLength);

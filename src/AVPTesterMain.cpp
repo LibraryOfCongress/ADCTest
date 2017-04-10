@@ -169,7 +169,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     wxFont StaticTextParamsTtlFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     StaticTextParamsTtl->SetFont(StaticTextParamsTtlFont);
     BoxSizerTestParams->Add(StaticTextParamsTtl, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
-    ListViewParameters = new wxListView(PanelParamsLst, ID_LISTVIEW_PARAMETERS, wxDefaultPosition, wxSize(275,200), wxLC_REPORT|wxLC_NO_HEADER|wxNO_BORDER, wxDefaultValidator, _T("ID_LISTVIEW_PARAMETERS"));
+    ListViewParameters = new wxListView(PanelParamsLst, ID_LISTVIEW_PARAMETERS, wxDefaultPosition, wxSize(350,200), wxLC_REPORT|wxLC_NO_HEADER|wxNO_BORDER, wxDefaultValidator, _T("ID_LISTVIEW_PARAMETERS"));
     ListViewParameters->SetBackgroundColour(wxColour(200,200,200));
     wxFont ListViewParametersFont(10,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     ListViewParameters->SetFont(ListViewParametersFont);

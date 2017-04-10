@@ -1,21 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FADGIProject version="1.0" title="temporary">
   <procedures>
-    <test id="1" name="stepfreqresp" alias="stepped sine frequency response" enabled="true">
+    <test id="0" name="freqresp_left_ch" alias="frequency response 3 steps/oct" enabled="false">
       <paramters>
         <parameter name="signal" type="string" value="octsine" units="" alias="octave stepped sine" editable="false"/>
-        <parameter name="chidx" type="int" value="12" units="" alias="test channel" editable="true"/>
+        <parameter name="analyser" type="string" value="stepfreq" units="" alias="stepped frequency response" editable="false"/>
+        <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
         <parameter name="freqstart" type="double" value="20" units="Hz" alias="start frequency" editable="true"/>
         <parameter name="freqstop" type="double" value="20000" units="Hz" alias="stop frequency" editable="true"/>
         <parameter name="octsteps" type="int" value="12" units="" alias="steps per octave" editable="true"/>
-        <parameter name="inttime" type="double" value="100" units="mS" alias="integration time" editable="true"/>        
-        <parameter name="transtime" type="double" value="25" units="mS" alias="transient time" editable="true"/>        
-        <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>        
-        <parameter name="level" type="double" value="-20" units="dBFS" alias="signal level" editable="true"/>        
-	<parameter name="workfolder" type="path" editable="true" value="C:\Users\chris\Desktop\AVPreserve\Software\local\src\SigGen\SigGenTest"/>
-        <parameter name="signalfile" type="string" value="steps.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="steps.wav" editable="true"/>
-        <parameter name="resultsfile" type="string" value="freqresp.xml" editable="true"/>
+        <parameter name="detectionlevel" type="double" value="-50" units="dB" alias="signal detection threshold" editable="true"/>
+        <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
+        <parameter name="transtime" type="double" value="10" units="mS" alias="transient time" editable="true"/>
+        <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
+        <parameter name="level" type="double" value="-10" units="dBFS" alias="signal level" editable="true"/>
+        <parameter name="workfolder" type="path" editable="true" value="C:\Users\chris\Desktop\AVPreserve\Software\local\src\msvc\AVPTester"/>
+        <parameter name="signalfile" type="string" value="freqresp_l_sig.wav" editable="true"/>
+        <parameter name="responsefile" type="string" value="freqresp_l_resp.wav" editable="true"/>
+        <parameter name="resultsfile" type="string" value="freqresp_l.xml" editable="true"/>
+      </paramters>
+    </test>
+    <test id="1" name="freqresp_right_ch" alias="frequency response 3 steps/oct" enabled="false">
+      <paramters>
+        <parameter name="signal" type="string" value="octsine" units="" alias="octave stepped sine" editable="false"/>
+        <parameter name="analyser" type="string" value="stepfreq" units="" alias="stepped frequency response" editable="false"/>
+        <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
+        <parameter name="freqstart" type="double" value="20" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="freqstop" type="double" value="20000" units="Hz" alias="stop frequency" editable="true"/>
+        <parameter name="octsteps" type="int" value="12" units="" alias="steps per octave" editable="true"/>
+        <parameter name="detectionlevel" type="double" value="-50" units="dB" alias="signal detection threshold" editable="true"/>
+        <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
+        <parameter name="transtime" type="double" value="10" units="mS" alias="transient time" editable="true"/>
+        <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
+        <parameter name="level" type="double" value="-10" units="dBFS" alias="signal level" editable="true"/>
+        <parameter name="workfolder" type="path" editable="true" value="C:\Users\chris\Desktop\AVPreserve\Software\local\src\msvc\AVPTester"/>
+        <parameter name="signalfile" type="string" value="freqresp_r_sig.wav" editable="true"/>
+        <parameter name="responsefile" type="string" value="freqresp_r_resp.wav" editable="true"/>
+        <parameter name="resultsfile" type="string" value="freqresp_r.xml" editable="true"/>
+      </paramters>
+    </test>
+    <test id="2" name="thdn_1k_left_ch" alias="THD + Noise 1000hz left channel" enabled="true">
+      <paramters>
+        <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
+        <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
+        <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
+        <parameter name="tonefreq" type="double" value="997" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="tonelevel" type="double" value="-1" units="dB" alias="start frequency" editable="true"/>
+        <parameter name="detectionlevel" type="double" value="-50" units="dB" alias="signal detection threshold" editable="true"/>
+	<parameter name="fftlength" type="double" value="32768" units="" alias="fft size" editable="true"/>
+	<parameter name="fftnoavg" type="double" value="16" units="" alias="number of fft averages" editable="true"/>
+	<parameter name="fftavgtype" type="double" value="linear" units="" alias="averaging type" editable="true"/>
+        <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
+        <parameter name="transtime" type="double" value="10" units="mS" alias="transient time" editable="true"/>
+        <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
+        <parameter name="workfolder" type="path" editable="true" value="C:\Users\chris\Desktop\AVPreserve\Software\local\src\msvc\AVPTester"/>
+        <parameter name="signalfile" type="string" value="thdn_1k_left_ch_sig.wav" editable="true"/>
+        <parameter name="responsefile" type="string" value="thdn_1k_left_ch_resp.wav" editable="true"/>
+        <parameter name="resultsfile" type="string" value="thdn_1k_left_ch.xml" editable="true"/>
       </paramters>
     </test>
   </procedures>

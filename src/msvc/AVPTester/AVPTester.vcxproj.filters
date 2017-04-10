@@ -168,6 +168,12 @@
     <ClCompile Include="..\..\Analysers\SegmentLocator.cpp">
       <Filter>Source Files\Analysers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\SigGen\SingleSineToneGenerator.cpp">
+      <Filter>Source Files\SigGen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Analysers\THDNoise.cpp">
+      <Filter>Source Files\Analysers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\AVPTesterApp.h">
@@ -276,6 +282,12 @@
       <Filter>Header Files\SigGen</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Analysers\SegmentLocator.h">
+      <Filter>Header Files\Analysers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SigGen\SingleSineToneGenerator.h">
+      <Filter>Header Files\SigGen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Analysers\THDNoise.h">
       <Filter>Header Files\Analysers</Filter>
     </ClInclude>
   </ItemGroup>
