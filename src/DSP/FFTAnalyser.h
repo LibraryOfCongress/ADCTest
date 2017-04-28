@@ -48,6 +48,7 @@ class FFTAnalyser
 		bool mLTAverageIsOn;
 		float mLTAverageSlope;
 		bool mResetLTA;
+		bool mFirstObservation;
 
 		FFTPlotData mVizData;
 		GenMetricQueue< FFTPlotData > mVizDataQueue;

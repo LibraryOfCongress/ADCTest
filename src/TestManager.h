@@ -11,6 +11,8 @@
 
 #include "Analysers\StepsFrequencyResponse.h"
 #include "Analysers\THDNoise.h"
+#include "Analysers\Crosstalk.h"
+#include "Analysers\FADGIAnalyser.h"
 
 typedef struct TestDescriptor {
 	wxString ID;
@@ -48,7 +50,10 @@ class TestManager
 		int GenerateSignalFile(int testIndex, double sampleRate, int Channels, wxString&);
 		wxString GetSignalFilePath(int testIdx); 
 		wxString GetResponseFilePath(int testIdx);
-		int AnalyseResponse(int testIndex);
+		wxString AnalyseResponse(int testIndex);
+
+		wxString GetParameterValue(int nodeIndex, wxString parameterName);
+		wxString GetParameterAlias(int nodeIndex, wxString parameterName);
 
 
     protected:
@@ -57,7 +62,6 @@ class TestManager
         void DeleteProject();
 
 		void ParseProject();
-		wxString GetParameterValue(int nodeIndex, wxString parameterName);
 		wxXmlNode* GetTestNode(int testIndex);
 		wxXmlNode* GetTestNode(wxString testID);
 		

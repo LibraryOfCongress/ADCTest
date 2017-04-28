@@ -9,6 +9,7 @@ FFTAnalyser::FFTAnalyser()
 , mRTAMag(NULL)
 , mSTFTLength(1024)
 , mLTAverageSlope(100)
+, mFirstObservation(true)
 {
     //ctor
 }
@@ -119,10 +120,11 @@ FFTAnalyser::resetRTAAvg()
 	for (size_t i = 0; i < mSTFTBins; i++)
 	{
 		mRTAMag[i] = 0.0;
-		mVizData.MagData[i] = 0.0;
+		mVizData.MagData[i] = -120.0;
 	}
 
 	mResetLTA = false;
+	mFirstObservation = true;
 }
 
 FFTPlotData
@@ -175,14 +177,24 @@ FFTAnalyser::doRTA(float* InterleavedBuffer, size_t sampleRate, size_t frameLeng
 
 		float valIn, valOut = 0;
 		float avgSlope = mLTAverageSlope / 100;
+
+		if (mFirstObservation)
+		{
+			for (size_t i = 0; i < mSTFTBins; i++)
+			{
+				mVizData.MagData[i] = mRTAMag[i];
+			}
+			mFirstObservation = false;
+		}
+		
 		for (size_t i = 0; i < mSTFTBins; i++)
 		{
 			valIn = mRTAMag[i];
 			mVizData.MagData[i] = (avgSlope * valIn) + (1.0 - avgSlope) * mVizData.MagData[i];
 		}
+
 		mVizData.sampleRate = mCaptureSampleRate;
 		mVizDataQueue.Put(mVizData);
 	}
-	int uu = 0;
 }
 

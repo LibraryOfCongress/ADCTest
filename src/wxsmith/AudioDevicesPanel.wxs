@@ -258,6 +258,14 @@
 												<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
 												<border>5</border>
 											</object>
+											<object class="sizeritem">
+												<object class="wxStaticText" name="ID_STATICTEXT_CAL_INSTR" variable="StaticTextCalibInstructions" member="yes">
+													<label>Adjust volume until the peak value shows -3dB</label>
+												</object>
+												<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+												<option>1</option>
+											</object>
 											<object class="spacer">
 												<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
 												<border>5</border>

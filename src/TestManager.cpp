@@ -96,6 +96,7 @@ TestManager::ParseProject()
 		TestDescriptor desc;
 		desc.ID = testNode->GetAttribute(wxT("id"));
 		desc.name = testNode->GetAttribute(wxT("name"));
+		desc.alias = testNode->GetAttribute(wxT("alias"));
 		desc.enabled = testNode->GetAttribute(wxT("enabled"));
 
 		mNumberOfTests++;
@@ -228,6 +229,8 @@ TestManager::IsTestEnabled(int testIndex)
 int 
 TestManager::GenerateSignalFile(int testIndex, double sampleRate, int Channels, wxString& signalFilePath)
 {
+	int retval = -1;
+
 	wxString outputFile = GetSignalFilePath(testIndex);
 	signalFilePath = outputFile;
 
@@ -240,6 +243,7 @@ TestManager::GenerateSignalFile(int testIndex, double sampleRate, int Channels, 
 		wxXmlNode* sigGenParams = testNode->GetChildren();
 		mSigGen->generateSignal(sigGenParams);
 		delete mSigGen;
+		retval = 0;
 	}
 	else if (signalType == wxT("singlesine"))
 	{
@@ -248,10 +252,16 @@ TestManager::GenerateSignalFile(int testIndex, double sampleRate, int Channels, 
 		wxXmlNode* sigGenParams = testNode->GetChildren();
 		mSigGen->generateSignal(sigGenParams);
 		delete mSigGen;
+		retval = 0;
+	}
+	else if (signalType == wxT("pause"))
+	{
+		//pause until user ok
+		retval = 1;
 	}
 
 
-	return 1;
+	return retval;
 }
 
 wxString
@@ -274,9 +284,11 @@ TestManager::GetResponseFilePath(int testIndex)
 	return resPath;
 }
 
-int
+wxString
 TestManager::AnalyseResponse(int testIndex)
 {
+	int outcome;
+
 	wxXmlNode* testNode = GetTestNode(testIndex);
 	wxXmlNode* testParams = testNode->GetChildren();
 	wxString analyserType = GetParameterValue(testIndex, wxT("analyser"));
@@ -284,19 +296,32 @@ TestManager::AnalyseResponse(int testIndex)
 	if (analyserType == wxT("stepfreq"))
 	{
 		StepsFrequencyResponse* mAnalyser = new StepsFrequencyResponse();
-		//mAnalyser->analyseSignal(testParams);
-		mAnalyser->analyseSignal(testNode);
+		outcome = mAnalyser->analyseSignal(testNode);
 		delete mAnalyser;
 	}
 	else if (analyserType == wxT("thdn"))
 	{
 		THDNoise* mAnalyser = new THDNoise();
-		//mAnalyser->analyseSignal(testParams);
-		mAnalyser->analyseSignal(testNode);
+		outcome= mAnalyser->analyseSignal(testNode);
+		delete mAnalyser;
+	}
+	else if (analyserType == wxT("xtalk"))
+	{
+		Crosstalk* mAnalyser = new Crosstalk();
+		outcome = mAnalyser->analyseSignal(testNode);
 		delete mAnalyser;
 	}
 
-	return 1;
+	wxString outcomeMsg;
+
+	if (outcome <= TestErrorRespSignal)
+		outcomeMsg = wxT("error");
+	else if (outcome == TestFail)
+		outcomeMsg = wxT("fail");
+	else if (outcome == TestPass)
+		outcomeMsg = wxT("pass");
+	
+	return outcomeMsg;
 }
 ///////////////////
 //helpers
@@ -312,6 +337,22 @@ TestManager::GetParameterValue(int nodeIndex, wxString parameterName)
 		wxXmlNode* paramNode = GetParameterNode(testNode, parameterName);
 		if(paramNode){ 
 			value = paramNode->GetAttribute(wxT("value"));
+		}
+	}
+	return value;
+}
+
+wxString
+TestManager::GetParameterAlias(int nodeIndex, wxString parameterName)
+{
+	wxString value = wxEmptyString;
+
+	wxXmlNode* testNode = GetTestNode(nodeIndex);
+	if (testNode)
+	{
+		wxXmlNode* paramNode = GetParameterNode(testNode, parameterName);
+		if (paramNode) {
+			value = paramNode->GetAttribute(wxT("alias"));
 		}
 	}
 	return value;

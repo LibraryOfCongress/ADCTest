@@ -185,6 +185,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Analysers\Crosstalk.cpp" />
+    <ClCompile Include="..\..\Analysers\FADGIAnalyser.cpp" />
     <ClCompile Include="..\..\Analysers\SegmentLocator.cpp" />
     <ClCompile Include="..\..\Analysers\StepsFrequencyResponse.cpp" />
     <ClCompile Include="..\..\Analysers\THDNoise.cpp" />
@@ -220,6 +222,8 @@
     <ClCompile Include="..\..\Widgets\wxMathPlot\mathplot.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Analysers\Crosstalk.h" />
+    <ClInclude Include="..\..\Analysers\FADGIAnalyser.h" />
     <ClInclude Include="..\..\Analysers\SegmentLocator.h" />
     <ClInclude Include="..\..\Analysers\StepsFrequencyResponse.h" />
     <ClInclude Include="..\..\Analysers\THDNoise.h" />

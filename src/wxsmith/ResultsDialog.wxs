@@ -29,27 +29,87 @@
 						</object>
 						<object class="sizeritem">
 							<object class="wxPanel" name="ID_PANEL_MID_INNER" subclass="RimPanel" variable="PanelMidInner" member="yes">
-								<object class="wxBoxSizer" variable="BoxSizerMidInner" member="no">
+								<object class="wxBoxSizer" variable="BoxSizerMidInner" member="yes">
 									<object class="spacer">
 										<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
 										<size>0,-1</size>
 									</object>
 									<object class="sizeritem">
-										<object class="wxStaticText" name="ID_STATICTEXT_RESULTSINFO" variable="StaticTextResultsInfo" member="yes">
-											<label>Test results:</label>
-											<size>225,50</size>
-											<fg>#804040</fg>
-											<font>
-												<size>12</size>
-												<style>normal</style>
-												<weight>bold</weight>
-												<underlined>0</underlined>
-												<family>swiss</family>
-												<face>Calibri</face>
-											</font>
+										<object class="wxBoxSizer" variable="BoxSizerResultTexts" member="no">
+											<orient>wxVERTICAL</orient>
+											<object class="sizeritem">
+												<object class="wxBoxSizer" variable="BoxSizerMetrics" member="no">
+													<orient>wxVERTICAL</orient>
+													<object class="sizeritem">
+														<object class="wxStaticText" name="ID_STATICTEXT_RESULTSINFO" variable="StaticTextResultsInfo" member="yes">
+															<label>Test results:</label>
+															<size>225,-1</size>
+															<hidden>1</hidden>
+															<fg>#804040</fg>
+															<font>
+																<size>10</size>
+																<style>normal</style>
+																<weight>bold</weight>
+																<underlined>0</underlined>
+																<family>swiss</family>
+																<face>Calibri</face>
+															</font>
+															<style>wxSIMPLE_BORDER</style>
+														</object>
+														<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+														<option>2</option>
+													</object>
+													<object class="sizeritem">
+														<object class="wxTextCtrl" name="ID_TEXTCTRL_RESULTSINFO" variable="TextCtrlResultsInfo" member="yes">
+															<size>225,-1</size>
+															<fg>#804040</fg>
+															<bg>#C8C8C8</bg>
+															<font>
+																<size>10</size>
+																<style>normal</style>
+																<weight>bold</weight>
+																<underlined>0</underlined>
+																<family>swiss</family>
+																<face>Calibri</face>
+															</font>
+															<style>wxTE_MULTILINE|wxTE_READONLY</style>
+														</object>
+														<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+														<option>2</option>
+													</object>
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+												<border>2</border>
+												<option>3</option>
+											</object>
+											<object class="sizeritem">
+												<object class="wxBoxSizer" variable="BoxSizerOutcome" member="no">
+													<orient>wxVERTICAL</orient>
+													<object class="sizeritem">
+														<object class="wxStaticText" name="ID_STATICTEXT_RESULTSOUTCOME" variable="StaticTextResultsOutcome" member="yes">
+															<label>Test result</label>
+															<size>225,-1</size>
+															<font>
+																<size>12</size>
+																<style>normal</style>
+																<weight>bold</weight>
+																<underlined>0</underlined>
+																<family>swiss</family>
+																<face>Arial</face>
+															</font>
+															<style>wxALIGN_CENTRE|wxSIMPLE_BORDER</style>
+														</object>
+														<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+														<option>2</option>
+													</object>
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+												<border>2</border>
+												<option>1</option>
+											</object>
 										</object>
 										<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
-										<border>1</border>
+										<border>2</border>
 										<option>1</option>
 									</object>
 								</object>

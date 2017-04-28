@@ -76,6 +76,10 @@ class AVPTesterFrame: public wxFrame
         static const long ID_BUTTON_START_TESTS;
         static const long ID_PANEL_CTRL_BTNS;
         static const long ID_PANEL_TST_LST;
+        static const long ID_STATICTEXT_DESC_TTL;
+        static const long ID_TEXTCTRL_TEST_DESCRIPTION;
+        static const long ID_STATICTEXT_LINE_0;
+        static const long ID_PANEL_TEST_DESCRIPTION;
         static const long ID_STATICTEXT_PARAMS_TTL;
         static const long ID_LISTVIEW_PARAMETERS;
         static const long ID_STATICTEXT_LINE2;
@@ -110,6 +114,7 @@ class AVPTesterFrame: public wxFrame
         wxBoxSizer* BoxSizerMainUI;
         wxPanel* PanelCtrlBtns;
         wxPanel* PanelMainUI;
+        wxStaticText* StaticTextTestDescTTl;
         wxListView* ListViewTests;
         wxStaticText* StaticTextLine3;
         wxStaticText* StaticTextParamsTtl;
@@ -117,12 +122,15 @@ class AVPTesterFrame: public wxFrame
         RimPanel* PanelLog;
         wxMenu* MenuSettings;
         RimPanel* PanelBottom;
+        wxTextCtrl* TextCtrlTestDescription;
         wxListView* ListViewParameters;
         GButton* ButtonStartTests;
         wxStaticBitmap* StaticBitmapFADGI;
         RimPanel* PanelTestList;
         wxStaticText* StaticTextProcTtl;
         wxStatusBar* StatusBarMain;
+        RimPanel* PanelTestDescription;
+        wxStaticText* StaticTextLine0;
         wxMenuItem* MenuItemDevices;
         wxMenuItem* MenuItemOpenManual;
         wxMenuItem* MenuItemFOpen;

@@ -9,6 +9,8 @@
 //(*IdInit(ResultsDialog)
 const long ResultsDialog::ID_PANEL_TOP = wxNewId();
 const long ResultsDialog::ID_STATICTEXT_RESULTSINFO = wxNewId();
+const long ResultsDialog::ID_TEXTCTRL_RESULTSINFO = wxNewId();
+const long ResultsDialog::ID_STATICTEXT_RESULTSOUTCOME = wxNewId();
 const long ResultsDialog::ID_PANEL_MID_INNER = wxNewId();
 const long ResultsDialog::ID_RTA_FFT_PLOT = wxNewId();
 const long ResultsDialog::ID_BUTTON_PLOT_RESET = wxNewId();
@@ -25,10 +27,12 @@ END_EVENT_TABLE()
 ResultsDialog::ResultsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSize& size)
 {
 	//(*Initialize(ResultsDialog)
+	wxBoxSizer* BoxSizerOutcome;
 	wxBoxSizer* BoxSizerResetBtn;
+	wxBoxSizer* BoxSizerMetrics;
 	wxBoxSizer* BoxSizerMId;
 	wxBoxSizer* BoxSizerMLx;
-	wxBoxSizer* BoxSizerMidInner;
+	wxBoxSizer* BoxSizerResultTexts;
 	wxBoxSizer* BoxSizerMain;
 	wxBoxSizer* BoxSizerBtm;
 	wxBoxSizer* BoxSizerTop;
@@ -50,11 +54,28 @@ ResultsDialog::ResultsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,c
 	PanelMidInner = new RimPanel(PanelMiddle, ID_PANEL_MID_INNER, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_MID_INNER"));
 	BoxSizerMidInner = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizerMidInner->Add(0,-1,0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
-	StaticTextResultsInfo = new wxStaticText(PanelMidInner, ID_STATICTEXT_RESULTSINFO, _("Test results:"), wxDefaultPosition, wxSize(225,50), 0, _T("ID_STATICTEXT_RESULTSINFO"));
+	BoxSizerResultTexts = new wxBoxSizer(wxVERTICAL);
+	BoxSizerMetrics = new wxBoxSizer(wxVERTICAL);
+	StaticTextResultsInfo = new wxStaticText(PanelMidInner, ID_STATICTEXT_RESULTSINFO, _("Test results:"), wxDefaultPosition, wxSize(225,-1), wxSIMPLE_BORDER, _T("ID_STATICTEXT_RESULTSINFO"));
+	StaticTextResultsInfo->Hide();
 	StaticTextResultsInfo->SetForegroundColour(wxColour(128,64,64));
-	wxFont StaticTextResultsInfoFont(12,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Calibri"),wxFONTENCODING_DEFAULT);
+	wxFont StaticTextResultsInfoFont(10,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Calibri"),wxFONTENCODING_DEFAULT);
 	StaticTextResultsInfo->SetFont(StaticTextResultsInfoFont);
-	BoxSizerMidInner->Add(StaticTextResultsInfo, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerMetrics->Add(StaticTextResultsInfo, 2, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	TextCtrlResultsInfo = new wxTextCtrl(PanelMidInner, ID_TEXTCTRL_RESULTSINFO, wxEmptyString, wxDefaultPosition, wxSize(225,-1), wxTE_MULTILINE|wxTE_READONLY, wxDefaultValidator, _T("ID_TEXTCTRL_RESULTSINFO"));
+	TextCtrlResultsInfo->SetForegroundColour(wxColour(128,64,64));
+	TextCtrlResultsInfo->SetBackgroundColour(wxColour(200,200,200));
+	wxFont TextCtrlResultsInfoFont(10,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Calibri"),wxFONTENCODING_DEFAULT);
+	TextCtrlResultsInfo->SetFont(TextCtrlResultsInfoFont);
+	BoxSizerMetrics->Add(TextCtrlResultsInfo, 2, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	BoxSizerResultTexts->Add(BoxSizerMetrics, 3, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 2);
+	BoxSizerOutcome = new wxBoxSizer(wxVERTICAL);
+	StaticTextResultsOutcome = new wxStaticText(PanelMidInner, ID_STATICTEXT_RESULTSOUTCOME, _("Test result"), wxDefaultPosition, wxSize(225,-1), wxALIGN_CENTRE|wxSIMPLE_BORDER, _T("ID_STATICTEXT_RESULTSOUTCOME"));
+	wxFont StaticTextResultsOutcomeFont(12,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Arial"),wxFONTENCODING_DEFAULT);
+	StaticTextResultsOutcome->SetFont(StaticTextResultsOutcomeFont);
+	BoxSizerOutcome->Add(StaticTextResultsOutcome, 2, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+	BoxSizerResultTexts->Add(BoxSizerOutcome, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 2);
+	BoxSizerMidInner->Add(BoxSizerResultTexts, 1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 2);
 	PanelMidInner->SetSizer(BoxSizerMidInner);
 	BoxSizerMidInner->Fit(PanelMidInner);
 	BoxSizerMidInner->SetSizeHints(PanelMidInner);
@@ -118,6 +139,10 @@ ResultsDialog::OpenResultsFile(wxString path)
 
 	mResultsFilePath = path;
 	wxXmlNode* resultsNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("FADGIResults"));
+	wxXmlNode* metricsNode = NULL;
+	wxXmlNode* frespNode = NULL;
+	wxXmlNode* specsNode = NULL;
+	wxXmlNode* outcomeNode = NULL;
 
 	wxXmlDocument* readSchema = new wxXmlDocument();
 	if (readSchema->Load(mResultsFilePath))
@@ -138,22 +163,40 @@ ResultsDialog::OpenResultsFile(wxString path)
 		SetTitle(testname);
 
 		wxXmlNode* datasetNode = resultsNode->GetChildren();
-		wxXmlNode* dataNode = datasetNode->GetChildren();
-		while(dataNode)
+		while (datasetNode)
 		{
-			if (dataNode->GetName() == wxT("testmetrics"))
+			if (datasetNode->GetName() == wxT("dataset"))
 			{
-				ProcessTestMetrics(dataNode);
-			}
+				wxXmlNode* dataNode = datasetNode->GetChildren();
+				while (dataNode)
+				{
+					if (dataNode->GetName() == wxT("testmetrics"))
+					{
+						metricsNode = dataNode;
+					}
 
-			if (dataNode->GetName() == wxT("freqresponse"))
+					if (dataNode->GetName() == wxT("freqresponse"))
+					{
+						frespNode = dataNode;
+					}
+					dataNode = dataNode->GetNext();
+				}
+			}
+			else if (datasetNode->GetName() == wxT("performancespecs"))
 			{
-				ProcessFrequencyResponse(dataNode);
+				specsNode = datasetNode;
 			}
-
-			dataNode = dataNode->GetNext();
+			else if (datasetNode->GetName() == wxT("testoutcome"))
+			{
+				outcomeNode = datasetNode;
+			}
+			datasetNode = datasetNode->GetNext();
 		}
 
+		ProcessTestMetrics(metricsNode, specsNode);
+		ProcessFrequencyResponse(frespNode);
+		ProcessOutcome(outcomeNode);
+		BoxSizerMidInner->Layout();
 	}
 
 	delete readSchema;
@@ -214,23 +257,35 @@ ResultsDialog::UpdatePlot()
 }
 
 void
-ResultsDialog::ProcessTestMetrics(wxXmlNode* node)
+ResultsDialog::ProcessTestMetrics(wxXmlNode* metricsNode, wxXmlNode* targetsNode)
 {
+	if (metricsNode == NULL)
+		return;
+
 	wxString resultsInfo(wxT(" Test Results:\n\n\n"));
-	wxXmlNode* parameter = node->GetChildren();
+	wxXmlNode* parameter = metricsNode->GetChildren();
 	while (parameter)
 	{
 		wxString pName = parameter->GetAttribute(wxT("name"));
 		wxString pValue = parameter->GetAttribute(wxT("value"));
 		wxString pUnits = parameter->GetAttribute(wxT("units"));
+		wxString tValue = getSpecValue(pName, targetsNode);
 
-		wxString pInfo = wxT(" > ") + pName + wxT(":\n ") + pValue + wxT(" ") + pUnits + wxT("\n\n");
+		wxString pInfo = wxT(" > ") + pName + wxT(":\n");
+		pInfo += wxT(" measured: ") + pValue + wxT(" ") + pUnits + wxT("\n");
+		
+		if (!tValue.IsEmpty()) {
+			pInfo += wxT(" target: ") + tValue + wxT(" ") + pUnits + wxT("\n");
+		}
+		
+		pInfo += wxT("\n\n");
 
 		resultsInfo += pInfo;
 		parameter = parameter->GetNext();
 	}
 
 	StaticTextResultsInfo->SetLabel(resultsInfo);
+	TextCtrlResultsInfo->SetValue(resultsInfo);
 }
 
 void
@@ -240,6 +295,9 @@ ResultsDialog::ProcessFrequencyResponse(wxXmlNode* node)
 	mPlotYCoords.clear();
 
 	double dFreq = 0, dLev = 0;
+
+	if (node == NULL)
+		return;
 
 	wxXmlNode* point = node->GetChildren();
 	while (point)
@@ -260,6 +318,26 @@ ResultsDialog::ProcessFrequencyResponse(wxXmlNode* node)
 	mRTAMagPLot->Fit(log10(10), log10(30000), -140, 20);
 }
 
+void 
+ResultsDialog::ProcessOutcome(wxXmlNode* outcomeNode)
+{
+	wxString title = wxT("          \nTest result:\n");
+	wxString value = wxT("unavailable");
+	StaticTextResultsOutcome->SetBackgroundColour(wxColour(200, 200, 200));
+
+	if(outcomeNode)
+	{
+		value = outcomeNode->GetAttribute(wxT("value"), wxT("unknown"));
+	}
+
+	if (value == wxT("pass"))
+		StaticTextResultsOutcome->SetBackgroundColour(wxColour(0, 255, 0));
+	else if (value == wxT("fail"))
+		StaticTextResultsOutcome->SetBackgroundColour(wxColour(255, 0, 0));
+
+	StaticTextResultsOutcome->SetLabel(title+value+wxT("\n"));
+}
+
 void
 ResultsDialog::EnablePanZoom(bool enable)
 {
@@ -269,4 +347,27 @@ ResultsDialog::EnablePanZoom(bool enable)
 void ResultsDialog::OnButtonPlotResetClick(wxCommandEvent& event)
 {
     mRTAMagPLot->Fit(log10(10), log10(30000), -140, 20);
+}
+
+wxString
+ResultsDialog::getSpecValue(wxString paramName, wxXmlNode* specsNode)
+{
+	wxString paramValue(wxEmptyString);
+
+	if (specsNode)
+	{
+		wxXmlNode* paramNode = specsNode->GetChildren();
+		while (paramNode)
+		{
+			wxString pName = paramNode->GetAttribute(wxT("name"));
+
+			if (pName == paramName)
+			{
+				paramValue = paramNode->GetAttribute(wxT("value"), wxT(""));
+				break;
+			}
+			paramNode = paramNode->GetNext();
+		}
+	}
+	return paramValue;
 }

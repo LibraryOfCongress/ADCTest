@@ -31,6 +31,7 @@ const long AudioDevicesPanel::ID_PANEL_OUTPUT_DEVS = wxNewId();
 const long AudioDevicesPanel::ID_STATICTEXT_DEV_TST_TTL = wxNewId();
 const long AudioDevicesPanel::ID_BUTTON_TST_DEV_START = wxNewId();
 const long AudioDevicesPanel::ID_BUTTON_TST_DEV_STOP = wxNewId();
+const long AudioDevicesPanel::ID_STATICTEXT_CAL_INSTR = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_DEV_TEST = wxNewId();
 const long AudioDevicesPanel::ID_STATICTEXT_PB_STREAM_TTL = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_PB_IN_L = wxNewId();
@@ -189,6 +190,8 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	BoxSizerDevTest->Add(ButtonDevTestStart, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	ButtonDevTestStop = new GButton(PanelDevTest, ID_BUTTON_TST_DEV_STOP, _("Stop"), wxDefaultPosition, wxSize(100,22), 0, wxDefaultValidator, _T("ID_BUTTON_TST_DEV_STOP"));
 	BoxSizerDevTest->Add(ButtonDevTestStop, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	StaticTextCalibInstructions = new wxStaticText(PanelDevTest, ID_STATICTEXT_CAL_INSTR, _("Adjust volume until the peak value shows -3dB"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT_CAL_INSTR"));
+	BoxSizerDevTest->Add(StaticTextCalibInstructions, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizerDevTest->Add(-1,-1,1, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	PanelDevTest->SetSizer(BoxSizerDevTest);
 	BoxSizerDevTest->Fit(PanelDevTest);
@@ -886,8 +889,27 @@ void AudioDevicesPanel::OnTimerAudioMonitorTrigger(wxTimerEvent& event)
 		{
 			mVuMeterIn->SetValue(lIn);
 			wxString textLevels;
-			textLevels.Printf(wxT("peak: %0.1f dB\nrms:  %0.1fdB"), lIn.peak[mSelectedChannel], lIn.rms[mSelectedChannel]);
+			float peak = lIn.peak[mSelectedChannel];
+			float rms = lIn.rms[mSelectedChannel];
+			textLevels.Printf(wxT(" peak: %0.1f dB  \n rms:  %0.1fdB  "), peak, rms);
 			StaticTextChPkLvl->SetLabel(textLevels);
+
+			if( (peak >= -3.1)&&(peak <= -2.9))
+			{
+				StaticTextChPkLvl->SetBackgroundColour(wxColour(200, 255, 200, 255));
+				StaticTextCalibInstructions->SetBackgroundColour(wxColour(200, 255, 200, 255));
+			}
+			else if ((peak > -2.9))
+			{
+				StaticTextChPkLvl->SetBackgroundColour(wxColour(255, 200, 200, 255));
+				StaticTextCalibInstructions->SetBackgroundColour(wxColour(255, 200, 200, 255));
+			}
+			else 
+			{
+				StaticTextChPkLvl->SetBackgroundColour(wxColour(210, 210, 210, 255));
+				StaticTextCalibInstructions->SetBackgroundColour(wxColour(210, 210, 210, 255));
+			}
+
 		}
 	}
 

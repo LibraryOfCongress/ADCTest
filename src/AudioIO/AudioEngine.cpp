@@ -292,7 +292,7 @@ int AudioIO::doIODevicesCalibration()
 		if (GetCurrentIOConfiguration(mCaptureSampleRate, captureDevIdx, captureChannels, playbackDevIdx, playbackChannels))
 		{
 			//create input and output meters:
-			CreateLevelAnalysers((size_t)mCaptureSampleRate, 50);
+			CreateLevelAnalysers((size_t)mCaptureSampleRate, 120);
 
 			//fft real time analyser
 			mFFTrta->initialiseFFT(mCaptureSampleRate, mCaptureFrameSize, captureChannels, 512, HammingWindow);
@@ -536,34 +536,68 @@ AudioIO::doADCTest()
 	int playbacDevIdx = -1;
 	int playbackChannels = 0;
 	
+	int testIndex = 0;
+	int noTests = 0;
 	errorCode = Pa_Initialize();
 
 	if (errorCode == paNoError)
 	{
 		GetCurrentIOConfiguration(mCaptureSampleRate, captureDevIdx, captureChannels, playbacDevIdx, playbackChannels);
 
-		int noTests = mTestManager->GetNumberOfTest();
-		for (int tIdx = 0; tIdx < noTests; tIdx++)
+		noTests = mTestManager->GetNumberOfTest();
+		for (testIndex = 0; testIndex < noTests; testIndex++)
 		{
 			if (bIsStopped)
 				break;
 
-			reportEvent(2, AVP_PROCESS_STAGE, wxT("test loop"), false, wxEmptyString, noTests, tIdx);
+			//reportEvent(2, AVP_PROCESS_STAGE, wxT("test loop"), false, wxEmptyString, noTests, tIdx);
 
-			if (mTestManager->IsTestEnabled(tIdx))
+			if (mTestManager->IsTestEnabled(testIndex))
 			{
 				wxString pbFile = wxEmptyString;
-				int errCode = mTestManager->GenerateSignalFile(tIdx, mCaptureSampleRate, playbackChannels, pbFile);
-				
-				reportEvent(2, AVP_PROCESS_STAGE, wxT("generating signal file"), false, wxEmptyString, noTests, tIdx);
-				wxString recFile = mTestManager->GetResponseFilePath(tIdx);
 
-				reportEvent(2, AVP_PROCESS_STAGE, wxT("playback and response acquisition"), false, wxEmptyString, noTests, tIdx);
-				errorCode = PlaybackAcquire(pbFile, recFile);
+				reportEvent(2, AVP_PROCESS_STAGE, wxT("generating signal file"), false, wxEmptyString, noTests, testIndex);
+				int errCode = mTestManager->GenerateSignalFile(testIndex, mCaptureSampleRate, playbackChannels, pbFile);
 
-				//analyse
-				reportEvent(2, AVP_PROCESS_STAGE, wxT("response analysis"), false, wxEmptyString, noTests, tIdx);
-				mTestManager->AnalyseResponse(tIdx);
+				//decide what to do based on return value from sig gen
+				switch (errCode)
+				{
+					case -1://something went wrong during the test signal generation stage
+					{
+
+					}
+					break;
+
+					case 0: //all ok, proceed with playback and acquisition of test signal
+					{
+						reportEvent(2, AVP_PROCESS_STAGE, wxT("playback and response acquisition"), false, wxEmptyString, noTests, testIndex);
+						wxString recFile = mTestManager->GetResponseFilePath(testIndex);
+						errorCode = PlaybackAcquire(pbFile, recFile);
+
+						//analyse
+						reportEvent(2, AVP_PROCESS_STAGE, wxT("response analysis"), false, wxEmptyString, noTests, testIndex);
+						wxString testResult = mTestManager->AnalyseResponse(testIndex);
+
+						//send result
+						reportEvent(2, AVP_PROCESS_RESULT, testResult, false, wxEmptyString, noTests, testIndex);
+					}
+					break;
+
+					case 1:
+					//test procedure is paused, user action required possibly to change wiring, etc
+					{
+						reportEvent(2, AVP_PROCESS_RESULT, wxT("paused"), false, wxEmptyString, noTests, testIndex);
+						wxString pmessage = mTestManager->GetParameterAlias(testIndex, wxT("signal"));
+						wxMessageBox(pmessage, wxT("user action required"));
+					}
+					break;
+
+				}				
+			}
+			else
+			{
+				//signal that the test has been skipped
+				reportEvent(2, AVP_PROCESS_RESULT, wxT("skipped"), false, wxEmptyString, noTests, testIndex);
 			}
 		}
 	}
@@ -575,7 +609,7 @@ AudioIO::doADCTest()
 
 	Pa_Terminate();
 
-	reportEvent(2, errorCode, wxT("Test procedures finished"), true);
+	reportEvent(2, errorCode, wxT("Test procedures finished"), true, wxEmptyString, noTests, testIndex-1);
 
 	mIsSafe = true;
 	return 0;

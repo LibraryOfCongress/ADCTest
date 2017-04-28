@@ -1,16 +1,17 @@
 #include "StepsFrequencyResponse.h"
 #include "../DSP/Utils/MathUtilities.h"
-
 #include "../SigGen/WavFileWriter.h"
 
 StepsFrequencyResponse::StepsFrequencyResponse()
 :mParamsNode(NULL)
+,mSpecsNode(NULL)
 ,mSampleRate(0)
 ,mNoChannels(0)
 ,mRespFileFrames(0)
 ,mDetectionWLen(0)
 ,mLogDetectionThreshold(-60)
 ,mLocator(NULL)
+,mTestResultsOK(false)
 {
     //ctor
 	mSeparator = wxT("\\");
@@ -25,28 +26,63 @@ StepsFrequencyResponse::~StepsFrequencyResponse()
 	}
 }
 
-bool
+int
 StepsFrequencyResponse::analyseSignal(wxXmlNode* testDescriptionNode)
 {
-	bool bRes = false;
+	int result = TestErrorUnknown;
 
 	setParameters(testDescriptionNode);
 
+	//recorded response file
+	SNDFILE* mRespFile = openResponseFile();
+
+	//get centre frequencies of test tones
 	generateFrequenciesList();
 
-	if (openResponseFile())
+	if (mRespFile)
 	{
-		int hh = 0;
-	}
+		//find segments in file
+		std::vector<size_t> onsets = getOnsets(mRespFile);
 
-	return bRes;
+		analyseSegments(mRespFile, onsets);
+
+		sf_close(mRespFile);
+
+		bool testOutcome = buildReport();
+		
+		if (testOutcome)
+			result = TestPass;
+		else
+			result = TestFail;
+	}
+	else 
+	{
+		result = TestErrorRespFile;
+	}
+		
+	return result;
 }
 
 void
 StepsFrequencyResponse::setParameters(wxXmlNode* testDescriptionNode)
 {
-	mParamsNode = testDescriptionNode->GetChildren();
 	mTestTitle = testDescriptionNode->GetAttribute(wxT("alias"));
+	wxXmlNode* cNode = testDescriptionNode->GetChildren();
+
+	while (cNode)
+	{
+		wxString nName = cNode->GetName();
+
+		if (nName == wxT("paramters"))
+		{
+			mParamsNode = cNode;
+		}
+		else if (nName == wxT("performancespecs"))
+		{
+			mSpecsNode = cNode;
+		}
+		cNode = cNode->GetNext();
+	}
 
 	//set default parameter values
 	mStartFreq = 100;
@@ -110,8 +146,10 @@ StepsFrequencyResponse::setParameters(wxXmlNode* testDescriptionNode)
 		}
 		else if (pName == wxT("level"))
 		{
+			double dVal;
 			wxString value = parameterNode->GetAttribute(wxT("value"));
-			value.ToDouble(&mSignalLevel);
+			value.ToDouble(&dVal);
+			mSignalLevel = dVal;
 		}
 		else if (pName == wxT("outputfreqresponse"))
 		{
@@ -137,7 +175,7 @@ StepsFrequencyResponse::setParameters(wxXmlNode* testDescriptionNode)
 	}
 }
 
-bool 
+SNDFILE*
 StepsFrequencyResponse::openResponseFile()
 {
 	bool bRes = false;
@@ -146,7 +184,7 @@ StepsFrequencyResponse::openResponseFile()
 	std::string strpath(filePath.mbc_str());
 
 	SNDFILE* respFile = NULL;
-	SF_INFO  respFileInfo;
+	SF_INFO respFileInfo;
 	respFileInfo.format = 0;
 	respFileInfo.frames = 0;
 	respFile = sf_open((const char*)strpath.c_str(), SFM_READ, &respFileInfo);
@@ -157,26 +195,18 @@ StepsFrequencyResponse::openResponseFile()
 		bRes = true;
 		mSampleRate = respFileInfo.samplerate;
 		mNoChannels = respFileInfo.channels;
-		mDetectionWLen = (size_t)MathUtilities::nextPowerOfTwo(int((1e-3) * mSampleRate));
-		mSampleTransient = 1e-3 * mTransientTime * mSampleRate;
-		mSampleTone = 1e-3 * mIntegrationTime * mSampleRate;
-		
-		//find segments in file
-		std::vector<size_t> onsets = getOnsets(respFile);
-
-		analyseSegments(respFile, onsets);
-
-		sf_close(respFile);
-
-		writeResultsToFile();
 	}
 		
-	return bRes;
+	return respFile;
 }
 
 std::vector<size_t> 
 StepsFrequencyResponse::getOnsets(SNDFILE* afile)
 {
+	mDetectionWLen = (size_t)MathUtilities::nextPowerOfTwo(int((1e-3) * mSampleRate));
+	mSampleTransient = 1e-3 * mTransientTime * mSampleRate;
+	mSampleTone = 1e-3 * mIntegrationTime * mSampleRate;
+
 	if (mLocator) {
 		delete mLocator;
 		mLocator = NULL;
@@ -185,10 +215,6 @@ StepsFrequencyResponse::getOnsets(SNDFILE* afile)
 	mLocator->Reset();
 	mLocator->SetDetectionParameters(mLogDetectionThreshold);
 	mLocator->SetLPFilterparameters(50, 12);
-
-
-	//std::string dbgPath = "dbg.wav";
-	//WavFileWriter* dbgWriter = new WavFileWriter(dbgPath, 2, (size_t)mSampleRate, 1);
 
 	float* windowBuffer = new float[mDetectionWLen*mNoChannels];
 	size_t count = 0;
@@ -200,13 +226,10 @@ StepsFrequencyResponse::getOnsets(SNDFILE* afile)
 		if (point >= 0)
 			windowBuffer[point] = -1;
 
-		//dbgWriter->writeAudioFrames(windowBuffer, mDetectionWLen);
-
 		count += read;
 	}
 	
 	delete[] windowBuffer;
-	//delete dbgWriter;
 
 	return mLocator->GetOnsets();
 }
@@ -216,7 +239,6 @@ StepsFrequencyResponse::generateFrequenciesList()
 {
 	mFrequencies = MathUtilities::calculateOctaveFreqs(mStartFreq, mStopFreq, 1000, mStepsPerOctave, 5);
 }
-
 
 void
 StepsFrequencyResponse::analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets)
@@ -247,21 +269,24 @@ StepsFrequencyResponse::analyseSegments(SNDFILE* afile, std::vector<size_t> &ons
 		float max = 0;
 		MathUtilities::getFrameMinMax(channelBuffer, mSampleTone, &min, &max);
 
-		if (max < mLowerAmplitudeLimit)
-			mLowerAmplitudeLimit = max;
-
-
-		if (max > mUpperAmplitudeLimit)
-			mUpperAmplitudeLimit = max;
-
 		if (i < mFrequencies.size())
 		{
+			//avoid NaN!
+			if (max <= 0)
+				max = 1e-32;
+
 			FreqPoint point;
 			point.frequency = mFrequencies[i];
 			point.peakValueLin = max;
 			point.peakValueLog = 20 * log10(max);
 
+			//get max and min points in frequency response
 			mFrequencyResponse.push_back(point);
+			if (max < mLowerAmplitudeLimit)
+				mLowerAmplitudeLimit = max;
+
+			if (max > mUpperAmplitudeLimit)
+				mUpperAmplitudeLimit = max;
 		}
 
 		delete[] fileBuffer;
@@ -269,11 +294,9 @@ StepsFrequencyResponse::analyseSegments(SNDFILE* afile, std::vector<size_t> &ons
 	}
 }
 
-bool 
-StepsFrequencyResponse::writeResultsToFile()
+bool
+StepsFrequencyResponse::buildReport()
 {
-	bool wResults = false;
-	wxString filePath = mFolderPath + mSeparator + mResultsFileName;
 	wxString channelInfo;
 	channelInfo.Printf(wxT("%d"), mSelectedChannel);
 
@@ -289,25 +312,41 @@ StepsFrequencyResponse::writeResultsToFile()
 
 	wxString paramValueStr;
 
-	//lowest level in response
+	//calculate maximum positive deviation from reference level:
+	mUpperAmplitudeLimit = 20 * log10(mUpperAmplitudeLimit); 
+	if (mUpperAmplitudeLimit <= mSignalLevel)
+	{
+		mUpperAmplitudeLimit = 0;
+	}
+	else
+	{
+		mUpperAmplitudeLimit -= mSignalLevel;
+	}
+	
+	wxXmlNode* upLvlNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("parameter"));
+	upLvlNode->AddAttribute(wxT("name"), wxT("upperlimit"));
+	paramValueStr.Printf(wxT("%g"), mUpperAmplitudeLimit);
+	upLvlNode->AddAttribute(wxT("value"), paramValueStr);
+	upLvlNode->AddAttribute(wxT("units"), wxT("dB"));
+	metricsNode->AddChild(upLvlNode);
+
 	mLowerAmplitudeLimit = 20 * log10(mLowerAmplitudeLimit);
-	double lLev = mLowerAmplitudeLimit - mSignalLevel;
+	//calculate maximum negative deviation from reference level:
+	if (mLowerAmplitudeLimit >= mSignalLevel)
+	{
+		mLowerAmplitudeLimit = 0;
+	}
+	else
+	{
+		mLowerAmplitudeLimit -= mSignalLevel;
+	}
 	wxXmlNode* lwLvlNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("parameter"));
 	lwLvlNode->AddAttribute(wxT("name"), wxT("lowerlimit"));
-	paramValueStr.Printf(wxT("%g"), lLev);
+	paramValueStr.Printf(wxT("%g"), mLowerAmplitudeLimit);
 	lwLvlNode->AddAttribute(wxT("value"), paramValueStr);
 	lwLvlNode->AddAttribute(wxT("units"), wxT("dB"));
 	metricsNode->AddChild(lwLvlNode);
 
-	//highest level in response
-	mUpperAmplitudeLimit = 20 * log10(mUpperAmplitudeLimit);
-	double uLev = mUpperAmplitudeLimit - mSignalLevel;
-	wxXmlNode* upLvlNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("parameter"));
-	upLvlNode->AddAttribute(wxT("name"), wxT("upperlimit"));
-	paramValueStr.Printf(wxT("%g"), uLev);
-	upLvlNode->AddAttribute(wxT("value"), paramValueStr);
-	upLvlNode->AddAttribute(wxT("units"), wxT("dB"));
-	metricsNode->AddChild(upLvlNode);
 
 	//Add metrics node to data node;
 	dataNode->AddChild(metricsNode);
@@ -335,14 +374,143 @@ StepsFrequencyResponse::writeResultsToFile()
 	}
 	resultsNode->AddChild(dataNode);
 
+
+	///////////////////////////////////////////////////////////////////////////////
+	//write pass or fail outcome for test based on perfomance specifications
+
+	//add published specs for reference
+	wxXmlNode* specNode = new wxXmlNode(*mSpecsNode);// wxXML_ELEMENT_NODE, wxT("performancespecs"));
+	resultsNode->AddChild(specNode);
+
+	//check against target performance
+	mTestResultsOK = checkTestSpecs(resultsNode);
+	wxXmlNode* outcomeNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("testoutcome"));
+	wxString passOrFail;
+
+	if (mTestResultsOK)
+		passOrFail = wxT("pass");
+	else
+		passOrFail = wxT("fail");
+
+	outcomeNode->AddAttribute(wxT("value"), passOrFail);
+	resultsNode->AddChild(outcomeNode);
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//serialise report to file
+	writeResultsToFile(resultsNode);
+
+	delete resultsNode;
+
+	return mTestResultsOK;
+}
+
+bool 
+StepsFrequencyResponse::checkTestSpecs(wxXmlNode* resultsNode)
+{
+	bool testResultsOK = true;
+
+	double measuredUpperLimit = getResultValue(wxT("upperlimit"), resultsNode);
+	double specUpperLimit = getSpecValue(wxT("upperlimit"), mSpecsNode);
+	bool upperOK = true;
+	if (measuredUpperLimit > specUpperLimit)
+		upperOK = false;
+
+	
+	double measuredLowerLimit = getResultValue(wxT("lowerlimit"), resultsNode);
+	double specLowerLimit = getSpecValue(wxT("lowerlimit"), mSpecsNode);
+	bool lowerOK = true;
+	if (measuredLowerLimit < specLowerLimit)
+		lowerOK = false;
+
+	testResultsOK = upperOK&&lowerOK;
+
+	return testResultsOK;
+}
+
+bool 
+StepsFrequencyResponse::writeResultsToFile( wxXmlNode* resultsNode )
+{
 	//write all to file
+	wxString filePath = mFolderPath + mSeparator + mResultsFileName;
+
 	wxXmlDocument* writeSchema = new wxXmlDocument();
 	writeSchema->SetRoot(resultsNode);
 	writeSchema->Save(filePath);
 	writeSchema->DetachRoot();
 	delete writeSchema;
 
-	delete resultsNode;
+	return true;
+}
 
-	return wResults;
+double
+StepsFrequencyResponse::getResultValue(wxString paramName, wxXmlNode* resultsNode)
+{
+	double paramValue = 0;
+
+	wxXmlNode* metricsNode = NULL;
+	wxXmlNode* dataSetNode = resultsNode->GetChildren();
+
+	//get metrics node;
+	while (dataSetNode)
+	{
+		if (dataSetNode->GetName() == wxT("dataset"))
+		{
+			wxXmlNode* cNode = dataSetNode->GetChildren();
+			while (cNode)
+			{
+				if (cNode->GetName() == wxT("testmetrics"))
+				{
+					metricsNode = cNode;
+					break;
+				}
+				cNode = cNode->GetNext();
+			}
+			break;
+		}
+		dataSetNode = dataSetNode->GetNext();
+	}
+
+
+	//if performance metrics are available, compare with published specifications
+	if (metricsNode)
+	{
+		wxXmlNode* paramNode = metricsNode->GetChildren();
+		while (paramNode)
+		{
+			wxString pName = paramNode->GetAttribute(wxT("name"));
+
+			if (pName == paramName)
+			{
+				wxString pVal = paramNode->GetAttribute(wxT("value"), wxT("0"));
+				pVal.ToDouble(&paramValue);
+				break;
+			}
+			paramNode = paramNode->GetNext();
+		}
+	}
+	return paramValue;
+}
+
+double
+StepsFrequencyResponse::getSpecValue(wxString paramName, wxXmlNode* specsNode)
+{
+	double paramValue = 0;
+
+	if (specsNode)
+	{
+		wxXmlNode* paramNode = specsNode->GetChildren();
+		while (paramNode)
+		{
+			wxString pName = paramNode->GetAttribute(wxT("name"));
+
+			if (pName == paramName)
+			{
+				wxString pVal = paramNode->GetAttribute(wxT("value"), wxT("0"));
+				pVal.ToDouble(&paramValue);
+				break;
+			}
+			paramNode = paramNode->GetNext();
+		}
+	}
+	return paramValue;
 }

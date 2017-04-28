@@ -16,30 +16,45 @@ class THDNoise
     public:
         THDNoise();
         virtual ~THDNoise();
-		bool analyseSignal(wxXmlNode* parameters);
+		int analyseSignal(wxXmlNode* parameters);
 
 	protected:
 		//extract analysis parameters from test xml description 
-		void setParameters( wxXmlNode* testDescriptionNode);
-		
+		void setParameters(wxXmlNode* testDescriptionNode);
+
 		//open .WAV file of recorded DUT response
-		bool openResponseFile();
-		
+		SNDFILE* openResponseFile();
+
 		//analyse response and find beginnning of signal
 		std::vector<size_t> getOnsets(SNDFILE* afile);
 
 		//analyse response 
 		void analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets);
-		
-		//serialise metrics to xml file
-		bool writeResultsToFile();
 
-		//extract metrics specific to test procedures
-		void extractTHDNoiseMetrics();
+		//build xml report
+		bool buildReport();
+
+		//check pass or fail test condition
+		bool checkTestSpecs(wxXmlNode* resultsNode);
+
+		//serialise report to file
+		bool writeResultsToFile(wxXmlNode* resultsNode);
+
+		//get value of measured parameter from report
+		double getResultValue(wxString paramName, wxXmlNode* resultsNode);
+
+		//get pass/fail specification from guidelines 
+		double getSpecValue(wxString paramName, wxXmlNode* specsNode);
 
     protected:
+		//extract metrics specific to test procedures
+		void extractTHDNoiseMetrics();
+		FreqPoint findPeakInRange(float startFreq, float endFreq, std::vector<FreqPoint> &frequencyResponse);
+
         wxXmlNode* mParamsNode;
-        double mSampleRate;
+		wxXmlNode* mSpecsNode;
+		
+		double mSampleRate;
 		int mNoChannels;
 		wxString mTestTitle;
 		wxString mFolderPath;
@@ -64,6 +79,8 @@ class THDNoise
 		size_t mFFTLength;
 		size_t mFFTAverages;
 		size_t mFFTBins;
+		int    mAverageType;
+		bool   mFirstObservation;
 
 		size_t mRespFileFrames;
 		size_t mDetectionWLen;
@@ -96,10 +113,18 @@ class THDNoise
 		//lowest frequency used in calculations
 		double mLowestFrequency;
 
+		//THD value in percentage
+		float mTHD_Pc;
+		//THD value in dB
+		float mTHD_Log;
+
 		//THD+N value in percentage
 		float mTHDpN_Pc;
 		//THD+N value in dB
 		float mTHDpN_Log;
+
+		//SNR value in dB
+		float mSNR_Log;
 };
 
 #endif // THDNOISE_H

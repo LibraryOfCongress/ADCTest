@@ -54,6 +54,7 @@ class AudioDevicesPanel: public wxPanel
 		GButton* ButtonDevTestStart;
 		awohSpin* SpinFFTLen;
 		wxStaticText* StaticTextInHosts;
+		wxStaticText* StaticTextCalibInstructions;
 		wxStaticText* StaticTextChPkLvl;
 		wxStaticText* StaticTextLineUp;
 		wxStaticText* StaticTextGainTtl;
@@ -125,6 +126,7 @@ class AudioDevicesPanel: public wxPanel
 		static const long ID_STATICTEXT_DEV_TST_TTL;
 		static const long ID_BUTTON_TST_DEV_START;
 		static const long ID_BUTTON_TST_DEV_STOP;
+		static const long ID_STATICTEXT_CAL_INSTR;
 		static const long ID_PANEL_DEV_TEST;
 		static const long ID_STATICTEXT_PB_STREAM_TTL;
 		static const long ID_PANEL_PB_IN_L;

@@ -59,6 +59,10 @@ const long AVPTesterFrame::ID_STATICTEXT_LINE1 = wxNewId();
 const long AVPTesterFrame::ID_BUTTON_START_TESTS = wxNewId();
 const long AVPTesterFrame::ID_PANEL_CTRL_BTNS = wxNewId();
 const long AVPTesterFrame::ID_PANEL_TST_LST = wxNewId();
+const long AVPTesterFrame::ID_STATICTEXT_DESC_TTL = wxNewId();
+const long AVPTesterFrame::ID_TEXTCTRL_TEST_DESCRIPTION = wxNewId();
+const long AVPTesterFrame::ID_STATICTEXT_LINE_0 = wxNewId();
+const long AVPTesterFrame::ID_PANEL_TEST_DESCRIPTION = wxNewId();
 const long AVPTesterFrame::ID_STATICTEXT_PARAMS_TTL = wxNewId();
 const long AVPTesterFrame::ID_LISTVIEW_PARAMETERS = wxNewId();
 const long AVPTesterFrame::ID_STATICTEXT_LINE2 = wxNewId();
@@ -98,6 +102,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizerFrame;
     wxMenuItem* MenuItemInfo;
     wxMenuItem* MenuItemQuit;
+    wxBoxSizer* BoxSizerRightPanels;
     wxMenu* MenuFile;
     wxBoxSizer* BoxSizerTestParams;
     wxBoxSizer* BoxSizerLogo;
@@ -105,6 +110,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     wxMenuBar* MenuBarMain;
     wxMenu* Menu2;
     wxBoxSizer* BoxSizerCtrlBtns;
+    wxBoxSizer* BoxSizerTestDescription;
     wxBoxSizer* BoxSizerBottom;
 
     Create(parent, wxID_ANY, _("ADC Performance Test Tool"), wxDefaultPosition, wxDefaultSize, wxCAPTION|wxCLOSE_BOX, _T("wxID_ANY"));
@@ -132,7 +138,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     wxFont StaticTextProcTtlFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     StaticTextProcTtl->SetFont(StaticTextProcTtlFont);
     BoxSizerTestList->Add(StaticTextProcTtl, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
-    ListViewTests = new wxListView(PanelTestList, ID_LISTVIEW_TESTS, wxDefaultPosition, wxSize(300,200), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxLC_NO_SORT_HEADER|wxNO_BORDER, wxDefaultValidator, _T("ID_LISTVIEW_TESTS"));
+    ListViewTests = new wxListView(PanelTestList, ID_LISTVIEW_TESTS, wxDefaultPosition, wxSize(350,250), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxLC_NO_SORT_HEADER|wxNO_BORDER, wxDefaultValidator, _T("ID_LISTVIEW_TESTS"));
     ListViewTests->SetBackgroundColour(wxColour(200,200,200));
     wxFont ListViewTestsFont(10,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     ListViewTests->SetFont(ListViewTestsFont);
@@ -161,6 +167,31 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     BoxSizerTestList->Fit(PanelTestList);
     BoxSizerTestList->SetSizeHints(PanelTestList);
     BoxSizerLists->Add(PanelTestList, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 4);
+    BoxSizerLists->Add(1,-1,1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+    BoxSizerRightPanels = new wxBoxSizer(wxVERTICAL);
+    PanelTestDescription = new RimPanel(PanelList, ID_PANEL_TEST_DESCRIPTION, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_TEST_DESCRIPTION"));
+    BoxSizerTestDescription = new wxBoxSizer(wxVERTICAL);
+    StaticTextTestDescTTl = new wxStaticText(PanelTestDescription, ID_STATICTEXT_DESC_TTL, _("  Description"), wxDefaultPosition, wxSize(-1,21), 0, _T("ID_STATICTEXT_DESC_TTL"));
+    StaticTextTestDescTTl->SetForegroundColour(wxColour(255,255,255));
+    StaticTextTestDescTTl->SetBackgroundColour(wxColour(78,183,223));
+    wxFont StaticTextTestDescTTlFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
+    StaticTextTestDescTTl->SetFont(StaticTextTestDescTTlFont);
+    BoxSizerTestDescription->Add(StaticTextTestDescTTl, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+    TextCtrlTestDescription = new wxTextCtrl(PanelTestDescription, ID_TEXTCTRL_TEST_DESCRIPTION, wxEmptyString, wxDefaultPosition, wxSize(-1,50), wxTE_READONLY|wxNO_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_TEST_DESCRIPTION"));
+    TextCtrlTestDescription->SetBackgroundColour(wxColour(200,200,200));
+    wxFont TextCtrlTestDescriptionFont(10,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
+    TextCtrlTestDescription->SetFont(TextCtrlTestDescriptionFont);
+    BoxSizerTestDescription->Add(TextCtrlTestDescription, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+    StaticTextLine0 = new wxStaticText(PanelTestDescription, ID_STATICTEXT_LINE_0, wxEmptyString, wxDefaultPosition, wxSize(-1,2), 0, _T("ID_STATICTEXT_LINE_0"));
+    StaticTextLine0->SetForegroundColour(wxColour(255,255,255));
+    StaticTextLine0->SetBackgroundColour(wxColour(78,183,223));
+    wxFont StaticTextLine0Font(11,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
+    StaticTextLine0->SetFont(StaticTextLine0Font);
+    BoxSizerTestDescription->Add(StaticTextLine0, 0, wxBOTTOM|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 2);
+    PanelTestDescription->SetSizer(BoxSizerTestDescription);
+    BoxSizerTestDescription->Fit(PanelTestDescription);
+    BoxSizerTestDescription->SetSizeHints(PanelTestDescription);
+    BoxSizerRightPanels->Add(PanelTestDescription, 0, wxBOTTOM|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 4);
     PanelParamsLst = new RimPanel(PanelList, ID_PANEL_PRMS_LST, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_PRMS_LST"));
     BoxSizerTestParams = new wxBoxSizer(wxVERTICAL);
     StaticTextParamsTtl = new wxStaticText(PanelParamsLst, ID_STATICTEXT_PARAMS_TTL, _("  Parameters"), wxDefaultPosition, wxSize(-1,21), 0, _T("ID_STATICTEXT_PARAMS_TTL"));
@@ -169,7 +200,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     wxFont StaticTextParamsTtlFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     StaticTextParamsTtl->SetFont(StaticTextParamsTtlFont);
     BoxSizerTestParams->Add(StaticTextParamsTtl, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
-    ListViewParameters = new wxListView(PanelParamsLst, ID_LISTVIEW_PARAMETERS, wxDefaultPosition, wxSize(350,200), wxLC_REPORT|wxLC_NO_HEADER|wxNO_BORDER, wxDefaultValidator, _T("ID_LISTVIEW_PARAMETERS"));
+    ListViewParameters = new wxListView(PanelParamsLst, ID_LISTVIEW_PARAMETERS, wxDefaultPosition, wxSize(325,200), wxLC_REPORT|wxLC_NO_HEADER|wxNO_BORDER, wxDefaultValidator, _T("ID_LISTVIEW_PARAMETERS"));
     ListViewParameters->SetBackgroundColour(wxColour(200,200,200));
     wxFont ListViewParametersFont(10,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     ListViewParameters->SetFont(ListViewParametersFont);
@@ -190,7 +221,8 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     PanelParamsLst->SetSizer(BoxSizerTestParams);
     BoxSizerTestParams->Fit(PanelParamsLst);
     BoxSizerTestParams->SetSizeHints(PanelParamsLst);
-    BoxSizerLists->Add(PanelParamsLst, 0, wxTOP|wxBOTTOM|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 4);
+    BoxSizerRightPanels->Add(PanelParamsLst, 1, wxALIGN_LEFT|wxALIGN_TOP, 1);
+    BoxSizerLists->Add(BoxSizerRightPanels, 0, wxTOP|wxBOTTOM|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 4);
     PanelList->SetSizer(BoxSizerLists);
     BoxSizerLists->Fit(PanelList);
     BoxSizerLists->SetSizeHints(PanelList);
@@ -332,6 +364,8 @@ void AVPTesterFrame::BuildUI()
 	ListViewTests->InsertColumn(0, itemColInputs);
 	itemColInputs.SetText(_T("enabled"));
 	ListViewTests->InsertColumn(1, itemColInputs);
+	itemColInputs.SetText(_T("result"));
+	ListViewTests->InsertColumn(2, itemColInputs);
 
 	itemColInputs.SetAlign(wxLIST_FORMAT_LEFT);
 	itemColInputs.SetText(_T("parameter"));
@@ -453,6 +487,28 @@ AVPTesterFrame::OnAudioThreadEvent(wxThreadEvent& event)
 					ListViewTests->Select(count);
 				}
 				break;
+
+				case AVP_PROCESS_RESULT:
+				// test procedure completed
+				{
+					mTestIsRunning = true;
+					EnableTestUI(false);
+					int count = ePl.eventCounter;
+					int range = ePl.eventRange;
+					wxString result = ePl.eventMessage;
+					wxString cntMsg; cntMsg.Printf(wxT(" %d of %d"), count + 1, range);
+					WriteLogMsg(ePl.eventMessage + cntMsg);
+
+					ListViewTests->SetItem(count, 2, result);
+
+					if (result == wxT("error"))
+						ListViewTests->SetItemBackgroundColour(count, wxColour(255, 255, 200, 255));
+					if( result == wxT("pass"))
+						ListViewTests->SetItemBackgroundColour(count, wxColour(200,255,200, 255));
+					if (result == wxT("fail"))
+						ListViewTests->SetItemBackgroundColour(count, wxColour(255, 200, 200, 255));
+				}
+				break;
 			}
 
 			if (ePl.threadFinished)
@@ -465,6 +521,8 @@ AVPTesterFrame::OnAudioThreadEvent(wxThreadEvent& event)
 	
 				mTestIsRunning = false;
 				EnableTestUI(true);
+
+				ListViewTests->Select(ePl.eventCounter, false);
 			}
 
 		}
@@ -515,9 +573,12 @@ AVPTesterFrame::PopulateTestsList()
 			ListViewTests->SetItem(i, 1, wxT("enabled"));
 		else
 			ListViewTests->SetItem(i, 1, wxT("disabled"));
+
+		ListViewTests->SetItem(i, 2, wxT("unavail."));
 	}
 	ListViewTests->SetColumnWidth(0, 150);
-	ListViewTests->SetColumnWidth(1, 150);
+	ListViewTests->SetColumnWidth(1, 100);
+	ListViewTests->SetColumnWidth(1, 100);
 
 	ListViewParameters->DeleteAllItems();
 }
@@ -544,6 +605,13 @@ AVPTesterFrame::PopulateTestParametersList()
 void AVPTesterFrame::OnListViewTestsItemSelect(wxListEvent& event)
 {
 	mSelectedTestIdx = event.m_itemIndex;
+
+	if (mSelectedTestIdx >= 0)
+	{
+		TestDescriptor dsc = mTestDescriptors[mSelectedTestIdx];
+		TextCtrlTestDescription->SetValue(dsc.alias);
+	}
+	 
 	PopulateTestParametersList();
 }
 

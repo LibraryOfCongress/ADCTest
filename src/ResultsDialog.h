@@ -5,6 +5,7 @@
 #include "Widgets\wxMathPlot\mathplot.h"
 #include <wx/sizer.h>
 #include <wx/stattext.h>
+#include <wx/textctrl.h>
 #include <wx/panel.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
@@ -31,10 +32,13 @@ class ResultsDialog: public wxDialog
 		RimPanel* PanelMLx;
 		RimPanel* PanelMidInner;
 		RimPanel* PanelMiddle;
+		wxBoxSizer* BoxSizerMidInner;
+		wxTextCtrl* TextCtrlResultsInfo;
 		wxStaticText* StaticTextResultsInfo;
 		RimPanel* PanelBottom;
 		GButton* ButtonPlotReset;
 		mpWindow* mRTAMagPLot;
+		wxStaticText* StaticTextResultsOutcome;
 		RimPanel* PanelTop;
 		//*)
 
@@ -43,6 +47,8 @@ class ResultsDialog: public wxDialog
 		//(*Identifiers(ResultsDialog)
 		static const long ID_PANEL_TOP;
 		static const long ID_STATICTEXT_RESULTSINFO;
+		static const long ID_TEXTCTRL_RESULTSINFO;
+		static const long ID_STATICTEXT_RESULTSOUTCOME;
 		static const long ID_PANEL_MID_INNER;
 		static const long ID_RTA_FFT_PLOT;
 		static const long ID_BUTTON_PLOT_RESET;
@@ -51,8 +57,11 @@ class ResultsDialog: public wxDialog
 		static const long ID_PANEL_BTM;
 		//*)
 
-		void ProcessTestMetrics(wxXmlNode* node);
+		void ProcessTestMetrics(wxXmlNode* metricsNode, wxXmlNode* targetsNode);
+		void ProcessOutcome(wxXmlNode* outcomeNode);
 		void ProcessFrequencyResponse(wxXmlNode* node);
+
+		wxString getSpecValue(wxString paramName, wxXmlNode* specsNode);
 
 	private:
 
@@ -66,7 +75,6 @@ class ResultsDialog: public wxDialog
 		mpFXYVector* mFFTInMagLayer;
 		std::vector<float> mPlotXCoords;
 		std::vector<float> mPlotYCoords;
-
 		float mMaxXcord;
 };
 

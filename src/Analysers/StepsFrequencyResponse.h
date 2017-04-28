@@ -16,14 +16,14 @@ class StepsFrequencyResponse
     public:
         StepsFrequencyResponse();
         virtual ~StepsFrequencyResponse();
-		bool analyseSignal(wxXmlNode* testDescriptionNode);
+		int analyseSignal(wxXmlNode* testDescriptionNode);
 
 	protected:
 		//extract analysis parameters from test xml description 
 		void setParameters( wxXmlNode* testDescriptionNode);
 
 		//open .WAV file of recorded DUT response
-		bool openResponseFile();
+		SNDFILE* openResponseFile();
 
 		//analyse response and find beginnning of signal
 		std::vector<size_t> getOnsets(SNDFILE* afile);
@@ -31,13 +31,26 @@ class StepsFrequencyResponse
 		//analyse response 
 		void analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets);
 
-		//serialise metrics to xml file
-		bool writeResultsToFile();
+		//build xml report
+		bool buildReport();
+
+		//check pass or fail test condition
+		bool checkTestSpecs(wxXmlNode* resultsNode);
+
+		//serialise report to file
+		bool writeResultsToFile(wxXmlNode* resultsNode);
 
 		void generateFrequenciesList();
 
+		//get value of measured parameter from report
+		double getResultValue(wxString paramName, wxXmlNode* resultsNode);
+		
+		//get pass/fail specification from guidelines 
+		double getSpecValue(wxString paramName, wxXmlNode* specsNode);
+
     protected:
         wxXmlNode* mParamsNode;
+		wxXmlNode* mSpecsNode;
         double mSampleRate;
 		int mNoChannels;
 		wxString mTestTitle;
@@ -77,6 +90,8 @@ class StepsFrequencyResponse
 
 		double mLowerAmplitudeLimit;
 		double mUpperAmplitudeLimit;
+
+		bool mTestResultsOK;
 };
 
 #endif // STEPSFREQUENCYRESPONSE_H
