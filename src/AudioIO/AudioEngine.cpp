@@ -32,7 +32,7 @@ void DeinitAudioIO()
 
 
 AudioIO::AudioIO()
-:mCaptureFrameSize(512)
+:mCaptureFrameSize(1024)
 ,mCaptureSampleRate(44100.0)
 ,mNoCaptureChannels(1)
 ,bPAIsOpen(false)

@@ -775,8 +775,8 @@ void AudioDevicesPanel::UpdateSRateChoice()
 		ChoiceSystemSampleRate->SetSelection(itemIdx);
 	else
 	{
-		ChoiceSystemSampleRate->SetSelection(5);
-		gPrefs->Write(wxT("/AudioIO/AudioSRate"), ChoiceSystemSampleRate->GetString(5));
+		ChoiceSystemSampleRate->SetSelection(0);
+		gPrefs->Write(wxT("/AudioIO/AudioSRate"), ChoiceSystemSampleRate->GetString(0));
 	}
 }
 
