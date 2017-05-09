@@ -1,0 +1,34 @@
+﻿  pa_x86_plain_converters.c
+  pa_win_wdmks_utils.c
+  pa_win_waveformat.c
+  pa_win_util.c
+  pa_win_hostapis.c
+  pa_win_coinitialize.c
+  pa_win_wmme.c
+  pa_win_wdmks.c
+  pa_win_wasapi.c
+  pa_hostapi_skeleton.c
+  pa_win_ds_dynlink.c
+  pa_win_ds.c
+  pa_trace.c
+  pa_stream.c
+  pa_ringbuffer.c
+  pa_process.c
+  pa_front.c
+  pa_dither.c
+  pa_debugprint.c
+  pa_cpuload.c
+  Generating Code...
+  Compiling...
+  pa_converters.c
+  pa_allocation.c
+  Generating Code...
+  pa_asio.cpp
+c:\users\chris\desktop\avpreserve\software\local\lib-src\portaudio-v19\src\hostapi\asio\pa_asio.cpp(115): fatal error C1083: Cannot open include file: 'asiosys.h': No such file or directory
+  asiolist.cpp
+c1xx : fatal error C1083: Cannot open source file: '..\..\src\hostapi\asio\ASIOSDK\host\pc\asiolist.cpp': No such file or directory
+  asiodrivers.cpp
+c1xx : fatal error C1083: Cannot open source file: '..\..\src\hostapi\asio\ASIOSDK\host\asiodrivers.cpp': No such file or directory
+  asio.cpp
+c1xx : fatal error C1083: Cannot open source file: '..\..\src\hostapi\asio\ASIOSDK\common\asio.cpp': No such file or directory
+  Generating Code...

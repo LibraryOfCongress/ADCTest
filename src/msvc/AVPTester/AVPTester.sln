@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SigGenTest", "..\..\SigGen\
 		{7ABA0F80-94AE-4E82-AB89-2E1258212D59} = {7ABA0F80-94AE-4E82-AB89-2E1258212D59}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AVP_PATest", "..\..\AudioIO\AVP_PATest\AVP_PATest.vcxproj", "{0A268FE9-B390-4CD4-BFA2-5211F10450A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -73,6 +75,18 @@ Global
 		{4CE0CFC1-6C8A-41BB-B3DC-CCF8611DF882}.ReleaseMinDependency|x64.Build.0 = Release|x64
 		{4CE0CFC1-6C8A-41BB-B3DC-CCF8611DF882}.ReleaseMinDependency|x86.ActiveCfg = Release|Win32
 		{4CE0CFC1-6C8A-41BB-B3DC-CCF8611DF882}.ReleaseMinDependency|x86.Build.0 = Release|Win32
+		{0A268FE9-B390-4CD4-BFA2-5211F10450A2}.Debug|x64.ActiveCfg = Debug|x64
+		{0A268FE9-B390-4CD4-BFA2-5211F10450A2}.Debug|x64.Build.0 = Debug|x64
+		{0A268FE9-B390-4CD4-BFA2-5211F10450A2}.Debug|x86.ActiveCfg = Debug|Win32
+		{0A268FE9-B390-4CD4-BFA2-5211F10450A2}.Debug|x86.Build.0 = Debug|Win32
+		{0A268FE9-B390-4CD4-BFA2-5211F10450A2}.Release|x64.ActiveCfg = Release|x64
+		{0A268FE9-B390-4CD4-BFA2-5211F10450A2}.Release|x64.Build.0 = Release|x64
+		{0A268FE9-B390-4CD4-BFA2-5211F10450A2}.Release|x86.ActiveCfg = Release|Win32
+		{0A268FE9-B390-4CD4-BFA2-5211F10450A2}.Release|x86.Build.0 = Release|Win32
+		{0A268FE9-B390-4CD4-BFA2-5211F10450A2}.ReleaseMinDependency|x64.ActiveCfg = Release|x64
+		{0A268FE9-B390-4CD4-BFA2-5211F10450A2}.ReleaseMinDependency|x64.Build.0 = Release|x64
+		{0A268FE9-B390-4CD4-BFA2-5211F10450A2}.ReleaseMinDependency|x86.ActiveCfg = Release|Win32
+		{0A268FE9-B390-4CD4-BFA2-5211F10450A2}.ReleaseMinDependency|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

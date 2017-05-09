@@ -329,6 +329,8 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
 
 	mTestIsRunning = false;
 	mTestOn = false;
+
+	//mADevicesDialog->ShowModal();
 }
 
 AVPTesterFrame::~AVPTesterFrame()

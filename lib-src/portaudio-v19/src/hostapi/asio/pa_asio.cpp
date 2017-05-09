@@ -114,7 +114,7 @@
 
 #include "asiosys.h"
 #include "asio.h"
-#include "asiodrivers.h"
+#include "..\..\..\ASIOSDK2.3\host\asiodrivers.h"
 #include "iasiothiscallresolver.h"
 
 /*

@@ -67,8 +67,8 @@ echo #define PA_USE_DS 1 &gt;&gt;!CFG!
     </PreBuildEvent>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\portaudio-v19\src\common;..\..\..\lib-src\portaudio-v19\src\os\win;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;PAWIN_USE_WDMKS_DEVICE_INFO;PA_USE_ASIO=0;PA_USE_DS=1;PA_USE_WMME=1;PA_USE_WASAPI=1;PA_USE_WDMKS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\portaudio-v19\src\common;..\..\..\lib-src\portaudio-v19\src\os\win;..\..\..\lib-src\ASIOSDK2.3\common;..\..\..\lib-src\ASIOSDK2.3\common\host;..\..\..\lib-src\ASIOSDK2.3\common\host\pc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;PAWIN_USE_WDMKS_DEVICE_INFO;PA_USE_ASIO=1;PA_USE_DS=0;PA_USE_WMME=1;PA_USE_WASAPI=0;PA_USE_WDMKS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -76,7 +76,7 @@ echo #define PA_USE_DS 1 &gt;&gt;!CFG!
       <WarningLevel>Level3</WarningLevel>
       <CompileAs>Default</CompileAs>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <ForcedIncludeFiles>$(ProjectDir)\$(Configuration)\config.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <PostBuildEvent>
       <Command>echo on
@@ -142,8 +142,8 @@ echo #define PA_USE_DS 1 &gt;&gt;!CFG!
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\portaudio-v19\src\common;..\..\..\lib-src\portaudio-v19\src\os\win;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;PAWIN_USE_WDMKS_DEVICE_INFO;PA_USE_ASIO=0;PA_USE_DS=1;PA_USE_WMME=1;PA_USE_WASAPI=1;PA_USE_WDMKS=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\portaudio-v19\src\common;..\..\..\lib-src\portaudio-v19\src\os\win;..\..\..\lib-src\ASIOSDK2.3\common;..\..\..\lib-src\ASIOSDK2.3\common\host;..\..\..\lib-src\ASIOSDK2.3\common\host\pc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;PAWIN_USE_WDMKS_DEVICE_INFO;PA_USE_ASIO=1;PA_USE_DS=1;PA_USE_WMME=1;PA_USE_WASAPI=1;PA_USE_WDMKS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -202,6 +202,9 @@ lib /OUT:"$(TargetPath)" "!INTDIR!/*.obj" !LIBS!
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\lib-src\ASIOSDK2.3\common\asio.cpp" />
+    <ClCompile Include="..\..\..\lib-src\ASIOSDK2.3\host\asiodrivers.cpp" />
+    <ClCompile Include="..\..\..\lib-src\ASIOSDK2.3\host\pc\asiolist.cpp" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_allocation.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_converters.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_cpuload.c" />
@@ -212,6 +215,8 @@ lib /OUT:"$(TargetPath)" "!INTDIR!/*.obj" !LIBS!
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_ringbuffer.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_stream.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_trace.c" />
+    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\asio\pa_asio.cpp" />
+    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\wmme\pa_win_wmme.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\dsound\pa_win_ds.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\dsound\pa_win_ds_dynlink.c" />

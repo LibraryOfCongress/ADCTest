@@ -271,22 +271,27 @@ StepsFrequencyResponse::analyseSegments(SNDFILE* afile, std::vector<size_t> &ons
 
 		if (i < mFrequencies.size())
 		{
-			//avoid NaN!
-			if (max <= 0)
-				max = 1e-32;
+			double cFreq = mFrequencies[i];
 
-			FreqPoint point;
-			point.frequency = mFrequencies[i];
-			point.peakValueLin = max;
-			point.peakValueLog = 20 * log10(max);
+			if ((cFreq >= mStartFreq) && (cFreq <= mStopFreq))
+			{
+				//avoid NaN!
+				if (max <= 0)
+					max = 1e-32;
 
-			//get max and min points in frequency response
-			mFrequencyResponse.push_back(point);
-			if (max < mLowerAmplitudeLimit)
-				mLowerAmplitudeLimit = max;
+				FreqPoint point;
+				point.frequency = mFrequencies[i];
+				point.peakValueLin = max;
+				point.peakValueLog = 20 * log10(max);
 
-			if (max > mUpperAmplitudeLimit)
-				mUpperAmplitudeLimit = max;
+				//get max and min points in frequency response
+				mFrequencyResponse.push_back(point);
+				if (max < mLowerAmplitudeLimit)
+					mLowerAmplitudeLimit = max;
+
+				if (max > mUpperAmplitudeLimit)
+					mUpperAmplitudeLimit = max;
+			}
 		}
 
 		delete[] fileBuffer;

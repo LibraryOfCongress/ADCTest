@@ -480,7 +480,9 @@ AudioDevicesPanel::PopulateAll()
 {
 	PopulateHostsChoices();
 	PopulateDevicesChoices();
-	UpdateSRateChoice();
+
+	CheckCompatibleSampleRates();
+	//UpdateSRateChoice();
 }
 
 void AudioDevicesPanel::PopulateHostsChoices()
@@ -632,14 +634,16 @@ AudioDevicesPanel::HandleInputDevSelection(int selIdx)
 	int hostIdx = ChoiceHost->GetCurrentSelection();
 	wxString host = ChoiceHost->GetString(hostIdx);
 
-	//find max supported channels for this device
+	//find max supported channels for this device and get sompatible sample rates
 	const std::vector<ADeviceMap> &inMaps = ADevicesManager::Instance()->GetInputDeviceMaps();
 	int nCh = -1;
+	mSupportedInputSRates.clear();
 	for (size_t i = 0; i < inMaps.size(); i++)
 	{
 		if ( (host == inMaps[i].hostString) && (devIn == inMaps[i].deviceString) )
 		{
 			nCh = inMaps[i].numChannels;
+			mSupportedInputSRates = inMaps[i].supportedRates;
 		}
 	}
 
@@ -657,6 +661,9 @@ AudioDevicesPanel::HandleInputDevSelection(int selIdx)
 	//Rebuild the metering UI to handle max channels
 	BuildTestUI();
 
+	//check for compatible rates for both devices
+	CheckCompatibleSampleRates();
+	
 	//update the channel spin control on the FFT panel
 	ConfigureChannelSpin();
 }
@@ -679,14 +686,16 @@ AudioDevicesPanel::HandleOutputDevSelection(int selIdx)
 	int hostIdx = ChoiceHost->GetCurrentSelection();
 	wxString host = ChoiceHost->GetString(hostIdx);
 
-	//find max supported channels for this device
+	//find max supported channels for this device and get sompatible sample rates
 	const std::vector<ADeviceMap> &outMaps = ADevicesManager::Instance()->GetOutputDeviceMaps();
 	int nCh = -1;
+	mSupportedOutputSRates.clear();
 	for (size_t i = 0; i < outMaps.size(); i++)
 	{
 		if ((host == outMaps[i].hostString) && (devOut == outMaps[i].deviceString))
 		{
 			nCh = outMaps[i].numChannels;
+			mSupportedOutputSRates = outMaps[i].supportedRates;
 		}
 	}
 
@@ -703,6 +712,8 @@ AudioDevicesPanel::HandleOutputDevSelection(int selIdx)
 
 	//Rebuild the metering UI to handle max channels
 	BuildTestUI();
+
+	CheckCompatibleSampleRates();
 }
 
 void AudioDevicesPanel::OnButtonScanAudioSysClick(wxCommandEvent& event)
@@ -713,24 +724,49 @@ void AudioDevicesPanel::OnButtonScanAudioSysClick(wxCommandEvent& event)
 	EnableSelectionTools(true);
 }
 
-void AudioDevicesPanel::UpdateSRateChoice()
+void AudioDevicesPanel::CheckCompatibleSampleRates()
 {
 	wxArrayString SRArray;
-	SRArray.Add(wxT("8000"));
-	SRArray.Add(wxT("11025"));
-	SRArray.Add(wxT("16000"));
-	SRArray.Add(wxT("22050"));
-	SRArray.Add(wxT("32000"));
-	SRArray.Add(wxT("44100"));
-	SRArray.Add(wxT("48000"));
-	SRArray.Add(wxT("88200"));
-	SRArray.Add(wxT("96000"));
-	SRArray.Add(wxT("176400"));
-	SRArray.Add(wxT("192000"));
-	
+	std::vector<double> commonSRates;
+
+	size_t noSupportedInRates = mSupportedInputSRates.size();
+	size_t noSupportedOutRates = mSupportedOutputSRates.size();
+
+	for (size_t i = 0; i < noSupportedInRates; i++)
+	{
+		double inRate = mSupportedInputSRates[i];
+		for (size_t j = 0; j < noSupportedOutRates; j++)
+		{
+			double outRate = mSupportedOutputSRates[j];
+		
+			if (outRate == inRate)
+				commonSRates.push_back(outRate);
+
+		}
+	}
+
+	///////////////////////////////////////////////////
+	wxString cRt(wxT("samplerate incompatibility"));
+	size_t noCommonRates = commonSRates.size();
+	if (noCommonRates > 0)
+	{
+		for (size_t k = 0; k < noCommonRates; k++)
+		{
+			cRt.Printf(wxT("%.0f"), commonSRates[k]);
+			SRArray.Add(cRt);
+		}
+	}
+	else
+		SRArray.Add(cRt);
+
 	ChoiceSystemSampleRate->Clear();
 	ChoiceSystemSampleRate->Append(SRArray);
+	
+	UpdateSRateChoice();
+}
 
+void AudioDevicesPanel::UpdateSRateChoice()
+{
 	//see if the preferred sample rate  is in the list
 	wxString prefSRate = gPrefs->Read(wxT("/AudioIO/AudioSRate"), wxT(""));
 	int itemIdx = ChoiceSystemSampleRate->FindString(prefSRate);

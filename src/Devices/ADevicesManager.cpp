@@ -1,11 +1,6 @@
 #include "ADevicesManager.h"
 #include "..\System\Prefs.h"
 
-//#define USE_PORTMIXER
-
-#ifdef USE_PORTMIXER
-#include "portmixer.h"
-#endif
 
 #include <wx/choice.h>
 #include <wx/event.h>
@@ -122,136 +117,6 @@ static int DummyPaStreamCallback(
 	return 0;
 }
 
-/*
-static void FillHostDeviceInfo(ADeviceMap *map, const PaDeviceInfo *info, int deviceIndex, int isInput, std::vector<double> &desiredSRates)
-{
-	wxString hostapiName = wxSafeConvertMB2WX(Pa_GetHostApiInfo(info->hostApi)->name);
-	wxString infoName = wxSafeConvertMB2WX(info->name);
-
-	map->supportedRates.clear();
-	map->deviceIndex  = deviceIndex;
-	map->hostIndex    = info->hostApi;
-	map->deviceString = infoName;
-	map->hostString   = hostapiName;
-	map->numChannels  = isInput ? info->maxInputChannels : info->maxOutputChannels;
-	map->defaultRate = info->defaultSampleRate;
-	//check if sample rates are supported
-	PaError err;
-	PaStreamParameters testParams;
-	testParams.channelCount = map->numChannels;
-	testParams.sampleFormat = paFloat32;
-	testParams.hostApiSpecificStreamInfo = NULL;
-	testParams.device = deviceIndex;
-	testParams.suggestedLatency = Pa_GetDeviceInfo(deviceIndex)->defaultLowInputLatency;
-	 
-	size_t nDesiredRates = desiredSRates.size();
-	for (size_t i = 0; i < nDesiredRates; i++)
-	{
-		double tRate = desiredSRates[i];
-
-		if (isInput == 1)
-		{
-			err = Pa_IsFormatSupported( &testParams, NULL, tRate );
-		}
-		else
-		{
-			err = Pa_IsFormatSupported( NULL, &testParams, tRate);
-		}
-
-		///////////
-		if (err == paFormatIsSupported)
-		{
-			map->supportedRates.push_back(tRate);
-		}
-	}
-}
-
-
-static bool IsInputDeviceAMapperDevice(const PaDeviceInfo *info)
-{
-	// For Windows only, portaudio returns the default mapper object
-	// as the first index after a NEW hostApi index is detected (true for MME and DS)
-	// this is a bit of a hack, but there's no other way to find out which device is a mapper,
-	// I've looked at string comparisons, but if the system is in a different language this breaks.
-#ifdef __WXMSW__
-	static int lastHostApiTypeId = -1;
-	int hostApiTypeId = Pa_GetHostApiInfo(info->hostApi)->type;
-	if(hostApiTypeId != lastHostApiTypeId && (hostApiTypeId == paMME || hostApiTypeId == paDirectSound)) 
-	{
-		lastHostApiTypeId = hostApiTypeId;
-		return true;
-	}
-#endif
-	return false;
-}
-
-static void AddSources(int deviceIndex, int rate, std::vector<ADeviceMap> *maps, int isInput, std::vector<double> &desiredSRates)
-{
-	int error = 0;
-	ADeviceMap map;
-	const PaDeviceInfo *info = Pa_GetDeviceInfo(deviceIndex);
-
-	// This tries to open the device with the samplerate worked out above, which
-	// will be the highest available for play and record on the device, or
-	// 44.1kHz if the info cannot be fetched.
-
-	PaStream *stream = NULL;
-	PaStreamParameters parameters;
-
-	parameters.device = deviceIndex;
-	parameters.sampleFormat = paFloat32;
-	parameters.hostApiSpecificStreamInfo = NULL;
-	parameters.channelCount = 1;
-
-	// If the device is for input, open a stream so we can use portmixer to query
-	// the number of inputs.  We skip this for outputs because there are no 'sources'
-	// and some platforms (e.g. XP) have the same device for input and output, (while
-	// Vista/Win7 seperate these into two devices with the same names (but different
-	// portaudio indecies)
-	// Also, for mapper devices we don't want to keep any sources, so check for it here
-	if (isInput && !IsInputDeviceAMapperDevice(info)) 
-	{
-		if (info)
-			parameters.suggestedLatency = info->defaultLowInputLatency;
-		else
-			parameters.suggestedLatency = 10.0;
-
-		error = Pa_OpenStream( &stream, &parameters, NULL, rate, paFramesPerBufferUnspecified, paClipOff | paDitherOff, DummyPaStreamCallback, NULL);
-	}
-
-	if (stream && !error) 
-	{
-		ADeviceMap map;
-		map.sourceIndex = -1;
-		map.totalSources = 0;
-		// Only inputs have sources, so we call FillHostDeviceInfo with a 1 to indicate this
-		FillHostDeviceInfo(&map, info, deviceIndex, 1, desiredSRates);
-
-		if (map.totalSources <= 1)
-		{
-			map.sourceIndex = 0;
-			maps->push_back(map);
-		}
-
-		//AddSourcesFromStream(deviceIndex, info, maps, stream);
-		Pa_CloseStream(stream);
-	} 
-	else 
-	{
-		map.sourceIndex  = -1;
-		map.totalSources = 0;
-		FillHostDeviceInfo(&map, info, deviceIndex, isInput, desiredSRates);
-		maps->push_back(map);
-	}
-
-	if(error) 
-	{
-		wxLogDebug(wxT("PortAudio stream error creating device list: ") + map.hostString + wxT(":") + map.deviceString + wxT(": ") +
-                 wxString(wxSafeConvertMB2WX(Pa_GetErrorText((PaError)error))));
-	}
-}
-*/
-
 static void FillHostDeviceInfo(ADeviceMap *map, const PaDeviceInfo *info, int deviceIndex, int isInput)
 {
 	wxString hostapiName = wxSafeConvertMB2WX(Pa_GetHostApiInfo(info->hostApi)->name);
@@ -266,9 +131,6 @@ static void FillHostDeviceInfo(ADeviceMap *map, const PaDeviceInfo *info, int de
 
 static void AddSourcesFromStream(int deviceIndex, const PaDeviceInfo *info, std::vector<ADeviceMap> *maps, PaStream *stream)
 {
-#ifdef USE_PORTMIXER
-	int i;
-#endif
 	ADeviceMap map;
 
 	map.sourceIndex = -1;
@@ -276,36 +138,10 @@ static void AddSourcesFromStream(int deviceIndex, const PaDeviceInfo *info, std:
 	// Only inputs have sources, so we call FillHostDeviceInfo with a 1 to indicate this
 	FillHostDeviceInfo(&map, info, deviceIndex, 1);
 
-#ifdef USE_PORTMIXER
-	PxMixer *portMixer = Px_OpenMixer(stream, 0);
-	if (!portMixer) {
-		maps->push_back(map);
-		return;
-	}
-
-	//if there is only one source, we don't need to concatenate the source
-	//or enumerate, because it is something meaningless like 'master'
-	//(as opposed to 'mic in' or 'line in'), and the user doesn't have any choice.
-	//note that some devices have no input sources at all but are still valid.
-	//the behavior we do is the same for 0 and 1 source cases.
-	map.totalSources = Px_GetNumInputSources(portMixer);
-#endif
-
 	if (map.totalSources <= 1) {
 		map.sourceIndex = 0;
 		maps->push_back(map);
 	}
-#ifdef USE_PORTMIXER
-	else {
-		//open up a stream with the device so portmixer can get the info out of it.
-		for (i = 0; i < map.totalSources; i++) {
-			map.sourceIndex = i;
-			map.sourceString = wxString(wxSafeConvertMB2WX(Px_GetInputSourceName(portMixer, i)));
-			maps->push_back(map);
-		}
-	}
-	Px_CloseMixer(portMixer);
-#endif
 }
 
 static bool IsInputDeviceAMapperDevice(const PaDeviceInfo *info)
@@ -325,6 +161,67 @@ static bool IsInputDeviceAMapperDevice(const PaDeviceInfo *info)
 #endif
 
 	return false;
+}
+
+static std::vector<double> GetSupportedStandardSampleRates(const PaStreamParameters *inputParameters, const PaStreamParameters *outputParameters)
+{
+	static double standardSampleRates[] = {
+		8000.0, 9600.0, 11025.0, 12000.0, 16000.0, 22050.0, 24000.0, 32000.0,
+		44100.0, 48000.0, 88200.0, 96000.0, 192000.0, -1 /* negative terminated  list */
+	};
+	int     i, printCount;
+	PaError err;
+
+	std::vector<double> supportedSRates;
+
+	printCount = 0;
+	for (i = 0; standardSampleRates[i] > 0; i++)
+	{
+		err = Pa_IsFormatSupported(inputParameters, outputParameters, standardSampleRates[i]);
+		if (err == paFormatIsSupported)
+		{
+			supportedSRates.push_back(standardSampleRates[i]);
+		}
+	}
+
+	return supportedSRates;
+}
+
+static void AddSourcesX(int deviceIndex, int rate, std::vector<ADeviceMap> *dMaps, int isInput)
+{
+	int error = 0;
+	ADeviceMap map;
+	PaStreamParameters inputParameters, outputParameters;
+	std::vector<double> supportedSRates;
+
+	const PaDeviceInfo *info = Pa_GetDeviceInfo(deviceIndex);
+
+	FillHostDeviceInfo(&map, info, deviceIndex, isInput);
+
+	//now check sample rates:
+	inputParameters.device = deviceIndex;
+	inputParameters.channelCount = info->maxInputChannels;
+	inputParameters.sampleFormat = paFloat32;// paInt16;
+	inputParameters.suggestedLatency = 0; /* ignored by Pa_IsFormatSupported() */
+	inputParameters.hostApiSpecificStreamInfo = NULL;
+
+	outputParameters.device = deviceIndex;
+	outputParameters.channelCount = info->maxOutputChannels;
+	outputParameters.sampleFormat = paFloat32;// paInt16;
+	outputParameters.suggestedLatency = 0; /* ignored by Pa_IsFormatSupported() */
+	outputParameters.hostApiSpecificStreamInfo = NULL;
+
+	if (isInput)
+	{
+		supportedSRates = GetSupportedStandardSampleRates(&inputParameters, NULL);
+	}
+	else
+	{
+		supportedSRates = GetSupportedStandardSampleRates(NULL, &outputParameters);
+	}
+
+	map.supportedRates = supportedSRates;
+	dMaps->push_back(map);
 }
 
 static void AddSources(int deviceIndex, int rate, std::vector<ADeviceMap> *maps, int isInput)
@@ -420,14 +317,12 @@ void ADevicesManager::Rescan()
         const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
         if (info->maxOutputChannels > 0)
         {
-            //AddSources(i, info->defaultSampleRate, &mOutputADeviceMaps, 0, supportedSRates);
-			AddSources(i, info->defaultSampleRate, &mOutputADeviceMaps, 0);
+			AddSourcesX(i, info->defaultSampleRate, &mOutputADeviceMaps, 0);
         }
 
         if (info->maxInputChannels > 0)
         {
-            //AddSources(i, info->defaultSampleRate, &mInputADeviceMaps, 1, supportedSRates);
-			AddSources(i, info->defaultSampleRate, &mInputADeviceMaps, 1);
+			AddSourcesX(i, info->defaultSampleRate, &mInputADeviceMaps, 1);
         }
     }
 	

@@ -185,13 +185,17 @@ class AudioDevicesPanel: public wxPanel
 		void HandleInputDevSelection(int selIdx);
 		void HandleOutputDevSelection(int selIdx);
 
+		void CheckCompatibleSampleRates();
+
 		void UpdateOutputGain( bool write = false);
 		void ConfigurePlot(size_t RTALength, double sampleRate);
 		void ConfigureXAxis();
 
 		bool mAudioTestStarted;
+		std::vector<double> mSupportedInputSRates; 
 		int mNumInputChannels;
 		int mPrevNumInputChannels;
+		std::vector<double> mSupportedOutputSRates; 
 		int mNumOutputChannels;
 		int mPrevNumOutputChannels;
 

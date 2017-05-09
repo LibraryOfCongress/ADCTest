@@ -31,6 +31,15 @@
     <Filter Include=".Has Custom Build.">
       <UniqueIdentifier>{881e0352-3670-4f33-8446-dea209d54c5d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ASIOSDK">
+      <UniqueIdentifier>{63e31178-b588-48f0-8e36-ca6259ea534e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ASIOSDK">
+      <UniqueIdentifier>{518d689b-e72f-40c3-8f1f-ed6828ad259a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\hostapi\asio">
+      <UniqueIdentifier>{2e755f92-e4f8-4866-b6d8-b5dbd504403e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_allocation.c">
@@ -92,6 +101,21 @@
     </ClCompile>
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\os\win\pa_x86_plain_converters.c">
       <Filter>Source Files\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib-src\ASIOSDK2.3\common\asio.cpp">
+      <Filter>Source Files\ASIOSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib-src\ASIOSDK2.3\host\pc\asiolist.cpp">
+      <Filter>Source Files\ASIOSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib-src\ASIOSDK2.3\host\asiodrivers.cpp">
+      <Filter>Source Files\ASIOSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\asio\pa_asio.cpp">
+      <Filter>Source Files\hostapi\asio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c">
+      <Filter>Source Files\hostapi\wdmks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

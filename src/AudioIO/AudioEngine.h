@@ -8,6 +8,7 @@
 #include <memory>
 #include <malloc.h>
 
+#include "pablio/pablio.h"
 #include "LevelAnalyser.h"
 #include "ParametersQueue.h"
 #include "ProcessParams.h"
@@ -61,6 +62,7 @@ class AudioIO
 		void StartDevicesCalibration();
 		void StopDevicesCalibration();
 		int  doIODevicesCalibration();
+		int  doIODevicesCalibrationPB();
 		
 		TestManager* GetTestManager() { return mTestManager;  }
 		void StartTestProcedure();
@@ -109,11 +111,19 @@ class AudioIO
 							int playbackDeviceIdx,
 							int playbackChannels);
 		
+		//opens selected I/O devices using blocking IO layer 
+		PaError OpenDevicesPB(double sampleRate,
+							  int captureDeviceIdx,
+							  int captureChannels,
+							  int playbackDeviceIdx,
+							  int playbackChannels);
+		
 		PaError CloseDevices();
+		PaError CloseDevicesPB();
 
 		//Plays test signal and records response  
 		int PlaybackAcquire(wxString signalFile, wxString responseFile);
-		
+		int PlaybackAcquirePB(wxString signalFile, wxString responseFile);
 
 		void FlushParameterQueue();
 		void ProcessParameter( AudioParam param);
@@ -125,6 +135,7 @@ class AudioIO
 		int mNoPlaybackChannels;
 		int mNoCaptureChannels;
 		PaStream *mPortStreamV19;
+		PABLIO_Stream* mPaBStream;
 		
 		bool bPAIsOpen;
 		bool bIsStopped;

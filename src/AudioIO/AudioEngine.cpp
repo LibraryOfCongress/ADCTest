@@ -32,7 +32,7 @@ void DeinitAudioIO()
 
 
 AudioIO::AudioIO()
-:mCaptureFrameSize(1024)
+:mCaptureFrameSize(512)
 ,mCaptureSampleRate(44100.0)
 ,mNoCaptureChannels(1)
 ,bPAIsOpen(false)
@@ -48,6 +48,7 @@ AudioIO::AudioIO()
 ,mFFTrta(NULL)
 {
 	mPortStreamV19 = NULL;
+	mPaBStream = NULL;
 	mEngineOK = false;
 
 	mFFTrta = new FFTAnalyser();
@@ -396,6 +397,130 @@ int AudioIO::doIODevicesCalibration()
 	return 0;
 }
 
+int AudioIO::doIODevicesCalibrationPB()
+{
+	mIsSafe = false;
+	int errorCode = AVP_PROCESS_TERM_OK;
+	wxString debugInfo;
+
+	reportEvent(1, AVP_PROCESS_START, wxT("Calibration started"));
+
+	errorCode = Pa_Initialize();
+
+	if (errorCode == 0)
+	{
+		mSelectedChannel = 0;
+		mCaptureSampleRate = 0;
+		int captureDevIdx = -1;
+		int captureChannels = 0;
+		int playbackDevIdx = -1;
+		int playbackChannels = 0;
+
+		//load coonfiguration
+		if (GetCurrentIOConfiguration(mCaptureSampleRate, captureDevIdx, captureChannels, playbackDevIdx, playbackChannels))
+		{
+			//create input and output meters:
+			CreateLevelAnalysers((size_t)mCaptureSampleRate, 120);
+
+			//fft real time analyser
+			mFFTrta->initialiseFFT(mCaptureSampleRate, mCaptureFrameSize, captureChannels, 512, HammingWindow);
+
+			//open selected devices
+			errorCode = OpenDevicesPB(mCaptureSampleRate, captureDevIdx, captureChannels, playbackDevIdx, playbackChannels);
+			if (errorCode == 0)
+			{
+				bPAIsOpen = true;
+				//allocate I/O buffers
+				float* InputBuffer = new float[mCaptureFrameSize * captureChannels];
+				float* OutputBuffer = new float[mCaptureFrameSize * playbackChannels];
+
+				//sine wave parameters;
+				double twoPi = M_PI * 2;
+				double timeS = 0.0;
+				double dTime = 1.0 / mCaptureSampleRate;
+				double angleS = 0.0;
+				double freq = 1000.0;
+
+				//do the actual write/read
+				while (bIsStopped == false)
+				{
+					mIsSafe = false;
+
+					FlushParameterQueue();
+					/////////////////////////////////////////////////////////////////////////////
+
+					for (size_t i = 0; i < mCaptureFrameSize; i++)
+					{
+						angleS = freq*timeS;
+						if (angleS == 1.0)
+							angleS = 0.0;
+
+						double sig = mOutputGain*(mToneLevel*sin(twoPi*angleS));
+
+						for (int j = 0; j < playbackChannels; j++)
+						{
+							OutputBuffer[playbackChannels* i + j] = (float)sig;
+						}
+						timeS += dTime;
+					}
+
+					long writtenPB = WriteAudioStream(mPaBStream, OutputBuffer, mCaptureFrameSize);
+					
+					//long readPB = ReadAudioStream(mPaBStream, InputBuffer, mCaptureFrameSize);
+
+					/////////////////////////////////////////////////////////////////////////////
+
+					//process frames for level computation
+					//mInputLevelMetric->process(captureChannels, mCaptureFrameSize, InputBuffer);
+					//mOutputLevelMetric->process(playbackChannels, mCaptureFrameSize, OutputBuffer);
+
+					//spectrum of input signal
+					//mFFTrta->doRTA(InputBuffer, mCaptureSampleRate, mCaptureFrameSize, captureChannels, mSelectedChannel, mSTFTLength);
+				}
+				delete[] InputBuffer;
+				delete[] OutputBuffer;
+
+				//flush buffers
+				memset(OutputBuffer, 0, sizeof(float)*mCaptureFrameSize * captureChannels);
+				size_t flushRpts = (size_t)(mCaptureSampleRate / (float)mCaptureFrameSize);
+				for (size_t fi = 0; fi < flushRpts; fi++ )
+					long writtenPB = WriteAudioStream(mPaBStream, OutputBuffer, mCaptureFrameSize);
+
+				errorCode = CloseDevicesPB();
+				if (errorCode)
+					reportEvent(1, errorCode, wxT("PortAudio Error"));
+
+			}
+			else
+			{
+				reportEvent(1, errorCode, wxT("PortAudio Error"));
+			}
+
+			DeleteLevelAnalysers();
+			mFFTrta->deInitialiseFFT();
+		}
+		else
+		{
+			errorCode = AVP_PROCESS_CONFIG_ERROR;
+			reportEvent(1, errorCode, wxT("IO COnfig error"));
+		}
+
+		bPAIsOpen = false;
+	}
+	else
+	{
+		reportEvent(1, errorCode, wxT("PortAudio Init Error"));
+	}
+
+
+	Pa_Terminate();
+
+	reportEvent(1, errorCode, wxT("Calibration ended"), true);
+
+	mIsSafe = true;
+	return 0;
+}
+
 int AudioIO::CreateLevelAnalysers( size_t srate, size_t interval)
 {
 	int res = -1;
@@ -728,6 +853,30 @@ AudioIO::CloseDevices()
 	return err;
 }
 
+PaError
+AudioIO::OpenDevicesPB(double sampleRate,
+	int captureDeviceIdx,
+	int captureChannels,
+	int playbackDeviceIdx,
+	int playbackChannels)
+{
+	PaError err = paNoError;
+
+	err = OpenAudioStream( &mPaBStream, captureDeviceIdx, playbackDeviceIdx, sampleRate, paFloat32, PABLIO_READ_WRITE);
+	
+	return err;
+}
+
+PaError
+AudioIO::CloseDevicesPB()
+{
+	PaError err = paNoError;
+
+	err = CloseAudioStream( mPaBStream);
+
+	return err;
+}
+
 int 
 AudioIO::PlaybackAcquire(wxString signalFile, wxString responseFile)
 {
@@ -827,6 +976,103 @@ AudioIO::PlaybackAcquire(wxString signalFile, wxString responseFile)
 		delete[] OutputBuffer;
 	
 		errorCode = CloseDevices();
+	}
+
+	bPAIsOpen = false;
+
+	return errorCode;
+}
+
+
+int
+AudioIO::PlaybackAcquirePB(wxString signalFile, wxString responseFile)
+{
+	int errorCode = -1;
+	mCaptureSampleRate = 0;
+	int captureDevIdx = -1;
+	int captureChannels = 0;
+	int playbackDevIdx = -1;
+	int playbackChannels = 0;
+
+	//load coonfiguration
+	if (!GetCurrentIOConfiguration(mCaptureSampleRate, captureDevIdx, captureChannels, playbackDevIdx, playbackChannels))
+	{
+		return AVP_PROCESS_CONFIG_ERROR;
+	}
+
+	////////////////////////////////////////////////////////////////
+	//playback file
+	std::string signalFilePath(signalFile.mbc_str());
+	SNDFILE* sndOutFile = NULL;
+	SF_INFO  sndOutFileInfo;
+	sndOutFileInfo.format = 0;
+	sndOutFileInfo.frames = 0;
+	sndOutFile = sf_open((const char*)signalFilePath.c_str(), SFM_READ, &sndOutFileInfo);
+	size_t outFileFrames = sndOutFileInfo.frames;
+	double sRate = sndOutFileInfo.samplerate;
+
+	if (!sndOutFile)
+	{
+		reportEvent(2, -1, wxT("Error opening playback file"));
+		return -1;
+	}
+
+	///////////////////////////////////////////////////////////////
+	//recording file
+	std::string responseFilePath(responseFile.mbc_str());
+	SNDFILE* sndInFile = NULL;
+	SF_INFO  sndInFileInfo;
+	memset(&sndInFileInfo, 0, sizeof(sndInFileInfo));
+	sndInFileInfo.samplerate = mCaptureSampleRate;
+	sndInFileInfo.channels = captureChannels;
+	sndInFileInfo.format = (SF_FORMAT_WAV | SF_FORMAT_FLOAT);
+	sndInFile = sf_open((const char*)responseFilePath.c_str(), SFM_WRITE, &sndInFileInfo);
+	size_t recTailSamples = mCaptureSampleRate * 1;
+
+	if (!sndInFile)
+	{
+		reportEvent(2, -1, wxT("Error opening capture file"));
+		return -1;
+	}
+
+	//open selected devices
+	errorCode = OpenDevicesPB(mCaptureSampleRate, captureDevIdx, captureChannels, playbackDevIdx, playbackChannels);
+	if (errorCode == 0)
+	{
+		//do playback and acquisition
+		bPAIsOpen = true;
+
+		//allocate I/O buffers
+		float* InputBuffer = new float[mCaptureFrameSize * captureChannels];
+		float* OutputBuffer = new float[mCaptureFrameSize * playbackChannels];
+
+		size_t frameCount = 0;
+
+		while (frameCount < (sndOutFileInfo.frames) + recTailSamples)
+		{
+			//playback
+			size_t read = sf_readf_float(sndOutFile, OutputBuffer, mCaptureFrameSize);
+
+			//apply gain correction from calibration
+			for (size_t k = 0; k < mCaptureFrameSize * playbackChannels; k++) {
+				OutputBuffer[k] = mOutputGain * OutputBuffer[k];
+			}
+
+			long writtenPB = WriteAudioStream(mPaBStream, OutputBuffer, mCaptureFrameSize);
+			frameCount += mCaptureFrameSize;
+
+			//record
+			long readPB = ReadAudioStream(mPaBStream, InputBuffer, mCaptureFrameSize);
+			sf_writef_float(sndInFile, InputBuffer, readPB);
+		}
+
+		sf_close(sndInFile);
+		sf_close(sndOutFile);
+
+		delete[] InputBuffer;
+		delete[] OutputBuffer;
+
+		errorCode = CloseDevicesPB();
 	}
 
 	bPAIsOpen = false;

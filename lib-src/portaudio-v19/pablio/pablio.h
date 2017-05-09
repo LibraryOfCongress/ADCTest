@@ -58,9 +58,9 @@ extern "C"
 
 typedef struct
 {
-    RingBuffer   inFIFO;
-    RingBuffer   outFIFO;
-    PortAudioStream *stream;
+	PaUtilRingBuffer   inFIFO;
+	PaUtilRingBuffer   outFIFO;
+	PaStream *stream;
     int          bytesPerFrame;
     int          samplesPerFrame;
 }
@@ -105,7 +105,7 @@ long GetAudioStreamReadable( PABLIO_Stream *aStream );
  *    PABLIO_READ, PABLIO_WRITE, or PABLIO_READ_WRITE,
  *    and either PABLIO_MONO or PABLIO_STEREO
  */
-PaError OpenAudioStream( PABLIO_Stream **aStreamPtr, double sampleRate,
+PaError OpenAudioStream( PABLIO_Stream **aStreamPtr, int inDevIdx, int oDevIdx, double sampleRate,
                          PaSampleFormat format, long flags );
 
 PaError CloseAudioStream( PABLIO_Stream *aStream );
