@@ -254,6 +254,15 @@ TestManager::GenerateSignalFile(int testIndex, double sampleRate, int Channels, 
 		delete mSigGen;
 		retval = 0;
 	}
+	else if (signalType == wxT("dualsine"))
+	{
+		DualSineToneGenerator* mSigGen = new DualSineToneGenerator(sampleRate, Channels);
+		wxXmlNode* testNode = GetTestNode(testIndex);
+		wxXmlNode* sigGenParams = testNode->GetChildren();
+		mSigGen->generateSignal(sigGenParams);
+		delete mSigGen;
+		retval = 0;
+	}
 	else if (signalType == wxT("pause"))
 	{
 		//pause until user ok
@@ -287,7 +296,7 @@ TestManager::GetResponseFilePath(int testIndex)
 wxString
 TestManager::AnalyseResponse(int testIndex)
 {
-	int outcome;
+	int outcome = TestErrorUnknown;
 
 	wxXmlNode* testNode = GetTestNode(testIndex);
 	wxXmlNode* testParams = testNode->GetChildren();
@@ -308,6 +317,12 @@ TestManager::AnalyseResponse(int testIndex)
 	else if (analyserType == wxT("xtalk"))
 	{
 		Crosstalk* mAnalyser = new Crosstalk();
+		outcome = mAnalyser->analyseSignal(testNode);
+		delete mAnalyser;
+	}
+	else if (analyserType == wxT("lfimd"))
+	{
+		IMD* mAnalyser = new IMD();
 		outcome = mAnalyser->analyseSignal(testNode);
 		delete mAnalyser;
 	}

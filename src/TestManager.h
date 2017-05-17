@@ -8,10 +8,12 @@
 #include "SigGen\TestSignalGenerator.h"
 #include "SigGen\OctaveToneGenerator.h"
 #include "SigGen\SingleSineToneGenerator.h"
+#include "SigGen\DualSineToneGenerator.h"
 
 #include "Analysers\StepsFrequencyResponse.h"
 #include "Analysers\THDNoise.h"
 #include "Analysers\Crosstalk.h"
+#include "Analysers\IMD.h"
 #include "Analysers\FADGIAnalyser.h"
 
 typedef struct TestDescriptor {

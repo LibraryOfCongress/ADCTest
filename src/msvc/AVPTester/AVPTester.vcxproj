@@ -189,6 +189,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Analysers\Crosstalk.cpp" />
     <ClCompile Include="..\..\Analysers\FADGIAnalyser.cpp" />
+    <ClCompile Include="..\..\Analysers\IMD.cpp" />
     <ClCompile Include="..\..\Analysers\SegmentLocator.cpp" />
     <ClCompile Include="..\..\Analysers\StepsFrequencyResponse.cpp" />
     <ClCompile Include="..\..\Analysers\THDNoise.cpp" />
@@ -212,6 +213,7 @@
     <ClCompile Include="..\..\DSP\Utils\MathUtilities.cpp" />
     <ClCompile Include="..\..\ResultsDialog.cpp" />
     <ClCompile Include="..\..\SigGen\AudioFileWriter.cpp" />
+    <ClCompile Include="..\..\SigGen\DualSineToneGenerator.cpp" />
     <ClCompile Include="..\..\SigGen\OctaveToneGenerator.cpp" />
     <ClCompile Include="..\..\SigGen\SingleSineToneGenerator.cpp" />
     <ClCompile Include="..\..\SigGen\TestSignalGenerator.cpp" />
@@ -227,6 +229,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Analysers\Crosstalk.h" />
     <ClInclude Include="..\..\Analysers\FADGIAnalyser.h" />
+    <ClInclude Include="..\..\Analysers\IMD.h" />
     <ClInclude Include="..\..\Analysers\SegmentLocator.h" />
     <ClInclude Include="..\..\Analysers\StepsFrequencyResponse.h" />
     <ClInclude Include="..\..\Analysers\THDNoise.h" />
@@ -254,6 +257,7 @@
     <ClInclude Include="..\..\DSP\window.h" />
     <ClInclude Include="..\..\ResultsDialog.h" />
     <ClInclude Include="..\..\SigGen\AudioFileWriter.h" />
+    <ClInclude Include="..\..\SigGen\DualSineToneGenerator.h" />
     <ClInclude Include="..\..\SigGen\OctaveToneGenerator.h" />
     <ClInclude Include="..\..\SigGen\SingleSineToneGenerator.h" />
     <ClInclude Include="..\..\SigGen\TestSignalGenerator.h" />

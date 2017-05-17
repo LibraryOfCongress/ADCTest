@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Analysers\FADGIAnalyser.h" />
+    <ClInclude Include="..\..\Analysers\IMD.h" />
     <ClInclude Include="..\..\Analysers\SegmentLocator.h" />
     <ClInclude Include="..\..\Analysers\StepsFrequencyResponse.h" />
     <ClInclude Include="..\..\Analysers\THDNoise.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="..\..\DSP\Utils\MathUtilities.h" />
     <ClInclude Include="..\..\DSP\window.h" />
     <ClInclude Include="..\AudioFileWriter.h" />
+    <ClInclude Include="..\DualSineToneGenerator.h" />
     <ClInclude Include="..\OctaveToneGenerator.h" />
     <ClInclude Include="..\SingleSineToneGenerator.h" />
     <ClInclude Include="..\WavFileWriter.h" />
@@ -183,6 +185,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Analysers\FADGIAnalyser.cpp" />
+    <ClCompile Include="..\..\Analysers\IMD.cpp" />
     <ClCompile Include="..\..\Analysers\SegmentLocator.cpp" />
     <ClCompile Include="..\..\Analysers\StepsFrequencyResponse.cpp" />
     <ClCompile Include="..\..\Analysers\THDNoise.cpp" />
@@ -194,6 +198,7 @@
     <ClCompile Include="..\..\DSP\kissfft\tools\kiss_fftr.c" />
     <ClCompile Include="..\..\DSP\Utils\MathUtilities.cpp" />
     <ClCompile Include="..\AudioFileWriter.cpp" />
+    <ClCompile Include="..\DualSineToneGenerator.cpp" />
     <ClCompile Include="..\OctaveToneGenerator.cpp" />
     <ClCompile Include="..\SingleSineToneGenerator.cpp" />
     <ClCompile Include="..\WavFileWriter.cpp" />

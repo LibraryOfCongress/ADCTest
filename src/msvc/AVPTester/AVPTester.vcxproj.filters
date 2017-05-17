@@ -189,6 +189,12 @@
     <ClCompile Include="..\..\AudioIO\pablio\pablio.c">
       <Filter>Source Files\AudioIO\pablio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\SigGen\DualSineToneGenerator.cpp">
+      <Filter>Source Files\SigGen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Analysers\IMD.cpp">
+      <Filter>Source Files\Analysers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\AVPTesterApp.h">
@@ -313,6 +319,12 @@
     </ClInclude>
     <ClInclude Include="..\..\AudioIO\pablio\pablio.h">
       <Filter>Header Files\AudioIO\pablio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SigGen\DualSineToneGenerator.h">
+      <Filter>Header Files\SigGen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Analysers\IMD.h">
+      <Filter>Header Files\Analysers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

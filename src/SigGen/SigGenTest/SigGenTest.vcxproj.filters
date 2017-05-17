@@ -78,6 +78,12 @@
     <ClInclude Include="..\..\DSP\window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\DualSineToneGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Analysers\IMD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -126,6 +132,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\DSP\kissfft\kiss_fft.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DualSineToneGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Analysers\FADGIAnalyser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Analysers\IMD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

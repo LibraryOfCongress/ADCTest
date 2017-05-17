@@ -4,15 +4,18 @@
 #include "stdafx.h"
 #include "../OctaveToneGenerator.h"
 #include "../SingleSineToneGenerator.h"
+#include "../DualSineToneGenerator.h"
 #include "../../Analysers/StepsFrequencyResponse.h"
 #include "../../Analysers/THDNoise.h"
+#include "../../Analysers/IMD.h"
 
 void ParseProject(wxXmlNode* pNode)
 {
 	OctaveToneGenerator* mTestGen = new OctaveToneGenerator(48000, 2);
 	SingleSineToneGenerator* mTHDGen = new SingleSineToneGenerator(48000, 2);
-	StepsFrequencyResponse* mFreqResponse = new StepsFrequencyResponse();
-	THDNoise* mTHDNoise = new THDNoise();
+	DualSineToneGenerator* mLFIMDGen = new DualSineToneGenerator(48000, 2);
+
+	IMD* mIMDAnalyser = new IMD();
 
 	wxXmlNode* testsListNode = pNode->GetChildren();
 	
@@ -20,19 +23,21 @@ void ParseProject(wxXmlNode* pNode)
 	while(testNode)
 	{
 		wxString testname = testNode->GetAttribute(wxT("name"));
-		if (testname == wxT("thdn_1k_left_ch"))
+		if (testname == wxT("hfimd_left_ch"))
 		{
 			wxXmlNode* testParams = testNode->GetChildren();
 			
-			mTHDGen->generateSignal(testParams);
-
-			mTHDNoise->analyseSignal(testParams);
+			mLFIMDGen->generateSignal(testParams);
+			//mIMDAnalyser->analyseSignal(testNode);
 		}
 		testNode = testNode->GetNext();
 	}
 
 	delete mTestGen;
-	delete mFreqResponse;
+	delete mLFIMDGen;
+	delete mTHDGen;
+
+	delete mIMDAnalyser;
 
 }
 

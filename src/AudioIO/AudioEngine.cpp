@@ -32,7 +32,7 @@ void DeinitAudioIO()
 
 
 AudioIO::AudioIO()
-:mCaptureFrameSize(1024)
+:mCaptureFrameSize(4096)
 ,mCaptureSampleRate(44100.0)
 ,mNoCaptureChannels(1)
 ,bPAIsOpen(false)
@@ -653,7 +653,7 @@ AudioIO::doADCTest()
 	mIsSafe = false;
 	int errorCode = AVP_PROCESS_START;
 
-	reportEvent( 2, errorCode, wxT("Calibration started"));
+	reportEvent( 2, errorCode, wxT("test procedures started"));
 
 	mCaptureSampleRate = 0;
 	int captureDevIdx = -1;
@@ -806,7 +806,7 @@ AudioIO::OpenDevices(double sampleRate,
 		captureParameters.hostApiSpecificStreamInfo = NULL;
 		captureParameters.channelCount = captureChannels;
 		captureDeviceInfo = Pa_GetDeviceInfo(captureParameters.device);
-		captureParameters.suggestedLatency = 0.50;// captureDeviceInfo->defaultHighInputLatency;
+		captureParameters.suggestedLatency = 1.0;// captureDeviceInfo->defaultHighInputLatency;
 	}
 
 	//configure playback stream parameters
@@ -818,7 +818,7 @@ AudioIO::OpenDevices(double sampleRate,
 		playbackParameters.hostApiSpecificStreamInfo = NULL;
 		playbackParameters.channelCount = playbackChannels;
 		playbackDeviceInfo = Pa_GetDeviceInfo(playbackParameters.device);
-		playbackParameters.suggestedLatency = 0.50; playbackDeviceInfo->defaultHighOutputLatency;
+		playbackParameters.suggestedLatency = 1.0; //playbackDeviceInfo->defaultHighOutputLatency;
 	}
 
 	err = Pa_OpenStream(&mPortStreamV19,
@@ -826,7 +826,7 @@ AudioIO::OpenDevices(double sampleRate,
 						playbackEnabled ? &playbackParameters : NULL,
 						sampleRate,
 						mCaptureFrameSize,
-						paClipOff | paDitherOff,
+						NULL,//paClipOff | paDitherOff,
 						NULL,
 						NULL);
 
@@ -967,6 +967,8 @@ AudioIO::PlaybackAcquire(wxString signalFile, wxString responseFile)
 				break;
 			}
 			sf_writef_float(sndInFile, InputBuffer, mCaptureFrameSize);
+
+			Pa_Sleep(1);
 		}
 
 		sf_close(sndInFile);

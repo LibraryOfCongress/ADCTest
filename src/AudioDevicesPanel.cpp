@@ -801,7 +801,6 @@ void AudioDevicesPanel::OnButtonDevTestStopClick(wxCommandEvent& event)
 	StopCalibration();
 }
 
-
 void 
 AudioDevicesPanel::StartCalibration()
 {
