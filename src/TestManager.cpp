@@ -326,6 +326,12 @@ TestManager::AnalyseResponse(int testIndex)
 		outcome = mAnalyser->analyseSignal(testNode);
 		delete mAnalyser;
 	}
+	else if (analyserType == wxT("spis"))
+	{
+		SpIS* mAnalyser = new SpIS();
+		outcome = mAnalyser->analyseSignal(testNode);
+		delete mAnalyser;
+	}
 
 	wxString outcomeMsg;
 

@@ -214,7 +214,7 @@ void mpInfoCoords::UpdateInfo(mpWindow& w, wxEvent& event)
         else
             xleg = m_fstep*w.p2x(mouseX);
 
-		m_content.Printf(wxT("%.0f dB @ %.0f Hz"), w.p2y(mouseY), xleg);
+		m_content.Printf(wxT("%.2f dB @ %.0f Hz"), w.p2y(mouseY), xleg);
 //#endif
     }
 }

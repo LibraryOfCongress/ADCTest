@@ -8,6 +8,7 @@
 #include "../../Analysers/StepsFrequencyResponse.h"
 #include "../../Analysers/THDNoise.h"
 #include "../../Analysers/IMD.h"
+#include "../../Analysers/SpIS.h"
 
 void ParseProject(wxXmlNode* pNode)
 {
@@ -15,7 +16,8 @@ void ParseProject(wxXmlNode* pNode)
 	SingleSineToneGenerator* mTHDGen = new SingleSineToneGenerator(48000, 2);
 	DualSineToneGenerator* mLFIMDGen = new DualSineToneGenerator(48000, 2);
 
-	IMD* mIMDAnalyser = new IMD();
+	IMD*  mIMDAnalyser = new IMD();
+	SpIS* mSpISAnalyser = new SpIS();
 
 	wxXmlNode* testsListNode = pNode->GetChildren();
 	
@@ -23,12 +25,12 @@ void ParseProject(wxXmlNode* pNode)
 	while(testNode)
 	{
 		wxString testname = testNode->GetAttribute(wxT("name"));
-		if (testname == wxT("hfimd_left_ch"))
+		if (testname == wxT("spis_left_ch"))
 		{
 			wxXmlNode* testParams = testNode->GetChildren();
 			
-			mLFIMDGen->generateSignal(testParams);
-			//mIMDAnalyser->analyseSignal(testNode);
+			mTHDGen->generateSignal(testParams);
+			mSpISAnalyser->analyseSignal(testNode);
 		}
 		testNode = testNode->GetNext();
 	}

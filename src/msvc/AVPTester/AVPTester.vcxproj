@@ -191,6 +191,7 @@
     <ClCompile Include="..\..\Analysers\FADGIAnalyser.cpp" />
     <ClCompile Include="..\..\Analysers\IMD.cpp" />
     <ClCompile Include="..\..\Analysers\SegmentLocator.cpp" />
+    <ClCompile Include="..\..\Analysers\SpIS.cpp" />
     <ClCompile Include="..\..\Analysers\StepsFrequencyResponse.cpp" />
     <ClCompile Include="..\..\Analysers\THDNoise.cpp" />
     <ClCompile Include="..\..\AudioDevicesDialog.cpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="..\..\Analysers\FADGIAnalyser.h" />
     <ClInclude Include="..\..\Analysers\IMD.h" />
     <ClInclude Include="..\..\Analysers\SegmentLocator.h" />
+    <ClInclude Include="..\..\Analysers\SpIS.h" />
     <ClInclude Include="..\..\Analysers\StepsFrequencyResponse.h" />
     <ClInclude Include="..\..\Analysers\THDNoise.h" />
     <ClInclude Include="..\..\AudioDevicesDialog.h" />

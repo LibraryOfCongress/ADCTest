@@ -14,6 +14,7 @@
 #include "Analysers\THDNoise.h"
 #include "Analysers\Crosstalk.h"
 #include "Analysers\IMD.h"
+#include "Analysers\SpIS.h"
 #include "Analysers\FADGIAnalyser.h"
 
 typedef struct TestDescriptor {

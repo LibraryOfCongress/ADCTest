@@ -567,5 +567,175 @@
         <spec name="xtalk_log" type="double" value="-110" units="dB" criterion="lessthan"/>
       </performancespecs>
     </test>  
+    <test id="24" name="lfimd_left_ch" alias="Low Frequency Intermodulation Distortion - left channel" enabled="true">
+      <paramters>
+        <parameter name="signal" type="string" value="dualsine" units="" alias="dual tone" editable="false"/>
+        <parameter name="analyser" type="string" value="lfimd" units="" alias="total harmonic distortion plus noise" editable="false"/>
+        <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
+        <parameter name="tonefreq1" type="double" value="41" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="tonefreq2" type="double" value="7993" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="tonelevel" type="double" value="-1" units="dB" alias="start frequency" editable="true"/>
+        <parameter name="levelratio" type="double" value="4" units="dB" alias="start frequency" editable="true"/>
+        <parameter name="imdtype" type="string" value="smpte" units="" alias="imd method" editable="true"/>
+        <parameter name="detectionlevel" type="double" value="-50" units="dB" alias="signal detection threshold" editable="true"/>
+        <parameter name="fftlength" type="double" value="32768" units="" alias="fft size" editable="true"/>
+        <parameter name="fftnoavg" type="double" value="4" units="" alias="number of fft averages" editable="true"/>
+        <parameter name="fftavgtype" type="string" value="linear" units="" alias="averaging type" editable="true"/>
+        <parameter name="notchbw" type="double" value="200" units="hz" alias="fundamental notch bandwidth" editable="true"/>
+        <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
+        <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
+        <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
+        <parameter name="transtime" type="double" value="500" units="mS" alias="transient time" editable="true"/>
+        <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
+        <parameter name="workfolder" type="path" editable="true" value=""/>
+        <parameter name="signalfile" type="string" value="lfimd_left_ch_sig.wav" editable="true"/>
+        <parameter name="responsefile" type="string" value="lfimd_left_ch_resp.wav" editable="true"/>
+        <parameter name="resultsfile" type="string" value="lfimd_left_ch.xml" editable="true"/>
+      </paramters>
+      <performancespecs>
+        <spec name="imd_logarithmic" type="double" value="-65" units="dB" criterion="lessthan"/>
+      </performancespecs>
+    </test>
+    <test id="25" name="lfimd_right_ch" alias="Low Frequency Intermodulation Distortion - right channel" enabled="true">
+      <paramters>
+        <parameter name="signal" type="string" value="dualsine" units="" alias="dual tone" editable="false"/>
+        <parameter name="analyser" type="string" value="lfimd" units="" alias="total harmonic distortion plus noise" editable="false"/>
+        <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
+        <parameter name="tonefreq1" type="double" value="41" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="tonefreq2" type="double" value="7993" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="tonelevel" type="double" value="-1" units="dB" alias="start frequency" editable="true"/>
+        <parameter name="levelratio" type="double" value="4" units="dB" alias="start frequency" editable="true"/>
+        <parameter name="imdtype" type="string" value="smpte" units="" alias="imd method" editable="true"/>
+        <parameter name="detectionlevel" type="double" value="-50" units="dB" alias="signal detection threshold" editable="true"/>
+        <parameter name="fftlength" type="double" value="32768" units="" alias="fft size" editable="true"/>
+        <parameter name="fftnoavg" type="double" value="4" units="" alias="number of fft averages" editable="true"/>
+        <parameter name="fftavgtype" type="string" value="linear" units="" alias="averaging type" editable="true"/>
+        <parameter name="notchbw" type="double" value="200" units="hz" alias="fundamental notch bandwidth" editable="true"/>
+        <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
+        <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
+        <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
+        <parameter name="transtime" type="double" value="500" units="mS" alias="transient time" editable="true"/>
+        <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
+        <parameter name="workfolder" type="path" editable="true" value=""/>
+        <parameter name="signalfile" type="string" value="lfimd_right_ch_sig.wav" editable="true"/>
+        <parameter name="responsefile" type="string" value="lfimd_right_ch_resp.wav" editable="true"/>
+        <parameter name="resultsfile" type="string" value="lfimd_right_ch.xml" editable="true"/>
+      </paramters>
+      <performancespecs>
+        <spec name="imd_logarithmic" type="double" value="-65" units="dB" criterion="lessthan"/>
+      </performancespecs>
+    </test>
+    <test id="26" name="hfimd_left_ch" alias="High Frequency Intermodulation Distortion - left channel" enabled="true">
+      <paramters>
+        <parameter name="signal" type="string" value="dualsine" units="" alias="dual tone" editable="false"/>
+        <parameter name="analyser" type="string" value="lfimd" units="" alias="total harmonic distortion plus noise" editable="false"/>
+        <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
+        <parameter name="tonefreq1" type="double" value="18000" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="tonefreq2" type="double" value="20000" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="tonelevel" type="double" value="-1" units="dB" alias="start frequency" editable="true"/>
+        <parameter name="levelratio" type="double" value="1" units="dB" alias="start frequency" editable="true"/>
+        <parameter name="imdtype" type="string" value="ccif" units="" alias="imd method" editable="true"/>
+        <parameter name="detectionlevel" type="double" value="-50" units="dB" alias="signal detection threshold" editable="true"/>
+        <parameter name="fftlength" type="double" value="32768" units="" alias="fft size" editable="true"/>
+        <parameter name="fftnoavg" type="double" value="4" units="" alias="number of fft averages" editable="true"/>
+        <parameter name="fftavgtype" type="string" value="linear" units="" alias="averaging type" editable="true"/>
+        <parameter name="notchbw" type="double" value="200" units="hz" alias="fundamental notch bandwidth" editable="true"/>
+        <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
+        <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
+        <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
+        <parameter name="transtime" type="double" value="500" units="mS" alias="transient time" editable="true"/>
+        <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
+        <parameter name="workfolder" type="path" editable="true" value=""/>
+        <parameter name="signalfile" type="string" value="hfimd_left_ch_sig.wav" editable="true"/>
+        <parameter name="responsefile" type="string" value="hfimd_left_ch_resp.wav" editable="true"/>
+        <parameter name="resultsfile" type="string" value="hfimd_left_ch.xml" editable="true"/>
+      </paramters>
+      <performancespecs>
+        <spec name="imd_logarithmic" type="double" value="-65" units="dB" criterion="lessthan"/>
+      </performancespecs>
+    </test>
+    <test id="27" name="hfimd_right_ch" alias="High Frequency Intermodulation Distortion - right channel" enabled="true">
+      <paramters>
+        <parameter name="signal" type="string" value="dualsine" units="" alias="dual tone" editable="false"/>
+        <parameter name="analyser" type="string" value="lfimd" units="" alias="total harmonic distortion plus noise" editable="false"/>
+        <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
+        <parameter name="tonefreq1" type="double" value="18000" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="tonefreq2" type="double" value="20000" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="tonelevel" type="double" value="-1" units="dB" alias="start frequency" editable="true"/>
+        <parameter name="levelratio" type="double" value="1" units="dB" alias="start frequency" editable="true"/>
+        <parameter name="imdtype" type="string" value="ccif" units="" alias="imd method" editable="true"/>
+        <parameter name="detectionlevel" type="double" value="-50" units="dB" alias="signal detection threshold" editable="true"/>
+        <parameter name="fftlength" type="double" value="32768" units="" alias="fft size" editable="true"/>
+        <parameter name="fftnoavg" type="double" value="4" units="" alias="number of fft averages" editable="true"/>
+        <parameter name="fftavgtype" type="string" value="linear" units="" alias="averaging type" editable="true"/>
+        <parameter name="notchbw" type="double" value="200" units="hz" alias="fundamental notch bandwidth" editable="true"/>
+        <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
+        <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
+        <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
+        <parameter name="transtime" type="double" value="500" units="mS" alias="transient time" editable="true"/>
+        <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
+        <parameter name="workfolder" type="path" editable="true" value=""/>
+        <parameter name="signalfile" type="string" value="hfimd_right_ch_sig.wav" editable="true"/>
+        <parameter name="responsefile" type="string" value="hfimd_right_ch_resp.wav" editable="true"/>
+        <parameter name="resultsfile" type="string" value="hfimd_right_ch.xml" editable="true"/>
+      </paramters>
+      <performancespecs>
+        <spec name="imd_logarithmic" type="double" value="-65" units="dB" criterion="lessthan"/>
+      </performancespecs>
+    </test>
+    <test id="28" name="spis_left_ch" alias="spurious inharmonic signals - left channel" enabled="true">
+      <paramters>
+        <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
+        <parameter name="analyser" type="string" value="spis" units="" alias="total harmonic distortion plus noise" editable="false"/>
+        <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
+        <parameter name="tonefreq" type="double" value="997" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="tonelevel" type="double" value="-1" units="dB" alias="start frequency" editable="true"/>
+        <parameter name="detectionlevel" type="double" value="-50" units="dB" alias="signal detection threshold" editable="true"/>
+        <parameter name="fftlength" type="double" value="32768" units="" alias="fft size" editable="true"/>
+        <parameter name="fftnoavg" type="double" value="32" units="" alias="number of fft averages" editable="true"/>
+        <parameter name="fftavgtype" type="string" value="linear" units="" alias="averaging type" editable="true"/>
+        <parameter name="notchbw" type="double" value="200" units="hz" alias="fundamental notch bandwidth" editable="true"/>
+        <parameter name="lowerlimit" type="double" value="50" units="hz" alias="lowest frequency used in calculations" editable="true"/>
+        <parameter name="higherlimit" type="double" value="20000" units="hz" alias="highest frequency used in calculations" editable="true"/>
+        <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
+        <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
+        <parameter name="transtime" type="double" value="500" units="mS" alias="transient time" editable="true"/>
+        <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
+        <parameter name="workfolder" type="path" editable="true" value=""/>
+        <parameter name="signalfile" type="string" value="spis_left_ch_sig.wav" editable="true"/>
+        <parameter name="responsefile" type="string" value="spis_left_ch_resp.wav" editable="true"/>
+        <parameter name="resultsfile" type="string" value="spis_left_ch.xml" editable="true"/>
+      </paramters>
+      <performancespecs>
+        <spec name="spis_logarithmic" type="double" value="-120" units="dB" criterion="lessthan"/>
+      </performancespecs>
+    </test>
+    <test id="29" name="spis_right_ch" alias="spurious inharmonic signals - right channel" enabled="true">
+      <paramters>
+        <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
+        <parameter name="analyser" type="string" value="spis" units="" alias="total harmonic distortion plus noise" editable="false"/>
+        <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
+        <parameter name="tonefreq" type="double" value="997" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="tonelevel" type="double" value="-1" units="dB" alias="start frequency" editable="true"/>
+        <parameter name="detectionlevel" type="double" value="-50" units="dB" alias="signal detection threshold" editable="true"/>
+        <parameter name="fftlength" type="double" value="32768" units="" alias="fft size" editable="true"/>
+        <parameter name="fftnoavg" type="double" value="32" units="" alias="number of fft averages" editable="true"/>
+        <parameter name="fftavgtype" type="string" value="linear" units="" alias="averaging type" editable="true"/>
+        <parameter name="notchbw" type="double" value="200" units="hz" alias="fundamental notch bandwidth" editable="true"/>
+        <parameter name="lowerlimit" type="double" value="50" units="hz" alias="lowest frequency used in calculations" editable="true"/>
+        <parameter name="higherlimit" type="double" value="20000" units="hz" alias="highest frequency used in calculations" editable="true"/>
+        <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
+        <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
+        <parameter name="transtime" type="double" value="500" units="mS" alias="transient time" editable="true"/>
+        <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
+        <parameter name="workfolder" type="path" editable="true" value=""/>
+        <parameter name="signalfile" type="string" value="spis_right_ch_sig.wav" editable="true"/>
+        <parameter name="responsefile" type="string" value="spis_right_ch_resp.wav" editable="true"/>
+        <parameter name="resultsfile" type="string" value="spis_right_ch.xml" editable="true"/>
+      </paramters>
+      <performancespecs>
+        <spec name="spis_logarithmic" type="double" value="-120" units="dB" criterion="lessthan"/>
+      </performancespecs>
+    </test>
   </procedures>
 </FADGIProject>

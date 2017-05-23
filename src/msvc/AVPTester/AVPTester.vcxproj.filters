@@ -195,6 +195,9 @@
     <ClCompile Include="..\..\Analysers\IMD.cpp">
       <Filter>Source Files\Analysers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Analysers\SpIS.cpp">
+      <Filter>Source Files\Analysers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\AVPTesterApp.h">
@@ -324,6 +327,9 @@
       <Filter>Header Files\SigGen</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Analysers\IMD.h">
+      <Filter>Header Files\Analysers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Analysers\SpIS.h">
       <Filter>Header Files\Analysers</Filter>
     </ClInclude>
   </ItemGroup>
