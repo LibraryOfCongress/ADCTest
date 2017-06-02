@@ -4,14 +4,6 @@
 #include "../SigGen/WavFileWriter.h"
 
 THDNoise::THDNoise()
-:mParamsNode(NULL)
-,mSpecsNode(NULL)
-,mSampleRate(0)
-,mNoChannels(0)
-,mRespFileFrames(0)
-,mDetectionWLen(0)
-,mLogDetectionThreshold(-60)
-,mLocator(NULL)
 {
     //ctor
 	mSeparator = wxT("\\");
@@ -20,10 +12,6 @@ THDNoise::THDNoise()
 THDNoise::~THDNoise()
 {
     //dtor
-	if( mLocator ){
-		delete mLocator;
-		mLocator = NULL;
-	}
 }
 
 int
@@ -39,11 +27,11 @@ THDNoise::analyseSignal(wxXmlNode* testDescriptionNode)
 	if (mRespFile)
 	{
 		//find segments in file
-		std::vector<size_t> onsets = getOnsets(mRespFile);
+		std::vector<size_t> onsets = getOnsets(mRespFile, mSelectedChannel);
 
 		analyseSegments(mRespFile, onsets);
 
-		sf_close(mRespFile);
+		closeResponseFile();
 
 		bool testOutcome = buildReport();
 
@@ -62,193 +50,23 @@ THDNoise::analyseSignal(wxXmlNode* testDescriptionNode)
 }
 
 void
-THDNoise::setParameters(wxXmlNode* testDescriptionNode)
-{
-	mTestTitle = testDescriptionNode->GetAttribute(wxT("alias"));
-	wxXmlNode* cNode = testDescriptionNode->GetChildren();
-
-	while (cNode)
-	{
-		wxString nName = cNode->GetName();
-
-		if (nName == wxT("paramters"))
-		{
-			mParamsNode = cNode;
-		}
-		else if (nName == wxT("performancespecs"))
-		{
-			mSpecsNode = cNode;
-		}
-		cNode = cNode->GetNext();
-	}
-
-	//set default parameter values
-	mIntegrationTime = 500;
-	mTransientTime = 250;
-	mBurstIntervalTime = 250;
-	mSignalLevel = 0;
-	mSelectedChannel = 0;
-	mWriteFResp = false;
-	mNotchBandwidth = 20.0;
-	mLowestFrequency = 10.0;
-	mAverageType = 0;
-
-	//get parameters from xml node
-	wxXmlNode* parameterNode = mParamsNode->GetChildren();
-	while (parameterNode)
-	{
-		wxString pName = parameterNode->GetAttribute(wxT("name"));
-		
-		if (pName == wxT("chidx"))
-		{
-			wxString value = parameterNode->GetAttribute(wxT("value"));
-			double dChIdx;
-			value.ToDouble(&dChIdx);
-			mSelectedChannel = (int)dChIdx;
-		}
-		if (pName == wxT("fftlength"))
-		{
-			wxString value = parameterNode->GetAttribute(wxT("value"));
-			double dLength;
-			value.ToDouble(&dLength);
-			mFFTLength = (size_t)dLength;
-		}
-		if (pName == wxT("fftnoavg"))
-		{
-			wxString value = parameterNode->GetAttribute(wxT("value"));
-			double dAvgs;
-			value.ToDouble(&dAvgs);
-			mFFTAverages = (size_t)dAvgs;
-		}
-		if (pName == wxT("fftavgtype"))
-		{
-			wxString value = parameterNode->GetAttribute(wxT("value"));
-
-			if (value == wxT("none"))
-				mAverageType = 0;
-			if (value == wxT("linear"))
-				mAverageType = 1;
-			else if (value == wxT("exponential"))
-				mAverageType = 2;
-		}
-		else if (pName == wxT("detectionlevel"))
-		{
-			wxString value = parameterNode->GetAttribute(wxT("value"));
-			value.ToDouble(&mLogDetectionThreshold);
-		}
-		else if (pName == wxT("inttime"))
-		{
-			wxString value = parameterNode->GetAttribute(wxT("value"));
-			value.ToDouble(&mIntegrationTime);
-		}
-		else if (pName == wxT("transtime"))
-		{
-			wxString value = parameterNode->GetAttribute(wxT("value"));
-			value.ToDouble(&mTransientTime);
-		}
-		else if (pName == wxT("bursttime"))
-		{
-			wxString value = parameterNode->GetAttribute(wxT("value"));
-			value.ToDouble(&mBurstIntervalTime);
-		}
-		else if (pName == wxT("level"))
-		{
-			wxString value = parameterNode->GetAttribute(wxT("value"));
-			value.ToDouble(&mSignalLevel);
-		}
-		else if (pName == wxT("notchbw"))
-		{
-			wxString value = parameterNode->GetAttribute(wxT("value"));
-			value.ToDouble(&mNotchBandwidth);
-		}
-		else if (pName == wxT("lowerlimit"))
-		{
-			wxString value = parameterNode->GetAttribute(wxT("value"));
-			value.ToDouble(&mLowestFrequency);
-		}
-		else if (pName == wxT("outputfreqresponse"))
-		{
-			double dVal = 0;
-			wxString value = parameterNode->GetAttribute(wxT("value"));
-			value.ToDouble(&dVal);
-			mWriteFResp = (bool)dVal;
-		}
-		else if (pName == wxT("workfolder"))
-		{
-			mFolderPath = parameterNode->GetAttribute(wxT("value"));
-		}
-		else if (pName == wxT("responsefile"))
-		{
-			mFileName = parameterNode->GetAttribute(wxT("value"));
-		}
-		else if (pName == wxT("resultsfile"))
-		{
-			mResultsFileName = parameterNode->GetAttribute(wxT("value"));
-		}
-
-		parameterNode = parameterNode->GetNext();
-	}
-}
-
-SNDFILE*
-THDNoise::openResponseFile()
-{
-	wxString filePath = mFolderPath + mSeparator + mFileName;
-	std::string strpath(filePath.mbc_str());
-
-	SNDFILE* respFile = NULL;
-	SF_INFO  respFileInfo;
-	respFileInfo.format = 0;
-	respFileInfo.frames = 0;
-	respFile = sf_open((const char*)strpath.c_str(), SFM_READ, &respFileInfo);
-	mRespFileFrames = respFileInfo.frames;
-
-	if (respFile)
-	{
-		mSampleRate = respFileInfo.samplerate;
-		mNoChannels = respFileInfo.channels;
-	}
-		
-	return respFile;
-}
-
-std::vector<size_t> 
-THDNoise::getOnsets(SNDFILE* afile)
-{
-	mDetectionWLen = (size_t)MathUtilities::nextPowerOfTwo(int((1e-3) * mSampleRate));
-	mSampleTransient = 1e-3 * mTransientTime * mSampleRate;
-	mSampleTone = 1e-3 * mIntegrationTime * mSampleRate;
-
-	if (mLocator) {
-		delete mLocator;
-		mLocator = NULL;
-	}
-	mLocator = new SegmentLocator(mSampleRate, mNoChannels);
-	mLocator->Reset();
-	mLocator->SetDetectionParameters(mLogDetectionThreshold);
-	mLocator->SetLPFilterparameters(50, 12);
-
-	float* windowBuffer = new float[mDetectionWLen*mNoChannels];
-	size_t count = 0;
-	while (count < mRespFileFrames)
-	{
-		sf_count_t read = sf_readf_float(afile, windowBuffer, mDetectionWLen);
-		int point = mLocator->ProcesSignal(windowBuffer, mSelectedChannel, mDetectionWLen);
-
-		if (point >= 0)
-			windowBuffer[point] = -1;
-
-		count += read;
-	}
-	
-	delete[] windowBuffer;
-
-	return mLocator->GetOnsets();
-}
-
-void
 THDNoise::analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets)
 {
+	//module specific parameters
+	mFFTLength = getTestParameterValue(wxT("fftlength"), mParamsNode);
+	mFFTAverages = getTestParameterValue(wxT("fftnoavg"), mParamsNode);
+	mNotchBandwidth = getTestParameterValue(wxT("notchbw"), mParamsNode);
+	mLowestFrequency = getTestParameterValue(wxT("lowerlimit"), mParamsNode);
+
+	wxString avgStr = getTestParameterStringValue(wxT("fftavgtype"), mParamsNode);
+	
+	mAverageType = 0;
+
+	if (avgStr == wxT("linear"))
+		mAverageType = 1;
+	if (avgStr == wxT("exponential"))
+		mAverageType = 2;
+
 	mFrequencyResponse.clear();
 
 	mFFTBins = 1 + mFFTLength / 2;
@@ -259,7 +77,7 @@ THDNoise::analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets)
 
 	//for this measurement we are only interested in a single segment
 	size_t on = onsets[0];
-	sf_count_t seeked = sf_seek(afile, on + mSampleTransient, SEEK_SET);
+	sf_count_t seeked = sf_seek(afile, on + mTransientSamples, SEEK_SET);
 
 	float* fileBuffer = new float[mFFTLength*mNoChannels];
 	float* channelBuffer = new float[mFFTLength];
@@ -330,11 +148,8 @@ THDNoise::analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets)
 				}
 			}
 		}
-
-
 		averagesCounter++;
 	}
-
 
 	double den = 1;
 	//if linear averaging, denominator should be set to number of averages
@@ -443,28 +258,6 @@ THDNoise::extractTHDNoiseMetrics()
 	mSNR_Log = 20 * log10((mTHDpN_Pc/100) - (mTHD_Pc/100)) - fabs(mSigBin.peakValueLog);
 }
 
-
-FreqPoint 
-THDNoise::findPeakInRange(float startFreq, float endFreq, std::vector<FreqPoint> &frequencyResponse)
-{
-	FreqPoint point;
-	point.peakValueLin = 0;
-
-	for (size_t fIdx = 0; fIdx < frequencyResponse.size(); fIdx++)
-	{
-		FreqPoint pn = frequencyResponse[fIdx];
-		if ((pn.frequency > startFreq) && (pn.frequency < endFreq))
-		{
-			if (pn.peakValueLin > point.peakValueLin)
-			{
-				point = pn;
-			}
-		}
-	}
-
-	return point;
-}
-
 bool
 THDNoise::buildReport()
 {
@@ -543,6 +336,7 @@ THDNoise::buildReport()
 	dataNode->AddChild(metricsNode);
 
 	//if dumping frequency response is enabled:
+	bool mWriteFResp = (bool)getTestParameterValue(wxT("outputfreqresponse"), mParamsNode);
 	if (mWriteFResp)
 	{
 		wxXmlNode* FreqRespNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("freqresponse"));
@@ -594,136 +388,3 @@ THDNoise::buildReport()
 	return testResultsOK;
 }
 
-bool
-THDNoise::checkTestSpecs(wxXmlNode* resultsNode)
-{
-	bool testResultsOK = true;
-
-	//check target specs from test parameters
-	if (mSpecsNode)
-	{
-		wxXmlNode* paramNode = mSpecsNode->GetChildren();
-		while (paramNode)
-		{
-			double specValue;
-			wxString specName = paramNode->GetAttribute(wxT("name"));
-			wxString speSVal = paramNode->GetAttribute(wxT("value"), wxT("-9999"));
-			speSVal.ToDouble(&specValue);
-			wxString criterion = paramNode->GetAttribute(wxT("criterion"));
-
-			//see if this performance parameter is part of the measurements
-			double measuredValue = getResultValue(specName, resultsNode);
-			bool checkResult = false;
-
-			////////////////////////////////////////////////////
-			//check result against desired specs
-			//if returned value is -9999, then this metric is not available
-			if (measuredValue != -9999)
-			{
-				if (criterion == wxT("morethan"))
-				{
-					if (measuredValue >= specValue)
-						checkResult = true;
-				}
-				else if (criterion == wxT("lessthan"))
-				{
-					if (measuredValue <= specValue)
-						checkResult = true;
-				}
-			}
-			testResultsOK = testResultsOK && checkResult;
-			
-			paramNode = paramNode->GetNext();
-		}
-	}
-
-	return testResultsOK;
-}
-
-bool
-THDNoise::writeResultsToFile(wxXmlNode* resultsNode)
-{
-	bool wResults = false;
-	wxString filePath = mFolderPath + mSeparator + mResultsFileName;
-
-	//write all to file
-	wxXmlDocument* writeSchema = new wxXmlDocument();
-	writeSchema->SetRoot(resultsNode);
-	writeSchema->Save(filePath);
-	writeSchema->DetachRoot();
-	delete writeSchema;
-
-	return wResults;
-}
-
-double
-THDNoise::getResultValue(wxString paramName, wxXmlNode* resultsNode)
-{
-	double paramValue = -9999;
-
-	wxXmlNode* metricsNode = NULL;
-	wxXmlNode* dataSetNode = resultsNode->GetChildren();
-
-	//get metrics node;
-	while (dataSetNode)
-	{
-		if (dataSetNode->GetName() == wxT("dataset"))
-		{
-			wxXmlNode* cNode = dataSetNode->GetChildren();
-			while (cNode)
-			{
-				if (cNode->GetName() == wxT("testmetrics"))
-				{
-					metricsNode = cNode;
-					break;
-				}
-				cNode = cNode->GetNext();
-			}
-			break;
-		}
-		dataSetNode = dataSetNode->GetNext();
-	}
-
-	//////////////////////////////
-	if (metricsNode)
-	{
-		wxXmlNode* paramNode = metricsNode->GetChildren();
-		while (paramNode)
-		{
-			wxString pName = paramNode->GetAttribute(wxT("name"));
-
-			if (pName == paramName)
-			{
-				wxString pVal = paramNode->GetAttribute(wxT("value"), wxT("-9999"));
-				pVal.ToDouble(&paramValue);
-				break;
-			}
-			paramNode = paramNode->GetNext();
-		}
-	}
-	return paramValue;
-}
-
-double
-THDNoise::getSpecValue(wxString paramName, wxXmlNode* specsNode)
-{
-	double paramValue = 0;
-
-	if (specsNode)
-	{
-		wxXmlNode* paramNode = specsNode->GetChildren();
-		while (paramNode)
-		{
-			wxString pName = paramNode->GetAttribute(wxT("name"));
-
-			if (pName == paramName)
-			{
-				wxString pVal = paramNode->GetAttribute(wxT("value"), wxT("0"));
-				pVal.ToDouble(&paramValue);
-				break;
-			}
-			paramNode = paramNode->GetNext();
-		}
-	}
-	return paramValue;
-}

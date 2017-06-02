@@ -34,7 +34,8 @@ public:
     static void   circShift( double* data, int length, int shift);
 
     static int	  getMax( double* data, size_t length, double* max = 0 );
-    static int	  getMax( const std::vector<double> &data, double* max = 0 );
+	static int	  getMax( float* data, size_t length, float* max = 0); 
+	static int	  getMax( const std::vector<double> &data, double* max = 0 );
     static int    compareInt(const void * a, const void * b);
 
     static std::vector<size_t> getIndexesOfValue( const std::vector<double> &data, double val );

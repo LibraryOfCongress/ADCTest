@@ -11,7 +11,7 @@
 #include "SegmentLocator.h"
 
 
-class THDNoise
+class THDNoise :public FADGIAnalyser
 {
     public:
         THDNoise();
@@ -19,74 +19,23 @@ class THDNoise
 		int analyseSignal(wxXmlNode* parameters);
 
 	protected:
-		//extract analysis parameters from test xml description 
-		void setParameters(wxXmlNode* testDescriptionNode);
-
-		//open .WAV file of recorded DUT response
-		SNDFILE* openResponseFile();
-
-		//analyse response and find beginnning of signal
-		std::vector<size_t> getOnsets(SNDFILE* afile);
-
 		//analyse response 
 		void analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets);
 
 		//build xml report
 		bool buildReport();
 
-		//check pass or fail test condition
-		bool checkTestSpecs(wxXmlNode* resultsNode);
-
-		//serialise report to file
-		bool writeResultsToFile(wxXmlNode* resultsNode);
-
-		//get value of measured parameter from report
-		double getResultValue(wxString paramName, wxXmlNode* resultsNode);
-
-		//get pass/fail specification from guidelines 
-		double getSpecValue(wxString paramName, wxXmlNode* specsNode);
-
     protected:
 		//extract metrics specific to test procedures
 		void extractTHDNoiseMetrics();
-		FreqPoint findPeakInRange(float startFreq, float endFreq, std::vector<FreqPoint> &frequencyResponse);
-
-        wxXmlNode* mParamsNode;
-		wxXmlNode* mSpecsNode;
 		
-		double mSampleRate;
-		int mNoChannels;
-		wxString mTestTitle;
-		wxString mFolderPath;
-		wxString mFileName;
-		wxString mFilePath;
-
-		wxString mSeparator;
-		wxString mResultsFileName;
-		wxString mResultsFilePath;
-
     private:
-		double mSignalFrequency;
-		double mSignalLevel;
-		double mIntegrationTime;
-		double mTransientTime;
-		double mBurstIntervalTime;
-		int mSelectedChannel;
-
-		size_t mSampleTransient;
-		size_t mSampleTone;
-
 		size_t mFFTLength;
 		size_t mFFTAverages;
 		size_t mFFTBins;
 		int    mAverageType;
 		bool   mFirstObservation;
 
-		size_t mRespFileFrames;
-		size_t mDetectionWLen;
-		double mLogDetectionThreshold;
-
-		SegmentLocator* mLocator;
 		float mMaxSigValue;
 		float mMinSigValue;
 

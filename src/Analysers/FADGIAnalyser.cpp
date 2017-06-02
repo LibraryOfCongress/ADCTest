@@ -349,3 +349,24 @@ FADGIAnalyser::findPeakInRange(float startFreq, float endFreq, std::vector<FreqP
 
 	return point;
 }
+
+FreqPoint
+FADGIAnalyser::findMinInRange(float startFreq, float endFreq, std::vector<FreqPoint> &frequencyResponse)
+{
+	FreqPoint point;
+	point.peakValueLin = 1.1;
+
+	for (size_t fIdx = 0; fIdx < frequencyResponse.size(); fIdx++)
+	{
+		FreqPoint pn = frequencyResponse[fIdx];
+		if ((pn.frequency > startFreq) && (pn.frequency < endFreq))
+		{
+			if (pn.peakValueLin < point.peakValueLin)
+			{
+				point = pn;
+			}
+		}
+	}
+
+	return point;
+}

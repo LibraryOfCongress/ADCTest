@@ -52,6 +52,9 @@ protected:
 	//find max level in frequency range
 	FreqPoint findPeakInRange(float startFreq, float endFreq, std::vector<FreqPoint> &frequencyResponse);
 
+	//find min level in frequency range
+	FreqPoint findMinInRange(float startFreq, float endFreq, std::vector<FreqPoint> &frequencyResponse);
+
 	//check pass or fail test condition
 	bool checkTestSpecs(wxXmlNode* resultsNode);
 

@@ -310,6 +310,32 @@ int MathUtilities::getMax( double* pData, size_t Length, double* pMax )
 	return index;
 }
 
+int MathUtilities::getMax(float* pData, size_t Length, float* pMax)
+{
+	size_t index = 0;
+	size_t i;
+	float temp = 0.0;
+
+	float max = pData[0];
+
+	for (i = 0; i < Length; i++)
+	{
+		temp = pData[i];
+
+		if (temp > max)
+		{
+			max = temp;
+			index = i;
+		}
+
+	}
+
+	if (pMax) *pMax = max;
+
+
+	return index;
+}
+
 int MathUtilities::getMax( const std::vector<double> & data, double* pMax )
 {
 	size_t index = 0;
@@ -331,7 +357,6 @@ int MathUtilities::getMax( const std::vector<double> & data, double* pMax )
    	}
 
 	if (pMax) *pMax = max;
-
 
 	return index;
 }

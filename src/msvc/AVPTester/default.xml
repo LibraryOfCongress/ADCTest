@@ -10,7 +10,7 @@
         <parameter name="freqstop" type="double" value="20000" units="Hz" alias="stop frequency" editable="true"/>
         <parameter name="octsteps" type="int" value="12" units="" alias="steps per octave" editable="true"/>
         <parameter name="detectionlevel" type="double" value="-50" units="dB" alias="signal detection threshold" editable="true"/>
-        <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
+        <parameter name="inttime" type="double" value="250" units="mS" alias="integration time" editable="true"/>
         <parameter name="transtime" type="double" value="10" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="level" type="double" value="-10" units="dBFS" alias="signal level" editable="true"/>
@@ -21,8 +21,7 @@
         <parameter name="resultsfile" type="string" value="freqresp_l.xml" editable="true"/>
       </paramters>
       <performancespecs>
-        <spec name="lowerlimit" type="double" value="-0.2" units="dB" criterion="morethan"/>
-        <spec name="upperlimit" type="double" value="0.2" units="dB" criterion="lessthan"/>
+        <spec name="freqrespdev" type="double" value="0.2" units="dB" criterion="lessthan"/>
       </performancespecs>
     </test>
     <test id="1" name="freqresp_right_ch" alias="right channel frequency response: 12 steps/oct" enabled="false">
@@ -45,11 +44,10 @@
         <parameter name="resultsfile" type="string" value="freqresp_r.xml" editable="true"/>
       </paramters>
       <performancespecs>
-        <spec name="lowerlimit" type="double" value="-0.2" units="dB" criterion="morethan"/>
-        <spec name="upperlimit" type="double" value="0.2" units="dB" criterion="lessthan"/>
+        <spec name="freqrespdev" type="double" value="0.2" units="dB" criterion="lessthan"/>
       </performancespecs>
     </test>
-    <test id="2" name="thdn_997_m1_left_ch" alias="left channel THD + Noise 997hz @ -1 dBFS" enabled="false">
+    <test id="2" name="thdn_997_m1_left_ch" alias="left channel THD + Noise 997hz @ -1 dBFS" enabled="true">
       <paramters>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
@@ -269,7 +267,7 @@
         <spec name="imd_logarithmic" type="double" value="-65" units="dB" criterion="lessthan"/>
       </performancespecs>
     </test>
-    <test id="12" name="spis_left_ch" alias="spurious inharmonic signals - left channel" enabled="true">
+    <test id="12" name="spis_left_ch" alias="spurious inharmonic signals - left channel" enabled="false">
       <paramters>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="spis" units="" alias="total harmonic distortion plus noise" editable="false"/>
