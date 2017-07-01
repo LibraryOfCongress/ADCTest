@@ -52,6 +52,9 @@ class AVPTesterFrame: public wxFrame
 
     private:
 
+		bool wxViewPDFFile(const wxString& pdfFile, const wxString& specificErrorMessage = wxEmptyString);
+		bool wxSeparateCommandAndArguments(const wxString& command, wxString& cmd, wxString& args);
+
         //(*Handlers(AVPTesterFrame)
         void OnQuit(wxCommandEvent& event);
         void OnAbout(wxCommandEvent& event);

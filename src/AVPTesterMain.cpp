@@ -10,11 +10,12 @@
 #include "AVPTesterMain.h"
 #include <wx/msgdlg.h>
 #include <wx/listctrl.h>
+#include <wx/mimetype.h>
 
 #include "System/Prefs.h"
 #include "Devices/ADevicesManager.h"
 #include "AudioIO/AudioEngine.h"
-
+#include "AboutADCTDialog.h"
 
 //(*InternalHeaders(AVPTesterFrame)
 #include <wx/bitmap.h>
@@ -403,8 +404,10 @@ void AVPTesterFrame::OnQuit(wxCommandEvent& event)
 
 void AVPTesterFrame::OnAbout(wxCommandEvent& event)
 {
-	wxString msg = wxT("AVPreserve Low-cost ADC Test Tool Prototype\nCopyright 2017 Audiovisual Preservation Solutions, Inc.");// wxbuildinfo(long_f);
-    wxMessageBox(msg, _("Welcome to..."));
+	//wxString msg = wxT("AVPreserve Low-cost ADC Test Tool Prototype\nCopyright 2017 Audiovisual Preservation Solutions, Inc.");// wxbuildinfo(long_f);
+    //wxMessageBox(msg, _("Welcome to..."));
+	AboutADCTDialog dlg(this);
+	dlg.ShowModal();
 }
 
 void AVPTesterFrame::OnMenuItemDevicesSelected(wxCommandEvent& event)
@@ -420,11 +423,11 @@ void AVPTesterFrame::OnMenuItemDevicesSelected(wxCommandEvent& event)
 	}
 }
 
-
 void
 AVPTesterFrame::OnMenuItemOpenManualSelected(wxCommandEvent& event)
 {
-
+	wxString url = wxT("userguide.pdf");
+	wxViewPDFFile(url);
 }
 
 void
@@ -690,3 +693,117 @@ void AVPTesterFrame::OnListViewParametersItemActivated(wxListEvent& event)
 {
 }
 
+
+bool
+AVPTesterFrame::wxViewPDFFile(const wxString& command, const wxString& specificErrorMessage)
+{
+	// First see if there are any arguments
+	wxString actualCommand, arguments;
+	wxSeparateCommandAndArguments(command, actualCommand, arguments);
+
+	wxString ext;// path, file;
+	//wxSplitPath(actualCommand, &volume, &path, &file, &ext, wxPATH_NATIVE);
+	wxFileName ff(actualCommand);
+	ext = ff.GetExt();
+
+	wxString extLower(ext.Lower());
+	if (extLower == wxT("html") ||
+		extLower == wxT("htm") ||
+		extLower == wxT("sgml"))
+	{
+		//wxViewHTMLFile(command);
+		return true;
+	}
+	else
+	{
+		bool isApp = false;
+		if (ext.Lower() == wxT("exe") ||
+			ext.Lower() == wxT("com") ||
+			ext.Lower() == wxT("cmd") ||
+			ext.Lower() == wxT("bat"))
+			isApp = true;
+
+		if (ext.IsEmpty())
+			isApp = true;
+
+		if (isApp)
+		{
+			wxString command2 = actualCommand;
+			if (command2.GetChar(0) != wxT('"'))
+				command2 = wxT("\"") + actualCommand + wxT("\"");
+			return (wxExecute(command2) != 0);
+		}
+
+		wxString msg;
+		wxString errMsg = specificErrorMessage;
+		if (errMsg.IsEmpty())
+		{
+			errMsg = _("Please install a suitable application.");
+		}
+
+		if (!ext.IsEmpty())
+		{
+			wxFileType *ft = wxTheMimeTypesManager->GetFileTypeFromExtension(ext);
+			if (!ft)
+			{
+				wxString msg;
+				msg.Printf(_("Could not determine the application for extension %s.\n%s"), (const wxChar*)ext, (const wxChar*)errMsg);
+				wxMessageBox(msg, wxT("Run command"), wxOK | wxICON_EXCLAMATION);
+				return false;
+			}
+
+			wxString cmd;
+			wxString params = command;
+			bool ok = ft->GetOpenCommand(&cmd, wxFileType::MessageParameters(params));
+
+			//wxMessageBox(cmd);
+
+			delete ft;
+
+			if (!ok)
+			{
+				// TODO: some kind of configuration dialog here.
+				wxString msg;
+				msg.Printf(wxT("Could not determine the command for running %s.\n%s"), (const wxChar*)command, (const wxChar*)errMsg);
+
+				wxMessageBox(msg, wxT("Run command"), wxOK | wxICON_EXCLAMATION);
+				return false;
+			}
+
+			ok = (wxExecute(cmd, false) != 0);
+			return ok;
+		}
+		return false;
+	}
+	return true;
+}
+
+// Separate the command-line from the arguments
+bool
+AVPTesterFrame::wxSeparateCommandAndArguments(const wxString& command, wxString& cmd, wxString& args)
+{
+	wxString lowerCaseCommand(command.Lower());
+	cmd = command;
+	args = wxEmptyString;
+
+	wxString command2 = command;
+	command2.Replace(wxT("\""), wxT(""));
+	wxArrayString toFind;
+	toFind.Add(wxT(".exe "));
+	toFind.Add(wxT(".com "));
+	toFind.Add(wxT(".bat "));
+	toFind.Add(wxT(".cmd "));
+	size_t i;
+	size_t sz = toFind.GetCount();
+	for (i = 0; i < sz; i++)
+	{
+		int pos = command2.Find(toFind[i]);
+		if (pos > -1)
+		{
+			cmd = command2.Mid(0, pos + toFind[i].Length() - 1);
+			args = command2.Mid(pos + toFind[i].Length());
+			return true;
+		}
+	}
+	return true;
+}

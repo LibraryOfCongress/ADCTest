@@ -188,6 +188,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\AboutADCTDialog.cpp" />
     <ClCompile Include="..\..\Analysers\Crosstalk.cpp" />
     <ClCompile Include="..\..\Analysers\FADGIAnalyser.cpp" />
     <ClCompile Include="..\..\Analysers\IMD.cpp" />
@@ -228,6 +229,7 @@
     <ClCompile Include="..\..\Widgets\wxMathPlot\mathplot.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\AboutADCTDialog.h" />
     <ClInclude Include="..\..\Analysers\Crosstalk.h" />
     <ClInclude Include="..\..\Analysers\FADGIAnalyser.h" />
     <ClInclude Include="..\..\Analysers\IMD.h" />

@@ -108,6 +108,8 @@
 		<Unit filename="AVPTesterApp.h" />
 		<Unit filename="AVPTesterMain.cpp" />
 		<Unit filename="AVPTesterMain.h" />
+		<Unit filename="AboutADCTDialog.cpp" />
+		<Unit filename="AboutADCTDialog.h" />
 		<Unit filename="Analysers/StepsFrequencyResponse.cpp" />
 		<Unit filename="Analysers/StepsFrequencyResponse.h" />
 		<Unit filename="AudioDevicesDialog.cpp" />
@@ -148,6 +150,7 @@
 			<Option compilerVar="WINDRES" />
 		</Unit>
 		<Unit filename="wxsmith/AVPTesterframe.wxs" />
+		<Unit filename="wxsmith/AboutADCTDialog.wxs" />
 		<Unit filename="wxsmith/AudioDevicesDialog.wxs" />
 		<Unit filename="wxsmith/AudioDevicesPanel.wxs" />
 		<Unit filename="wxsmith/ResultsDialog.wxs" />
@@ -162,6 +165,7 @@
 					<wxPanel wxs="wxsmith/AudioDevicesPanel.wxs" src="AudioDevicesPanel.cpp" hdr="AudioDevicesPanel.h" fwddecl="0" i18n="1" name="AudioDevicesPanel" language="CPP" />
 					<wxDialog wxs="wxsmith/AudioDevicesDialog.wxs" src="AudioDevicesDialog.cpp" hdr="AudioDevicesDialog.h" fwddecl="0" i18n="1" name="AudioDevicesDialog" language="CPP" />
 					<wxDialog wxs="wxsmith/ResultsDialog.wxs" src="ResultsDialog.cpp" hdr="ResultsDialog.h" fwddecl="0" i18n="1" name="ResultsDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/AboutADCTDialog.wxs" src="AboutADCTDialog.cpp" hdr="AboutADCTDialog.h" fwddecl="0" i18n="1" name="AboutADCTDialog" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>
