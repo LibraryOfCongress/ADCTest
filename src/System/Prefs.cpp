@@ -11,6 +11,8 @@
 #include <wx/fileconf.h>
 #include <wx/filename.h>
 #include <wx/stdpaths.h>
+#include <wx/msw/wrapshl.h>
+#include <wx/filefn.h>
 
 #include "Prefs.h"
 
@@ -29,7 +31,7 @@ void InitPreferences()
 	wxString exePath = wxStandardPaths::Get().GetExecutablePath();
 	exePath = exePath.BeforeLast(fileSeparator);
 
-	wxString dataFolder = exePath;//FileNames::DataDir();
+	wxString dataFolder = wxStandardPaths::MSWGetShellDir(CSIDL_COMMON_DOCUMENTS);
 	wxString configFile = wxT("ADCTester.cfg");
 	wxFileName configFileName(dataFolder, configFile);
 
@@ -49,7 +51,7 @@ void InitPreferences()
 	    versionNumber = RELEASE_VERSION;
 		gPrefs->Write(wxT("/NewPrefsInitialized"), true);
         gPrefs->Write(wxT("/Version"), versionNumber);
-		gPrefs->Write(wxT("/Directories/DataDumpDir"), exePath );
+		gPrefs->Write(wxT("/Directories/DataDumpDir"), dataFolder);
 		gPrefs->Write(wxT("/AudioIO/AudioSRate"), 48000.0);
 		gPrefs->Write(wxT("/AudioIO/AudioHostName"), wxT(""));
 		gPrefs->Write(wxT("/AudioIO/InputDevName"), wxT("") );

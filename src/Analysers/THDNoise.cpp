@@ -57,7 +57,7 @@ THDNoise::analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets)
 	mFFTAverages = getTestParameterValue(wxT("fftnoavg"), mParamsNode);
 	mNotchBandwidth = getTestParameterValue(wxT("notchbw"), mParamsNode);
 	mLowestFrequency = getTestParameterValue(wxT("lowerlimit"), mParamsNode);
-
+	mHarmonicsSearchBandwidth = getTestParameterValue(wxT("harmsearchbw"), mParamsNode);
 	wxString avgStr = getTestParameterStringValue(wxT("fftavgtype"), mParamsNode);
 	
 	mAverageType = 0;
@@ -207,19 +207,19 @@ THDNoise::extractTHDNoiseMetrics()
 	//frequency width of each FFT bin - in Hz
 	float binResolution = (float)mSampleRate / (float)mFFTLength;
 	//calculate signal strength excluding a notch around detected fundamental frequency
-	int binsToExclude = (int)(mNotchBandwidth / binResolution);
+	int binsToExclude = (int)((mNotchBandwidth/2) / binResolution);
 	
 	//lowest frequency bin taken into consideration
 	int lowerStart = (int)(mLowestFrequency / binResolution);
 	
 	//all bins up to notch zone
-	int lowerStop = mSigBin.binNumber - (int)(binsToExclude / 2);
+	int lowerStop = mSigBin.binNumber - binsToExclude;
 	//check boundary
 	if (lowerStop < 0)
 		lowerStop = 0;
 
-	//restartt calculation after notch zooe
-	int highStart = mSigBin.binNumber + (int)(binsToExclude / 2);
+	//restart calculation after notch zonoe
+	int highStart = mSigBin.binNumber + binsToExclude;
 
 	mNoiseAndHDPower = 0;
 	for (size_t binIdx = lowerStart; binIdx < lowerStop; binIdx++)
@@ -244,12 +244,10 @@ THDNoise::extractTHDNoiseMetrics()
 	for (size_t hIdx = 2; hIdx < 6; hIdx++)
 	{
 		float harmFreq = hIdx*mSigBin.frequency;
-		float startFreq = harmFreq - binResolution*10;
-		float endFreq = harmFreq + binResolution * 10;
+		float startFreq = harmFreq - mHarmonicsSearchBandwidth/2;
+		float endFreq = harmFreq + mHarmonicsSearchBandwidth / 2;
 		FreqPoint hh = findPeakInRange(startFreq, endFreq, mFrequencyResponse);
-
 		harmPower += (hh.peakValueLin*hh.peakValueLin);
-		int ui = 0;
 	}
 
 

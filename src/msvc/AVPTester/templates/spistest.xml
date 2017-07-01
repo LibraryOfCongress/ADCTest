@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FADGIProject version="1.0" title="temporary" datafolder="C:\Users\chris\Desktop\tests_adi2" >
+  <procedures>
+    <test id="0" name="spis_left_ch" alias="spurious inharmonic signals - left channel" enabled="true">
+      <paramters>
+        <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
+        <parameter name="analyser" type="string" value="spis" units="" alias="total harmonic distortion plus noise" editable="false"/>
+        <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
+        <parameter name="tonefreq" type="double" value="997" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="tonelevel" type="double" value="-1" units="dB" alias="start frequency" editable="true"/>
+        <parameter name="detectionlevel" type="double" value="-50" units="dB" alias="signal detection threshold" editable="true"/>
+        <parameter name="fftlength" type="double" value="32768" units="" alias="fft size" editable="true"/>
+        <parameter name="fftnoavg" type="double" value="32" units="" alias="number of fft averages" editable="true"/>
+        <parameter name="fftavgtype" type="string" value="linear" units="" alias="averaging type" editable="true"/>
+        <parameter name="notchbw" type="double" value="100" units="hz" alias="fundamental notch bandwidth" editable="true"/>
+        <parameter name="lowerlimit" type="double" value="50" units="hz" alias="lowest frequency used in calculations" editable="true"/>
+        <parameter name="higherlimit" type="double" value="20000" units="hz" alias="highest frequency used in calculations" editable="true"/>
+        <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
+        <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
+        <parameter name="transtime" type="double" value="500" units="mS" alias="transient time" editable="true"/>
+        <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
+        <parameter name="workfolder" type="path" editable="true" value=""/>
+        <parameter name="signalfile" type="string" value="spis_left_ch_sig.wav" editable="true"/>
+        <parameter name="responsefile" type="string" value="spis_left_ch_resp.wav" editable="true"/>
+        <parameter name="resultsfile" type="string" value="spis_left_ch.xml" editable="true"/>
+      </paramters>
+      <performancespecs>
+        <spec name="spis_logarithmic" type="double" value="-120" units="dB" criterion="lessthan"/>
+      </performancespecs>
+    </test>
+  </procedures>
+</FADGIProject>

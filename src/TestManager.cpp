@@ -19,6 +19,7 @@ TestManager::OpenProject( wxString path )
 {
     mProjectPath = path;
     mProjectNewPath = wxEmptyString;
+	mDataFolderPath = wxEmptyString;
 	OpenProjectFile(path);
     return true;
 }
@@ -90,7 +91,17 @@ TestManager::ParseProject()
 	mDescriptors.clear();
 	mTestsNode = mProjectNode->GetChildren();
 
-	wxXmlNode* testNode = mTestsNode->GetChildren();
+	//check if work folder is valid, if not use default
+	mDataFolderPath = mProjectNode->GetAttribute(wxT("datafolder"));
+	if (mDataFolderPath.IsEmpty() || !wxDirExists(mDataFolderPath))
+	{
+		wxString defaultWorkPath = gPrefs->Read(wxT("/Directories/DataDumpDir"));
+		mProjectNode->DeleteAttribute(wxT("datafolder"));
+		mProjectNode->AddAttribute(wxT("datafolder"), defaultWorkPath);
+		mDataFolderPath = defaultWorkPath;
+	}
+
+ 	wxXmlNode* testNode = mTestsNode->GetChildren();
 	while (testNode)
 	{
 		TestDescriptor desc;
@@ -102,18 +113,12 @@ TestManager::ParseProject()
 		mNumberOfTests++;
 		mDescriptors.push_back(desc);
 
-		//check if work folder is valid
+		//use global data folder for each test procedure
 		wxXmlNode* pathNode = GetParameterNode(testNode, wxT("workfolder"));
 		if (pathNode)
 		{
-			wxString folderPath = pathNode->GetAttribute(wxT("value"));
-			if (folderPath.IsEmpty() || !wxDirExists(folderPath))
-			{
-				wxString workPath = gPrefs->Read(wxT("/Directories/DataDumpDir"));
-				pathNode->DeleteAttribute(wxT("value"));
-				pathNode->AddAttribute(wxT("value"), workPath);
-			}
-
+			pathNode->DeleteAttribute(wxT("value"));
+			pathNode->AddAttribute(wxT("value"), mDataFolderPath);
 		}
 		///////////////////////////////
 		testNode = testNode->GetNext();
@@ -196,12 +201,6 @@ TestManager::GetTestParameters(wxString testID)
 	}
 
 	return retParams;
-}
-
-void
-TestManager::SetTestParameter(wxString testID, wxString pname, float pValue)
-{
-
 }
 
 bool 
@@ -348,11 +347,11 @@ TestManager::AnalyseResponse(int testIndex)
 //helpers
 
 wxString 
-TestManager::GetParameterValue(int nodeIndex, wxString parameterName)
+TestManager::GetParameterValue(int testIndex, wxString parameterName)
 {
 	wxString value = wxEmptyString;
 
-	wxXmlNode* testNode = GetTestNode(nodeIndex);
+	wxXmlNode* testNode = GetTestNode(testIndex);
 	if (testNode)
 	{
 		wxXmlNode* paramNode = GetParameterNode(testNode, parameterName);
@@ -364,11 +363,11 @@ TestManager::GetParameterValue(int nodeIndex, wxString parameterName)
 }
 
 wxString
-TestManager::GetParameterAlias(int nodeIndex, wxString parameterName)
+TestManager::GetParameterAlias(int testIndex, wxString parameterName)
 {
 	wxString value = wxEmptyString;
 
-	wxXmlNode* testNode = GetTestNode(nodeIndex);
+	wxXmlNode* testNode = GetTestNode(testIndex);
 	if (testNode)
 	{
 		wxXmlNode* paramNode = GetParameterNode(testNode, parameterName);

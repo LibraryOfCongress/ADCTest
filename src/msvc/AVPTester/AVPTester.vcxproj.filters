@@ -120,9 +120,6 @@
     <ClCompile Include="..\..\Widgets\awohSpin.cpp">
       <Filter>Source Files\Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\DSP\adapters\RingBuffer.cpp">
-      <Filter>Source Files\DSP\adapters</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\DSP\adapters\RingBufferFloat.cpp">
       <Filter>Source Files\DSP\adapters</Filter>
     </ClCompile>
@@ -137,9 +134,6 @@
     </ClCompile>
     <ClCompile Include="..\..\DSP\KFFTWrapper.cpp">
       <Filter>Source Files\DSP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\SigGen\TestSignalGenerator.cpp">
-      <Filter>Source Files\SigGen</Filter>
     </ClCompile>
     <ClCompile Include="..\..\SigGen\WavFileWriter.cpp">
       <Filter>Source Files\SigGen</Filter>
@@ -198,6 +192,9 @@
     <ClCompile Include="..\..\Analysers\SpIS.cpp">
       <Filter>Source Files\Analysers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\SigGen\FADGIGenerator.cpp">
+      <Filter>Source Files\SigGen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\AVPTesterApp.h">
@@ -254,9 +251,6 @@
     <ClInclude Include="..\..\DSP\window.h">
       <Filter>Header Files\DSP</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\DSP\adapters\RingBuffer.h">
-      <Filter>Header Files\DSP\adapters</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\DSP\adapters\RingBufferFloat.h">
       <Filter>Header Files\DSP\adapters</Filter>
     </ClInclude>
@@ -271,9 +265,6 @@
     </ClInclude>
     <ClInclude Include="..\..\DSP\kissfft\kissfft.hh">
       <Filter>Header Files\DSP\kissfft</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SigGen\TestSignalGenerator.h">
-      <Filter>Header Files\SigGen</Filter>
     </ClInclude>
     <ClInclude Include="..\..\SigGen\AudioFileWriter.h">
       <Filter>Header Files\SigGen</Filter>
@@ -331,6 +322,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Analysers\SpIS.h">
       <Filter>Header Files\Analysers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\SigGen\FADGIGenerator.h">
+      <Filter>Header Files\SigGen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

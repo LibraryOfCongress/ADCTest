@@ -28,6 +28,7 @@ FADGIAnalyser::~FADGIAnalyser()
 {
 }
 
+/*
 int 
 FADGIAnalyser::analyseSignal(wxXmlNode* testDescriptionNode)
 {
@@ -36,6 +37,7 @@ FADGIAnalyser::analyseSignal(wxXmlNode* testDescriptionNode)
 
 	return result;
 }
+*/
 
 void 
 FADGIAnalyser::setParameters(wxXmlNode* testDescriptionNode)

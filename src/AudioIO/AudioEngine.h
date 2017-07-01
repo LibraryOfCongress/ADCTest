@@ -1,3 +1,10 @@
+////////////////////////////////////////////////////////////////////////////////////////
+// ADCTester license
+// This code was created in 2017 for the Library of Congress 
+// and the other federal government agencies participating in the 
+// Federal Agencies Digitization Guidelines Initiative and it is in the public domain.
+////////////////////////////////////////////////////////////////////////////////////////
+
 #ifndef AUDIOENGINE_H
 #define AUDIOENGINE_H
 
@@ -62,7 +69,6 @@ class AudioIO
 		void StartDevicesCalibration();
 		void StopDevicesCalibration();
 		int  doIODevicesCalibration();
-		int  doIODevicesCalibrationPB();
 		
 		TestManager* GetTestManager() { return mTestManager;  }
 		void StartTestProcedure();
@@ -110,20 +116,11 @@ class AudioIO
 							int captureChannels,
 							int playbackDeviceIdx,
 							int playbackChannels);
-		
-		//opens selected I/O devices using blocking IO layer 
-		PaError OpenDevicesPB(double sampleRate,
-							  int captureDeviceIdx,
-							  int captureChannels,
-							  int playbackDeviceIdx,
-							  int playbackChannels);
-		
+				
 		PaError CloseDevices();
-		PaError CloseDevicesPB();
 
 		//Plays test signal and records response  
 		int PlaybackAcquire(wxString signalFile, wxString responseFile);
-		int PlaybackAcquirePB(wxString signalFile, wxString responseFile);
 
 		void FlushParameterQueue();
 		void ProcessParameter( AudioParam param);
@@ -135,7 +132,6 @@ class AudioIO
 		int mNoPlaybackChannels;
 		int mNoCaptureChannels;
 		PaStream *mPortStreamV19;
-		PABLIO_Stream* mPaBStream;
 		
 		bool bPAIsOpen;
 		bool bIsStopped;

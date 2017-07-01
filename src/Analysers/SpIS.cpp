@@ -51,6 +51,7 @@ SpIS::calculateSpIS(SNDFILE* afile, std::vector<size_t> &onsets, int channelInde
 {
 	mFFTLength = (size_t)getTestParameterValue(wxT("fftlength"), mParamsNode);
 	mFFTAverages = (size_t)getTestParameterValue(wxT("fftnoavg"), mParamsNode);
+	mNotchBandwidth = getTestParameterValue(wxT("notchbw"), mParamsNode);
 	
 	//////////////////////////////////
 	//calculate frequency response
@@ -129,7 +130,7 @@ SpIS::calculateSpIS(SNDFILE* afile, std::vector<size_t> &onsets, int channelInde
 	double highestFrequency = getTestParameterValue(wxT("higherlimit"), mParamsNode);
 	FreqPoint stimPnt = findPeakInRange(lowestFrequency, highestFrequency, mFrequencyResponse);
 
-	//suppress harmonic components;
+	//suppress harmonic components and boundaries;
 	size_t nH = 1;
 	double sF = stimPnt.frequency;
 	double hF = 0;
@@ -140,8 +141,8 @@ SpIS::calculateSpIS(SNDFILE* afile, std::vector<size_t> &onsets, int channelInde
 	{
 		hF = nH*sF;
 		FreqPoint pn = mFrequencyResponse[fIdx];
-		double lw = (hF - 10 * binResolution);
-		double up = (hF + 11 * binResolution);
+		double lw = (hF - mNotchBandwidth/2);// 10 * binResolution);
+		double up = (hF + mNotchBandwidth/2);// 11 * binResolution);
 
 		if ((pn.frequency >= lw) && (pn.frequency < up))
 		{

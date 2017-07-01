@@ -2223,6 +2223,7 @@ bool mpWindow::SaveScreenshot(const wxString& filename, int type, wxSize imageSi
 		sizeX = imageSize.x;
 		sizeY = imageSize.y;
 		bk_scrX = m_scrX;
+
 		bk_scrY = m_scrY;
 		SetScr(sizeX, sizeY);
 	}

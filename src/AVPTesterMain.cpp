@@ -138,7 +138,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     wxFont StaticTextProcTtlFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     StaticTextProcTtl->SetFont(StaticTextProcTtlFont);
     BoxSizerTestList->Add(StaticTextProcTtl, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
-    ListViewTests = new wxListView(PanelTestList, ID_LISTVIEW_TESTS, wxDefaultPosition, wxSize(350,250), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxLC_NO_SORT_HEADER|wxNO_BORDER, wxDefaultValidator, _T("ID_LISTVIEW_TESTS"));
+    ListViewTests = new wxListView(PanelTestList, ID_LISTVIEW_TESTS, wxDefaultPosition, wxSize(350,350), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxLC_NO_SORT_HEADER|wxNO_BORDER, wxDefaultValidator, _T("ID_LISTVIEW_TESTS"));
     ListViewTests->SetBackgroundColour(wxColour(200,200,200));
     wxFont ListViewTestsFont(10,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     ListViewTests->SetFont(ListViewTestsFont);
@@ -200,7 +200,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     wxFont StaticTextParamsTtlFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     StaticTextParamsTtl->SetFont(StaticTextParamsTtlFont);
     BoxSizerTestParams->Add(StaticTextParamsTtl, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
-    ListViewParameters = new wxListView(PanelParamsLst, ID_LISTVIEW_PARAMETERS, wxDefaultPosition, wxSize(325,200), wxLC_REPORT|wxLC_NO_HEADER|wxNO_BORDER, wxDefaultValidator, _T("ID_LISTVIEW_PARAMETERS"));
+    ListViewParameters = new wxListView(PanelParamsLst, ID_LISTVIEW_PARAMETERS, wxDefaultPosition, wxSize(325,268), wxLC_REPORT|wxLC_NO_HEADER|wxNO_BORDER, wxDefaultValidator, _T("ID_LISTVIEW_PARAMETERS"));
     ListViewParameters->SetBackgroundColour(wxColour(200,200,200));
     wxFont ListViewParametersFont(10,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     ListViewParameters->SetFont(ListViewParametersFont);
@@ -320,6 +320,8 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
 		gAudioIO->SetParent(this);
 
     //SetIcon(wxIcon(_T("UI/favicon.ico"), wxBITMAP_TYPE_ICO) );
+	SetIcon(wxIcon(_T("sycon"), wxBITMAP_TYPE_ICO_RESOURCE));
+
 	if (gAudioIO)
 	{
 		TestManager* tp = gAudioIO->GetTestManager();

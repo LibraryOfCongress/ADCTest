@@ -1,7 +1,10 @@
-/*
-    This file copyright 2011 Christian Landone.
-    All rights reserved.
-*/
+////////////////////////////////////////////////////////////////////////////////////////
+// ADCTester license
+// This code was created in 2017 for the Library of Congress 
+// and the other federal government agencies participating in the 
+// Federal Agencies Digitization Guidelines Initiative and it is in the public domain.
+////////////////////////////////////////////////////////////////////////////////////////
+
 
 #ifndef LEVELANALYSER_H
 #define LEVELANALYSER_H

@@ -1,5 +1,15 @@
+////////////////////////////////////////////////////////////////////////////////////////
+// ADCTester license
+// This code was created in 2017 for the Library of Congress 
+// and the other federal government agencies participating in the 
+// Federal Agencies Digitization Guidelines Initiative and it is in the public domain.
+////////////////////////////////////////////////////////////////////////////////////////
+
 #ifndef FADGIANALYSER_H
 #define FADGIANALYSER_H
+
+// (abstract) 
+// base class for all analysis modules 
 
 #include <wx/wx.h>
 #include <wx/xml/xml.h>
@@ -13,7 +23,7 @@ typedef struct FreqPoint {
 	double peakValueLog;
 }FreqPoint;
 
-enum FADGIOutcome {
+enum FADGIAnalysisOutcome {
 	TestErrorUnknown = -10,
 	TestErrorRespFile,
 	TestErrorRespSignal,
@@ -22,7 +32,7 @@ enum FADGIOutcome {
 };
 
 typedef struct AnalysisResult {
-	FADGIOutcome outcome;
+	FADGIAnalysisOutcome outcome;
 	int errorCode;
 	wxString message;
 }AnalysisResult;
@@ -33,9 +43,14 @@ class FADGIAnalyser
 public:
 	FADGIAnalyser();
 	virtual ~FADGIAnalyser();
-	virtual int analyseSignal(wxXmlNode* testDescriptionNode);
 
-protected:
+	//mandatory function for all derived analysis modules
+	virtual int analyseSignal(wxXmlNode* testDescriptionNode)=0;
+
+
+	// common member functions 
+	///////////////////////////////////////////////////////////
+
 	//extract analysis parameters from test xml description 
 	void setParameters(wxXmlNode* testDescriptionNode);
 
@@ -44,7 +59,6 @@ protected:
 
 	//close .WAV file of recorded DUT response
 	void closeResponseFile();
-
 
 	//analyse response and find beginnning of signal
 	std::vector<size_t> getOnsets(SNDFILE* afile, int channelIndex, bool debug = false);
@@ -64,6 +78,7 @@ protected:
 	//get value of test configuration parameter
 	wxString getTestParameterStringValue(wxString paramName, wxXmlNode* testParamsNode);
 
+	//gets value of named parameter
 	double getTestParameterValue(wxString paramName, wxXmlNode* testParamsNode);
 
 	//get value of measured parameter from report
@@ -101,8 +116,6 @@ protected:
 	size_t mTransientSamples;
 	size_t mIntegrationSamples;
 
-
 	double mLogDetectionThreshold;
-
 };
 #endif

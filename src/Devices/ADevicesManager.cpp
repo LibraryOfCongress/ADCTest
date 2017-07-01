@@ -1,15 +1,6 @@
 #include "ADevicesManager.h"
 #include "..\System\Prefs.h"
 
-
-#include <wx/choice.h>
-#include <wx/event.h>
-#include <wx/intl.h>
-#include <wx/settings.h>
-#include <wx/sizer.h>
-#include <wx/statbmp.h>
-#include <wx/tooltip.h>
-
 ADevicesManager ADevicesManager::dm;
 
 /// Gets the singleton instance
@@ -34,17 +25,6 @@ const std::vector<ADeviceMap> &ADevicesManager::GetOutputDeviceMaps()
 	return mOutputADeviceMaps;
 }
 
-
-wxString MakeDeviceSourceString(const ADeviceMap *map)
-{
-	wxString ret;
-	ret = map->deviceString;
-	
-	if (map->totalSources > 1)
-		ret += wxT(": ") + map->sourceString;
-
-	return ret;
-}
 
 ADeviceMap* 
 ADevicesManager::GetDefaultDevice(int hostIndex, int isInput)
@@ -88,33 +68,21 @@ ADevicesManager::GetDefaultDevice(wxString hostName, int isInput)
 	}
 
 	const struct PaHostApiInfo *apiinfo = Pa_GetHostApiInfo(hostIndex);   // get info on API
-	std::vector<ADeviceMap> & maps = isInput ? mInputADeviceMaps : mOutputADeviceMaps;
-	size_t i;
-	int targetDevice = isInput ? apiinfo->defaultInputDevice : apiinfo->defaultOutputDevice;
 
-	for (i = 0; i < maps.size(); i++) {
-		if (maps[i].deviceIndex == targetDevice)
-			return &maps[i];
+	if (apiinfo)
+	{
+		std::vector<ADeviceMap> & maps = isInput ? mInputADeviceMaps : mOutputADeviceMaps;
+		int targetDevice = isInput ? apiinfo->defaultInputDevice : apiinfo->defaultOutputDevice;
+
+		for (size_t i = 0; i < maps.size(); i++) {
+			if (maps[i].deviceIndex == targetDevice)
+				return &maps[i];
+		}
 	}
 
 	wxLogDebug(wxT("GetDefaultDevice() no default device"));
 	return NULL;
 
-}
-
-
-//--------------- Device Enumeration --------------------------
-
-//Port Audio requires we open the stream with a callback or a lot of devices will fail
-//as this means open in blocking mode, so we use a dummy one.
-static int DummyPaStreamCallback(
-    const void *WXUNUSED(input), void * WXUNUSED(output),
-    unsigned long WXUNUSED(frameCount),
-    const PaStreamCallbackTimeInfo* WXUNUSED(timeInfo),
-    PaStreamCallbackFlags WXUNUSED(statusFlags),
-    void *WXUNUSED(userData) )
-{
-	return 0;
 }
 
 static void FillHostDeviceInfo(ADeviceMap *map, const PaDeviceInfo *info, int deviceIndex, int isInput)
@@ -127,40 +95,6 @@ static void FillHostDeviceInfo(ADeviceMap *map, const PaDeviceInfo *info, int de
 	map->deviceString = infoName;
 	map->hostString = hostapiName;
 	map->numChannels = isInput ? info->maxInputChannels : info->maxOutputChannels;
-}
-
-static void AddSourcesFromStream(int deviceIndex, const PaDeviceInfo *info, std::vector<ADeviceMap> *maps, PaStream *stream)
-{
-	ADeviceMap map;
-
-	map.sourceIndex = -1;
-	map.totalSources = 0;
-	// Only inputs have sources, so we call FillHostDeviceInfo with a 1 to indicate this
-	FillHostDeviceInfo(&map, info, deviceIndex, 1);
-
-	if (map.totalSources <= 1) {
-		map.sourceIndex = 0;
-		maps->push_back(map);
-	}
-}
-
-static bool IsInputDeviceAMapperDevice(const PaDeviceInfo *info)
-{
-	// For Windows only, portaudio returns the default mapper object
-	// as the first index after a NEW hostApi index is detected (true for MME and DS)
-	// this is a bit of a hack, but there's no other way to find out which device is a mapper,
-	// I've looked at string comparisons, but if the system is in a different language this breaks.
-#ifdef __WXMSW__
-	static int lastHostApiTypeId = -1;
-	int hostApiTypeId = Pa_GetHostApiInfo(info->hostApi)->type;
-	if (hostApiTypeId != lastHostApiTypeId &&
-		(hostApiTypeId == paMME || hostApiTypeId == paDirectSound)) {
-		lastHostApiTypeId = hostApiTypeId;
-		return true;
-	}
-#endif
-
-	return false;
 }
 
 static std::vector<double> GetSupportedStandardSampleRates(const PaStreamParameters *inputParameters, const PaStreamParameters *outputParameters)
@@ -224,82 +158,9 @@ static void AddSourcesX(int deviceIndex, int rate, std::vector<ADeviceMap> *dMap
 	dMaps->push_back(map);
 }
 
-static void AddSources(int deviceIndex, int rate, std::vector<ADeviceMap> *maps, int isInput)
-{
-	int error = 0;
-	ADeviceMap map;
-	const PaDeviceInfo *info = Pa_GetDeviceInfo(deviceIndex);
-
-	// This tries to open the device with the samplerate worked out above, which
-	// will be the highest available for play and record on the device, or
-	// 44.1kHz if the info cannot be fetched.
-
-	PaStream *stream = NULL;
-
-	PaStreamParameters parameters;
-
-	parameters.device = deviceIndex;
-	parameters.sampleFormat = paFloat32;
-	parameters.hostApiSpecificStreamInfo = NULL;
-	parameters.channelCount = 1;
-
-	// If the device is for input, open a stream so we can use portmixer to query
-	// the number of inputs.  We skip this for outputs because there are no 'sources'
-	// and some platforms (e.g. XP) have the same device for input and output, (while
-	// Vista/Win7 seperate these into two devices with the same names (but different
-	// portaudio indecies)
-	// Also, for mapper devices we don't want to keep any sources, so check for it here
-	if (isInput && !IsInputDeviceAMapperDevice(info)) {
-		if (info)
-			parameters.suggestedLatency = info->defaultLowInputLatency;
-		else
-			parameters.suggestedLatency = 10.0;
-
-		error = Pa_OpenStream(&stream,
-			&parameters,
-			NULL,
-			rate, paFramesPerBufferUnspecified,
-			paClipOff | paDitherOff,
-			DummyPaStreamCallback, NULL);
-	}
-
-	if (stream && !error) {
-		AddSourcesFromStream(deviceIndex, info, maps, stream);
-		Pa_CloseStream(stream);
-	}
-	else {
-		map.sourceIndex = -1;
-		map.totalSources = 0;
-		FillHostDeviceInfo(&map, info, deviceIndex, isInput);
-		maps->push_back(map);
-	}
-
-	if (error) {
-		wxLogDebug(wxT("PortAudio stream error creating device list: ") +
-			map.hostString + wxT(":") + map.deviceString + wxT(": ") +
-			wxString(wxSafeConvertMB2WX(Pa_GetErrorText((PaError)error))));
-	}
-}
-
-
-/// Gets a NEW list of devices by terminating and restarting portaudio
-/// Assumes that ADevicesManager is only used on the main thread.
+// devices enumeration
 void ADevicesManager::Rescan()
 {
-	//specify desired sample rates
-	std::vector<double> supportedSRates;
-	supportedSRates.push_back(8000); 
-	supportedSRates.push_back(11025);
-	supportedSRates.push_back(16000);
-	supportedSRates.push_back(22050);
-	supportedSRates.push_back(32000);
-	supportedSRates.push_back(44100);
-	supportedSRates.push_back(48000);
-	supportedSRates.push_back(88200);
-	supportedSRates.push_back(96000);
-	supportedSRates.push_back(176400);
-	supportedSRates.push_back(192000);
-
 	// get rid of the previous scan info
 	this->mInputADeviceMaps.clear();
 	this->mOutputADeviceMaps.clear();

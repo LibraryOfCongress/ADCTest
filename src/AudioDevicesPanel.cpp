@@ -404,8 +404,6 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	
 	RefreshUI();
 	
-	//ConfigureChannelSpin();
-
 	double sr;
 	gPrefs->Read(wxT("/AudioIO/InputDevSRate"), &sr);
 	ConfigurePlot(mRTALength, sr);
@@ -816,8 +814,13 @@ void
 AudioDevicesPanel::StopCalibration()
 {
 	TimerAudioMonitor.Stop();
-	mVuMeterIn->Reset();
-	mVuMeterOut->Reset();
+	
+	if(mVuMeterIn)
+		mVuMeterIn->Reset();
+
+	if(mVuMeterOut)
+		mVuMeterOut->Reset();
+	
 	mAudioTestStarted = false;
 	ButtonDevTestStop->enable(false);
 	ButtonDevTestStart->enable(true);

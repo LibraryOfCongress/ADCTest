@@ -1,3 +1,14 @@
+////////////////////////////////////////////////////////////////////////////////////////
+// ADCTester license
+// This code was created in 2017 for the Library of Congress 
+// and the other federal government agencies participating in the 
+// Federal Agencies Digitization Guidelines Initiative and it is in the public domain.
+////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////
+// Audio devices enumeration class
+//////////////////////////////////////////////////////
+
 #ifndef ADEVICESMANAGER_H
 #define ADEVICESMANAGER_H
 
@@ -26,7 +37,6 @@ typedef struct AHostAPIMap {
 	int defaultOutIdx;
 } AHostAPIMap;
 
-wxString MakeDeviceSourceString(const ADeviceMap *map);
 
 class ADevicesManager
 {
@@ -34,7 +44,6 @@ public:
    /// Gets the instance
    static ADevicesManager* Instance();
 
-   /// Gets a NEW list of devices by terminating and restarting portaudio
    void Rescan();
 
    const std::vector<ADeviceMap> &GetInputDeviceMaps();

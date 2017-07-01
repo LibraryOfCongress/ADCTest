@@ -1,3 +1,10 @@
+////////////////////////////////////////////////////////////////////////////////////////
+// ADCTester license
+// This code was created in 2017 for the Library of Congress 
+// and the other federal government agencies participating in the 
+// Federal Agencies Digitization Guidelines Initiative and it is in the public domain.
+////////////////////////////////////////////////////////////////////////////////////////
+
 #ifndef THDNOISE_H
 #define THDNOISE_H
 
@@ -61,6 +68,8 @@ class THDNoise :public FADGIAnalyser
 		double mNotchBandwidth;
 		//lowest frequency used in calculations
 		double mLowestFrequency;
+		//search bandwidth of harmonics for THD calculations
+		double mHarmonicsSearchBandwidth;
 
 		//THD value in percentage
 		float mTHD_Pc;

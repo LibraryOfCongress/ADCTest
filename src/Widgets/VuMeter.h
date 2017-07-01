@@ -1,3 +1,10 @@
+////////////////////////////////////////////////////////////////////////////////////////
+// ADCTester license
+// This code was created in 2017 for the Library of Congress 
+// and the other federal government agencies participating in the 
+// Federal Agencies Digitization Guidelines Initiative and it is in the public domain.
+////////////////////////////////////////////////////////////////////////////////////////
+
 #ifndef VUMETER_H
 #define VUMETER_H
 
@@ -89,4 +96,4 @@ private:
 };
 
 
-#endif // SLIDERMETER_H
+#endif // 

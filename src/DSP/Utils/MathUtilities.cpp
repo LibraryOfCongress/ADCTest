@@ -1,7 +1,4 @@
 /*
-    QM DSP Library
-
-    Centre for Digital Music, Queen Mary, University of London.
     This file copyright 2005-2006 Christian Landone.
     All rights reserved.
 */
