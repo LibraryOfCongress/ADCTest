@@ -716,12 +716,14 @@ MathUtilities::calculateOctaveFreqs(double startFreq,
 
 	int lowOct = -6 * stepsPerOctave;
 	int hiOct = 6 * stepsPerOctave;
-
+	double fc = 0;
+	double lastFreq = 0;
 	for (int i = lowOct; i < hiOct; i++)
 	{
-		double fc = ceil(baseFreq*(pow(2, (double)i / (double)stepsPerOctave)));
+		fc = ceil(baseFreq*(pow(2, (double)i / (double)stepsPerOctave)));
 		
-		if ((fc >= startFreq- startFreq/10.0) && (fc <= stopFreq + stopFreq/10.0))
+		//if ((fc >= startFreq- startFreq/10.0) && (fc <= stopFreq + stopFreq/10.0))
+		if ((fc >= startFreq) && (fc <= stopFreq))
 		{
 			if (fc > 1e3)
 			{
@@ -734,8 +736,12 @@ MathUtilities::calculateOctaveFreqs(double startFreq,
 			}
 			fprintf(stderr, "%g\t", fc);
 			freqs.push_back(fc);
+			lastFreq = fc;
 		}
 	}
+
+	if (lastFreq < stopFreq)
+		freqs.push_back(stopFreq);
 
 	return freqs;
 }

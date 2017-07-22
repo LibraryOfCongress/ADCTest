@@ -3,21 +3,22 @@
   <procedures>
     <test id="0" name="freqresp_left_ch" alias="left channel frequency response: 12 steps/oct" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="octsine" units="" alias="octave stepped sine" editable="false"/>
         <parameter name="analyser" type="string" value="stepfreq" units="" alias="stepped frequency response" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
-        <parameter name="freqstart" type="double" value="18" units="Hz" alias="start frequency" editable="true"/>
-        <parameter name="freqstop" type="double" value="21000" units="Hz" alias="stop frequency" editable="true"/>
+        <parameter name="freqstart" type="double" value="20" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="freqstop" type="double" value="20000" units="Hz" alias="stop frequency" editable="true"/>
         <parameter name="octsteps" type="int" value="12" units="" alias="steps per octave" editable="true"/>
         <parameter name="detectionlevel" type="double" value="-70" units="dB" alias="signal detection threshold" editable="true"/>
         <parameter name="inttime" type="double" value="250" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="50" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="200" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="level" type="double" value="-20" units="dBFS" alias="signal level" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="freqresp_left_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="freqresp_left_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="freqresp_left_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="freqresp_left_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -26,21 +27,22 @@
     </test>
     <test id="1" name="freqresp_right_ch" alias="right channel frequency response: 12 steps/oct" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="octsine" units="" alias="octave stepped sine" editable="false"/>
         <parameter name="analyser" type="string" value="stepfreq" units="" alias="stepped frequency response" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
-        <parameter name="freqstart" type="double" value="18" units="Hz" alias="start frequency" editable="true"/>
-        <parameter name="freqstop" type="double" value="21000" units="Hz" alias="stop frequency" editable="true"/>
+        <parameter name="freqstart" type="double" value="20" units="Hz" alias="start frequency" editable="true"/>
+        <parameter name="freqstop" type="double" value="20000" units="Hz" alias="stop frequency" editable="true"/>
         <parameter name="octsteps" type="int" value="12" units="" alias="steps per octave" editable="true"/>
         <parameter name="detectionlevel" type="double" value="-70" units="dB" alias="signal detection threshold" editable="true"/>
         <parameter name="inttime" type="double" value="250" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="50" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="200" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="level" type="double" value="-20" units="dBFS" alias="signal level" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="freqresp_right_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="freqresp_right_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="freqresp_right_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="freqresp_right_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -49,6 +51,7 @@
     </test>
     <test id="2" name="thdn_41_m1_left_ch" alias="left channel THD + Noise 41Hz @ -1 dBFS" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
@@ -67,7 +70,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="thdn_41_m1_left_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="thdn_41_m1_left_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="thdn_41_m1_left_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="thdn_41_m1_left_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -76,6 +79,7 @@
     </test>
     <test id="3" name="thdn_997_m1_left_ch" alias="left channel THD + Noise 997hz @ -1 dBFS" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
@@ -94,7 +98,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="thdn_997_m1_left_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="thdn_997_m1_left_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="thdn_997_m1_left_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="thdn_997_m1_left_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -103,6 +107,7 @@
     </test>
     <test id="4" name="thdn_6597_m1_left_ch" alias="left channel THD + Noise 6597hz @ -1 dBFS" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
@@ -121,7 +126,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="thdn_6597_m1_left_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="thdn_6597_m1_left_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="thdn_6597_m1_left_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="thdn_6597_m1_left_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -130,6 +135,7 @@
     </test>
     <test id="5" name="thdn_997_m10_left_ch" alias="left channel THD + Noise 997hz @ -10 dBFS" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
@@ -148,7 +154,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="thdn_997_m10_left_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="thdn_997_m10_left_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="thdn_997_m10_left_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="thdn_997_m10_left_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -157,6 +163,7 @@
     </test>
     <test id="6" name="thdn_997_m20_left_ch" alias="left channel THD + Noise 997hz @ -20 dBFS" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
@@ -175,7 +182,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="thdn_997_m20_left_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="thdn_997_m20_left_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="thdn_997_m20_left_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="thdn_997_m20_left_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -184,6 +191,7 @@
     </test>
     <test id="7" name="thdn_997_m40_left_ch" alias="left channel THD + Noise 997hz @ -40 dBFS" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
@@ -202,7 +210,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="thdn_997_m40_left_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="thdn_997_m40_left_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="thdn_997_m40_left_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="thdn_997_m40_left_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -211,6 +219,7 @@
     </test>
     <test id="8" name="thdn_41_m1_right_ch" alias="right channel THD + Noise 41Hz @ -1 dBFS" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
@@ -229,7 +238,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="thdn_41_m1_right_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="thdn_41_m1_right_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="thdn_41_m1_right_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="thdn_41_m1_right_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -238,6 +247,7 @@
     </test>
     <test id="9" name="thdn_997_m1_right_ch" alias="right channel THD + Noise 997hz @ -1 dBFS" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
@@ -256,7 +266,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="thdn_997_m1_right_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="thdn_997_m1_right_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="thdn_997_m1_right_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="thdn_997_m1_right_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -265,6 +275,7 @@
     </test>
     <test id="10" name="thdn_6597_m1_right_ch" alias="right channel THD + Noise 6597hz @ -1 dBFS" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
@@ -283,7 +294,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="thdn_6597_m1_right_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="thdn_6597_m1_right_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="thdn_6597_m1_right_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="thdn_6597_m1_right_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -292,6 +303,7 @@
     </test>
     <test id="11" name="thdn_997_m10_right_ch" alias="right channel THD + Noise 997hz @ -10 dBFS" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
@@ -310,7 +322,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="thdn_997_m10_right_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="thdn_997_m10_right_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="thdn_997_m10_right_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="thdn_997_m10_right_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -319,6 +331,7 @@
     </test>
     <test id="12" name="thdn_997_m20_right_ch" alias="right channel THD + Noise 997hz @ -20 dBFS" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
@@ -337,7 +350,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="thdn_997_m20_right_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="thdn_997_m20_right_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="thdn_997_m20_right_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="thdn_997_m20_right_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -346,6 +359,7 @@
     </test>
     <test id="13" name="thdn_997_m40_right_ch" alias="right channel THD + Noise 997hz @ -40 dBFS" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
@@ -364,7 +378,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="thdn_997_m40_right_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="thdn_997_m40_right_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="thdn_997_m40_right_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="thdn_997_m40_right_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -373,6 +387,7 @@
     </test>
     <test id="14" name="snr_left_ch" alias="left channel dynamic range" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="true"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
@@ -391,7 +406,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="snr_left_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="snr_left_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="snr_left_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="snr_left_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -400,6 +415,7 @@
     </test>
     <test id="15" name="snr_right_ch" alias="right channel dynamic range" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="true"/>
         <parameter name="analyser" type="string" value="thdn" units="" alias="total harmonic distortion plus noise" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
@@ -418,15 +434,16 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="snr_right_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="snr_right_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="snr_right_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="snr_right_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
         <spec name="snr_logarithmic" type="double" value="-105" units="dB" criterion="lessthan"/>
       </performancespecs>
     </test>
-    <test id="16" name="lfimd_left_ch" alias="Low Frequency Intermodulation Distortion - left channel" enabled="true">
+    <test id="16" name="lfimd_left_ch" alias="low frequency intermodulation distortion - left channel" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="dualsine" units="" alias="dual tone" editable="false"/>
         <parameter name="analyser" type="string" value="lfimd" units="" alias="intermodulation analyser" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
@@ -447,15 +464,16 @@
         <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="lfimd_left_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="lfimd_left_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="lfimd_left_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="lfimd_left_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
         <spec name="imd_logarithmic" type="double" value="-65" units="dB" criterion="lessthan"/>
       </performancespecs>
     </test>
-    <test id="17" name="lfimd_right_ch" alias="Low Frequency Intermodulation Distortion - right channel" enabled="true">
+    <test id="17" name="lfimd_right_ch" alias="low frequency intermodulation distortion - right channel" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="dualsine" units="" alias="dual tone" editable="false"/>
         <parameter name="analyser" type="string" value="lfimd" units="" alias="intermodulation analyser" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
@@ -476,15 +494,16 @@
         <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="lfimd_right_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="lfimd_right_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="lfimd_right_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="lfimd_right_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
         <spec name="imd_logarithmic" type="double" value="-65" units="dB" criterion="lessthan"/>
       </performancespecs>
     </test>
-    <test id="18" name="hfimd_left_ch" alias="High Frequency Intermodulation Distortion - left channel" enabled="true">
+    <test id="18" name="hfimd_left_ch" alias="high frequency intermodulation distortion - left channel" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="dualsine" units="" alias="dual tone" editable="false"/>
         <parameter name="analyser" type="string" value="lfimd" units="" alias="intermodulation analyser" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
@@ -505,15 +524,16 @@
         <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="hfimd_left_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="hfimd_left_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="hfimd_left_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="hfimd_left_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
         <spec name="imd_logarithmic" type="double" value="-65" units="dB" criterion="lessthan"/>
       </performancespecs>
     </test>
-    <test id="19" name="hfimd_right_ch" alias="High Frequency Intermodulation Distortion - right channel" enabled="true">
+    <test id="19" name="hfimd_right_ch" alias="high frequency intermodulation distortion - right channel" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="dualsine" units="" alias="dual tone" editable="false"/>
         <parameter name="analyser" type="string" value="lfimd" units="" alias="intermodulation analyser" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
@@ -534,7 +554,7 @@
         <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="hfimd_right_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="hfimd_right_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="hfimd_right_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="hfimd_right_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -543,6 +563,7 @@
     </test>
     <test id="20" name="spis_left_ch" alias="spurious inharmonic signals - left channel" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="spis" units="" alias="spurious inharmonic analyser" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
@@ -561,7 +582,7 @@
         <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="spis_left_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="spis_left_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="spis_left_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="spis_left_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -570,6 +591,7 @@
     </test>
     <test id="21" name="spis_right_ch" alias="spurious inharmonic signals - right channel" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="spis" units="" alias="spurious inharmonic analyser" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
@@ -588,7 +610,7 @@
         <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="spis_right_ch_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="spis_right_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="spis_right_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="spis_right_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -597,11 +619,13 @@
     </test>
     <test id="22" name="user_action" alias="change channel setup for crosstalk test" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="pause" units="" alias="disconnect right ch and place a shorting plug" editable="false"/>
       </paramters>
     </test>
     <test id="23" name="xtalk_20_left_ch" alias="crosstalk from left ch - 20hz" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="xtalk" units="" alias="xtalk analyser class" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
@@ -617,7 +641,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="xt_20_left_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="xt_20_left_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="xt_20_left_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="xt_20_left_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -626,6 +650,7 @@
     </test>
     <test id="24" name="xtalk_997_left_ch" alias="crosstalk from left ch - 997hz" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="xtalk" units="" alias="xtalk analyser class" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
@@ -641,7 +666,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="xt_997_left_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="xt_997_left_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="xt_997_left_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="xt_997_left_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -650,6 +675,7 @@
     </test>
     <test id="25" name="xtalk_20k_left_ch" alias="crosstalk from left ch - 20Khz" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="xtalk" units="" alias="xtalk analyser class" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
@@ -665,7 +691,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="xt_20k_left_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="xt_20k_left_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="xt_20k_left_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="xt_20k_left_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -674,11 +700,13 @@
     </test>  
     <test id="26" name="user_action" alias="change channel setup for crosstalk test" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="pause" units="" alias="disconnect left ch and place a shorting plug" editable="false"/>
       </paramters>
     </test>
     <test id="27" name="xtalk_20_right_ch" alias="crosstalk from right ch - 20hz" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="xtalk" units="" alias="xtalk analyser class" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
@@ -694,7 +722,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="xt_20_right_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="xt_20_right_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="xt_20_right_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="xt_20_right_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -703,6 +731,7 @@
     </test>
     <test id="28" name="xtalk_997_right_ch" alias="crosstalk from right ch - 997hz" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="xtalk" units="" alias="xtalk analyser class" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
@@ -718,7 +747,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="xt_997_right_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="xt_997_right_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="xt_997_right_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="xt_997_right_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>
@@ -727,6 +756,7 @@
     </test>
     <test id="29" name="xtalk_20k_right_ch" alias="crosstalk from right ch - 20Khz" enabled="true">
       <paramters>
+        <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="xtalk" units="" alias="xtalk analyser class" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
@@ -742,7 +772,7 @@
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="workfolder" type="path" editable="true" value=""/>
         <parameter name="signalfile" type="string" value="xt_20k_right_sig.wav" editable="true"/>
-        <parameter name="responsefile" type="string" value="xt_20k_right_ch_resp.wav" editable="true"/>
+        <parameter name="responsefile" type="filename" value="xt_20k_right_ch_resp.wav" editable="true"/>
         <parameter name="resultsfile" type="string" value="xt_20k_right_ch.xml" editable="true"/>
       </paramters>
       <performancespecs>

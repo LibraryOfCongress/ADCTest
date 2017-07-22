@@ -23,6 +23,11 @@
 #include "Analysers\SpIS.h"
 #include "Analysers\FADGIAnalyser.h"
 
+enum TestType{
+	ADCFullTest = 0,
+	ADCFileAnalysisOnly
+};
+
 typedef struct TestDescriptor {
 	wxString ID;
 	wxString name;
@@ -59,6 +64,9 @@ class TestManager
 		
 		//Enables / disable a single test with index testID
 		void EnableTest(wxString testID, bool enabled);
+
+		//sets the value of a specific test parameter
+		void SetTestParameter(int testIndex, wxString paramName, wxString paramValue);
 		
 		//Returns a vector containing string-only descriptions of the test with index testID.  Used by the UI for display purposes.
 		std::vector<TestParameter>  GetTestParameters(wxString testID);
@@ -69,6 +77,9 @@ class TestManager
 		//Returns the number of tests specified in the procedures file.
 		bool IsTestEnabled(int testIndex);
 		
+		//Returns the type of test (full, file analysis only, etc)
+		int GetTestType(int testIndex);
+
 		//Generates the excitation signal described in the test with id testIndex and saves it to file. 
 		//SampleRate and Channels are parameters specific to the procedure set up that are set by the user in the “audio devices setup” UI window.
 		int GenerateSignalFile(int testIndex, double sampleRate, int Channels, wxString&);
@@ -87,6 +98,9 @@ class TestManager
 		
 		//Helper method: returns the alias of a parameter belonging to the test with ID testIndex;
 		wxString GetParameterAlias(int testIndex, wxString parameterName);
+
+		//Helper method: returns the parameter xml description belonging to the test with ID testIndex;
+		wxXmlNode* GetParameterNode(int testIndex, wxString parameterName);
 
 
     protected:

@@ -24,19 +24,25 @@ SpIS::analyseSignal(wxXmlNode* testDescriptionNode)
 	if (mResponseFile)
 	{
 		//find segments in file
-
 		std::vector<size_t> onsets = getOnsets(mResponseFile, mSelectedChannel, false);
-	
-		calculateSpIS(mResponseFile, onsets, mSelectedChannel);
+
+		if (onsets.size() > 0)
+		{
+			calculateSpIS(mResponseFile, onsets, mSelectedChannel);
+
+			bool testOutcome = buildReport();
+
+			if (testOutcome)
+				result = TestPass;
+			else
+				result = TestFail;
+		}
+		else
+		{
+			result = TestErrorRespSignal;
+		}
 
 		closeResponseFile();
-
-		bool testOutcome = buildReport();
-
-		if (testOutcome)
-			result = TestPass;
-		else
-			result = TestFail;
 	}
 	else
 	{

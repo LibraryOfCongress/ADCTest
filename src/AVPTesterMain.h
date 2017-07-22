@@ -35,6 +35,7 @@
 #include "Widgets\GButton.h"
 #include "TestManager.h"
 #include "ResultsDialog.h"
+#include "ParamEditDialog.h"
 
 //threads ID
 enum {
@@ -68,6 +69,7 @@ class AVPTesterFrame: public wxFrame
         void OnListViewParametersItemActivated(wxListEvent& event);
         void OnMenuItemFOpenSelected(wxCommandEvent& event);
         void OnMenuItemFSaveSelected(wxCommandEvent& event);
+        void OnButtonDoSingleTestClick(wxCommandEvent& event);
         //*)
 		void OnTestMenuPopupClick(wxCommandEvent &evt);
 
@@ -93,6 +95,7 @@ class AVPTesterFrame: public wxFrame
         static const long ID_STATICTEXT_PARAMS_TTL;
         static const long ID_LISTVIEW_PARAMETERS;
         static const long ID_STATICTEXT_LINE2;
+        static const long ID_BUTTON_DO_SINGLETEST;
         static const long ID_PANEL_PARAMS_BTNS;
         static const long ID_PANEL_PRMS_LST;
         static const long ID_PANEL_LIST;
@@ -123,6 +126,7 @@ class AVPTesterFrame: public wxFrame
         wxTextCtrl* TextCtrlLog;
         wxBoxSizer* BoxSizerMainUI;
         wxPanel* PanelCtrlBtns;
+        GButton* ButtonDoSingleTest;
         wxPanel* PanelMainUI;
         wxStaticText* StaticTextTestDescTTl;
         wxListView* ListViewTests;
@@ -148,12 +152,14 @@ class AVPTesterFrame: public wxFrame
 
 		AudioDevicesDialog* mADevicesDialog;
 		ResultsDialog* mResultsDialog;
+		ParamEditDialog* mParamDialog;
 
         DECLARE_EVENT_TABLE()
 
 		int mSelectedTestIdx;
-		int mSelectedParamIdx;
 		std::vector<TestDescriptor> mTestDescriptors;
+		int mSelectedParamIdx;
+		std::vector<TestParameter> mParametersDescriptors;
 
 		bool mTestOn;
 		bool mTestIsRunning;

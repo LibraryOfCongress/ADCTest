@@ -31,19 +31,30 @@ Crosstalk::analyseSignal(wxXmlNode* testDescriptionNode)
 			if (chIdx != mSelectedChannel)
 			{
 				std::vector<size_t> onsets = getOnsets(mResponseFile, chIdx, false);
-				float xtk = calculateCrossTalk(mResponseFile, onsets, chIdx);
-				mXTalkResults.push_back(xtk);
+				
+				if (onsets.size() > 0)
+				{
+					float xtk = calculateCrossTalk(mResponseFile, onsets, chIdx);
+					mXTalkResults.push_back(xtk);
+				}
 			}
 		}
 
-		closeResponseFile();
+		if (mXTalkResults.size() > 0)
+		{
+			bool testOutcome = buildReport();
 
-		bool testOutcome = buildReport();
-
-		if (testOutcome)
-			result = TestPass;
+			if (testOutcome)
+				result = TestPass;
+			else
+				result = TestFail;
+		}
 		else
-			result = TestFail;
+		{
+			result = TestErrorRespSignal;
+		}
+		
+		closeResponseFile();
 	}
 	else
 	{

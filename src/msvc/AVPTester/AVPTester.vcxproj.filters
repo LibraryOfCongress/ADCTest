@@ -198,6 +198,9 @@
     <ClCompile Include="..\..\AboutADCTDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\ParamEditDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\AVPTesterApp.h">
@@ -330,6 +333,9 @@
       <Filter>Header Files\SigGen</Filter>
     </ClInclude>
     <ClInclude Include="..\..\AboutADCTDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ParamEditDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

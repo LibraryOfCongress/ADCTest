@@ -29,16 +29,23 @@ THDNoise::analyseSignal(wxXmlNode* testDescriptionNode)
 		//find segments in file
 		std::vector<size_t> onsets = getOnsets(mRespFile, mSelectedChannel);
 
-		analyseSegments(mRespFile, onsets);
+		if (onsets.size() > 0)
+		{
+			analyseSegments(mRespFile, onsets);
+
+			bool testOutcome = buildReport();
+
+			if (testOutcome)
+				result = TestPass;
+			else
+				result = TestFail;
+		}
+		else
+		{
+			result = TestErrorRespSignal;
+		}
 
 		closeResponseFile();
-
-		bool testOutcome = buildReport();
-
-		if (testOutcome)
-			result = TestPass;
-		else
-			result = TestFail;
 	}
 	else
 	{
@@ -46,7 +53,6 @@ THDNoise::analyseSignal(wxXmlNode* testDescriptionNode)
 	}
 
 	return result;
-
 }
 
 void

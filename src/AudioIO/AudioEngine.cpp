@@ -46,6 +46,7 @@ AudioIO::AudioIO()
 ,mParent(NULL)
 ,mTestManager(NULL)
 ,mFFTrta(NULL)
+,mCaptureSleep(1)
 {
 	mPortStreamV19 = NULL;
 	mEngineOK = false;
@@ -144,10 +145,11 @@ void AudioIO::StopDevicesCalibration()
 }
 
 void
-AudioIO::StartTestProcedure()
+AudioIO::StartTestProcedure(int testIndex)
 {
 	if (bIsStopped)
 	{
+		mSelectedTestIndex = testIndex;
 		bIsStopped = false;
 		mADCTestThread = std::make_unique<AudioTestThread>();
 		mADCTestThread->Create();
@@ -344,6 +346,8 @@ int AudioIO::doIODevicesCalibration()
 						break;
 					}
 
+					Pa_Sleep(mCaptureSleep);  
+
 					errorCode = Pa_ReadStream(mPortStreamV19, InputBuffer, mCaptureFrameSize);
 					if (errorCode != 0)
 					{
@@ -361,6 +365,8 @@ int AudioIO::doIODevicesCalibration()
 				}
 				delete[] InputBuffer;
 				delete[] OutputBuffer;
+
+				Pa_Sleep(50);
 
 				errorCode = CloseDevices();
 				if (errorCode)
@@ -531,74 +537,29 @@ AudioIO::doADCTest()
 	int errorCode = AVP_PROCESS_START;
 
 	reportEvent( 2, errorCode, wxT("test procedures started"));
-
-	mCaptureSampleRate = 0;
-	int captureDevIdx = -1;
-	int captureChannels = 0;
-	int playbacDevIdx = -1;
-	int playbackChannels = 0;
 	
 	int testIndex = 0;
-	int noTests = 0;
+	mTotalNoTests = 0;
 	errorCode = Pa_Initialize();
 
 	if (errorCode == paNoError)
 	{
-		GetCurrentIOConfiguration(mCaptureSampleRate, captureDevIdx, captureChannels, playbacDevIdx, playbackChannels);
-
-		noTests = mTestManager->GetNumberOfTest();
-		for (testIndex = 0; testIndex < noTests; testIndex++)
+		if (mSelectedTestIndex < 0)
 		{
-			if (bIsStopped)
-				break;
-
-			if (mTestManager->IsTestEnabled(testIndex))
+			//no specific test selected, execute all test in procedure list
+			mTotalNoTests = mTestManager->GetNumberOfTest();
+			for (testIndex = 0; testIndex < mTotalNoTests; testIndex++)
 			{
-				wxString pbFile = wxEmptyString;
-
-				reportEvent(2, AVP_PROCESS_STAGE, wxT("generating signal file"), false, wxEmptyString, noTests, testIndex);
-				int errCode = mTestManager->GenerateSignalFile(testIndex, mCaptureSampleRate, playbackChannels, pbFile);
-
-				//decide what to do based on return value from sig gen
-				switch (errCode)
-				{
-					case -1://something went wrong during the test signal generation stage
-					{
-
-					}
+				if (bIsStopped)
 					break;
-
-					case 0: //all ok, proceed with playback and acquisition of test signal
-					{
-						reportEvent(2, AVP_PROCESS_STAGE, wxT("playback and response acquisition"), false, wxEmptyString, noTests, testIndex);
-						wxString recFile = mTestManager->GetResponseFilePath(testIndex);
-						errorCode = PlaybackAcquire(pbFile, recFile);
-
-						//analyse
-						reportEvent(2, AVP_PROCESS_STAGE, wxT("response analysis"), false, wxEmptyString, noTests, testIndex);
-						wxString testResult = mTestManager->AnalyseResponse(testIndex);
-
-						//send result
-						reportEvent(2, AVP_PROCESS_RESULT, testResult, false, wxEmptyString, noTests, testIndex);
-					}
-					break;
-
-					case 1:
-					//test procedure is paused, user action required possibly to change wiring, etc
-					{
-						reportEvent(2, AVP_PROCESS_RESULT, wxT("paused"), false, wxEmptyString, noTests, testIndex);
-						wxString pmessage = mTestManager->GetParameterAlias(testIndex, wxT("signal"));
-						wxMessageBox(pmessage, wxT("user action required"));
-					}
-					break;
-
-				}				
+				performADCTestUnit(testIndex);
 			}
-			else
-			{
-				//signal that the test has been skipped
-				reportEvent(2, AVP_PROCESS_RESULT, wxT("skipped"), false, wxEmptyString, noTests, testIndex);
-			}
+		}
+		else
+		{
+			//perform only selected test in list
+			mTotalNoTests = 1;
+			performADCTestUnit(mSelectedTestIndex);
 		}
 	}
 	else
@@ -608,10 +569,81 @@ AudioIO::doADCTest()
 
 	Pa_Terminate();
 
-	reportEvent(2, errorCode, wxT("Test procedures finished"), true, wxEmptyString, noTests, testIndex-1);
+	reportEvent(2, errorCode, wxT("Test procedures finished"), true, wxEmptyString, mTotalNoTests, testIndex-1);
 
 	mIsSafe = true;
 	return 0;
+}
+
+
+int  
+AudioIO::performADCTestUnit(int testIndex)
+{
+	int errorCode = 0;
+	mCaptureSampleRate = 0;
+	int captureDevIdx = -1;
+	int captureChannels = 0;
+	int playbacDevIdx = -1;
+	int playbackChannels = 0;
+
+	GetCurrentIOConfiguration(mCaptureSampleRate, captureDevIdx, captureChannels, playbacDevIdx, playbackChannels);
+
+	if (mTestManager->IsTestEnabled(testIndex))
+	{
+		int testType = mTestManager->GetTestType(testIndex);
+
+		wxString pbFile = wxEmptyString;
+
+		reportEvent(2, AVP_PROCESS_STAGE, wxT("generating signal file"), false, wxEmptyString, mTotalNoTests, testIndex);
+
+		if (testType == ADCFullTest)
+			errorCode = mTestManager->GenerateSignalFile(testIndex, mCaptureSampleRate, playbackChannels, pbFile);
+
+		//decide what to do based on return value from sig gen
+		switch (errorCode)
+		{
+		case -1://something went wrong during the test signal generation stage
+		{
+
+		}
+		break;
+
+		case 0: //all ok, proceed with playback and acquisition of test signal
+		{
+			if (testType == ADCFullTest)
+			{
+				reportEvent(2, AVP_PROCESS_STAGE, wxT("playback and response acquisition"), false, wxEmptyString, mTotalNoTests, testIndex);
+				wxString recFile = mTestManager->GetResponseFilePath(testIndex);
+				errorCode = PlaybackAcquire(pbFile, recFile);
+			}
+
+			//analyse
+			reportEvent(2, AVP_PROCESS_STAGE, wxT("response analysis"), false, wxEmptyString, mTotalNoTests, testIndex);
+			wxString testResult = mTestManager->AnalyseResponse(testIndex);
+
+			//send result
+			reportEvent(2, AVP_PROCESS_RESULT, testResult, false, wxEmptyString, mTotalNoTests, testIndex);
+		}
+		break;
+
+		case 1:
+			//test procedure is paused, user action required possibly to change wiring, etc
+		{
+			reportEvent(2, AVP_PROCESS_RESULT, wxT("paused"), false, wxEmptyString, mTotalNoTests, testIndex);
+			wxString pmessage = mTestManager->GetParameterAlias(testIndex, wxT("signal"));
+			wxMessageBox(pmessage, wxT("user action required"));
+		}
+		break;
+
+		}
+	}
+	else
+	{
+		//signal that the test has been skipped
+		reportEvent(2, AVP_PROCESS_RESULT, wxT("skipped"), false, wxEmptyString, mTotalNoTests, testIndex);
+	}
+
+	return errorCode;
 }
 
 bool
@@ -662,7 +694,6 @@ AudioIO::OpenDevices(double sampleRate,
 {
 	PaError err = paNoError;
 
-
 	bool playbackEnabled = false;
 	PaStreamParameters playbackParameters{};
 	const PaDeviceInfo *playbackDeviceInfo;
@@ -677,10 +708,10 @@ AudioIO::OpenDevices(double sampleRate,
 		captureEnabled = true;
 		captureParameters.device = captureDeviceIdx;
 		captureParameters.sampleFormat = paFloat32;
-		captureParameters.hostApiSpecificStreamInfo = NULL;
 		captureParameters.channelCount = captureChannels;
 		captureDeviceInfo = Pa_GetDeviceInfo(captureParameters.device);
-		captureParameters.suggestedLatency = 1.0;// captureDeviceInfo->defaultHighInputLatency;
+		captureParameters.suggestedLatency = 1.0; //captureDeviceInfo->defaultHighOutputLatency
+		captureParameters.hostApiSpecificStreamInfo = NULL;
 	}
 
 	//configure playback stream parameters
@@ -689,10 +720,10 @@ AudioIO::OpenDevices(double sampleRate,
 		playbackEnabled = true;
 		playbackParameters.device = playbackDeviceIdx;
 		playbackParameters.sampleFormat = paFloat32;
-		playbackParameters.hostApiSpecificStreamInfo = NULL;
 		playbackParameters.channelCount = playbackChannels;
 		playbackDeviceInfo = Pa_GetDeviceInfo(playbackParameters.device);
-		playbackParameters.suggestedLatency = 1.0; //playbackDeviceInfo->defaultHighOutputLatency;
+		playbackParameters.suggestedLatency = 1.0; //playbackParameters->defaultHighOutputLatency 
+		playbackParameters.hostApiSpecificStreamInfo = NULL;
 	}
 
 	err = Pa_OpenStream(&mPortStreamV19,
@@ -700,7 +731,7 @@ AudioIO::OpenDevices(double sampleRate,
 						playbackEnabled ? &playbackParameters : NULL,
 						sampleRate,
 						mCaptureFrameSize,
-						NULL,//paClipOff | paDitherOff,
+						paNoFlag,//paClipOff | paDitherOff,
 						NULL,
 						NULL);
 
@@ -809,6 +840,8 @@ AudioIO::PlaybackAcquire(wxString signalFile, wxString responseFile)
 			}
 			frameCount += mCaptureFrameSize;
 
+			Pa_Sleep(mCaptureSleep);
+
 			//record
 			errorCode = Pa_ReadStream(mPortStreamV19, InputBuffer, mCaptureFrameSize);
 			if (errorCode != paNoError)
@@ -818,7 +851,7 @@ AudioIO::PlaybackAcquire(wxString signalFile, wxString responseFile)
 			}
 			sf_writef_float(sndInFile, InputBuffer, mCaptureFrameSize);
 
-			Pa_Sleep(1);
+
 		}
 
 		sf_close(sndInFile);
@@ -851,6 +884,5 @@ AudioTestThread::ExitCode AudioTestThread::Entry()
 	return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 

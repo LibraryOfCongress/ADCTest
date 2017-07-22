@@ -97,21 +97,21 @@
 																<size>1,-1</size>
 															</object>
 															<object class="spacer">
-																<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
 																<option>1</option>
 															</object>
 															<object class="sizeritem">
 																<object class="wxButton" name="ID_BUTTON_START_TESTS" subclass="GButton" variable="ButtonStartTests" member="yes">
-																	<label>Start tests</label>
-																	<size>300,20</size>
+																	<label>Start procedure</label>
+																	<size>340,20</size>
 																	<fg>#FFFFFF</fg>
 																	<handler function="OnButtonStartTestsClick" entry="EVT_BUTTON" />
 																</object>
-																<flag>wxTOP|wxBOTTOM|wxLEFT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
 																<border>2</border>
 															</object>
 															<object class="spacer">
-																<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
 																<option>1</option>
 															</object>
 															<object class="spacer">
@@ -164,14 +164,14 @@
 																<size>-1,50</size>
 																<bg>#C8C8C8</bg>
 																<font>
-																	<size>10</size>
+																	<size>11</size>
 																	<style>normal</style>
-																	<weight>normal</weight>
+																	<weight>bold</weight>
 																	<underlined>0</underlined>
 																	<family>swiss</family>
 																	<face>Arial Narrow</face>
 																</font>
-																<style>wxTE_READONLY|wxNO_BORDER</style>
+																<style>wxTE_MULTILINE|wxTE_READONLY|wxNO_BORDER</style>
 															</object>
 															<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
 															<border>1</border>
@@ -260,7 +260,26 @@
 														<object class="sizeritem">
 															<object class="wxPanel" name="ID_PANEL_PARAMS_BTNS" variable="PanelParamsBtns" member="yes">
 																<bg>#BEBEBE</bg>
-																<object class="wxBoxSizer" variable="BoxSizerParamsBtns" member="no" />
+																<object class="wxBoxSizer" variable="BoxSizerParamsBtns" member="no">
+																	<object class="spacer">
+																		<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																		<option>1</option>
+																	</object>
+																	<object class="sizeritem">
+																		<object class="wxButton" name="ID_BUTTON_DO_SINGLETEST" subclass="GButton" variable="ButtonDoSingleTest" member="yes">
+																			<label>Perform selected test</label>
+																			<size>300,20</size>
+																			<fg>#FFFFFF</fg>
+																			<handler function="OnButtonDoSingleTestClick" entry="EVT_BUTTON" />
+																		</object>
+																		<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																		<border>2</border>
+																	</object>
+																	<object class="spacer">
+																		<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+																		<option>1</option>
+																	</object>
+																</object>
 															</object>
 															<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
 															<border>1</border>

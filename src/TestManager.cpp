@@ -126,6 +126,30 @@ TestManager::ParseProject()
 	int y = 0;
 }
 
+void 
+TestManager::SetTestParameter(int testIndex, wxString paramName, wxString paramValue)
+{
+	int tIdx = 0;
+	wxXmlNode* tNode = mTestsNode->GetChildren();
+	while (tNode)
+	{
+		if( tIdx == testIndex)
+		{
+			wxXmlNode* pNode = GetParameterNode(tNode, paramName);
+			if (pNode)
+			{
+				pNode->DeleteAttribute(wxT("value"));
+				pNode->AddAttribute(wxT("value"), paramValue);
+			}
+			break;
+		}
+
+		tNode = tNode->GetNext();
+		tIdx++;
+	}
+	//ParseProject();
+}
+
 void
 TestManager::EnableTest(wxString testID, bool enabled)
 {
@@ -201,6 +225,19 @@ TestManager::GetTestParameters(wxString testID)
 	}
 
 	return retParams;
+}
+
+int 
+TestManager::GetTestType(int testIndex)
+{
+	int testType = ADCFullTest;
+
+	wxString type = GetParameterValue(testIndex, wxT("testype"));
+
+	if (type == wxT("offline"))
+		testType = ADCFileAnalysisOnly;
+
+	return testType;
 }
 
 bool 
@@ -334,12 +371,26 @@ TestManager::AnalyseResponse(int testIndex)
 
 	wxString outcomeMsg;
 
-	if (outcome <= TestErrorRespSignal)
-		outcomeMsg = wxT("error");
+	if (outcome == TestErrorUnknown)
+	{
+		outcomeMsg = wxT("error: unk");
+	}
+	else if (outcome == TestErrorRespFile)
+	{
+		outcomeMsg = wxT("error: file");
+	}
+	else if (outcome == TestErrorRespSignal)
+	{
+		outcomeMsg = wxT("error: sig");
+	}
 	else if (outcome == TestFail)
+	{
 		outcomeMsg = wxT("fail");
+	}
 	else if (outcome == TestPass)
+	{
 		outcomeMsg = wxT("pass");
+	}
 	
 	return outcomeMsg;
 }
@@ -376,6 +427,19 @@ TestManager::GetParameterAlias(int testIndex, wxString parameterName)
 		}
 	}
 	return value;
+}
+
+wxXmlNode* 
+TestManager::GetParameterNode(int testIndex, wxString parameterName)
+{
+	wxXmlNode* paramNode = NULL;
+
+	wxXmlNode* testNode = GetTestNode(testIndex);
+	if (testNode)
+	{
+		paramNode = GetParameterNode(testNode, parameterName);
+	}
+	return paramNode;
 }
 
 wxXmlNode* 

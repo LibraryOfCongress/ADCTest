@@ -67,6 +67,7 @@ const long AVPTesterFrame::ID_PANEL_TEST_DESCRIPTION = wxNewId();
 const long AVPTesterFrame::ID_STATICTEXT_PARAMS_TTL = wxNewId();
 const long AVPTesterFrame::ID_LISTVIEW_PARAMETERS = wxNewId();
 const long AVPTesterFrame::ID_STATICTEXT_LINE2 = wxNewId();
+const long AVPTesterFrame::ID_BUTTON_DO_SINGLETEST = wxNewId();
 const long AVPTesterFrame::ID_PANEL_PARAMS_BTNS = wxNewId();
 const long AVPTesterFrame::ID_PANEL_PRMS_LST = wxNewId();
 const long AVPTesterFrame::ID_PANEL_LIST = wxNewId();
@@ -95,6 +96,7 @@ END_EVENT_TABLE()
 AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
 :mADevicesDialog(NULL)
 ,mResultsDialog(NULL)
+,mParamDialog(NULL)
 {
     //(*Initialize(AVPTesterFrame)
     wxBoxSizer* BoxSizerParamsBtns;
@@ -154,11 +156,11 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     PanelCtrlBtns->SetBackgroundColour(wxColour(190,190,190));
     BoxSizerCtrlBtns = new wxBoxSizer(wxHORIZONTAL);
     BoxSizerCtrlBtns->Add(1,-1,0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
-    BoxSizerCtrlBtns->Add(-1,-1,1, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 0);
-    ButtonStartTests = new GButton(PanelCtrlBtns, ID_BUTTON_START_TESTS, _("Start tests"), wxDefaultPosition, wxSize(300,20), 0, wxDefaultValidator, _T("ID_BUTTON_START_TESTS"));
+    BoxSizerCtrlBtns->Add(-1,-1,1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+    ButtonStartTests = new GButton(PanelCtrlBtns, ID_BUTTON_START_TESTS, _("Start procedure"), wxDefaultPosition, wxSize(340,20), 0, wxDefaultValidator, _T("ID_BUTTON_START_TESTS"));
     ButtonStartTests->SetForegroundColour(wxColour(255,255,255));
-    BoxSizerCtrlBtns->Add(ButtonStartTests, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_LEFT|wxALIGN_TOP, 2);
-    BoxSizerCtrlBtns->Add(-1,-1,1, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 0);
+    BoxSizerCtrlBtns->Add(ButtonStartTests, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 2);
+    BoxSizerCtrlBtns->Add(-1,-1,1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
     BoxSizerCtrlBtns->Add(1,-1,0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
     PanelCtrlBtns->SetSizer(BoxSizerCtrlBtns);
     BoxSizerCtrlBtns->Fit(PanelCtrlBtns);
@@ -178,9 +180,9 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     wxFont StaticTextTestDescTTlFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     StaticTextTestDescTTl->SetFont(StaticTextTestDescTTlFont);
     BoxSizerTestDescription->Add(StaticTextTestDescTTl, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
-    TextCtrlTestDescription = new wxTextCtrl(PanelTestDescription, ID_TEXTCTRL_TEST_DESCRIPTION, wxEmptyString, wxDefaultPosition, wxSize(-1,50), wxTE_READONLY|wxNO_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_TEST_DESCRIPTION"));
+    TextCtrlTestDescription = new wxTextCtrl(PanelTestDescription, ID_TEXTCTRL_TEST_DESCRIPTION, wxEmptyString, wxDefaultPosition, wxSize(-1,50), wxTE_MULTILINE|wxTE_READONLY|wxNO_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL_TEST_DESCRIPTION"));
     TextCtrlTestDescription->SetBackgroundColour(wxColour(200,200,200));
-    wxFont TextCtrlTestDescriptionFont(10,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
+    wxFont TextCtrlTestDescriptionFont(11,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     TextCtrlTestDescription->SetFont(TextCtrlTestDescriptionFont);
     BoxSizerTestDescription->Add(TextCtrlTestDescription, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
     StaticTextLine0 = new wxStaticText(PanelTestDescription, ID_STATICTEXT_LINE_0, wxEmptyString, wxDefaultPosition, wxSize(-1,2), 0, _T("ID_STATICTEXT_LINE_0"));
@@ -215,6 +217,11 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     PanelParamsBtns = new wxPanel(PanelParamsLst, ID_PANEL_PARAMS_BTNS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_PARAMS_BTNS"));
     PanelParamsBtns->SetBackgroundColour(wxColour(190,190,190));
     BoxSizerParamsBtns = new wxBoxSizer(wxHORIZONTAL);
+    BoxSizerParamsBtns->Add(-1,-1,1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
+    ButtonDoSingleTest = new GButton(PanelParamsBtns, ID_BUTTON_DO_SINGLETEST, _("Perform selected test"), wxDefaultPosition, wxSize(300,20), 0, wxDefaultValidator, _T("ID_BUTTON_DO_SINGLETEST"));
+    ButtonDoSingleTest->SetForegroundColour(wxColour(255,255,255));
+    BoxSizerParamsBtns->Add(ButtonDoSingleTest, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 2);
+    BoxSizerParamsBtns->Add(-1,-1,1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 0);
     PanelParamsBtns->SetSizer(BoxSizerParamsBtns);
     BoxSizerParamsBtns->Fit(PanelParamsBtns);
     BoxSizerParamsBtns->SetSizeHints(PanelParamsBtns);
@@ -301,6 +308,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_BUTTON_START_TESTS,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AVPTesterFrame::OnButtonStartTestsClick);
     Connect(ID_LISTVIEW_PARAMETERS,wxEVT_COMMAND_LIST_ITEM_SELECTED,(wxObjectEventFunction)&AVPTesterFrame::OnListViewParametersItemSelect);
     Connect(ID_LISTVIEW_PARAMETERS,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&AVPTesterFrame::OnListViewParametersItemActivated);
+    Connect(ID_BUTTON_DO_SINGLETEST,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AVPTesterFrame::OnButtonDoSingleTestClick);
     Connect(ID_MENUITEM_FOPEN,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&AVPTesterFrame::OnMenuItemFOpenSelected);
     Connect(ID_MENUITEM_FSAVE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&AVPTesterFrame::OnMenuItemFSaveSelected);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&AVPTesterFrame::OnQuit);
@@ -310,6 +318,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     //*)
 
 	Connect(ID_BUTTON_START_TESTS, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AVPTesterFrame::OnButtonStartTestsClick);
+	Connect(ID_BUTTON_DO_SINGLETEST, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AVPTesterFrame::OnButtonDoSingleTestClick);
 
 	InitPreferences();
 
@@ -351,6 +360,7 @@ AVPTesterFrame::~AVPTesterFrame()
 		mResultsDialog = NULL;
 	}
 
+
     DeinitAudioIO();
 	FinishPreferences();
 }
@@ -362,7 +372,6 @@ void AVPTesterFrame::BuildUI()
 	mResultsDialog->Show(false);
 
 	//set up test list
-
 	wxListItem itemColInputs;
 	itemColInputs.SetAlign(wxLIST_FORMAT_LEFT);
 	itemColInputs.SetText(_T("test name"));
@@ -435,13 +444,15 @@ AVPTesterFrame::EnableTestUI(bool enable)
 {
 	ListViewTests->Enable(enable);
 	ListViewParameters->Enable(enable);
-	
-	if( enable){ 
-		ButtonStartTests->SetLbText(wxT("Start tests")); 
+	ButtonDoSingleTest->Enable(enable);
+	MenuItemDevices->Enable(enable);
+
+	if( enable){
+		ButtonStartTests->SetLbText(wxT("Start procedure"));
 		mTestOn = false;
 	}
 	else {
-		ButtonStartTests->SetLbText(wxT("Stop tests"));
+		ButtonStartTests->SetLbText(wxT("Stop procedure"));
 		mTestOn = true;
 	}
 }
@@ -457,13 +468,13 @@ AVPTesterFrame::OnAudioThreadEvent(wxThreadEvent& event)
 		case 1:
 		{
 			WriteLogMsg( wxT("Calibration ") + ePl.eventMessage + wxT("\n") + ePl.debugInfo);
-			
+
 			if (ePl.threadFinished)
 			{
 				mADevicesDialog->StopCalibration();
 				wxMessageBox(ePl.eventMessage, wxT("Calibration finished"));
 			}
-			
+
 		}
 		break;
 
@@ -508,7 +519,7 @@ AVPTesterFrame::OnAudioThreadEvent(wxThreadEvent& event)
 
 					ListViewTests->SetItem(count, 2, result);
 
-					if (result == wxT("error"))
+					if (result.Contains(wxT("error")))
 						ListViewTests->SetItemBackgroundColour(count, wxColour(255, 255, 200, 255));
 					if( result == wxT("pass"))
 						ListViewTests->SetItemBackgroundColour(count, wxColour(200,255,200, 255));
@@ -524,8 +535,8 @@ AVPTesterFrame::OnAudioThreadEvent(wxThreadEvent& event)
 				if( ePl.eventID < 0 )
 					wxMessageBox(wxT("Procedure terminated with errors"), wxT("Tests finished"));
 				else
-					wxMessageBox(wxT("Procedure terminated successfully"), wxT("Tests finished"));
-	
+					wxMessageBox(wxT("Procedure completed"), wxT("Tests finished"));
+
 				mTestIsRunning = false;
 				EnableTestUI(true);
 
@@ -551,12 +562,19 @@ void AVPTesterFrame::OnButtonStartTestsClick(wxCommandEvent& event)
 		gAudioIO->StopTestProcedure();
 	}
 	else {
+		PopulateTestsList();
 		mLogMsg.Clear();
 		TextCtrlLog->Clear();
 		WriteLogMsg(wxT("button start"));
 		gAudioIO->StartTestProcedure();
 	}
 	mTestOn = !mTestOn;
+}
+
+void AVPTesterFrame::OnButtonDoSingleTestClick(wxCommandEvent& event)
+{
+	if( mSelectedTestIdx >= 0 )
+		gAudioIO->StartTestProcedure(mSelectedTestIdx);
 }
 
 void
@@ -598,10 +616,10 @@ AVPTesterFrame::PopulateTestParametersList()
 
 	TestDescriptor dsc = mTestDescriptors[mSelectedTestIdx];
 	TestManager* tm = gAudioIO->GetTestManager();
-	std::vector<TestParameter> params = tm->GetTestParameters(dsc.ID);
-	for (size_t i = 0; i < params.size(); i++)
+	mParametersDescriptors = tm->GetTestParameters(dsc.ID);
+	for (size_t i = 0; i < mParametersDescriptors.size(); i++)
 	{
-		TestParameter pr = params[i];
+		TestParameter pr = mParametersDescriptors[i];
 		ListViewParameters->InsertItem(i, pr.name, 0);
 		ListViewParameters->SetItem(i, 1, pr.value);
 	}
@@ -618,7 +636,7 @@ void AVPTesterFrame::OnListViewTestsItemSelect(wxListEvent& event)
 		TestDescriptor dsc = mTestDescriptors[mSelectedTestIdx];
 		TextCtrlTestDescription->SetValue(dsc.alias);
 	}
-	 
+
 	PopulateTestParametersList();
 }
 
@@ -641,7 +659,7 @@ void AVPTesterFrame::OnListViewTestsItemActivated(wxListEvent& event)
 			wFileName = prm.value;
 	}
 
-	wxString filePath = wFolder + wSeparator + wFileName;	
+	wxString filePath = wFolder + wSeparator + wFileName;
 	if (wxFileName::FileExists(filePath))
 	{
 		mResultsDialog->OpenResultsFile(filePath);
@@ -685,12 +703,28 @@ void AVPTesterFrame::OnTestMenuPopupClick(wxCommandEvent &evt)
 	}
 	PopulateTestsList();
 }
+
 void AVPTesterFrame::OnListViewParametersItemSelect(wxListEvent& event)
 {
+	mSelectedParamIdx = event.m_itemIndex;
 }
 
 void AVPTesterFrame::OnListViewParametersItemActivated(wxListEvent& event)
 {
+	if ((mSelectedTestIdx >= 0) && (mSelectedParamIdx >= 0))
+	{
+		TestParameter pr = mParametersDescriptors[mSelectedParamIdx];
+
+		mParamDialog = new ParamEditDialog(this);
+		mParamDialog->EditParameter(mSelectedTestIdx, pr.name);
+
+		if (mParamDialog->ShowModal() == wxID_OK)
+		{
+			PopulateTestParametersList();
+		}
+
+		delete mParamDialog;
+	}
 }
 
 
@@ -807,3 +841,4 @@ AVPTesterFrame::wxSeparateCommandAndArguments(const wxString& command, wxString&
 	}
 	return true;
 }
+

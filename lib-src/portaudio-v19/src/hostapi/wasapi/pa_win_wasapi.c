@@ -3135,7 +3135,7 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
     }
 
 	// Default thread priority is Audio: for exclusive mode we will use Pro Audio.
-	stream->nThreadPriority = eThreadPriorityAudio;
+	stream->nThreadPriority = eThreadPriorityProAudio;
 
 	// Set default number of frames: paFramesPerBufferUnspecified
 	if (framesPerBuffer == paFramesPerBufferUnspecified)
@@ -3166,6 +3166,7 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
 
 		// default Shared Mode
 		stream->in.shareMode = AUDCLNT_SHAREMODE_SHARED;
+		//stream->in.streamFlags = 0;
 
 		// PaWasapiStreamInfo
 		if (inputParameters->hostApiSpecificStreamInfo != NULL)
@@ -3251,7 +3252,7 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
 		// and thus we have to save partial packet if such remains unread)
 		if (stream->in.params.blocking == TRUE)
 		{
-			UINT32 bufferFrames = ALIGN_NEXT_POW2((stream->in.framesPerHostCallback / WASAPI_PACKETS_PER_INPUT_BUFFER) * 2);
+			UINT32 bufferFrames = ALIGN_NEXT_POW2((stream->in.framesPerHostCallback / WASAPI_PACKETS_PER_INPUT_BUFFER) * 50);
 			UINT32 frameSize    = stream->in.wavex.Format.nBlockAlign;
 
 			// buffer
@@ -3293,6 +3294,7 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
 
 		// default Shared Mode
 		stream->out.shareMode = AUDCLNT_SHAREMODE_SHARED;
+		//stream->out.streamFlags = 0;
 
 		// set PaWasapiStreamInfo
 		if (outputParameters->hostApiSpecificStreamInfo != NULL)
@@ -3493,7 +3495,7 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
             ((double)PaUtil_GetBufferProcessorOutputLatencyFrames(&stream->bufferProcessor) / sampleRate)
 			+ ((outputParameters)?stream->out.latencySeconds : 0);
 
-	// Set SR
+	// Set SRo
     stream->streamRepresentation.streamInfo.sampleRate = sampleRate;
 
     (*s) = (PaStream *)stream;

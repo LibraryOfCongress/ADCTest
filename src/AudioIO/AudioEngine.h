@@ -71,9 +71,10 @@ class AudioIO
 		int  doIODevicesCalibration();
 		
 		TestManager* GetTestManager() { return mTestManager;  }
-		void StartTestProcedure();
+		void StartTestProcedure( int testIndex = -1 );
 		void StopTestProcedure();
 		int  doADCTest();
+		int  performADCTestUnit(int testIndex);
 
 		void reportEvent(int processID, 
 						 int eventID, 
@@ -116,7 +117,7 @@ class AudioIO
 							int captureChannels,
 							int playbackDeviceIdx,
 							int playbackChannels);
-				
+		
 		PaError CloseDevices();
 
 		//Plays test signal and records response  
@@ -127,11 +128,15 @@ class AudioIO
 
 		AVPTesterFrame* mParent;
 
+		int mSelectedTestIndex;
+		int mTotalNoTests;
+
 		size_t mCaptureFrameSize;
 		double mCaptureSampleRate;
 		int mNoPlaybackChannels;
 		int mNoCaptureChannels;
 		PaStream *mPortStreamV19;
+		size_t mCaptureSleep;
 		
 		bool bPAIsOpen;
 		bool bIsStopped;

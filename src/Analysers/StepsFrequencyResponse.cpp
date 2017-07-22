@@ -27,16 +27,23 @@ StepsFrequencyResponse::analyseSignal(wxXmlNode* testDescriptionNode)
 		//find segments in file
 		std::vector<size_t> onsets = getOnsets(mRespFile, mSelectedChannel);
 
-		analyseSegments(mRespFile, onsets);
+		if (onsets.size() > 0)
+		{
+			analyseSegments(mRespFile, onsets);
 
-		sf_close(mRespFile);
+			bool testOutcome = buildReport();
 
-		bool testOutcome = buildReport();
-		
-		if (testOutcome)
-			result = TestPass;
+			if (testOutcome)
+				result = TestPass;
+			else
+				result = TestFail;
+		}
 		else
-			result = TestFail;
+		{
+			result = TestErrorRespSignal;
+		}
+
+		closeResponseFile();	
 	}
 	else 
 	{
