@@ -136,13 +136,13 @@ static void AddSourcesX(int deviceIndex, int rate, std::vector<ADeviceMap> *dMap
 	inputParameters.device = deviceIndex;
 	inputParameters.channelCount = info->maxInputChannels;
 	inputParameters.sampleFormat = paFloat32;// paInt16;
-	inputParameters.suggestedLatency = 0; /* ignored by Pa_IsFormatSupported() */
+	inputParameters.suggestedLatency = info->defaultHighInputLatency; /* ignored by Pa_IsFormatSupported() */
 	inputParameters.hostApiSpecificStreamInfo = NULL;
 
 	outputParameters.device = deviceIndex;
 	outputParameters.channelCount = info->maxOutputChannels;
 	outputParameters.sampleFormat = paFloat32;// paInt16;
-	outputParameters.suggestedLatency = 0; /* ignored by Pa_IsFormatSupported() */
+	outputParameters.suggestedLatency = info->defaultHighOutputLatency; /* ignored by Pa_IsFormatSupported() */
 	outputParameters.hostApiSpecificStreamInfo = NULL;
 
 	if (isInput)

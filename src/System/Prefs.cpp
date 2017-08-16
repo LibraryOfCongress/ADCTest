@@ -46,19 +46,24 @@ void InitPreferences()
 	int versionNumber = 0;
 	gPrefs->Read(wxT("/Version"), &versionNumber );
 
-	if (!newPrefsInitialized || (versionNumber < RELEASE_VERSION) )
+	if (!newPrefsInitialized || (versionNumber < (RELEASE_VERSION + 100)) )
 	{
-	    versionNumber = RELEASE_VERSION;
+	    versionNumber = RELEASE_VERSION+100;
 		gPrefs->Write(wxT("/NewPrefsInitialized"), true);
         gPrefs->Write(wxT("/Version"), versionNumber);
 		gPrefs->Write(wxT("/Directories/DataDumpDir"), dataFolder);
 		gPrefs->Write(wxT("/AudioIO/AudioSRate"), 48000.0);
+		gPrefs->Write(wxT("/AudioIO/FrameSize"), 2048);
 		gPrefs->Write(wxT("/AudioIO/AudioHostName"), wxT(""));
 		gPrefs->Write(wxT("/AudioIO/InputDevName"), wxT("") );
 		gPrefs->Write(wxT("/AudioIO/InputDevChans"), 1 );
 		gPrefs->Write(wxT("/AudioIO/OutputDevName"), wxT(""));
 		gPrefs->Write(wxT("/AudioIO/OutputDevChans"), 1 );
-		gPrefs->Write(wxT("/Calibration/OutputStreamGain"), -6.0);
+		gPrefs->Write(wxT("/AudioIO/InBufferLength"), 500);
+		gPrefs->Write(wxT("/AudioIO/InBufferThreshold"), 25);
+		gPrefs->Write(wxT("/AudioIO/OutBufferLength"), 500);
+		gPrefs->Write(wxT("/AudioIO/OutBufferThreshold"), 25);
+		gPrefs->Write(wxT("/Calibration/OutputStreamGain"), 0.0);
 		gPrefs->Write(wxT("/Calibration/RTALength"), 4096);
 		gPrefs->Write(wxT("/Calibration/RTAWindow"), 1);
 		gPrefs->Write(wxT("/Calibration/RTAExAvg"), 50);

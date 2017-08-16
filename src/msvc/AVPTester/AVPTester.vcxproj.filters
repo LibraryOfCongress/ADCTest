@@ -73,12 +73,6 @@
     <Filter Include="Source Files\Analysers">
       <UniqueIdentifier>{3c835eef-98de-4b14-816b-f543774e3a38}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\AudioIO\pablio">
-      <UniqueIdentifier>{ea5f501f-6b60-4cb6-a027-286780d77180}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\AudioIO\pablio">
-      <UniqueIdentifier>{67e47123-0a02-457d-bfc6-11746eab1cbd}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\AVPTesterApp.cpp">
@@ -179,9 +173,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Analysers\Crosstalk.cpp">
       <Filter>Source Files\Analysers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\AudioIO\pablio\pablio.c">
-      <Filter>Source Files\AudioIO\pablio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\SigGen\DualSineToneGenerator.cpp">
       <Filter>Source Files\SigGen</Filter>
@@ -316,9 +307,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Analysers\Crosstalk.h">
       <Filter>Header Files\Analysers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\AudioIO\pablio\pablio.h">
-      <Filter>Header Files\AudioIO\pablio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\SigGen\DualSineToneGenerator.h">
       <Filter>Header Files\SigGen</Filter>

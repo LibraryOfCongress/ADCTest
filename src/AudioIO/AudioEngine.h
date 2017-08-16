@@ -10,12 +10,15 @@
 
 #include "wx/wx.h"
 #include <vector>
+
 #include "portaudio.h"
+#include "pa_ringbuffer.h"
+#include "pa_util.h"
+
 #include <wx/thread.h>
 #include <memory>
 #include <malloc.h>
 
-#include "pablio/pablio.h"
 #include "LevelAnalyser.h"
 #include "ParametersQueue.h"
 #include "ProcessParams.h"
@@ -29,6 +32,30 @@ class AVPTesterFrame;
 class AudioIO;
 class AudioThread;
 class AudioTestThread;
+
+typedef struct
+{
+	double				sampleRate;
+	int					inChannels;
+	size_t				inBytesPerSample;
+	size_t				inSamplesPerFrame;
+	size_t				inBytesPerFrame;
+	size_t				inBufferFillThreshFrames;
+	size_t				inBufferSizeFrames;
+	float              *InRingBufferData;
+	PaUtilRingBuffer    InRingBuffer;
+	int					outChannels;
+	size_t				outBytesPerSample;
+	size_t				outSamplesPerFrame;
+	size_t				outBytesPerFrame;
+	size_t				outBufferFillThreshFrames;
+	size_t				outBufferSizeFrames;
+	float              *OutRingBufferData;
+	PaUtilRingBuffer    OutRingBuffer;
+	bool				initialFillActive;
+	bool				callbackActive;
+}
+paTestData;
 
 typedef struct AudioThreadEvent {
 	int  processID;
@@ -109,17 +136,19 @@ class AudioIO
 										int& captureDeviceIdx, //input device (ADC-DUT) PortAudio Index
 										int& captureChannels, 
 										int& playbackDeviceIdx,//Output device (DAC) PortAudio Index 
-										int& playbackChannels);
+										int& playbackChannels,
+										size_t& frameSize);
 		
 		//opens selected I/O devices
 		PaError OpenDevices(double sampleRate, 
 							int captureDeviceIdx, 
 							int captureChannels,
 							int playbackDeviceIdx,
-							int playbackChannels);
-		
-		PaError CloseDevices();
+							int playbackChannels,
+							paTestData* data);
 
+		PaError CloseDevices();
+		
 		//Plays test signal and records response  
 		int PlaybackAcquire(wxString signalFile, wxString responseFile);
 
@@ -132,12 +161,14 @@ class AudioIO
 		int mTotalNoTests;
 
 		size_t mCaptureFrameSize;
+
 		double mCaptureSampleRate;
 		int mNoPlaybackChannels;
 		int mNoCaptureChannels;
 		PaStream *mPortStreamV19;
 		size_t mCaptureSleep;
-		
+		paTestData mPaCallbackData;
+
 		bool bPAIsOpen;
 		bool bIsStopped;
 		volatile bool mIsSafe;

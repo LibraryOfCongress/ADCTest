@@ -533,9 +533,9 @@ AVPTesterFrame::OnAudioThreadEvent(wxThreadEvent& event)
 			{
 				gAudioIO->StopTestProcedure();
 				if( ePl.eventID < 0 )
-					wxMessageBox(wxT("Procedure terminated with errors"), wxT("Tests finished"));
+					wxMessageBox(wxT("Procedure completed with errors"), wxT("Tests finished"));
 				else
-					wxMessageBox(wxT("Procedure completed"), wxT("Tests finished"));
+					wxMessageBox(wxT("Procedure completed successfully"), wxT("Tests finished"));
 
 				mTestIsRunning = false;
 				EnableTestUI(true);

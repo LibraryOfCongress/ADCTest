@@ -13,6 +13,17 @@
 const long AudioDevicesPanel::ID_STATICTEXT_LINE_UP = wxNewId();
 const long AudioDevicesPanel::ID_BUTTON_SCAN_AUDIO_SYS = wxNewId();
 const long AudioDevicesPanel::ID_PANEL_SYS_GEN_SET = wxNewId();
+const long AudioDevicesPanel::ID_STATICTEXT_FRAMESIZE = wxNewId();
+const long AudioDevicesPanel::ID_CHOICE_FRAME_SIZE = wxNewId();
+const long AudioDevicesPanel::ID_STATICTEXT_INBUFFER_LENGTH = wxNewId();
+const long AudioDevicesPanel::ID_CHOICE_INBUFFER_LEN = wxNewId();
+const long AudioDevicesPanel::ID_STATICTEXT_INBUFFER_FILL_THRESh = wxNewId();
+const long AudioDevicesPanel::ID_CHOICE_INBUFFER_FILL_THRESH = wxNewId();
+const long AudioDevicesPanel::ID_STATICTEXT_OUTBUFFER_LENGTH = wxNewId();
+const long AudioDevicesPanel::ID_CHOICE_OUTBUFFER_LEN = wxNewId();
+const long AudioDevicesPanel::ID_STATICTEXT_OUTBUFFER_FILL_THRESh = wxNewId();
+const long AudioDevicesPanel::ID_CHOICE_OUTBUFFER_FILL_THRESH = wxNewId();
+const long AudioDevicesPanel::ID_PANEL_IO_BUFFERING = wxNewId();
 const long AudioDevicesPanel::ID_STATICTEXT_IN_HOSTS = wxNewId();
 const long AudioDevicesPanel::ID_CHOICE_HOST = wxNewId();
 const long AudioDevicesPanel::ID_STATICTEXT_SYS_SRATE = wxNewId();
@@ -75,16 +86,21 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	//(*Initialize(AudioDevicesPanel)
 	wxBoxSizer* BoxSizerOutputDevice;
 	wxBoxSizer* BoxSizerInputDevices;
+	wxBoxSizer* BoxSizerFrameSize;
 	wxBoxSizer* BoxSizerOutputDevices;
 	wxBoxSizer* BoxSizerSRateInner;
 	wxBoxSizer* BoxSizerRecTTL;
 	wxBoxSizer* BoxSizerPBInR;
+	wxBoxSizer* BoxSizerInBufferSize;
 	wxBoxSizer* BoxSizerAvgOn;
+	wxBoxSizer* BoxSizerOutBufferSize;
 	wxBoxSizer* BoxSizerInputDevice;
+	wxBoxSizer* BoxSizerIOBuffering;
 	wxBoxSizer* BoxSizerFFTCtrls;
 	wxBoxSizer* BoxSizerAxesCtrls;
 	wxBoxSizer* BoxSizerRefCh;
 	wxBoxSizer* BoxSizerMain;
+	wxBoxSizer* BoxSizerInBufferThresh;
 	wxBoxSizer* BoxSizerFFTSize;
 	wxBoxSizer* BoxSizerHosts;
 	wxBoxSizer* BoxSizerPBTTL;
@@ -100,6 +116,7 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	wxBoxSizer* BoxSizerBtnsLay;
 	wxBoxSizer* BoxSizerRTAPlot;
 	wxBoxSizer* BoxSizerRescan;
+	wxBoxSizer* BoxSizerOutBufferThresh;
 	wxBoxSizer* BoxSizerTestStart;
 	wxBoxSizer* BoxSizerHostAPIIn;
 
@@ -120,6 +137,91 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	BoxSizerGenSettings->Fit(PanelSysGenSettings);
 	BoxSizerGenSettings->SetSizeHints(PanelSysGenSettings);
 	BoxSizerMain->Add(PanelSysGenSettings, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	PanelIOBuffering = new wxPanel(this, ID_PANEL_IO_BUFFERING, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_IO_BUFFERING"));
+	BoxSizerIOBuffering = new wxBoxSizer(wxHORIZONTAL);
+	BoxSizerFrameSize = new wxBoxSizer(wxVERTICAL);
+	StaticTextFrameSize = new wxStaticText(PanelIOBuffering, ID_STATICTEXT_FRAMESIZE, _("processing frame size"), wxDefaultPosition, wxSize(150,-1), 0, _T("ID_STATICTEXT_FRAMESIZE"));
+	BoxSizerFrameSize->Add(StaticTextFrameSize, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 4);
+	ChoiceFrameSize = new wxChoice(PanelIOBuffering, ID_CHOICE_FRAME_SIZE, wxDefaultPosition, wxSize(150,-1), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_FRAME_SIZE"));
+	ChoiceFrameSize->Append(_("64"));
+	ChoiceFrameSize->Append(_("128"));
+	ChoiceFrameSize->Append(_("256"));
+	ChoiceFrameSize->Append(_("512"));
+	ChoiceFrameSize->Append(_("1024"));
+	ChoiceFrameSize->Append(_("2048"));
+	ChoiceFrameSize->Append(_("4096"));
+	ChoiceFrameSize->Append(_("8192"));
+	ChoiceFrameSize->Append(_("16384"));
+	BoxSizerFrameSize->Add(ChoiceFrameSize, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerIOBuffering->Add(BoxSizerFrameSize, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerIOBuffering->Add(15,-1,1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerInBufferSize = new wxBoxSizer(wxVERTICAL);
+	StaticTextInBufferLength = new wxStaticText(PanelIOBuffering, ID_STATICTEXT_INBUFFER_LENGTH, _("input buffering (ms)"), wxDefaultPosition, wxSize(150,-1), 0, _T("ID_STATICTEXT_INBUFFER_LENGTH"));
+	BoxSizerInBufferSize->Add(StaticTextInBufferLength, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 4);
+	ChoiceInBufferLength = new wxChoice(PanelIOBuffering, ID_CHOICE_INBUFFER_LEN, wxDefaultPosition, wxSize(150,-1), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_INBUFFER_LEN"));
+	ChoiceInBufferLength->Append(_("125"));
+	ChoiceInBufferLength->Append(_("250"));
+	ChoiceInBufferLength->Append(_("500"));
+	ChoiceInBufferLength->Append(_("750"));
+	ChoiceInBufferLength->Append(_("1000"));
+	ChoiceInBufferLength->Append(_("1250"));
+	ChoiceInBufferLength->Append(_("1500"));
+	ChoiceInBufferLength->Append(_("1750"));
+	ChoiceInBufferLength->Append(_("2000"));
+	BoxSizerInBufferSize->Add(ChoiceInBufferLength, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerIOBuffering->Add(BoxSizerInBufferSize, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerInBufferThresh = new wxBoxSizer(wxVERTICAL);
+	StaticTextInBufFillThresh = new wxStaticText(PanelIOBuffering, ID_STATICTEXT_INBUFFER_FILL_THRESh, _("input fill threshold (%)"), wxDefaultPosition, wxSize(150,-1), 0, _T("ID_STATICTEXT_INBUFFER_FILL_THRESh"));
+	BoxSizerInBufferThresh->Add(StaticTextInBufFillThresh, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 4);
+	ChoiceInBUfferFillThresh = new wxChoice(PanelIOBuffering, ID_CHOICE_INBUFFER_FILL_THRESH, wxDefaultPosition, wxSize(150,-1), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_INBUFFER_FILL_THRESH"));
+	ChoiceInBUfferFillThresh->Append(_("10"));
+	ChoiceInBUfferFillThresh->Append(_("20"));
+	ChoiceInBUfferFillThresh->Append(_("25"));
+	ChoiceInBUfferFillThresh->Append(_("30"));
+	ChoiceInBUfferFillThresh->Append(_("40"));
+	ChoiceInBUfferFillThresh->Append(_("50"));
+	ChoiceInBUfferFillThresh->Append(_("60"));
+	ChoiceInBUfferFillThresh->Append(_("75"));
+	ChoiceInBUfferFillThresh->Append(_("80"));
+	ChoiceInBUfferFillThresh->Append(_("90"));
+	BoxSizerInBufferThresh->Add(ChoiceInBUfferFillThresh, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerIOBuffering->Add(BoxSizerInBufferThresh, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerIOBuffering->Add(15,-1,1, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerOutBufferSize = new wxBoxSizer(wxVERTICAL);
+	StaticTextOutBufferLength = new wxStaticText(PanelIOBuffering, ID_STATICTEXT_OUTBUFFER_LENGTH, _("output buffering (ms)"), wxDefaultPosition, wxSize(150,-1), 0, _T("ID_STATICTEXT_OUTBUFFER_LENGTH"));
+	BoxSizerOutBufferSize->Add(StaticTextOutBufferLength, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 4);
+	ChoiceOutBufferLength = new wxChoice(PanelIOBuffering, ID_CHOICE_OUTBUFFER_LEN, wxDefaultPosition, wxSize(150,-1), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_OUTBUFFER_LEN"));
+	ChoiceOutBufferLength->Append(_("125"));
+	ChoiceOutBufferLength->Append(_("250"));
+	ChoiceOutBufferLength->Append(_("500"));
+	ChoiceOutBufferLength->Append(_("750"));
+	ChoiceOutBufferLength->Append(_("1000"));
+	ChoiceOutBufferLength->Append(_("1250"));
+	ChoiceOutBufferLength->Append(_("1500"));
+	ChoiceOutBufferLength->Append(_("1750"));
+	ChoiceOutBufferLength->Append(_("2000"));
+	BoxSizerOutBufferSize->Add(ChoiceOutBufferLength, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerIOBuffering->Add(BoxSizerOutBufferSize, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	BoxSizerOutBufferThresh = new wxBoxSizer(wxVERTICAL);
+	StaticTextOutBufFillThresh = new wxStaticText(PanelIOBuffering, ID_STATICTEXT_OUTBUFFER_FILL_THRESh, _("output fill threshold (%)"), wxDefaultPosition, wxSize(150,-1), 0, _T("ID_STATICTEXT_OUTBUFFER_FILL_THRESh"));
+	BoxSizerOutBufferThresh->Add(StaticTextOutBufFillThresh, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 4);
+	ChoiceOutBUfferFillThresh = new wxChoice(PanelIOBuffering, ID_CHOICE_OUTBUFFER_FILL_THRESH, wxDefaultPosition, wxSize(150,-1), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_OUTBUFFER_FILL_THRESH"));
+	ChoiceOutBUfferFillThresh->Append(_("10"));
+	ChoiceOutBUfferFillThresh->Append(_("20"));
+	ChoiceOutBUfferFillThresh->Append(_("25"));
+	ChoiceOutBUfferFillThresh->Append(_("30"));
+	ChoiceOutBUfferFillThresh->Append(_("40"));
+	ChoiceOutBUfferFillThresh->Append(_("50"));
+	ChoiceOutBUfferFillThresh->Append(_("60"));
+	ChoiceOutBUfferFillThresh->Append(_("75"));
+	ChoiceOutBUfferFillThresh->Append(_("80"));
+	ChoiceOutBUfferFillThresh->Append(_("90"));
+	BoxSizerOutBufferThresh->Add(ChoiceOutBUfferFillThresh, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
+	BoxSizerIOBuffering->Add(BoxSizerOutBufferThresh, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
+	PanelIOBuffering->SetSizer(BoxSizerIOBuffering);
+	BoxSizerIOBuffering->Fit(PanelIOBuffering);
+	BoxSizerIOBuffering->SetSizeHints(PanelIOBuffering);
+	BoxSizerMain->Add(PanelIOBuffering, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP, 5);
 	PanelHosts = new RimPanel(this, ID_PANEL_HOSTS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE, _T("ID_PANEL_HOSTS"));
 	BoxSizerHosts = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizerHostAPIIn = new wxBoxSizer(wxVERTICAL);
@@ -133,7 +235,7 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	BoxSizerSRateInner->Add(StaticTextSysSampleRate, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 4);
 	ChoiceSystemSampleRate = new wxChoice(PanelHosts, ID_CHOICE_SYS_SRATE, wxDefaultPosition, wxSize(200,-1), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_SYS_SRATE"));
 	BoxSizerSRateInner->Add(ChoiceSystemSampleRate, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP, 5);
-	BoxSizerHosts->Add(BoxSizerSRateInner, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 1);
+	BoxSizerHosts->Add(BoxSizerSRateInner, 0, wxALL|wxALIGN_LEFT|wxALIGN_TOP, 1);
 	BoxSizerHosts->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	PanelHosts->SetSizer(BoxSizerHosts);
 	BoxSizerHosts->Fit(PanelHosts);
@@ -333,6 +435,11 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	BoxSizerMain->SetSizeHints(this);
 
 	Connect(ID_BUTTON_SCAN_AUDIO_SYS,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AudioDevicesPanel::OnButtonScanAudioSysClick);
+	Connect(ID_CHOICE_FRAME_SIZE,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&AudioDevicesPanel::OnChoiceFrameSizeSelect);
+	Connect(ID_CHOICE_INBUFFER_LEN,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&AudioDevicesPanel::OnChoiceInBufferLengthSelect);
+	Connect(ID_CHOICE_INBUFFER_FILL_THRESH,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&AudioDevicesPanel::OnChoiceInBUfferFillThreshSelect);
+	Connect(ID_CHOICE_OUTBUFFER_LEN,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&AudioDevicesPanel::OnChoiceOutBufferLengthSelect);
+	Connect(ID_CHOICE_OUTBUFFER_FILL_THRESH,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&AudioDevicesPanel::OnChoiceOutBUfferFillThreshSelect);
 	Connect(ID_CHOICE_HOST,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&AudioDevicesPanel::OnChoiceHostSelect);
 	Connect(ID_CHOICE_SYS_SRATE,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&AudioDevicesPanel::OnChoiceSystemSampleRateSelect);
 	Connect(ID_CHOICE_INPUT_DEVICE,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&AudioDevicesPanel::OnChoiceInputDeviceSelect);
@@ -401,9 +508,9 @@ AudioDevicesPanel::AudioDevicesPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	ButtonDevTestStart->enable(true);
 
 	PopulateAll();
-	
+
 	RefreshUI();
-	
+
 	double sr;
 	gPrefs->Read(wxT("/AudioIO/InputDevSRate"), &sr);
 	ConfigurePlot(mRTALength, sr);
@@ -416,7 +523,7 @@ AudioDevicesPanel::~AudioDevicesPanel()
 	StopCalibration();
 }
 
-void 
+void
 AudioDevicesPanel::RefreshUI()
 {
 	//get saved calibration parameters and populate widgets
@@ -457,7 +564,7 @@ AudioDevicesPanel::RefreshUI()
 	}
 }
 
-void 
+void
 AudioDevicesPanel::ConfigureChannelSpin()
 {
 	SpinRefCh->clearValues();
@@ -473,14 +580,13 @@ AudioDevicesPanel::ConfigureChannelSpin()
 	SpinRefCh->setValue(0);
 }
 
-void 
+void
 AudioDevicesPanel::PopulateAll()
 {
 	PopulateHostsChoices();
-	PopulateDevicesChoices();
-
+	PopulateBufferingChoices();
+	PopulateDevicesChoices(false);
 	CheckCompatibleSampleRates();
-	//UpdateSRateChoice();
 }
 
 void AudioDevicesPanel::PopulateHostsChoices()
@@ -500,7 +606,7 @@ void AudioDevicesPanel::PopulateHostsChoices()
 
 	for (i = 0; i < outMaps.size(); i++)
 	{
-		if (hosts.Index(outMaps[i].hostString) == wxNOT_FOUND)	
+		if (hosts.Index(outMaps[i].hostString) == wxNOT_FOUND)
 			hosts.Add(outMaps[i].hostString);
 	}
 
@@ -539,7 +645,130 @@ void AudioDevicesPanel::OnChoiceHostSelect(wxCommandEvent& event)
 	PopulateDevicesChoices();
 }
 
-void AudioDevicesPanel::PopulateDevicesChoices()
+void AudioDevicesPanel::PopulateBufferingChoices()
+{
+	///////////////////////////////////////////////////////////////////////////////
+	//Input & output frame size
+	wxString frameSizeW = gPrefs->Read(wxT("/AudioIO/FrameSize") wxT(""));
+	int itemIdx = ChoiceFrameSize->FindString(frameSizeW);
+
+	if (itemIdx != wxNOT_FOUND)
+		ChoiceFrameSize->SetSelection(itemIdx);
+	else
+	{
+		ChoiceFrameSize->SetSelection(0);
+		gPrefs->Write(wxT("/AudioIO/FrameSize"), ChoiceFrameSize->GetString(0));
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
+	// Input Buffer length
+	wxString inBufferSizeeW = gPrefs->Read(wxT("/AudioIO/InBufferLength") wxT(""));
+	itemIdx = ChoiceInBufferLength->FindString(inBufferSizeeW);
+
+	if (itemIdx != wxNOT_FOUND)
+		ChoiceInBufferLength->SetSelection(itemIdx);
+	else
+	{
+		ChoiceInBufferLength->SetSelection(0);
+		gPrefs->Write(wxT("/AudioIO/InBufferLength"), ChoiceInBufferLength->GetString(0));
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
+	// Input Buffer threshold
+	wxString inBufferThreshW = gPrefs->Read(wxT("/AudioIO/InBufferThreshold") wxT(""));
+	itemIdx = ChoiceInBUfferFillThresh->FindString(inBufferThreshW);
+
+	if (itemIdx != wxNOT_FOUND)
+		ChoiceInBUfferFillThresh->SetSelection(itemIdx);
+	else
+	{
+		ChoiceInBUfferFillThresh->SetSelection(0);
+		gPrefs->Write(wxT("/AudioIO/InBufferThreshold"), ChoiceInBUfferFillThresh->GetString(0));
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
+	// Output Buffer length
+	wxString outBufferSizeeW = gPrefs->Read(wxT("/AudioIO/OutBufferLength") wxT(""));
+	itemIdx = ChoiceOutBufferLength->FindString(outBufferSizeeW);
+
+	if (itemIdx != wxNOT_FOUND)
+		ChoiceOutBufferLength->SetSelection(itemIdx);
+	else
+	{
+		ChoiceOutBufferLength->SetSelection(0);
+		gPrefs->Write(wxT("/AudioIO/OutBufferLength"), ChoiceOutBufferLength->GetString(0));
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
+	// Output Buffer threshold
+	wxString outBufferThreshW = gPrefs->Read(wxT("/AudioIO/OutBufferThreshold") wxT(""));
+	itemIdx = ChoiceOutBUfferFillThresh->FindString(outBufferThreshW);
+
+	if (itemIdx != wxNOT_FOUND)
+		ChoiceOutBUfferFillThresh->SetSelection(itemIdx);
+	else
+	{
+		ChoiceOutBUfferFillThresh->SetSelection(0);
+		gPrefs->Write(wxT("/AudioIO/OutBufferThreshold"), ChoiceOutBUfferFillThresh->GetString(0));
+	}
+}
+
+void AudioDevicesPanel::OnChoiceFrameSizeSelect(wxCommandEvent& event)
+{
+	int FrameSizeSelectionIndex = ChoiceFrameSize->GetSelection();
+
+	wxString newFrameSize = ChoiceFrameSize->GetString(FrameSizeSelectionIndex);
+
+	//change the host and switch to correct devices.
+	gPrefs->Write(wxT("/AudioIO/FrameSize"), newFrameSize);
+	gPrefs->Flush();
+}
+
+void AudioDevicesPanel::OnChoiceInBufferLengthSelect(wxCommandEvent& event)
+{
+	int InBufferLengthSelectionIndex = ChoiceInBufferLength->GetSelection();
+
+	wxString newLength = ChoiceInBufferLength->GetString(InBufferLengthSelectionIndex);
+
+	//change the host and switch to correct devices.
+	gPrefs->Write(wxT("/AudioIO/InBufferLength"), newLength);
+	gPrefs->Flush();
+}
+
+void AudioDevicesPanel::OnChoiceInBUfferFillThreshSelect(wxCommandEvent& event)
+{
+	int InBufferThreshSelectionIndex = ChoiceInBUfferFillThresh->GetSelection();
+
+	wxString newThresh = ChoiceInBUfferFillThresh->GetString(InBufferThreshSelectionIndex);
+
+	//change the host and switch to correct devices.
+	gPrefs->Write(wxT("/AudioIO/InBufferThreshold"), newThresh);
+	gPrefs->Flush();
+}
+
+void AudioDevicesPanel::OnChoiceOutBufferLengthSelect(wxCommandEvent& event)
+{
+	int OutBufferLengthSelectionIndex = ChoiceOutBufferLength->GetSelection();
+
+	wxString newLength = ChoiceOutBufferLength->GetString(OutBufferLengthSelectionIndex);
+
+	//change the host and switch to correct devices.
+	gPrefs->Write(wxT("/AudioIO/OutBufferLength"), newLength);
+	gPrefs->Flush();
+}
+
+void AudioDevicesPanel::OnChoiceOutBUfferFillThreshSelect(wxCommandEvent& event)
+{
+	int OutBufferThreshSelectionIndex = ChoiceOutBUfferFillThresh->GetSelection();
+
+	wxString newThresh = ChoiceInBUfferFillThresh->GetString(OutBufferThreshSelectionIndex);
+
+	//change the host and switch to correct devices.
+	gPrefs->Write(wxT("/AudioIO/OutBufferThreshold"), newThresh);
+	gPrefs->Flush();
+}
+
+void AudioDevicesPanel::PopulateDevicesChoices(bool handleChanges)
 {
 	//read what is the current selected host
 	int hostSelectionIndex = ChoiceHost->GetCurrentSelection();
@@ -551,7 +780,7 @@ void AudioDevicesPanel::PopulateDevicesChoices()
 
 	//////////////////////////////////////////////////////////////////////////////
 	// input devices
-	const std::vector<ADeviceMap> &inMaps = ADevicesManager::Instance()->GetInputDeviceMaps();	
+	const std::vector<ADeviceMap> &inMaps = ADevicesManager::Instance()->GetInputDeviceMaps();
 	ChoiceInputDevice->Clear();
 
 	// Repopulate the Input device list available to the user
@@ -572,14 +801,14 @@ void AudioDevicesPanel::PopulateDevicesChoices()
 	if (itemIdx != wxNOT_FOUND)
 	{
 		ChoiceInputDevice->SetSelection(itemIdx);
-		HandleInputDevSelection(itemIdx);// TextCtrlInChannels->SetValue(prefInDevCh);
-	}	
+		HandleInputDevSelection(itemIdx, handleChanges);// TextCtrlInChannels->SetValue(prefInDevCh);
+	}
 	else
 	{
 		ChoiceInputDevice->SetSelection(0);
-		HandleInputDevSelection(0);
+		HandleInputDevSelection(0, handleChanges);
 	}
-	
+
 	//////////////////////////////////////////////////////////////////////
 	// output devices
 	const std::vector<ADeviceMap> &outMaps = ADevicesManager::Instance()->GetOutputDeviceMaps();
@@ -605,12 +834,12 @@ void AudioDevicesPanel::PopulateDevicesChoices()
 	if (itemIdx != wxNOT_FOUND)
 	{
 		ChoiceOutputDevice->SetSelection(itemIdx);
-		HandleOutputDevSelection(itemIdx); //TextCtrlOutChannels->SetValue(prefOutDevCh);
+		HandleOutputDevSelection(itemIdx, handleChanges); //TextCtrlOutChannels->SetValue(prefOutDevCh);
 	}
 	else
 	{
 		ChoiceOutputDevice->SetSelection(0);
-		HandleOutputDevSelection(0);
+		HandleOutputDevSelection(0, handleChanges);
 	}
 }
 
@@ -621,8 +850,8 @@ void AudioDevicesPanel::OnChoiceInputDeviceSelect(wxCommandEvent& event)
 	HandleInputDevSelection(devSelectionIndex);
 }
 
-void 
-AudioDevicesPanel::HandleInputDevSelection(int selIdx)
+void
+AudioDevicesPanel::HandleInputDevSelection(int selIdx, bool checkSR)
 {
 	if( selIdx < 0 )
 		selIdx = ChoiceInputDevice->GetSelection();
@@ -650,7 +879,7 @@ AudioDevicesPanel::HandleInputDevSelection(int selIdx)
 	gPrefs->Write(wxT("/AudioIO/InputDevName"), devIn);
 	gPrefs->Write(wxT("/AudioIO/InputDevChans"), nCh);
 	gPrefs->Flush();
-	
+
 	mNumInputChannels = nCh;
 	wxString nChTxt;
 	nChTxt.Printf(wxT("%d"), nCh);
@@ -660,8 +889,9 @@ AudioDevicesPanel::HandleInputDevSelection(int selIdx)
 	BuildTestUI();
 
 	//check for compatible rates for both devices
-	CheckCompatibleSampleRates();
-	
+	if(checkSR)
+		CheckCompatibleSampleRates();
+
 	//update the channel spin control on the FFT panel
 	ConfigureChannelSpin();
 }
@@ -674,7 +904,7 @@ void AudioDevicesPanel::OnChoiceOutputDeviceSelect(wxCommandEvent& event)
 }
 
 void
-AudioDevicesPanel::HandleOutputDevSelection(int selIdx)
+AudioDevicesPanel::HandleOutputDevSelection(int selIdx, bool checkSR)
 {
 	if (selIdx < 0)
 		selIdx = ChoiceOutputDevice->GetSelection();
@@ -711,7 +941,8 @@ AudioDevicesPanel::HandleOutputDevSelection(int selIdx)
 	//Rebuild the metering UI to handle max channels
 	BuildTestUI();
 
-	CheckCompatibleSampleRates();
+	if (checkSR)
+		CheckCompatibleSampleRates();
 }
 
 void AudioDevicesPanel::OnButtonScanAudioSysClick(wxCommandEvent& event)
@@ -736,7 +967,7 @@ void AudioDevicesPanel::CheckCompatibleSampleRates()
 		for (size_t j = 0; j < noSupportedOutRates; j++)
 		{
 			double outRate = mSupportedOutputSRates[j];
-		
+
 			if (outRate == inRate)
 				commonSRates.push_back(outRate);
 
@@ -759,7 +990,7 @@ void AudioDevicesPanel::CheckCompatibleSampleRates()
 
 	ChoiceSystemSampleRate->Clear();
 	ChoiceSystemSampleRate->Append(SRArray);
-	
+
 	UpdateSRateChoice();
 }
 
@@ -774,7 +1005,7 @@ void AudioDevicesPanel::UpdateSRateChoice()
 	else
 	{
 		ChoiceSystemSampleRate->SetSelection(0);
-		//gPrefs->Write(wxT("/AudioIO/AudioSRate"), ChoiceSystemSampleRate->GetString(0));
+		gPrefs->Write(wxT("/AudioIO/AudioSRate"), ChoiceSystemSampleRate->GetString(0));
 	}
 }
 
@@ -799,7 +1030,7 @@ void AudioDevicesPanel::OnButtonDevTestStopClick(wxCommandEvent& event)
 	StopCalibration();
 }
 
-void 
+void
 AudioDevicesPanel::StartCalibration()
 {
 	mAudioTestStarted = true;
@@ -810,17 +1041,17 @@ AudioDevicesPanel::StartCalibration()
 	TimerAudioMonitor.Start(50, false);
 }
 
-void 
+void
 AudioDevicesPanel::StopCalibration()
 {
 	TimerAudioMonitor.Stop();
-	
+
 	if(mVuMeterIn)
 		mVuMeterIn->Reset();
 
 	if(mVuMeterOut)
 		mVuMeterOut->Reset();
-	
+
 	mAudioTestStarted = false;
 	ButtonDevTestStop->enable(false);
 	ButtonDevTestStart->enable(true);
@@ -913,6 +1144,11 @@ void AudioDevicesPanel::EnableSelectionTools(bool enabled)
 	TextCtrlInChannels->Enable(enabled);
 	TextCtrlOutChannels->Enable(enabled);
 	ButtonScanAudioSys->enable(enabled);
+	ChoiceFrameSize->Enable(enabled);
+	ChoiceInBUfferFillThresh->Enable(enabled);
+	ChoiceInBufferLength->Enable(enabled);
+	ChoiceOutBUfferFillThresh->Enable(enabled);
+	ChoiceOutBufferLength->Enable(enabled);
 }
 
 void AudioDevicesPanel::OnTimerAudioMonitorTrigger(wxTimerEvent& event)
@@ -942,7 +1178,7 @@ void AudioDevicesPanel::OnTimerAudioMonitorTrigger(wxTimerEvent& event)
 				StaticTextChPkLvl->SetBackgroundColour(wxColour(255, 200, 200, 255));
 				StaticTextCalibInstructions->SetBackgroundColour(wxColour(255, 200, 200, 255));
 			}
-			else 
+			else
 			{
 				StaticTextChPkLvl->SetBackgroundColour(wxColour(210, 210, 210, 255));
 				StaticTextCalibInstructions->SetBackgroundColour(wxColour(210, 210, 210, 255));
@@ -1151,3 +1387,4 @@ void AudioDevicesPanel::OnChoice(wxCommandEvent &event)
 {
 	wxObject *eventObject = event.GetEventObject();
 }
+

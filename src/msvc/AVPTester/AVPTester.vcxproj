@@ -200,7 +200,6 @@
     <ClCompile Include="..\..\AudioDevicesPanel.cpp" />
     <ClCompile Include="..\..\AudioIO\AudioEngine.cpp" />
     <ClCompile Include="..\..\AudioIO\LevelAnalyser.cpp" />
-    <ClCompile Include="..\..\AudioIO\pablio\pablio.c" />
     <ClCompile Include="..\..\AudioIO\ParametersQueue.cpp" />
     <ClCompile Include="..\..\AVPTesterApp.cpp" />
     <ClCompile Include="..\..\AVPTesterMain.cpp" />
@@ -242,7 +241,6 @@
     <ClInclude Include="..\..\AudioDevicesPanel.h" />
     <ClInclude Include="..\..\AudioIO\AudioEngine.h" />
     <ClInclude Include="..\..\AudioIO\LevelAnalyser.h" />
-    <ClInclude Include="..\..\AudioIO\pablio\pablio.h" />
     <ClInclude Include="..\..\AudioIO\ParametersQueue.h" />
     <ClInclude Include="..\..\AudioIO\ProcessParams.h" />
     <ClInclude Include="..\..\AVPTesterApp.h" />

@@ -27,7 +27,7 @@ THDNoise::analyseSignal(wxXmlNode* testDescriptionNode)
 	if (mRespFile)
 	{
 		//find segments in file
-		std::vector<size_t> onsets = getOnsets(mRespFile, mSelectedChannel);
+		std::vector<size_t> onsets = getOnsets(mRespFile, mSelectedChannel, false);
 
 		if (onsets.size() > 0)
 		{

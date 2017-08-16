@@ -36,7 +36,8 @@ class AudioDevicesPanel: public wxPanel
 
 		void PopulateAll();
 		void PopulateHostsChoices();
-		void PopulateDevicesChoices();
+		void PopulateBufferingChoices();
+		void PopulateDevicesChoices( bool handleChanges = true);
 
 		void UpdateSRateChoice();
 
@@ -54,6 +55,7 @@ class AudioDevicesPanel: public wxPanel
 		wxPanel* PanelPlayback;
 		wxStaticText* StaticTextDevTestTitle;
 		GButton* ButtonOutGainDwn;
+		wxChoice* ChoiceInBUfferFillThresh;
 		awohSpin* SpinRefCh;
 		GButton* ButtonDevTestStop;
 		wxPanel* Panel1RecInR;
@@ -61,34 +63,41 @@ class AudioDevicesPanel: public wxPanel
 		GButton* ButtonDevTestStart;
 		awohSpin* SpinFFTLen;
 		wxStaticText* StaticTextInHosts;
+		wxStaticText* StaticTextInBufFillThresh;
 		wxStaticText* StaticTextCalibInstructions;
 		wxStaticText* StaticTextChPkLvl;
 		wxStaticText* StaticTextLineUp;
 		wxStaticText* StaticTextGainTtl;
 		RimPanel* PanelDevTest;
 		wxTextCtrl* TextCtrlOutChannels;
+		wxStaticText* StaticTextOutBufFillThresh;
 		wxStaticText* StaticTextOutDevices;
 		wxStaticText* StaticTextInDevices;
 		RimPanel* PanelPBInL;
 		wxTimer TimerAudioMonitor;
 		wxStaticText* StaticTextSysSampleRate;
 		wxStaticText* StaticTextOutGain;
+		wxPanel* PanelIOBuffering;
 		wxStaticText* StaticTextInChannels;
 		wxStaticText* StaticTextPBStreamTTL;
 		RimPanel* PanelHosts;
 		RimPanel* PanelFFTCtrls;
 		wxBoxSizer* BoxSizerRecInL;
 		RimPanel* PanelSysGenSettings;
+		wxStaticText* StaticTextOutBufferLength;
 		wxChoice* ChoiceSystemSampleRate;
 		RimPanel* PanelRecInL;
 		wxBoxSizer* BoxSizerTest;
 		wxBoxSizer* BoxSizerRecording;
 		wxStaticText* StaticTextRecStreamTTL;
+		wxStaticText* StaticTextInBufferLength;
 		GButton* ButtonPlotReset;
+		wxChoice* ChoiceOutBufferLength;
 		GButton* ButtonOutGainUp;
 		wxStaticText* StaticTextRTAAvg;
 		wxStaticText* StaticTextOutChannels;
 		RimPanel* PanelFFTPlot;
+		wxChoice* ChoiceOutBUfferFillThresh;
 		mpWindow* mRTAMagPLot;
 		wxChoice* ChoiceInputDevice;
 		RimPanel* PanelChannelLevels;
@@ -99,9 +108,12 @@ class AudioDevicesPanel: public wxPanel
 		wxBoxSizer* BoxSizerMonitor;
 		wxChoice* ChoiceOutputDevice;
 		wxTextCtrl* TextCtrlInChannels;
+		wxStaticText* StaticTextFrameSize;
 		GButton* ButtonResetLTA;
 		awohSpin* SpinRTAvg;
+		wxChoice* ChoiceInBufferLength;
 		RimPanel* PanelTest;
+		wxChoice* ChoiceFrameSize;
 		wxChoice* ChoiceHost;
 		wxBoxSizer* BoxSizerPBInL;
 		//*)
@@ -115,6 +127,17 @@ class AudioDevicesPanel: public wxPanel
 		static const long ID_STATICTEXT_LINE_UP;
 		static const long ID_BUTTON_SCAN_AUDIO_SYS;
 		static const long ID_PANEL_SYS_GEN_SET;
+		static const long ID_STATICTEXT_FRAMESIZE;
+		static const long ID_CHOICE_FRAME_SIZE;
+		static const long ID_STATICTEXT_INBUFFER_LENGTH;
+		static const long ID_CHOICE_INBUFFER_LEN;
+		static const long ID_STATICTEXT_INBUFFER_FILL_THRESh;
+		static const long ID_CHOICE_INBUFFER_FILL_THRESH;
+		static const long ID_STATICTEXT_OUTBUFFER_LENGTH;
+		static const long ID_CHOICE_OUTBUFFER_LEN;
+		static const long ID_STATICTEXT_OUTBUFFER_FILL_THRESh;
+		static const long ID_CHOICE_OUTBUFFER_FILL_THRESH;
+		static const long ID_PANEL_IO_BUFFERING;
 		static const long ID_STATICTEXT_IN_HOSTS;
 		static const long ID_CHOICE_HOST;
 		static const long ID_STATICTEXT_SYS_SRATE;
@@ -180,6 +203,11 @@ class AudioDevicesPanel: public wxPanel
 		void OnButtonOutGainDwnClick(wxCommandEvent& event);
 		void OnButtonResetLTAClick(wxCommandEvent& event);
 		void OnButtonPlotResetClick(wxCommandEvent& event);
+		void OnChoiceFrameSizeSelect(wxCommandEvent& event);
+		void OnChoiceInBufferLengthSelect(wxCommandEvent& event);
+		void OnChoiceInBUfferFillThreshSelect(wxCommandEvent& event);
+		void OnChoiceOutBufferLengthSelect(wxCommandEvent& event);
+		void OnChoiceOutBUfferFillThreshSelect(wxCommandEvent& event);
 		//*)
 		void OnSpinRTAvg(awohSpinEvent& event);
 		void OnSpinFFTLength(awohSpinEvent& event);
@@ -189,8 +217,8 @@ class AudioDevicesPanel: public wxPanel
 
 		DECLARE_EVENT_TABLE()
 
-		void HandleInputDevSelection(int selIdx);
-		void HandleOutputDevSelection(int selIdx);
+		void HandleInputDevSelection(int selIdx, bool checkSR = true);
+		void HandleOutputDevSelection(int selIdx, bool checkSR = true);
 
 		void CheckCompatibleSampleRates();
 

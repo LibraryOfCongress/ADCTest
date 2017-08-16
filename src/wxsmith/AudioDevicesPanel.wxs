@@ -41,6 +41,198 @@
 				<border>5</border>
 			</object>
 			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_IO_BUFFERING" variable="PanelIOBuffering" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerIOBuffering" member="no">
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerFrameSize" member="no">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT_FRAMESIZE" variable="StaticTextFrameSize" member="yes">
+										<label>processing frame size</label>
+										<size>150,-1</size>
+									</object>
+									<flag>wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>4</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxChoice" name="ID_CHOICE_FRAME_SIZE" variable="ChoiceFrameSize" member="yes">
+										<content>
+											<item>64</item>
+											<item>128</item>
+											<item>256</item>
+											<item>512</item>
+											<item>1024</item>
+											<item>2048</item>
+											<item>4096</item>
+											<item>8192</item>
+											<item>16384</item>
+										</content>
+										<size>150,-1</size>
+										<handler function="OnChoiceFrameSizeSelect" entry="EVT_CHOICE" />
+									</object>
+									<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>1</border>
+						</object>
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>1</border>
+							<option>1</option>
+							<size>15,-1</size>
+						</object>
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerInBufferSize" member="no">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT_INBUFFER_LENGTH" variable="StaticTextInBufferLength" member="yes">
+										<label>input buffering (ms)</label>
+										<size>150,-1</size>
+									</object>
+									<flag>wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>4</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxChoice" name="ID_CHOICE_INBUFFER_LEN" variable="ChoiceInBufferLength" member="yes">
+										<content>
+											<item>125</item>
+											<item>250</item>
+											<item>500</item>
+											<item>750</item>
+											<item>1000</item>
+											<item>1250</item>
+											<item>1500</item>
+											<item>1750</item>
+											<item>2000</item>
+										</content>
+										<size>150,-1</size>
+										<handler function="OnChoiceInBufferLengthSelect" entry="EVT_CHOICE" />
+									</object>
+									<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>1</border>
+						</object>
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerInBufferThresh" member="no">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT_INBUFFER_FILL_THRESh" variable="StaticTextInBufFillThresh" member="yes">
+										<label>input fill threshold (%)</label>
+										<size>150,-1</size>
+									</object>
+									<flag>wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>4</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxChoice" name="ID_CHOICE_INBUFFER_FILL_THRESH" variable="ChoiceInBUfferFillThresh" member="yes">
+										<content>
+											<item>10</item>
+											<item>20</item>
+											<item>25</item>
+											<item>30</item>
+											<item>40</item>
+											<item>50</item>
+											<item>60</item>
+											<item>75</item>
+											<item>80</item>
+											<item>90</item>
+										</content>
+										<size>150,-1</size>
+										<handler function="OnChoiceInBUfferFillThreshSelect" entry="EVT_CHOICE" />
+									</object>
+									<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>1</border>
+						</object>
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>1</border>
+							<option>1</option>
+							<size>15,-1</size>
+						</object>
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerOutBufferSize" member="no">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT_OUTBUFFER_LENGTH" variable="StaticTextOutBufferLength" member="yes">
+										<label>output buffering (ms)</label>
+										<size>150,-1</size>
+									</object>
+									<flag>wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>4</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxChoice" name="ID_CHOICE_OUTBUFFER_LEN" variable="ChoiceOutBufferLength" member="yes">
+										<content>
+											<item>125</item>
+											<item>250</item>
+											<item>500</item>
+											<item>750</item>
+											<item>1000</item>
+											<item>1250</item>
+											<item>1500</item>
+											<item>1750</item>
+											<item>2000</item>
+										</content>
+										<size>150,-1</size>
+										<handler function="OnChoiceOutBufferLengthSelect" entry="EVT_CHOICE" />
+									</object>
+									<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>1</border>
+						</object>
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizerOutBufferThresh" member="no">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT_OUTBUFFER_FILL_THRESh" variable="StaticTextOutBufFillThresh" member="yes">
+										<label>output fill threshold (%)</label>
+										<size>150,-1</size>
+									</object>
+									<flag>wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>4</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxChoice" name="ID_CHOICE_OUTBUFFER_FILL_THRESH" variable="ChoiceOutBUfferFillThresh" member="yes">
+										<content>
+											<item>10</item>
+											<item>20</item>
+											<item>25</item>
+											<item>30</item>
+											<item>40</item>
+											<item>50</item>
+											<item>60</item>
+											<item>75</item>
+											<item>80</item>
+											<item>90</item>
+										</content>
+										<size>150,-1</size>
+										<handler function="OnChoiceOutBUfferFillThreshSelect" entry="EVT_CHOICE" />
+									</object>
+									<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>1</border>
+						</object>
+					</object>
+				</object>
+				<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>5</border>
+			</object>
+			<object class="sizeritem">
 				<object class="wxPanel" name="ID_PANEL_HOSTS" subclass="RimPanel" variable="PanelHosts" member="yes">
 					<style>wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE</style>
 					<object class="wxBoxSizer" variable="BoxSizerHosts" member="no">
@@ -87,7 +279,7 @@
 									<border>5</border>
 								</object>
 							</object>
-							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
 							<border>1</border>
 						</object>
 						<object class="spacer">

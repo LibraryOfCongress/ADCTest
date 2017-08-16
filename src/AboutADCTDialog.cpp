@@ -1,4 +1,5 @@
 #include "AboutADCTDialog.h"
+#include "System\Prefs.h"
 
 //(*InternalHeaders(AboutADCTDialog)
 #include <wx/font.h>
@@ -54,9 +55,11 @@ AboutADCTDialog::AboutADCTDialog(wxWindow* parent,wxWindowID id,const wxPoint& p
 	Center();
 	//*)
 
+	wxString version;
+	version.Printf(wxT("ADCTest Version %d"), RELEASE_VERSION);
 	wxString licMsg;
-	licMsg =  wxT("ADCTest Version 1.0.2 \nRelease date 22-07-2017\n\n");
-	licMsg += wxT("ADCTest license\n\nThis code was created in 2017 for the Library of Congress and the other federal government agencies participating in the Federal Agencies Digitization Guidelines Initiative and it is in the public domain.\n\nCopyright (C) 2017 Audio Visual Preservation Services, Inc.\ninfo@avpreserve.com");
+	licMsg =  version + wxT("\nRelease date 15-08-2017\n\n");
+	licMsg += wxT("ADCTest license\n\nThis code was created in 2017 for the Library of Congress and the other federal government agencies participating in the Federal Agencies Digitization Guidelines Initiative and it is in the public domain.\n");
 	licMsg += wxT("\n\nThis software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.\nPermission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions :\nThe origin of this software must not be misrepresented; you must not claim that you wrote the original software.If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.\nAltered source versions must be plainly marked as such, and must not be misrepresented as being the original software.\nThis notice may not be removed or altered from any source distribution.");
 	licMsg += wxT("\n\nThe following third party libraries are used in this application: \n-- wxWidgets version 3.1.0 \n-- PortAudio v1.9\n-- Libsndfile ver 1.0.24");
 	licMsg += wxT("\n\nThe following third party code is used in this application: \n-- Kiss FFT ver. 1.3.0 \n-- wxMathPlot \n-- ASIO SDK ver 2.3");

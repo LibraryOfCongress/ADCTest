@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ADCTest"
-#define MyAppVersion "1.0.2"
+#define MyAppVersion "1.1.0"
 #define MyAppPublisher "Audiovisual Preservation Solutions, Inc."
 #define MyAppURL "https://www.avpreserve.com/"
 #define MyAppExeName "ADCTest.exe"

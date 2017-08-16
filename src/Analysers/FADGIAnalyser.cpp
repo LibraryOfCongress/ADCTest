@@ -129,8 +129,8 @@ FADGIAnalyser::getOnsets(SNDFILE* afile, int channelIndex, bool debug)
 	while (count < mRespFileFrames)
 	{
 		sf_count_t read = sf_readf_float(afile, windowBuffer, mDetectionWLen);
-		int point = locator->ProcesSignal(windowBuffer, channelIndex, mDetectionWLen);
 
+		int point = locator->ProcesSignal(windowBuffer, channelIndex, mDetectionWLen);
 
 		if (debug) {
 			for (size_t i = 0; i < mDetectionWLen; i++)
