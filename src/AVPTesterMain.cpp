@@ -1,12 +1,3 @@
-/***************************************************************
- * Name:      AVPTesterMain.cpp
- * Purpose:   Code for Application Frame
- * Author:    clandone (administrator@aworldofhertz.com)
- * Created:   2017-01-11
- * Copyright: clandone (www.aworldofhertz.com)
- * License:
- **************************************************************/
-
 #include "AVPTesterMain.h"
 #include <wx/msgdlg.h>
 #include <wx/listctrl.h>

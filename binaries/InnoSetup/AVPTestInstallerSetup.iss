@@ -37,6 +37,8 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "..\ADCTest.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\default.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\userguide.pdf"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\License.MD.rtf"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\UI\*"; DestDir: "{app}\UI"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

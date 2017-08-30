@@ -556,7 +556,7 @@ void mpFXY::Plot(wxDC & dc, mpWindow & w)
 								c1 = minYpx;
 							}
 							if (c1 > maxYpx) {
-								x1 = x1;//CLANDONE (int)(((float)(maxYpx - c0))/((float)(c1 - c0))*(x1-x0)) + x0;
+								x1 = x1;
 								c1 = maxYpx;
 							}
 						}
