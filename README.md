@@ -1,6 +1,6 @@
 # ADCTest
 
-ADCTest was created in 2017 by AVPreserve (www.avpreserve.com), and developed by Christian Landone, for the Library of Congress and the other federal government agencies participating in the Federal Agencies Digitization Guidelines Initiative and it is in the public domain.
+ADCTest was created in 2017 by AVPreserve (www.avpreserve.com), and developed by Christian Landone, for the Library of Congress and the other federal government agencies participating in the Federal Agencies Digital Guidelines Initiative and it is in the public domain.
 
 This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
 
