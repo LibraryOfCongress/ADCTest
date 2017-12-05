@@ -43,7 +43,7 @@ SingleSineToneGenerator::setParameters( wxXmlNode* paramsNode )
 	mTransientTime = 250;
 	mBurstIntervalTime = 250;
 	mSignalLevel = 0;
-	mSelectedChannelIdx = 0;
+	mSelectedChannelIdx = -1;
 
 	//get parameters from xml node
 	wxXmlNode* parameterNode = mParamsNode->GetChildren();
@@ -51,7 +51,7 @@ SingleSineToneGenerator::setParameters( wxXmlNode* paramsNode )
 	{
 		wxString pName = parameterNode->GetAttribute(wxT("name"));
 
-		if (pName == wxT("chidx"))
+		if (pName == wxT("refchidx"))
 		{
 			wxString value = parameterNode->GetAttribute(wxT("value"));
 			double dChIdx;

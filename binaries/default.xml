@@ -620,15 +620,16 @@
     <test id="22" name="user_action" alias="change channel setup for crosstalk test" enabled="true">
       <paramters>
         <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
-        <parameter name="signal" type="string" value="pause" units="" alias="disconnect right ch and place a shorting plug" editable="false"/>
+        <parameter name="signal" type="string" value="pause" units="" alias="disconnect left ch and place a shorting plug" editable="false"/>
       </paramters>
     </test>
-    <test id="23" name="xtalk_20_left_ch" alias="crosstalk from left ch - 20hz" enabled="true">
+    <test id="23" name="xtalk_20_left_ch" alias="crosstalk to left ch - 20hz" enabled="true">
       <paramters>
         <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="xtalk" units="" alias="xtalk analyser class" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
+        <parameter name="refchidx" type="int" value="1" units="" alias="stimulus channel" editable="true"/>
         <parameter name="tonefreq" type="double" value="20" units="Hz" alias="tone frequency" editable="true"/>
         <parameter name="tonelevel" type="double" value="-1" units="dB" alias="tone level" editable="true"/>
         <parameter name="detectionlevel" type="double" value="-150" units="dB" alias="signal detection threshold" editable="true"/>
@@ -648,12 +649,13 @@
         <spec name="xtalk_log" type="double" value="-140" units="dB" criterion="lessthan"/>
       </performancespecs>
     </test>
-    <test id="24" name="xtalk_997_left_ch" alias="crosstalk from left ch - 997hz" enabled="true">
+    <test id="24" name="xtalk_997_left_ch" alias="crosstalk to left ch - 997hz" enabled="true">
       <paramters>
         <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="xtalk" units="" alias="xtalk analyser class" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
+        <parameter name="refchidx" type="int" value="1" units="" alias="stimulus channel" editable="true"/>
         <parameter name="tonefreq" type="double" value="997" units="Hz" alias="tone frequency" editable="true"/>
         <parameter name="tonelevel" type="double" value="-1" units="dB" alias="tone level" editable="true"/>
         <parameter name="detectionlevel" type="double" value="-150" units="dB" alias="signal detection threshold" editable="true"/>
@@ -673,12 +675,13 @@
         <spec name="xtalk_log" type="double" value="-120" units="dB" criterion="lessthan"/>
       </performancespecs>
     </test>
-    <test id="25" name="xtalk_20k_left_ch" alias="crosstalk from left ch - 20Khz" enabled="true">
+    <test id="25" name="xtalk_20k_left_ch" alias="crosstalk to left ch - 20Khz" enabled="true">
       <paramters>
         <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="xtalk" units="" alias="xtalk analyser class" editable="false"/>
         <parameter name="chidx" type="int" value="0" units="" alias="test channel" editable="true"/>
+        <parameter name="refchidx" type="int" value="1" units="" alias="stimulus channel" editable="true"/>
         <parameter name="tonefreq" type="double" value="20000" units="Hz" alias="tone frequency" editable="true"/>
         <parameter name="tonelevel" type="double" value="-1" units="dB" alias="tone level" editable="true"/>
         <parameter name="detectionlevel" type="double" value="-150" units="dB" alias="signal detection threshold" editable="true"/>
@@ -701,15 +704,16 @@
     <test id="26" name="user_action" alias="change channel setup for crosstalk test" enabled="true">
       <paramters>
         <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
-        <parameter name="signal" type="string" value="pause" units="" alias="disconnect left ch and place a shorting plug" editable="false"/>
+        <parameter name="signal" type="string" value="pause" units="" alias="disconnect right ch and place a shorting plug" editable="false"/>
       </paramters>
     </test>
-    <test id="27" name="xtalk_20_right_ch" alias="crosstalk from right ch - 20hz" enabled="true">
+    <test id="27" name="xtalk_20_right_ch" alias="crosstalk to right ch - 20hz" enabled="true">
       <paramters>
         <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="xtalk" units="" alias="xtalk analyser class" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
+        <parameter name="refchidx" type="int" value="0" units="" alias="stimulus channel" editable="true"/>
         <parameter name="tonefreq" type="double" value="20" units="Hz" alias="tone frequency" editable="true"/>
         <parameter name="tonelevel" type="double" value="-1" units="dB" alias="tone level" editable="true"/>
         <parameter name="detectionlevel" type="double" value="-150" units="dB" alias="signal detection threshold" editable="true"/>
@@ -729,12 +733,13 @@
         <spec name="xtalk_log" type="double" value="-140" units="dB" criterion="lessthan"/>
       </performancespecs>
     </test>
-    <test id="28" name="xtalk_997_right_ch" alias="crosstalk from right ch - 997hz" enabled="true">
+    <test id="28" name="xtalk_997_right_ch" alias="crosstalk to right ch - 997hz" enabled="true">
       <paramters>
         <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="xtalk" units="" alias="xtalk analyser class" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
+        <parameter name="refchidx" type="int" value="0" units="" alias="stimulus channel" editable="true"/>
         <parameter name="tonefreq" type="double" value="997" units="Hz" alias="tone frequency" editable="true"/>
         <parameter name="tonelevel" type="double" value="-1" units="dB" alias="tone level" editable="true"/>
         <parameter name="detectionlevel" type="double" value="-150" units="dB" alias="signal detection threshold" editable="true"/>
@@ -754,12 +759,13 @@
         <spec name="xtalk_log" type="double" value="-120" units="dB" criterion="lessthan"/>
       </performancespecs>
     </test>
-    <test id="29" name="xtalk_20k_right_ch" alias="crosstalk from right ch - 20Khz" enabled="true">
+    <test id="29" name="xtalk_20k_right_ch" alias="crosstalk to right ch - 20Khz" enabled="true">
       <paramters>
         <parameter name="testype" type="choice" value="normal" options="normal,offline" editable="true"/>
         <parameter name="signal" type="string" value="singlesine" units="" alias="single sine tone" editable="false"/>
         <parameter name="analyser" type="string" value="xtalk" units="" alias="xtalk analyser class" editable="false"/>
         <parameter name="chidx" type="int" value="1" units="" alias="test channel" editable="true"/>
+        <parameter name="refchidx" type="int" value="0" units="" alias="stimulus channel" editable="true"/>
         <parameter name="tonefreq" type="double" value="20000" units="Hz" alias="tone frequency" editable="true"/>
         <parameter name="tonelevel" type="double" value="-1" units="dB" alias="tone level" editable="true"/>
         <parameter name="detectionlevel" type="double" value="-150" units="dB" alias="signal detection threshold" editable="true"/>

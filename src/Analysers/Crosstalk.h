@@ -14,7 +14,9 @@ public:
 
 	int analyseSignal(wxXmlNode* testDescriptionNode);
 
-protected:
+protected:	
+	FreqPoint getMaxLevelInResponse(SNDFILE* afile, std::vector<size_t> &onsets, int channelIndex, float startFreq, float endFreq);
+
 	float calculateCrossTalk( SNDFILE* afile, std::vector<size_t> &onsets, int channelIndex);
 	bool buildReport();
 
@@ -27,5 +29,6 @@ protected:
 	//Result from FFT analysis
 	std::vector<FreqPoint> mFrequencyResponse;
 	std::vector<float> mXTalkResults;
+	float mXTalkValue_Log;
 };
 

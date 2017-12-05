@@ -30,13 +30,13 @@ public:
     /**
      * Construct a windower of the given type.
      */
-    Window(WindowType type, size_t size) : m_type(type), m_size(size) { encache(); }
-    Window(const Window &w) : m_type(w.m_type), m_size(w.m_size) { encache(); }
+    Window(WindowType type, size_t size) : m_type(type), m_size(size) { build(); }
+    Window(const Window &w) : m_type(w.m_type), m_size(w.m_size) { build(); }
     Window &operator=(const Window &w) {
 	if (&w == this) return *this;
 	m_type = w.m_type;
 	m_size = w.m_size;
-	encache();
+	build();
 	return *this;
     }
     virtual ~Window() { delete m_cache; }
@@ -54,11 +54,11 @@ protected:
     size_t m_size;
     T *m_cache;
 
-    void encache();
+    void build();
 };
 
 template <typename T>
-void Window<T>::encache()
+void Window<T>::build()
 {
     size_t n = m_size;
     T *mult = new T[n];
@@ -94,15 +94,13 @@ void Window<T>::encache()
 
 		case BlackmanWindow:
 		for (i = 0; i < n; ++i) {
-			mult[i] = mult[i] * (0.42 - 0.50 * cos(2 * M_PI * i / n)
-					 + 0.08 * cos(4 * M_PI * i / n));
+			mult[i] = mult[i] * (0.42 - 0.50 * cos(2 * M_PI * i / n) + 0.08 * cos(4 * M_PI * i / n));
 		}
 		break;
 
 		case GaussianWindow:
 		for (i = 0; i < n; ++i) {
-			mult[i] = mult[i] * exp((-1.0 / (n*n)) * ((T(2*i) - n) *
-								  (T(2*i) - n)));
+			mult[i] = mult[i] * exp((-1.0 / (n*n)) * ((T(2*i) - n) * (T(2*i) - n)));
 		}
 		break;
 

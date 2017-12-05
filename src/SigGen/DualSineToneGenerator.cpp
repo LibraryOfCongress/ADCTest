@@ -56,7 +56,7 @@ DualSineToneGenerator::setParameters( wxXmlNode* paramsNode )
 			wxString value = parameterNode->GetAttribute(wxT("value"));
 			double dChIdx;
 			value.ToDouble(&dChIdx);
-			mSelectedChannelIdx = (int)dChIdx;
+			mSelectedChannelIdx = -1;// (int)dChIdx;
 		}
 		if (pName == wxT("fftlength"))
 		{
