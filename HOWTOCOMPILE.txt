@@ -1,0 +1,11 @@
+Download Microsoft Visual studio 2015 Community Edition
+
+1) Compile the wxWidgets framework first:
+Open:lib-src\wxWidgets-3.1.0\build\msw\wx_vc14.sln
+Build the Release configuration
+
+2) Compile the AVPTester project:
+Open: \src\msvc\AVPTester\AVPTester.sln
+Build the Release configuration
+
+That should be it!

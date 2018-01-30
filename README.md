@@ -1,2 +1,1 @@
-# ADCTest
-ADCTest is a desktop application, written in C++, that provides provides simple pass-fail reporting for the tests detailed in the FADGI Low Cost ADC Performance Testing Guidelines as well as more detailed results
+# ADCTest was created in 2017 by AVP, formerly AVPreserve (https://www.weareavp.com/), and developed by Christian Landone, for the Library of Congress and the other US federal government agencies participating in the Federal Agencies Digital Guidelines Initiative (FADGI: http://www.digitizationguidelines.gov/).
