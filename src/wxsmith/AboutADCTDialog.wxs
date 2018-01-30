@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="AboutADCTDialog">
+		<title>About FADGI ADCTester</title>
+		<centered>1</centered>
+		<fg>#804040</fg>
+		<bg>#C8C8C8</bg>
+		<pos_arg>1</pos_arg>
+		<size_arg>1</size_arg>
+		<object class="wxBoxSizer" variable="BoxSizerMain" member="no">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_TOP" subclass="RimPanel" variable="PanelTop" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPanelTop" member="no" />
+				</object>
+				<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>5</border>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_BOTTOM" subclass="RimPanel" variable="PanelBottom" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPanelBottom" member="no">
+						<object class="sizeritem">
+							<object class="wxTextCtrl" name="ID_TEXTCTRL_LICENSE" variable="TextCtrlLicense" member="yes">
+								<value>Text</value>
+								<size>300,350</size>
+								<fg>#804040</fg>
+								<bg>#C8C8CD</bg>
+								<font>
+									<size>10</size>
+									<style>normal</style>
+									<weight>bold</weight>
+									<underlined>0</underlined>
+									<family>swiss</family>
+									<face></face>
+								</font>
+								<style>wxTE_MULTILINE|wxTE_READONLY</style>
+							</object>
+							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>5</border>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+		</object>
+	</object>
+</wxsmith>

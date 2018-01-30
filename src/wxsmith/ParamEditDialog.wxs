@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="ParamEditDialog">
+		<title>edit parameter</title>
+		<bg>#C8C8C8</bg>
+		<pos_arg>1</pos_arg>
+		<size_arg>1</size_arg>
+		<object class="wxBoxSizer" variable="BoxSizerMain" member="no">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_TOP" subclass="RimPanel" variable="PanelTop" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPTop" member="no">
+						<object class="sizeritem">
+							<object class="wxStaticText" name="ID_STATICTEXT_PARAM_NAME" variable="StaticTextParamName" member="yes">
+								<label>  parameter name: </label>
+								<size>300,20</size>
+								<fg>#FFFFFF</fg>
+								<bg>#4EB7DF</bg>
+								<font>
+									<size>11</size>
+									<style>normal</style>
+									<weight>bold</weight>
+									<underlined>0</underlined>
+									<family>swiss</family>
+									<face>Arial Narrow</face>
+								</font>
+							</object>
+							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>2</border>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_MID" subclass="RimPanel" variable="PanelMid" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPMid" member="no">
+						<orient>wxVERTICAL</orient>
+						<object class="sizeritem">
+							<object class="wxPanel" name="ID_PANEL_PCHOICE" subclass="RimPanel" variable="PanelChoice" member="yes">
+								<object class="wxBoxSizer" variable="BoxSizerChoice" member="no">
+									<object class="sizeritem">
+										<object class="wxChoice" name="ID_CHOICE_PARAM" variable="ChoiceParam" member="yes">
+											<font>
+												<size>10</size>
+												<style>normal</style>
+												<weight>normal</weight>
+												<underlined>0</underlined>
+												<family>swiss</family>
+												<face>Arial Narrow</face>
+											</font>
+											<handler function="OnChoice1Select" entry="EVT_CHOICE" />
+										</object>
+										<flag>wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+										<border>5</border>
+										<option>1</option>
+									</object>
+								</object>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>2</border>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxPanel" name="ID_PANEL_FILEPATH" subclass="RimPanel" variable="PanelFilePath" member="yes">
+								<object class="wxBoxSizer" variable="BoxSizerPath" member="no">
+									<object class="sizeritem">
+										<object class="wxButton" name="ID_BUTTON_PATH" subclass="GButton" variable="ButtonPath" member="yes">
+											<label>...</label>
+											<size>50,25</size>
+											<handler function="OnButtonPathClick" entry="EVT_BUTTON" />
+										</object>
+										<flag>wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+										<border>5</border>
+									</object>
+									<object class="sizeritem">
+										<object class="wxTextCtrl" name="ID_TEXTCTRL_FILEPATH" variable="TextCtrlFilePath" member="yes">
+											<bg>#DCDCDC</bg>
+											<font>
+												<size>10</size>
+												<style>normal</style>
+												<weight>normal</weight>
+												<underlined>0</underlined>
+												<family>swiss</family>
+												<face>Arial Narrow</face>
+											</font>
+											<style>wxTE_READONLY</style>
+										</object>
+										<flag>wxRIGHT|wxALIGN_LEFT|wxALIGN_TOP</flag>
+										<border>5</border>
+										<option>1</option>
+									</object>
+								</object>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>2</border>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxPanel" name="ID_PANEL_NSUPPORT" subclass="RimPanel" variable="PanelNSupport" member="yes">
+								<object class="wxBoxSizer" variable="BoxSizerNSupported" member="no">
+									<object class="sizeritem">
+										<object class="wxStaticText" name="ID_STATICTEXT_NSUPPORT" variable="StaticTextNSupport" member="yes">
+											<label>editing not supported </label>
+											<size>-1,30</size>
+											<fg>#800000</fg>
+											<bg>#C8C8C8</bg>
+											<font>
+												<size>10</size>
+												<style>normal</style>
+												<weight>normal</weight>
+												<underlined>0</underlined>
+												<family>swiss</family>
+												<face>Arial Narrow</face>
+											</font>
+											<style>wxALIGN_CENTRE|wxNO_BORDER</style>
+										</object>
+										<flag>wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+										<border>5</border>
+										<option>1</option>
+									</object>
+								</object>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>2</border>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>2</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_BOT" subclass="RimPanel" variable="PanelBot" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPBot" member="no">
+						<object class="sizeritem">
+							<object class="wxButton" name="ID_BUTTON_PARAM_OK" subclass="GButton" variable="ButtonParamOK" member="yes">
+								<label>ok</label>
+								<size>100,22</size>
+								<handler function="OnButtonParamOKClick" entry="EVT_BUTTON" />
+							</object>
+							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>2</border>
+						</object>
+						<object class="spacer">
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>2</border>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxButton" name="ID_BUTTON_PARAM_CANCEL" subclass="GButton" variable="ButtonParamCancel" member="yes">
+								<label>cancel</label>
+								<size>100,22</size>
+								<handler function="OnButtonParamCancelClick" entry="EVT_BUTTON" />
+							</object>
+							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
+							<border>2</border>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
+				<border>2</border>
+			</object>
+		</object>
+	</object>
+</wxsmith>
