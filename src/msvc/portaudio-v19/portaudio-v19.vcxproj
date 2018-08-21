@@ -212,7 +212,6 @@ lib /OUT:"$(TargetPath)" "!INTDIR!/*.obj" !LIBS!
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_ringbuffer.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_stream.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\common\pa_trace.c" />
-    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\asio\pa_asio.cpp" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\wmme\pa_win_wmme.c" />
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\dsound\pa_win_ds.c" />

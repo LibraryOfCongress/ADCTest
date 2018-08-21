@@ -102,9 +102,6 @@
     <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c">
       <Filter>Source Files\hostapi\wdmks</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\lib-src\portaudio-v19\src\hostapi\asio\pa_asio.cpp">
-      <Filter>Source Files\hostapi\asio</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\lib-src\portaudio-v19\src\common\pa_allocation.h">
