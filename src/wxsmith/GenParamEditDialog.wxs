@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="GenParamEditDialog">
+		<centered>1</centered>
+		<pos_arg>1</pos_arg>
+		<size_arg>1</size_arg>
+		<object class="wxBoxSizer" variable="BoxSizerMain" member="no">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_TOP" subclass="RimPanel" variable="PanelTop" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPTop" member="no">
+						<orient>wxVERTICAL</orient>
+						<object class="sizeritem">
+							<object class="wxStaticText" name="ID_STATICTEXT_PARAM_NAME" variable="StaticTextParamname" member="yes">
+								<label>   insert name of response file &#x0A; this will be created automatically during the test  </label>
+								<font>
+									<size>10</size>
+									<style>normal</style>
+									<weight>bold</weight>
+									<underlined>0</underlined>
+									<family>swiss</family>
+									<face>Arial Narrow</face>
+								</font>
+								<style>wxALIGN_CENTRE</style>
+							</object>
+							<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+							<border>4</border>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxTextCtrl" name="ID_TEXTCTRL_PARAM_VALUE" variable="TextCtrlParamValue" member="yes">
+								<style>wxTE_NO_VSCROLL</style>
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>4</border>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>4</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_BOTTOM" subclass="RimPanel" variable="PanelBottom" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPanelBottom" member="no">
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND</flag>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxButton" name="ID_BUTTON_PJOK" subclass="GButton" variable="ButtonPJOK" member="yes">
+								<label>ok</label>
+								<size>100,22</size>
+								<handler function="OnButtonPJOKClick" entry="EVT_BUTTON" />
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>4</border>
+						</object>
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND</flag>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxButton" name="ID_BUTTON_PJCANCEL" subclass="GButton" variable="ButtonPJCancel" member="yes">
+								<label>cancel</label>
+								<size>100,22</size>
+								<handler function="OnButtonPJCancelClick" entry="EVT_BUTTON" />
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>4</border>
+						</object>
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND</flag>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>4</border>
+			</object>
+		</object>
+	</object>
+</wxsmith>

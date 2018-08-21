@@ -15,8 +15,8 @@ public:
 	int analyseSignal(wxXmlNode* testDescriptionNode);
 
 protected:
-	float calculateSpIS( SNDFILE* afile, std::vector<size_t> &onsets, int channelIndex);
-	bool buildReport();
+	int calculateSpIS( SNDFILE* afile, std::vector<size_t> &onsets, int channelIndex);
+	int buildReport();
 
 	size_t mFFTLength;
 	size_t mFFTAverages;

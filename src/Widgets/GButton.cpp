@@ -164,7 +164,7 @@ void GButton::setBGColour( unsigned char red, unsigned char green, unsigned char
         mBGColourBottom = 0;
     }
 
-    mBGColourBottom = new wxColour( red-45, green-45, blue-45, alpha );
+    mBGColourBottom = new wxColour( red-35, green-35, blue-35, alpha );
 
     if( mFGColourDisabled )
     {
@@ -172,7 +172,7 @@ void GButton::setBGColour( unsigned char red, unsigned char green, unsigned char
         mFGColourDisabled = 0;
     }
 
-    mFGColourDisabled = new wxColour( red-15, green-15, blue-15, alpha );
+    mFGColourDisabled = new wxColour( red+15, green+15, blue+15, alpha );
 
 
     Refresh();
@@ -259,40 +259,42 @@ void GButton::OnEraseBackground(wxEraseEvent& event)
 //////////////////////////////////////////
 void GButton::OnMouse(wxMouseEvent &event)
 {
-	if(allowHover && hover != true)
-    {
-		hover = true;
-		Refresh();
-	}
-
-	if(event.LeftDown())
+	if (mIsEnabled)
 	{
-		if(allowClick){
-			mClick = true;
+		if (allowHover && hover != true)
+		{
+			hover = true;
+			Refresh();
+		}
+
+		if (event.LeftDown())
+		{
+			if (allowClick) {
+				mClick = true;
+				Refresh();
+			}
+		}
+
+		if (event.LeftUp())
+		{
+			mClick = false;
+			Refresh();
+
+			// Create and event
+			GButtonEvent event(wxEVT_COMMAND_GBUTTON, GetId());
+			event.SetEventObject(this);
+
+			// Send it
+			GetEventHandler()->ProcessEvent(event);
+		}
+
+		if (event.Leaving())
+		{
+			hover = false;
+			mClick = false;
 			Refresh();
 		}
 	}
-
-	if(event.LeftUp())
-	{
-		mClick = false;
-		Refresh();
-
-		// Create and event
-		GButtonEvent event(wxEVT_COMMAND_GBUTTON, GetId());
-		event.SetEventObject(this);
-
-		// Send it
-		GetEventHandler()->ProcessEvent(event);
-	}
-
-	if(event.Leaving())
-	{
-		hover = false;
-		mClick = false;
-		Refresh();
-	}
-
 }
 
 //////////////////////////////////////

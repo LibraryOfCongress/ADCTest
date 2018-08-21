@@ -26,7 +26,7 @@ class StepsFrequencyResponse :public FADGIAnalyser
 		void analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets);
 
 		//build xml report
-		bool buildReport();
+		int buildReport();
 
     private:
 		double mStartFreq;

@@ -77,6 +77,8 @@ public:
 													double baseFreq,
 													int stepsPerOctave,
 													double offset);
+
+	static double stdVar(std::vector<double> &data);
 };
 
 #endif

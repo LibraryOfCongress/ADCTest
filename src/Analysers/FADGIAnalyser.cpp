@@ -4,7 +4,9 @@
 #include "../SigGen/WavFileWriter.h"
 
 FADGIAnalyser::FADGIAnalyser()
-:mParamsNode(NULL)
+:mAudioRoutingNode(NULL)
+,mFileIONode(NULL)
+,mParamsNode(NULL)
 ,mSpecsNode(NULL)
 ,mResultsNode(NULL)
 ,mResponseFile(NULL)
@@ -16,6 +18,7 @@ FADGIAnalyser::FADGIAnalyser()
 ,mBurstIntervalTime(0)
 ,mLogDetectionThreshold(0)
 ,mSelectedChannel(-1)
+,mMaxSigNrgVariance(1e-8)
 {
 	mSeparator = wxT("\\");
 	mTestTitle = wxEmptyString;
@@ -48,8 +51,16 @@ FADGIAnalyser::setParameters(wxXmlNode* testDescriptionNode)
 	while (cNode)
 	{
 		wxString nName = cNode->GetName();
-
-		if (nName == wxT("paramters"))
+		
+		if (nName == wxT("audiorouting"))
+		{
+			mAudioRoutingNode = cNode;
+		}
+		else if (nName == wxT("fileio"))
+		{
+			mFileIONode = cNode;
+		}
+		else if (nName == wxT("config"))
 		{
 			mParamsNode = cNode;
 		}
@@ -65,11 +76,51 @@ FADGIAnalyser::setParameters(wxXmlNode* testDescriptionNode)
 	mIntegrationTime = getTestParameterValue(wxT("inttime"), mParamsNode);
 	mBurstIntervalTime = getTestParameterValue(wxT("bursttime"), mParamsNode);
 	mLogDetectionThreshold = getTestParameterValue(wxT("detectionlevel"), mParamsNode);
-	mSelectedChannel = (int)getTestParameterValue(wxT("chidx"), mParamsNode);
+	mMaxSigNrgVariance = getTestParameterValue(wxT("maxsigdev"), mParamsNode);
+	mFrNrgDev = 0;
+	mSigQualityOK = true;
 
-	mFolderPath = getTestParameterStringValue(wxT("workfolder"), mParamsNode);
-	mResponseFileName = getTestParameterStringValue(wxT("responsefile"), mParamsNode);	
-	mResultsFileName = getTestParameterStringValue(wxT("resultsfile"), mParamsNode);
+	//We are now dealing with mono files now 
+	//test channel selection is now managed by the AudioIO engine
+	mSelectedChannel = 0;// GetSelectedChannel();
+
+	mFolderPath = GetWorkFolderPath();
+	mResponseFileName = GetResponseFileName();
+	mResultsFileName = GetResultsFileName();
+}
+
+int 
+FADGIAnalyser::GetSelectedChannel()
+{
+	double paramValue = 0;
+
+	wxString paramSValue = mAudioRoutingNode->GetAttribute(wxT("response_ch_idx"));
+
+	if (!paramSValue.IsEmpty())
+		paramSValue.ToDouble(&paramValue);
+
+	return (int)paramValue;
+}
+
+wxString 
+FADGIAnalyser::GetWorkFolderPath()
+{
+	wxString res = mFileIONode->GetAttribute(wxT("workfolder"));
+	return res;
+}
+
+wxString 
+FADGIAnalyser::GetResponseFileName()
+{
+	wxString res = mFileIONode->GetAttribute(wxT("responsefile"));
+	return res;
+}
+
+wxString 
+FADGIAnalyser::GetResultsFileName()
+{
+	wxString res = mFileIONode->GetAttribute(wxT("resultsfile"));
+	return res;
 }
 
 SNDFILE* 
@@ -125,7 +176,7 @@ FADGIAnalyser::getOnsets(SNDFILE* afile, int channelIndex, bool debug)
 	}
 
 	float* windowBuffer = new float[mDetectionWLen*mNoChannels];
-	size_t count = 0;
+	size_t count = 0;//sf_seek(afile, mDetectionWLen, SEEK_SET);
 	while (count < mRespFileFrames)
 	{
 		sf_count_t read = sf_readf_float(afile, windowBuffer, mDetectionWLen);
@@ -159,6 +210,33 @@ FADGIAnalyser::getOnsets(SNDFILE* afile, int channelIndex, bool debug)
 	}
 
 	return onsets; 
+}
+
+int
+FADGIAnalyser::getTestOutcome(wxXmlNode* resultsNode, wxString& outcome)
+{
+	outcome = wxT("error: unk");
+	int oVal = TestErrorUnknown;
+
+	if (checkTestSpecs(resultsNode))
+	{
+		outcome = wxT("pass");
+		oVal = TestPass;
+	}
+	else
+	{
+		outcome = wxT("fail");
+		oVal = TestFail;
+	}
+
+	//if signal quality was found to be insufficient, override the result;
+	if(!mSigQualityOK)
+	{
+		outcome = wxT("retest");
+		oVal = TestSigQualityFail;
+	}
+		
+	return oVal;
 }
 
 bool 
@@ -371,4 +449,18 @@ FADGIAnalyser::findMinInRange(float startFreq, float endFreq, std::vector<FreqPo
 	}
 
 	return point;
+}
+
+
+bool
+FADGIAnalyser::checkSignalQuality()
+{
+	bool check = false;
+
+	mFrNrgDev = MathUtilities::stdVar(mFramesEnergy);
+
+	if (mFrNrgDev < mMaxSigNrgVariance)
+		check = true;
+
+	return check;
 }

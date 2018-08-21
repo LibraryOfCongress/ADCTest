@@ -30,12 +30,9 @@ SpIS::analyseSignal(wxXmlNode* testDescriptionNode)
 		{
 			calculateSpIS(mResponseFile, onsets, mSelectedChannel);
 
-			bool testOutcome = buildReport();
+			mSigQualityOK = checkSignalQuality();
 
-			if (testOutcome)
-				result = TestPass;
-			else
-				result = TestFail;
+			result = buildReport();
 		}
 		else
 		{
@@ -52,9 +49,11 @@ SpIS::analyseSignal(wxXmlNode* testDescriptionNode)
 	return result;
 }
 
-float
+int 
 SpIS::calculateSpIS(SNDFILE* afile, std::vector<size_t> &onsets, int channelIndex)
 {
+	int retVal = 0;
+
 	mFFTLength = (size_t)getTestParameterValue(wxT("fftlength"), mParamsNode);
 	mFFTAverages = (size_t)getTestParameterValue(wxT("fftnoavg"), mParamsNode);
 	mNotchBandwidth = getTestParameterValue(wxT("notchbw"), mParamsNode);
@@ -83,6 +82,7 @@ SpIS::calculateSpIS(SNDFILE* afile, std::vector<size_t> &onsets, int channelInde
 	memset(fftMagAcc, 0, sizeof(double)*mFFTLength);
 
 	size_t averagesCounter = 0;
+	mFramesEnergy.clear();
 	while (averagesCounter < mFFTAverages)
 	{
 		sf_count_t read = sf_readf_float(afile, fileBuffer, mFFTLength);
@@ -97,10 +97,15 @@ SpIS::calculateSpIS(SNDFILE* afile, std::vector<size_t> &onsets, int channelInde
 		mRTA->getFDData(channelBuffer, fftMag, dummyPhase, true, false);
 
 		//accumulate for linear averaging
+		//check frame energy
+		double nrg = 0;
 		for (size_t i = 0; i < mFFTBins; i++)
 		{
-			fftMagAcc[i] += (double)fftMag[i];
+			double binVal = (double)fftMag[i];
+			fftMagAcc[i] += binVal;
+			nrg += binVal;
 		}
+		mFramesEnergy.push_back(nrg / (double)mFFTBins);
 
 		averagesCounter++;
 	}
@@ -179,10 +184,10 @@ SpIS::calculateSpIS(SNDFILE* afile, std::vector<size_t> &onsets, int channelInde
 	mMaxSpISLevel_Lin = inhPnt.peakValueLin;
 	mMaxSpISLevel_Log = inhPnt.peakValueLog;
 
-	return 0;// ;
+	return retVal;// ;
 }
 
-bool
+int
 SpIS::buildReport()
 {
 	wxString channelInfo;
@@ -224,6 +229,14 @@ SpIS::buildReport()
 	SpISLoglNode->AddAttribute(wxT("units"), wxT("dB"));
 	metricsNode->AddChild(SpISLoglNode);
 
+	//frame energies
+	wxXmlNode*energiesNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("parameter"));
+	energiesNode->AddAttribute(wxT("name"), wxT("sig_std_var"));
+	paramValueStr.Printf(wxT("%g"), mFrNrgDev);
+	energiesNode->AddAttribute(wxT("value"), paramValueStr);
+	energiesNode->AddAttribute(wxT("units"), wxT(""));
+	metricsNode->AddChild(energiesNode);
+
 	//Add metrics node to data node;
 	dataNode->AddChild(metricsNode);
 
@@ -259,16 +272,10 @@ SpIS::buildReport()
 	resultsNode->AddChild(specNode);
 
 	//check against target performance
-	bool testResultsOK = checkTestSpecs(resultsNode);
+	wxString testResultString;
+	int testResultValue = getTestOutcome(resultsNode, testResultString);
 	wxXmlNode* outcomeNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("testoutcome"));
-	wxString passOrFail;
-
-	if (testResultsOK)
-		passOrFail = wxT("pass");
-	else
-		passOrFail = wxT("fail");
-
-	outcomeNode->AddAttribute(wxT("value"), passOrFail);
+	outcomeNode->AddAttribute(wxT("value"), testResultString);
 	resultsNode->AddChild(outcomeNode);
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -277,7 +284,5 @@ SpIS::buildReport()
 
 	delete resultsNode;
 
-	return testResultsOK;
-
-	return true;
+	return testResultValue;
 }

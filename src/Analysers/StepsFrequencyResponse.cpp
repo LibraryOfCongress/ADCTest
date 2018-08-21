@@ -31,12 +31,9 @@ StepsFrequencyResponse::analyseSignal(wxXmlNode* testDescriptionNode)
 		{
 			analyseSegments(mRespFile, onsets);
 
-			bool testOutcome = buildReport();
+			mSigQualityOK = true;// checkSignalQuality();
 
-			if (testOutcome)
-				result = TestPass;
-			else
-				result = TestFail;
+			result = buildReport();
 		}
 		else
 		{
@@ -117,7 +114,7 @@ StepsFrequencyResponse::analyseSegments(SNDFILE* afile, std::vector<size_t> &ons
 	mFreqRespDev =fabs(20 * log10(frDv));
 }
 
-bool
+int
 StepsFrequencyResponse::buildReport()
 {
 	wxString channelInfo;
@@ -209,17 +206,12 @@ StepsFrequencyResponse::buildReport()
 	resultsNode->AddChild(specNode);
 
 	//check against target performance
-	bool testResultsOK = checkTestSpecs(resultsNode);
+	wxString testResultString;
+	int testResultValue = getTestOutcome(resultsNode, testResultString);
 	wxXmlNode* outcomeNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("testoutcome"));
-	wxString passOrFail;
-
-	if (testResultsOK)
-		passOrFail = wxT("pass");
-	else
-		passOrFail = wxT("fail");
-
-	outcomeNode->AddAttribute(wxT("value"), passOrFail);
+	outcomeNode->AddAttribute(wxT("value"), testResultString);
 	resultsNode->AddChild(outcomeNode);
+
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//serialise report to file
@@ -227,5 +219,5 @@ StepsFrequencyResponse::buildReport()
 
 	delete resultsNode;
 
-	return testResultsOK;
+	return testResultValue;
 }

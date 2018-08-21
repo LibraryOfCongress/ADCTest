@@ -25,6 +25,7 @@ enum FADGIAnalysisOutcome {
 	TestErrorUnknown = -10,
 	TestErrorRespFile,
 	TestErrorRespSignal,
+	TestSigQualityFail,
 	TestFail = 0,
 	TestPass
 };
@@ -48,6 +49,13 @@ public:
 
 	// common member functions 
 	///////////////////////////////////////////////////////////
+	//getters for audio routing
+	int GetSelectedChannel();
+
+	//getters for File IO
+	wxString GetWorkFolderPath();
+	wxString GetResponseFileName();
+	wxString GetResultsFileName();
 
 	//extract analysis parameters from test xml description 
 	void setParameters(wxXmlNode* testDescriptionNode);
@@ -70,6 +78,9 @@ public:
 	//check pass or fail test condition
 	bool checkTestSpecs(wxXmlNode* resultsNode);
 
+	//test results taking into account signal quality
+	int getTestOutcome(wxXmlNode* resultsNode, wxString& outcome);
+
 	//serialise report to file
 	bool writeResultsToFile(wxXmlNode* resultsNode);
 
@@ -85,9 +96,14 @@ public:
 	//get pass/fail specification from guidelines 
 	double getSpecValue(wxString paramName, wxXmlNode* specsNode);
 
+	//acquired response signal quality pass/fail check
+	bool checkSignalQuality();
+
 
 protected:
 
+	wxXmlNode* mAudioRoutingNode;
+	wxXmlNode* mFileIONode;
 	wxXmlNode* mParamsNode;
 	wxXmlNode* mSpecsNode;
 	wxXmlNode* mResultsNode;
@@ -115,5 +131,11 @@ protected:
 	size_t mIntegrationSamples;
 
 	double mLogDetectionThreshold;
+
+	//response quality checks
+	bool mSigQualityOK;
+	std::vector<double> mFramesEnergy;
+	double mFrNrgDev;
+	double mMaxSigNrgVariance;
 };
 #endif

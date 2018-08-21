@@ -3,7 +3,7 @@
 
 TestManager::TestManager()
 :mProjectNode(0)
-,mTestsNode(0)
+,mProceduresNode(0)
 {
     //ctor
 }
@@ -12,6 +12,15 @@ TestManager::~TestManager()
 {
     //dtor
     DeleteProject();
+}
+
+void 
+TestManager::SetTestXml(wxXmlNode* tNode, wxString ProjectBasePath)
+{
+	mProjectBasePath = ProjectBasePath;
+	mDataFolderPath = mProjectBasePath;
+	mProceduresNode = tNode;
+	UpdateDescriptors();
 }
 
 bool
@@ -42,7 +51,7 @@ TestManager::DeleteProject()
 
         delete mProjectNode;
         mProjectNode = 0;
-        mTestsNode = 0;
+        mProceduresNode = 0;
     }
 }
 
@@ -67,8 +76,8 @@ TestManager::OpenProjectFile( wxString path )
     mProjectNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("FADGIProject") );
     mProjectNode->AddAttribute( wxT("title"), wxT("temporary"));
 
-    mTestsNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Procedures") );
-    mProjectNode->AddChild(mTestsNode);
+    mProceduresNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Procedures") );
+    mProjectNode->AddChild(mProceduresNode);
 
     mProjectPath = path;
     mProjectFolder = path.BeforeLast(wxT('.'));
@@ -84,24 +93,17 @@ TestManager::OpenProjectFile( wxString path )
     mProjectNewPath = wxEmptyString;
 }
 
-void
-TestManager::ParseProject()
+
+void 
+TestManager::UpdateDescriptors()
 {
 	mNumberOfTests = 0;
 	mDescriptors.clear();
-	mTestsNode = mProjectNode->GetChildren();
 
-	//check if work folder is valid, if not use default
-	mDataFolderPath = mProjectNode->GetAttribute(wxT("datafolder"));
-	if (mDataFolderPath.IsEmpty() || !wxDirExists(mDataFolderPath))
-	{
-		wxString defaultWorkPath = gPrefs->Read(wxT("/Directories/DataDumpDir"));
-		mProjectNode->DeleteAttribute(wxT("datafolder"));
-		mProjectNode->AddAttribute(wxT("datafolder"), defaultWorkPath);
-		mDataFolderPath = defaultWorkPath;
-	}
+	if (mProceduresNode == NULL)
+		return;
 
- 	wxXmlNode* testNode = mTestsNode->GetChildren();
+	wxXmlNode* testNode = mProceduresNode->GetChildren();
 	while (testNode)
 	{
 		TestDescriptor desc;
@@ -110,44 +112,47 @@ TestManager::ParseProject()
 		desc.alias = testNode->GetAttribute(wxT("alias"));
 		desc.enabled = testNode->GetAttribute(wxT("enabled"));
 
+		wxXmlNode* fileIONode = GetFileIONode(testNode);
+		if (fileIONode)
+		{
+			desc.resultPath = fileIONode->GetAttribute(wxT("resultsfile"));
+			//use global data folder for each test procedure
+			fileIONode->DeleteAttribute(wxT("workfolder"));
+			fileIONode->AddAttribute(wxT("workfolder"), mDataFolderPath);
+		}
+
+		///////////////////////////////
 		mNumberOfTests++;
 		mDescriptors.push_back(desc);
-
-		//use global data folder for each test procedure
-		wxXmlNode* pathNode = GetParameterNode(testNode, wxT("workfolder"));
-		if (pathNode)
-		{
-			pathNode->DeleteAttribute(wxT("value"));
-			pathNode->AddAttribute(wxT("value"), mDataFolderPath);
-		}
-		///////////////////////////////
 		testNode = testNode->GetNext();
 	}
-	int y = 0;
+}
+
+void
+TestManager::ParseProject()
+{
+	mProceduresNode = mProjectNode->GetChildren();
+	UpdateDescriptors();
 }
 
 void 
 TestManager::SetTestParameter(int testIndex, wxString paramName, wxString paramValue)
 {
 	int tIdx = 0;
-	wxXmlNode* tNode = mTestsNode->GetChildren();
-	while (tNode)
-	{
-		if( tIdx == testIndex)
-		{
-			wxXmlNode* pNode = GetParameterNode(tNode, paramName);
-			if (pNode)
-			{
-				pNode->DeleteAttribute(wxT("value"));
-				pNode->AddAttribute(wxT("value"), paramValue);
-			}
-			break;
-		}
 
-		tNode = tNode->GetNext();
-		tIdx++;
+	if (mProceduresNode == NULL)
+		return;
+
+	wxXmlNode* testNode = GetTestNode(testIndex);
+	if( testNode )
+	{
+		wxXmlNode* pNode = GetParameterNode(testNode, paramName);
+		if (pNode)
+		{
+			pNode->DeleteAttribute(wxT("value"));
+			pNode->AddAttribute(wxT("value"), paramValue);
+		}
 	}
-	//ParseProject();
 }
 
 void
@@ -157,20 +162,61 @@ TestManager::EnableTest(wxString testID, bool enabled)
 	if (enabled)
 		enStr = wxT("true");
 
-	wxXmlNode* test = mTestsNode->GetChildren();
-	while (test)
+	if (mProceduresNode == NULL)
+		return;
+
+	wxXmlNode* testNode = GetTestNode(testID);
+	if (testNode)
 	{
-		wxString id = test->GetAttribute(wxT("id"));
-		if (id == testID)
+		testNode->DeleteAttribute(wxT("enabled"));
+		testNode->AddAttribute(wxT("enabled"), enStr);
+	}
+	UpdateDescriptors();
+}
+
+wxXmlNode*
+TestManager::GetConfigNode(wxXmlNode* testNode)
+{
+	wxXmlNode* retNode = testNode->GetChildren();
+	while (retNode)
+	{
+		if (retNode->GetName() == wxT("config"))
 		{
-			test->DeleteAttribute(wxT("enabled"));
-			test->AddAttribute(wxT("enabled"), enStr);
 			break;
 		}
-
-		test = test->GetNext();
+		retNode = retNode->GetNext();
 	}
-	ParseProject();
+	return retNode;
+}
+
+wxXmlNode* 
+TestManager::GetFileIONode(wxXmlNode* testNode)
+{
+	wxXmlNode* retNode = testNode->GetChildren();
+	while (retNode)
+	{
+		if (retNode->GetName() == wxT("fileio"))
+		{
+			break;
+		}
+		retNode = retNode->GetNext();
+	}
+	return retNode;
+}
+
+wxXmlNode* 
+TestManager::GetAudioIONode(wxXmlNode* testNode)
+{
+	wxXmlNode* retNode = testNode->GetChildren();
+	while (retNode)
+	{
+		if (retNode->GetName() == wxT("audiorouting"))
+		{
+			break;
+		}
+		retNode = retNode->GetNext();
+	}
+	return retNode;
 }
 
 wxXmlNode* 
@@ -178,52 +224,118 @@ TestManager::GetParameterNode(wxXmlNode* testNode, wxString paramName)
 {
 	wxXmlNode* retNode = NULL;
 
-	wxXmlNode* paramsNode = testNode->GetChildren();
-	wxXmlNode* param = paramsNode->GetChildren();
-	while (param)
-	{
-		if (paramName == param->GetAttribute(wxT("name")))
-		{
-			retNode = param;
-			break;
-		}
-		param = param->GetNext();
-	}
+	wxXmlNode* configNode = GetConfigNode(testNode);
 
+	if (configNode)
+	{
+		wxXmlNode* param = configNode->GetChildren();
+		while (param)
+		{
+			if (paramName == param->GetAttribute(wxT("name")))
+			{
+				retNode = param;
+				break;
+			}
+			param = param->GetNext();
+		}
+	}
 	return retNode;
 }
+
+TestFileIOInfo
+TestManager::GetTestFileIOInfo(wxString testID)
+{
+	TestFileIOInfo info;
+	wxXmlNode* testNode = GetTestNode(testID);
+	if (testNode)
+	{
+		wxXmlNode* fileIONode = GetFileIONode(testNode);
+		if (fileIONode)
+		{
+			info.testType = fileIONode->GetAttribute(wxT("testtype"));
+			info.signalFileName = fileIONode->GetAttribute(wxT("signalfile"));
+			info.responseFileName = fileIONode->GetAttribute(wxT("responsefile"));
+			info.resultsFileName = fileIONode->GetAttribute(wxT("resultsfile"));
+			info.workFolder = fileIONode->GetAttribute(wxT("workfolder"));
+		}
+	}
+	return info;
+}
+
+TestAudioIOInfo
+TestManager::GetTestAudioIOInfo(wxString testID)
+{
+	TestAudioIOInfo info;
+	long sigChIdxL, respChIdxL;
+	wxXmlNode* testNode = GetTestNode(testID);
+	if(testNode)
+	{ 
+		wxXmlNode* audioIONode = GetAudioIONode(testNode);
+		if (audioIONode)
+		{
+			info.signalChIdx = audioIONode->GetAttribute(wxT("signal_ch_idx"));
+			info.signalChIdx.ToLong(&sigChIdxL);
+			info.signalChIdxNum = (int)sigChIdxL;
+
+			info.responseChIdx = audioIONode->GetAttribute(wxT("response_ch_idx"));
+			info.responseChIdx.ToLong(&respChIdxL);
+			info.responseChIdxNum = (int)respChIdxL;
+		}
+	}
+	return info;
+}
+
+TestAudioIOInfo TestManager::GetTestAudioIOInfo(int testIdx)
+{
+	TestAudioIOInfo info;
+	long sigChIdxL, respChIdxL;
+	wxXmlNode* testNode = GetTestNode(testIdx);
+	if (testNode)
+	{
+		wxXmlNode* audioIONode = GetAudioIONode(testNode);
+		if (audioIONode)
+		{
+			info.signalChIdx = audioIONode->GetAttribute(wxT("signal_ch_idx"));
+			info.signalChIdx.ToLong(&sigChIdxL);
+			info.signalChIdxNum = (int)sigChIdxL;
+
+			info.responseChIdx = audioIONode->GetAttribute(wxT("response_ch_idx"));
+			info.responseChIdx.ToLong(&respChIdxL);
+			info.responseChIdxNum = (int)respChIdxL;
+		}
+	}
+	return info;
+}
+
 
 std::vector<TestParameter>
 TestManager::GetTestParameters(wxString testID)
 {
 	std::vector<TestParameter> retParams;
 
-	wxXmlNode* test = mTestsNode->GetChildren();
-	while (test)
-	{
-		wxString id = test->GetAttribute(wxT("id"));
-		if (id == testID)
+	if (mProceduresNode) {
+		wxXmlNode* testNode = GetTestNode(testID);
+		if(testNode)
 		{
-			wxXmlNode* paramsNode = test->GetChildren();
-			wxXmlNode* param = paramsNode->GetChildren();
-			while (param)
+			wxXmlNode* configNode = GetConfigNode(testNode);
+			if (configNode)
 			{
-				TestParameter prm;
-				prm.name = param->GetAttribute(wxT("name"));
-				prm.type = param->GetAttribute(wxT("type"));
-				prm.value = param->GetAttribute(wxT("value"));
-				prm.editable = param->GetAttribute(wxT("editable"));
+				wxXmlNode* param = configNode->GetChildren();
+				while (param)
+				{
+					TestParameter prm;
+					prm.alias = param->GetAttribute(wxT("alias"));
+					prm.name = param->GetAttribute(wxT("name"));
+					prm.type = param->GetAttribute(wxT("type"));
+					prm.value = param->GetAttribute(wxT("value"));
+					prm.editable = param->GetAttribute(wxT("editable"));
 
-				retParams.push_back(prm);
-				param = param->GetNext();
+					retParams.push_back(prm);
+					param = param->GetNext();
+				}
 			}
-
-			break;
 		}
-
-		test = test->GetNext();
 	}
-
 	return retParams;
 }
 
@@ -232,38 +344,92 @@ TestManager::GetTestType(int testIndex)
 {
 	int testType = ADCFullTest;
 
-	wxString type = GetParameterValue(testIndex, wxT("testype"));
+	wxXmlNode* testNode = GetTestNode(testIndex);
+	if (testNode)
+	{
+		wxXmlNode* fileIONode = GetFileIONode(testNode);
 
-	if (type == wxT("offline"))
-		testType = ADCFileAnalysisOnly;
+		if (fileIONode)
+		{
+			wxString type = fileIONode->GetAttribute(wxT("testtype"));
 
+			if (type == wxT("offline"))
+				testType = ADCFileAnalysisOnly;
+		}
+	}
 	return testType;
+}
+
+void
+TestManager::SetTestType(wxString testID, wxString testType)
+{
+	wxXmlNode* testNode = GetTestNode(testID);
+	if (testNode)
+	{
+		wxXmlNode* fileIONode = GetFileIONode(testNode);
+
+		if (fileIONode)
+		{
+			fileIONode->DeleteAttribute(wxT("testtype"));
+			fileIONode->AddAttribute(wxT("testtype"), testType);
+		}
+	}
+}
+
+void 
+TestManager::SetTestSignalChannel(wxString testID, wxString chIdx)
+{
+	wxXmlNode* testNode = GetTestNode(testID);
+	if (testNode)
+	{
+		wxXmlNode* audioIONode = GetAudioIONode(testNode);
+
+		if (audioIONode)
+		{
+			audioIONode->DeleteAttribute(wxT("signal_ch_idx"));
+			audioIONode->AddAttribute(wxT("signal_ch_idx"), chIdx);
+		}
+	}
+}
+
+
+void
+TestManager::SetTestResponseChannel(wxString testID, wxString chIdx)
+{
+	wxXmlNode* testNode = GetTestNode(testID);
+	if (testNode)
+	{
+		wxXmlNode* audioIONode = GetAudioIONode(testNode);
+
+		if (audioIONode)
+		{
+			audioIONode->DeleteAttribute(wxT("response_ch_idx"));
+			audioIONode->AddAttribute(wxT("response_ch_idx"), chIdx);
+		}
+	}
 }
 
 bool 
 TestManager::IsTestEnabled(int testIndex)
 {
 	bool retVal = false;
-	wxXmlNode* test = mTestsNode->GetChildren();
-	int nodeIndex = 0;
-	while (test)
-	{
-		if (nodeIndex == testIndex)
+
+	if (mProceduresNode) {
+
+		wxXmlNode* testNode = GetTestNode(testIndex);
+		if(testNode)
 		{
-			wxString enStr = test->GetAttribute(wxT("enabled"));
+			wxString enStr = testNode->GetAttribute(wxT("enabled"));
 			if (enStr == wxT("true")) {
 				retVal = true;
 			}
-			break;
 		}
-		test = test->GetNext();
-		nodeIndex++;
 	}
 	return retVal;
 }
 
 int 
-TestManager::GenerateSignalFile(int testIndex, double sampleRate, int Channels, wxString& signalFilePath)
+TestManager::GenerateSignalFile(int testIndex, double pbSampleRate, double recSampleRate, int Channels, wxString& signalFilePath)
 {
 	int retval = -1;
 
@@ -271,31 +437,26 @@ TestManager::GenerateSignalFile(int testIndex, double sampleRate, int Channels, 
 	signalFilePath = outputFile;
 
 	wxString signalType = GetParameterValue(testIndex, wxT("signal"));
+	wxXmlNode* testNode = GetTestNode(testIndex);
 
 	if (signalType == wxT("octsine"))
 	{
-		OctaveToneGenerator* mSigGen = new OctaveToneGenerator(sampleRate, Channels);
-		wxXmlNode* testNode = GetTestNode(testIndex);
-		wxXmlNode* sigGenParams = testNode->GetChildren();
-		mSigGen->generateSignal(sigGenParams);
+		OctaveToneGenerator* mSigGen = new OctaveToneGenerator(pbSampleRate, recSampleRate, Channels);
+		mSigGen->generateSignal(testNode);
 		delete mSigGen;
 		retval = 0;
 	}
 	else if (signalType == wxT("singlesine"))
 	{
-		SingleSineToneGenerator* mSigGen = new SingleSineToneGenerator(sampleRate, Channels);
-		wxXmlNode* testNode = GetTestNode(testIndex);
-		wxXmlNode* sigGenParams = testNode->GetChildren();
-		mSigGen->generateSignal(sigGenParams);
+		SingleSineToneGenerator* mSigGen = new SingleSineToneGenerator(pbSampleRate, recSampleRate, Channels);
+		mSigGen->generateSignal(testNode);
 		delete mSigGen;
 		retval = 0;
 	}
 	else if (signalType == wxT("dualsine"))
 	{
-		DualSineToneGenerator* mSigGen = new DualSineToneGenerator(sampleRate, Channels);
-		wxXmlNode* testNode = GetTestNode(testIndex);
-		wxXmlNode* sigGenParams = testNode->GetChildren();
-		mSigGen->generateSignal(sigGenParams);
+		DualSineToneGenerator* mSigGen = new DualSineToneGenerator(pbSampleRate, recSampleRate, Channels);
+		mSigGen->generateSignal(testNode);
 		delete mSigGen;
 		retval = 0;
 	}
@@ -305,15 +466,26 @@ TestManager::GenerateSignalFile(int testIndex, double sampleRate, int Channels, 
 		retval = 1;
 	}
 
-
 	return retval;
 }
 
 wxString
 TestManager::GetSignalFilePath(int testIndex)
 {
-	wxString workFolder = GetParameterValue(testIndex, wxT("workfolder"));
-	wxString signalFile = GetParameterValue( testIndex, wxT("signalfile" ));
+	wxString workFolder = wxEmptyString;
+	wxString signalFile = wxEmptyString;
+
+	wxXmlNode* testNode = GetTestNode(testIndex);
+	if (testNode)
+	{
+		wxXmlNode* fileIONode = GetFileIONode(testNode);
+
+		if (fileIONode)
+		{
+			workFolder = fileIONode->GetAttribute(wxT("workfolder"));
+			signalFile = fileIONode->GetAttribute(wxT("signalfile"));
+		}
+	}
 
 	wxString resPath = workFolder + wxT("\\") + signalFile;
 	return resPath;
@@ -322,11 +494,57 @@ TestManager::GetSignalFilePath(int testIndex)
 wxString
 TestManager::GetResponseFilePath(int testIndex)
 {
-	wxString workFolder = GetParameterValue(testIndex, wxT("workfolder"));
-	wxString responseFile = GetParameterValue(testIndex, wxT("responsefile"));
+	wxString workFolder = wxEmptyString;
+	wxString responseFile = wxEmptyString;
+
+	wxXmlNode* testNode = GetTestNode(testIndex);
+	if (testNode)
+	{
+		wxXmlNode* fileIONode = GetFileIONode(testNode);
+
+		if (fileIONode)
+		{
+			workFolder = fileIONode->GetAttribute(wxT("workfolder"));
+			responseFile = fileIONode->GetAttribute(wxT("responsefile"));
+		}
+	}
 
 	wxString resPath = workFolder + wxT("\\") + responseFile;
 	return resPath;
+}
+
+wxString
+TestManager::GetResponseFileName(int testIndex)
+{
+	wxString responseFile = wxEmptyString;
+
+	wxXmlNode* testNode = GetTestNode(testIndex);
+	if (testNode)
+	{
+		wxXmlNode* fileIONode = GetFileIONode(testNode);
+
+		if (fileIONode)
+		{
+			responseFile = fileIONode->GetAttribute(wxT("responsefile"));
+		}
+	}
+	return responseFile;
+}
+
+void
+TestManager::SetTestResponseFileName(wxString testID, wxString fileName)
+{
+	wxXmlNode* testNode = GetTestNode(testID);
+	if (testNode)
+	{
+		wxXmlNode* fileIONode = GetFileIONode(testNode);
+
+		if (fileIONode)
+		{
+			fileIONode->DeleteAttribute(wxT("responsefile"));
+			fileIONode->AddAttribute(wxT("responsefile"), fileName);
+		}
+	}
 }
 
 wxString
@@ -373,7 +591,7 @@ TestManager::AnalyseResponse(int testIndex)
 
 	if (outcome == TestErrorUnknown)
 	{
-		outcomeMsg = wxT("error: unk");
+		outcomeMsg = wxT("error: unkw");
 	}
 	else if (outcome == TestErrorRespFile)
 	{
@@ -390,6 +608,11 @@ TestManager::AnalyseResponse(int testIndex)
 	else if (outcome == TestPass)
 	{
 		outcomeMsg = wxT("pass");
+	}
+	
+	else if (outcome == TestSigQualityFail)
+	{
+		outcomeMsg = wxT("retest");
 	}
 	
 	return outcomeMsg;
@@ -447,9 +670,9 @@ TestManager::GetTestNode(int testIndex)
 {
 	wxXmlNode* retNode = NULL;
 
-	if (mTestsNode)
+	if (mProceduresNode)
 	{
-		wxXmlNode* testNode = mTestsNode->GetChildren();
+		wxXmlNode* testNode = mProceduresNode->GetChildren();
 		int nodeIndex = 0;
 		while (testNode)
 		{
@@ -470,9 +693,9 @@ TestManager::GetTestNode(wxString testID)
 {
 	wxXmlNode* retNode = NULL;
 
-	if (mTestsNode)
+	if (mProceduresNode)
 	{
-		wxXmlNode* testNode = mTestsNode->GetChildren();
+		wxXmlNode* testNode = mProceduresNode->GetChildren();
 		while (testNode)
 		{
 			wxString id = testNode->GetAttribute(wxT("id"));

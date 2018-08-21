@@ -8,12 +8,12 @@
 
 //(*Headers(ResultsDialog)
 #include "Widgets\wxMathPlot\mathplot.h"
+#include <wx/button.h>
+#include <wx/dialog.h>
+#include <wx/panel.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/panel.h>
-#include <wx/button.h>
-#include <wx/dialog.h>
 //*)
 
 #include <wx/xml/xml.h>
@@ -34,17 +34,17 @@ class ResultsDialog: public wxDialog
 
 
 		//(*Declarations(ResultsDialog)
+		GButton* ButtonPlotReset;
+		RimPanel* PanelBottom;
 		RimPanel* PanelMLx;
 		RimPanel* PanelMidInner;
 		RimPanel* PanelMiddle;
-		wxBoxSizer* BoxSizerMidInner;
-		wxTextCtrl* TextCtrlResultsInfo;
-		wxStaticText* StaticTextResultsInfo;
-		RimPanel* PanelBottom;
-		GButton* ButtonPlotReset;
-		mpWindow* mRTAMagPLot;
-		wxStaticText* StaticTextResultsOutcome;
 		RimPanel* PanelTop;
+		mpWindow* mRTAMagPLot;
+		wxBoxSizer* BoxSizerMidInner;
+		wxStaticText* StaticTextResultsInfo;
+		wxStaticText* StaticTextResultsOutcome;
+		wxTextCtrl* TextCtrlResultsInfo;
 		//*)
 
 	protected:
