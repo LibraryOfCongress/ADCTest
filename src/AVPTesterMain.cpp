@@ -683,6 +683,8 @@ void AVPTesterFrame::BuildUI()
 	ListViewParameters->InsertColumn(0, itemColInputs);
 	itemColInputs.SetText(_T("value"));
 	ListViewParameters->InsertColumn(1, itemColInputs);
+
+	mSelectedTestIdx = -1;
 }
 
 void AVPTesterFrame::OnMenuItemFOpenSelected(wxCommandEvent& event)
