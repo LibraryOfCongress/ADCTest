@@ -37,6 +37,7 @@
   <PropertyGroup Label="Globals">
     <ProjectName>base</ProjectName>
     <ProjectGuid>{3FCC50C2-81E9-5DB2-B8D8-2129427568B1}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="wx_config.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -124,12 +125,12 @@
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='DLL Release|x64'">true</GenerateManifest>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(wxBaseLibNamePrefix)</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(wxBaseLibNamePrefix)</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='DLL Debug|Win32'">$(wxBaseLibNamePrefix)$(wxToolkitDllNameSuffix)</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='DLL Debug|x64'">$(wxBaseLibNamePrefix)$(wxToolkitDllNameSuffix)</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='DLL Debug|Win32'">$(wxBaseDllNamePrefix)$(wxToolkitDllNameSuffix)</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='DLL Debug|x64'">$(wxBaseDllNamePrefix)$(wxToolkitDllNameSuffix)</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(wxBaseLibNamePrefix)</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(wxBaseLibNamePrefix)</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='DLL Release|Win32'">$(wxBaseLibNamePrefix)$(wxToolkitDllNameSuffix)</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='DLL Release|x64'">$(wxBaseLibNamePrefix)$(wxToolkitDllNameSuffix)</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='DLL Release|Win32'">$(wxBaseDllNamePrefix)$(wxToolkitDllNameSuffix)</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='DLL Release|x64'">$(wxBaseDllNamePrefix)$(wxToolkitDllNameSuffix)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -585,6 +586,26 @@
     <ClCompile Include="..\..\src\msw\utilsexc.cpp" />
     <ClCompile Include="..\..\src\msw\volume.cpp" />
     <ClCompile Include="..\..\src\generic\fswatcherg.cpp" />
+    <ClCompile Include="..\..\src\msw\secretstore.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='DLL Release|Win32'">$(IntDir)msw_%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='DLL Debug|Win32'">$(IntDir)msw_%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)msw_%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)msw_%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='DLL Release|x64'">$(IntDir)msw_%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='DLL Debug|x64'">$(IntDir)msw_%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)msw_%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)msw_%(Filename).obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\src\common\secretstore.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='DLL Release|Win32'">$(IntDir)common_%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='DLL Debug|Win32'">$(IntDir)common_%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)common_%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)common_%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='DLL Release|x64'">$(IntDir)common_%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='DLL Debug|x64'">$(IntDir)common_%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)common_%(Filename).obj</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)common_%(Filename).obj</ObjectFileName>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\src\msw\version.rc">
@@ -633,6 +654,7 @@
     <ClInclude Include="..\..\include\wx\msw\stackwalk.h" />
     <ClInclude Include="..\..\include\wx\msw\stdpaths.h" />
     <ClInclude Include="..\..\include\wx\msw\winundef.h" />
+    <ClInclude Include="..\..\include\wx\msw\winver.h" />
     <ClInclude Include="..\..\include\wx\msw\wrapcctl.h" />
     <ClInclude Include="..\..\include\wx\msw\wrapcdlg.h" />
     <ClInclude Include="..\..\include\wx\msw\wrapwin.h" />
@@ -799,6 +821,8 @@
     <ClInclude Include="..\..\include\wx\compiler.h" />
     <ClInclude Include="..\..\include\wx\thrimpl.cpp" />
     <ClInclude Include="..\..\include\wx\arrimpl.cpp" />
+    <ClInclude Include="..\..\include\wx\secretstore.h" />
+    <ClInclude Include="..\..\include\wx\evtloopsrc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

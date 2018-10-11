@@ -37,6 +37,7 @@
   <PropertyGroup Label="Globals">
     <ProjectName>gl</ProjectName>
     <ProjectGuid>{DA8B15EF-6750-5928-BC0E-C748213CF9B2}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="wx_config.props" />
