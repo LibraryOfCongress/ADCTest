@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
+    <wxVersionString>311</wxVersionString>
     <wxShortVersionString>31</wxShortVersionString>
     <wxToolkitPrefix>msw</wxToolkitPrefix>
     <wxCompilerPrefix>vc</wxCompilerPrefix>
@@ -62,12 +63,16 @@
   </PropertyGroup>
   <PropertyGroup Label="UserMacros">
     <wxIncSubDir>$(wxToolkitPrefix)$(wxSuffix)</wxIncSubDir>
-    <wxToolkitDllNamePrefix>wx$(wxToolkitPrefix)$(wxShortVersionString)$(wxSuffix)_</wxToolkitDllNamePrefix>
+    <wxToolkitDllNamePrefix>wx$(wxToolkitPrefix)$(wxVersionString)$(wxSuffix)_</wxToolkitDllNamePrefix>
     <wxToolkitDllNameSuffix>_$(wxCompilerPrefix)$(wxArchSuffix)_$(wxVendor)</wxToolkitDllNameSuffix>
     <wxToolkitLibNamePrefix>wx$(wxToolkitPrefix)$(wxShortVersionString)$(wxSuffix)_</wxToolkitLibNamePrefix>
+    <wxBaseDllNamePrefix>wxbase$(wxVersionString)$(wxSuffix)</wxBaseDllNamePrefix>
     <wxBaseLibNamePrefix>wxbase$(wxShortVersionString)$(wxSuffix)</wxBaseLibNamePrefix>
   </PropertyGroup>
   <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalOptions Condition="'$(PlatformToolset)' == 'v140_xp'">/Zc:threadSafeInit- %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <Link>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;shell32.lib;shlwapi.lib;ole32.lib;oleaut32.lib;uuid.lib;advapi32.lib;version.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;wininet.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
