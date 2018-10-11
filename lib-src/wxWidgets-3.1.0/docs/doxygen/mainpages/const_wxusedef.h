@@ -186,6 +186,7 @@ library:
 @itemdef{wxUSE_POSTSCRIPT, Use wxPostScriptPrinter class.}
 @itemdef{wxUSE_PRINTF_POS_PARAMS, Use wxVsnprintf which supports positional parameters.}
 @itemdef{wxUSE_PRINTING_ARCHITECTURE, Enable printer classes.}
+@itemdef{wxUSE_PRIVATE_FONTS, Implement wxFont::AddPrivateFont() method.}
 @itemdef{wxUSE_PROGRESSDLG, Enables progress dialog classes.}
 @itemdef{wxUSE_PROPGRID, Use wxPropertyGrid library.}
 @itemdef{wxUSE_PROTOCOL, Use wxProtocol and derived classes.}
@@ -194,6 +195,7 @@ library:
 @itemdef{wxUSE_PROTOCOL_HTTP, Use wxHTTP class. (requireswxProtocol)}
 @itemdef{wxUSE_RADIOBOX, Use wxRadioBox class.}
 @itemdef{wxUSE_RADIOBTN, Use wxRadioButton class.}
+@itemdef{wxUSE_REPRODUCIBLE_BUILD, Make library builds reproducible.}
 @itemdef{wxUSE_REGEX, Use wxRegEx class.}
 @itemdef{wxUSE_RICHTEXT, Use wxRichTextCtrl class.}
 @itemdef{wxUSE_RICHTEXT_XML_HANDLER, See src/xrc/xh_richtext.cpp file.}
@@ -267,6 +269,7 @@ library:
 @itemdef{wxUSE_LIBSDL, Use SDL for wxSound implementation.}
 @itemdef{wxUSE_PLUGINS, See also wxUSE_LIBSDL.}
 @itemdef{wxUSE_UNIX, Enabled on Unix Platform.}
+@itemdef(wxUSE_XTEST, Use XTest extension.}
 @endDefList
 
 
@@ -302,13 +305,6 @@ library:
 @beginDefList
 @itemdef{wxUSE_GADGETS, Use xmCascadeButtonGadgetClass, xmLabelGadgetClass, xmPushButtonGadgetClass and xmToggleButtonGadgetClass classes.}
 @itemdef{wxUSE_INVISIBLE_RESIZE, See src/motif/dialog.cpp file.}
-@endDefList
-
-
-@section page_wxusedef_cocoa Cocoa Symbols
-
-@beginDefList
-@itemdef{wxUSE_OBJC_UNIQUIFYING, Enable Objective-C class name uniquifying.}
 @endDefList
 
 

@@ -43,14 +43,14 @@ on systems even with a much earlier version of GTK+. You will have to ensure
 that the application is launched with lazy symbol binding for that.
 
 In order to configure wxWidgets to compile wxGTK you will need use the
-@c --with-gtk argument to the @c configure script. This is the default for many
+@c \--with-gtk argument to the @c configure script. This is the default for many
 systems.
 
 GTK+ 1.2 can still be used, albeit discouraged. For that you can pass
-@c --with-gtk=1 to the @c configure script.
+@c \--with-gtk=1 to the @c configure script.
 
 Support for GTK+ 3 is available starting with wxWidgets 2.9.4, use @c configure
-option @c --with-gtk=3 to enable it.
+option @c \--with-gtk=3 to enable it.
 
 For further information, please see the files in @c docs/gtk in the
 distribution.
@@ -173,7 +173,7 @@ For further information, please see the files in docs/qt in the distribution.
 
 wxiOS is a port of wxWidgets using Cocoa touch libraries for iOS. It is very
 basic in it current form, but is included for further improvements and very
-simple applications.
+simple applications. It requires iOS 9 or later and fully supports 64 bit builds.
 
 For further information, please see the files in docs/ios in the distribution.
 
@@ -185,7 +185,7 @@ In such case (or when you want to e.g. write a port-specific patch) it can be
 necessary to use the underlying toolkit API directly:
 
 - wxMSW port uses win32 API: see MSDN docs at http://msdn2.microsoft.com/en-us/library/ms649779.aspx
-- wxGTK port uses GTK+ and other lower-level libraries; see 
+- wxGTK port uses GTK+ and other lower-level libraries; see
   - GTK+ docs at http://library.gnome.org/devel/gtk/unstable/
   - GDK docs at http://library.gnome.org/devel/gdk/unstable/
   - GLib docs at http://library.gnome.org/devel/glib/unstable/
