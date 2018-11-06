@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="WaitDialog">
+		<centered>1</centered>
+		<bg>#57B7DF</bg>
+		<pos_arg>1</pos_arg>
+		<size_arg>1</size_arg>
+		<style>wxSTAY_ON_TOP</style>
+		<object class="wxBoxSizer" variable="BoxSizerMain" member="no">
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_TOP" variable="PanelTop" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPTop" member="no">
+						<orient>wxVERTICAL</orient>
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND</flag>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxStaticText" name="ID_STATICTEXT_LOAD_MSG" variable="StaticTextLoadMsg" member="yes">
+								<label>Loading project, please wait</label>
+								<size>250,25</size>
+								<font>
+									<size>11</size>
+									<style>normal</style>
+									<weight>bold</weight>
+									<underlined>0</underlined>
+									<family>swiss</family>
+									<face>Arial Narrow</face>
+								</font>
+								<style>wxALIGN_CENTRE</style>
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>5</border>
+							<option>1</option>
+						</object>
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND</flag>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+		</object>
+	</object>
+</wxsmith>

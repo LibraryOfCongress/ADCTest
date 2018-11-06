@@ -35,6 +35,8 @@ public:
 	FADGIGenerator(double sampleRate, int channels);
 	virtual ~FADGIGenerator();
 
+	void Create(double pbSampleRate, double recSampleRate, int channels);
+
 	//mandatory function for all derived generator modules
 	virtual int generateSignal(wxXmlNode* testDescriptionNode);
 
@@ -65,7 +67,8 @@ protected:
 	wxXmlNode* mSpecsNode;
 	wxXmlNode* mResultsNode;
 
-	double mSampleRate;
+	double mPbSampleRate;
+	double mRecSampleRate;
 	int mNoChannels;
 
 	wxString mTestTitle;

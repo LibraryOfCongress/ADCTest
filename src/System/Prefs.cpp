@@ -46,31 +46,30 @@ void InitPreferences()
 	int versionNumber = 0;
 	gPrefs->Read(wxT("/Version"), &versionNumber );
 
-	if (!newPrefsInitialized || (versionNumber < (RELEASE_VERSION + 100)) )
+	if (!newPrefsInitialized || (versionNumber < (RELEASE_VERSION)))
 	{
-	    versionNumber = RELEASE_VERSION+100;
+		versionNumber = RELEASE_VERSION;
 		gPrefs->Write(wxT("/NewPrefsInitialized"), true);
-        gPrefs->Write(wxT("/Version"), versionNumber);
+		gPrefs->Write(wxT("/Version"), versionNumber);
 		gPrefs->Write(wxT("/Directories/DataDumpDir"), dataFolder);
-		gPrefs->Write(wxT("/AudioIO/AudioSRate"), 48000.0);
-		gPrefs->Write(wxT("/AudioIO/FrameSize"), 2048);
-		gPrefs->Write(wxT("/AudioIO/AudioHostName"), wxT(""));
-		gPrefs->Write(wxT("/AudioIO/InputDevName"), wxT("") );
-		gPrefs->Write(wxT("/AudioIO/InputDevChans"), 1 );
+		gPrefs->Write(wxT("/AudioIO/InputAudioSRate"), 48000.0);
+		gPrefs->Write(wxT("/AudioIO/InputFrameSize"), 2048);
+		gPrefs->Write(wxT("/AudioIO/OutputAudioSRate"), 48000.0);
+		gPrefs->Write(wxT("/AudioIO/OutputFrameSize"), 2048);;
+		gPrefs->Write(wxT("/AudioIO/InputAudioHostName"), wxT(""));
+		gPrefs->Write(wxT("/AudioIO/OutputAudioHostName"), wxT(""));
+		gPrefs->Write(wxT("/AudioIO/InputDevName"), wxT(""));
+		gPrefs->Write(wxT("/AudioIO/InputDevChans"), 1);
 		gPrefs->Write(wxT("/AudioIO/OutputDevName"), wxT(""));
-		gPrefs->Write(wxT("/AudioIO/OutputDevChans"), 1 );
-		gPrefs->Write(wxT("/AudioIO/InBufferLength"), 500);
-		gPrefs->Write(wxT("/AudioIO/InBufferThreshold"), 25);
-		gPrefs->Write(wxT("/AudioIO/OutBufferLength"), 500);
-		gPrefs->Write(wxT("/AudioIO/OutBufferThreshold"), 25);
+		gPrefs->Write(wxT("/AudioIO/OutputDevChans"), 1);
 		gPrefs->Write(wxT("/Calibration/OutputStreamGain"), 0.0);
 		gPrefs->Write(wxT("/Calibration/RTALength"), 4096);
 		gPrefs->Write(wxT("/Calibration/RTAWindow"), 1);
 		gPrefs->Write(wxT("/Calibration/RTAExAvg"), 50);
-		gPrefs->Write(wxT("/Logging/EnumerateDevicesToFile"), 1 );
-		gPrefs->Write(wxT("/Logging/EnumerateDevicesToFilePath"), dataFolder );
-		gPrefs->Write(wxT("/Logging/LogToFile"), 0 );
-		gPrefs->Write(wxT("/Logging/LogToFilePath"), dataFolder );
+		gPrefs->Write(wxT("/Logging/EnumerateDevicesToFile"), 1);
+		gPrefs->Write(wxT("/Logging/EnumerateDevicesToFilePath"), dataFolder);
+		gPrefs->Write(wxT("/Logging/LogToFile"), 0);
+		gPrefs->Write(wxT("/Logging/LogToFilePath"), dataFolder);
 	}
 }
 

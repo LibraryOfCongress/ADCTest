@@ -25,10 +25,10 @@ class THDNoise :public FADGIAnalyser
 
 	protected:
 		//analyse response 
-		void analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets);
+		int analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets);
 
 		//build xml report
-		bool buildReport();
+		int buildReport();
 
     protected:
 		//extract metrics specific to test procedures
