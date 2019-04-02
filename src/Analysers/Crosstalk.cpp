@@ -22,35 +22,29 @@ Crosstalk::analyseSignal(wxXmlNode* testDescriptionNode)
 	mFFTAverages = (size_t)getTestParameterValue(wxT("fftnoavg"), mParamsNode);
 	mInputSignalFrequency = (float)getTestParameterValue(wxT("tonefreq"), mParamsNode);
 	mInputSignalLevel = (float)getTestParameterValue(wxT("tonelevel"), mParamsNode); 
-	int stimChannel = (int)getTestParameterValue(wxT("refchidx"), mParamsNode);
 
 	//recorded response file
 	mResponseFile = openResponseFile();
 
 	if (mResponseFile)
 	{
-		std::vector<size_t> stimonsets = getOnsets(mResponseFile, stimChannel, false);
 		//we are analysing another track from the same file, it needs to be rewound!
 		sf_seek(mResponseFile, 0, SEEK_SET);
 		std::vector<size_t> testonsets = getOnsets(mResponseFile, mSelectedChannel, false);
 
-		if ((testonsets.size() > 0) && (stimonsets.size() > 0))
+		if ((testonsets.size() > 0) )
 		{
 			float binResolution = (float)mSampleRate / (float)mFFTLength;
 			float startFreq = mInputSignalFrequency - binResolution * 10;
 			float endFreq = mInputSignalFrequency + binResolution * 10;
 			
-			FreqPoint stimF = getMaxLevelInResponse(mResponseFile, stimonsets, stimChannel, startFreq, endFreq);
 			FreqPoint testF = getMaxLevelInResponse(mResponseFile, testonsets, mSelectedChannel, startFreq, endFreq);
 
-			mXTalkValue_Log = testF.peakValueLog + stimF.peakValueLog; 
-			
-			bool testOutcome = buildReport();
+			mXTalkValue_Log = testF.peakValueLog + abs(mInputSignalLevel);
 
-			if (testOutcome)
-				result = TestPass;
-			else
-				result = TestFail;
+			mSigQualityOK = checkSignalQuality();
+
+			result = buildReport();
 
 		}
 		else
@@ -64,45 +58,6 @@ Crosstalk::analyseSignal(wxXmlNode* testDescriptionNode)
 	{
 		result = TestErrorRespFile;
 	}
-
-
-		/*
-		//find segments in file
-		mXTalkResults.clear();
-		for (size_t chIdx = 0; chIdx < mNoChannels; chIdx++)
-		{
-			if (chIdx != mSelectedChannel)
-			{
-				std::vector<size_t> onsets = getOnsets(mResponseFile, chIdx, false);
-				
-				if (onsets.size() > 0)
-				{
-					float xtk = calculateCrossTalk(mResponseFile, onsets, chIdx);
-					mXTalkResults.push_back(xtk);
-				}
-			}
-		}
-
-		if (mXTalkResults.size() > 0)
-		{
-			bool testOutcome = buildReport();
-
-			if (testOutcome)
-				result = TestPass;
-			else
-				result = TestFail;
-		}
-		else
-		{
-			result = TestErrorRespSignal;
-		}
-		closeResponseFile();
-	}
-	else
-	{
-		result = TestErrorRespFile;
-	}
-	*/
 
 	return result;
 }
@@ -136,6 +91,7 @@ Crosstalk::getMaxLevelInResponse(SNDFILE* afile, std::vector<size_t> &onsets, in
 	memset(fftMagAcc, 0, sizeof(double)*mFFTLength);
 
 	size_t averagesCounter = 0;
+	mFramesEnergy.clear();
 	while (averagesCounter < mFFTAverages)
 	{
 		sf_count_t read = sf_readf_float(afile, fileBuffer, mFFTLength);
@@ -150,10 +106,15 @@ Crosstalk::getMaxLevelInResponse(SNDFILE* afile, std::vector<size_t> &onsets, in
 		mRTA->getFDData(channelBuffer, fftMag, dummyPhase, true, false);
 
 		//accumulate for linear averaging
+		//check frame energy
+		double nrg = 0;
 		for (size_t i = 0; i < mFFTBins; i++)
 		{
-			fftMagAcc[i] += (double)fftMag[i];
+			double binVal = (double)fftMag[i];
+			fftMagAcc[i] += binVal;
+			nrg += binVal;
 		}
+		mFramesEnergy.push_back(nrg / (double)mFFTBins);
 
 		averagesCounter++;
 	}
@@ -217,6 +178,7 @@ Crosstalk::calculateCrossTalk(SNDFILE* afile, std::vector<size_t> &onsets, int c
 	memset(fftMagAcc, 0, sizeof(double)*mFFTLength);
 
 	size_t averagesCounter = 0;
+	mFramesEnergy.clear();
 	while (averagesCounter < mFFTAverages)
 	{
 		sf_count_t read = sf_readf_float(afile, fileBuffer, mFFTLength);
@@ -231,9 +193,13 @@ Crosstalk::calculateCrossTalk(SNDFILE* afile, std::vector<size_t> &onsets, int c
 		mRTA->getFDData(channelBuffer, fftMag, dummyPhase, true, false);
 
 		//accumulate for linear averaging
+		//check frame energy
+		double nrg = 0;
 		for (size_t i = 0; i < mFFTBins; i++)
 		{
-			fftMagAcc[i] += (double)fftMag[i];
+			double binVal = (double)fftMag[i];
+			fftMagAcc[i] += binVal;
+			nrg += binVal;
 		}
 
 		averagesCounter++;
@@ -271,22 +237,10 @@ Crosstalk::calculateCrossTalk(SNDFILE* afile, std::vector<size_t> &onsets, int c
 	return xTalkValue_Log;
 }
 
-bool
+int
 Crosstalk::buildReport()
-{
-	
-	//find highest crosstalk value acrows alll channels
-	float maxXtalk_Log = -200;
-	/*
-	for (size_t i = 0; i < mXTalkResults.size(); i++)
-	{
-		float chVal = mXTalkResults[i];
-		if (chVal > maxXtalk_Log)
-			maxXtalk_Log = chVal;
-	}*/
-	
-	maxXtalk_Log = mXTalkValue_Log;
-
+{	
+	float maxXtalk_Log = mXTalkValue_Log;
 
 	wxString channelInfo;
 	channelInfo.Printf(wxT("%d"), mSelectedChannel);
@@ -310,6 +264,14 @@ Crosstalk::buildReport()
 	XTLvlNode->AddAttribute(wxT("value"), paramValueStr);
 	XTLvlNode->AddAttribute(wxT("units"), wxT("dBFS"));
 	metricsNode->AddChild(XTLvlNode);
+
+	//frame energies
+	wxXmlNode*energiesNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("parameter"));
+	energiesNode->AddAttribute(wxT("name"), wxT("sig_std_var"));
+	paramValueStr.Printf(wxT("%g"), mFrNrgDev);
+	energiesNode->AddAttribute(wxT("value"), paramValueStr);
+	energiesNode->AddAttribute(wxT("units"), wxT(""));
+	metricsNode->AddChild(energiesNode);
 
 	//Add metrics node to data node;
 	dataNode->AddChild(metricsNode);
@@ -346,16 +308,10 @@ Crosstalk::buildReport()
 	resultsNode->AddChild(specNode);
 
 	//check against target performance
-	bool testResultsOK = checkTestSpecs(resultsNode);
+	wxString testResultString;
+	int testResultValue = getTestOutcome(resultsNode, testResultString);
 	wxXmlNode* outcomeNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("testoutcome"));
-	wxString passOrFail;
-
-	if (testResultsOK)
-		passOrFail = wxT("pass");
-	else
-		passOrFail = wxT("fail");
-
-	outcomeNode->AddAttribute(wxT("value"), passOrFail);
+	outcomeNode->AddAttribute(wxT("value"), testResultString);
 	resultsNode->AddChild(outcomeNode);
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -364,7 +320,5 @@ Crosstalk::buildReport()
 
 	delete resultsNode;
 
-	return testResultsOK;
-
-	return true;
+	return testResultValue;
 }

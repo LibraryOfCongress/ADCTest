@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxPanel" name="PrjInfoEditPanel">
+		<pos_arg>1</pos_arg>
+		<size_arg>1</size_arg>
+		<object class="wxBoxSizer" variable="BoxSizerMain" member="no">
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_TOP" variable="PanelTop" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPanelProject" member="no">
+						<orient>wxVERTICAL</orient>
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND</flag>
+							<size>300,1</size>
+						</object>
+						<object class="sizeritem">
+							<object class="wxPanel" name="ID_PANEL_POps" subclass="RimPanel" variable="PanelPOps" member="yes">
+								<object class="wxBoxSizer" variable="BoxSizerPOps" member="no">
+									<object class="sizeritem">
+										<object class="wxStaticText" name="ID_STATICTEXT_POPS_LBL" variable="StaticTextPOpsLbl" member="yes">
+											<label> Operator:</label>
+											<size>100,-1</size>
+											<font>
+												<size>10</size>
+												<style>normal</style>
+												<weight>bold</weight>
+												<underlined>0</underlined>
+												<family>swiss</family>
+												<face>Arial Narrow</face>
+											</font>
+											<style>wxALIGN_CENTRE</style>
+										</object>
+										<flag>wxALL|wxEXPAND</flag>
+										<border>4</border>
+									</object>
+									<object class="sizeritem">
+										<object class="wxTextCtrl" name="ID_TEXTCTRL_POPS" variable="TextCtrlPOps" member="yes">
+											<size>200,22</size>
+										</object>
+										<flag>wxALL|wxEXPAND</flag>
+										<border>4</border>
+									</object>
+								</object>
+							</object>
+							<flag>wxTOP|wxEXPAND</flag>
+							<border>2</border>
+						</object>
+						<object class="sizeritem">
+							<object class="wxPanel" name="ID_PANEL_DAC" subclass="RimPanel" variable="PanelDAC" member="yes">
+								<object class="wxBoxSizer" variable="BoxSizerDAC" member="no">
+									<object class="sizeritem">
+										<object class="wxStaticText" name="ID_STATICTEXT_DAC_LBL" variable="StaticTextDACLbl" member="yes">
+											<label> Audio DAC:</label>
+											<size>100,-1</size>
+											<font>
+												<size>10</size>
+												<style>normal</style>
+												<weight>bold</weight>
+												<underlined>0</underlined>
+												<family>swiss</family>
+												<face>Arial Narrow</face>
+											</font>
+											<style>wxALIGN_CENTRE</style>
+										</object>
+										<flag>wxALL|wxEXPAND</flag>
+										<border>4</border>
+									</object>
+									<object class="sizeritem">
+										<object class="wxTextCtrl" name="ID_TEXTCTRL_DAC" variable="TextCtrlDAC" member="yes">
+											<size>200,22</size>
+										</object>
+										<flag>wxALL|wxEXPAND</flag>
+										<border>4</border>
+									</object>
+								</object>
+							</object>
+							<flag>wxTOP|wxEXPAND</flag>
+							<border>2</border>
+						</object>
+						<object class="sizeritem">
+							<object class="wxPanel" name="ID_PANEL_ADC" subclass="RimPanel" variable="PanelADC" member="yes">
+								<object class="wxBoxSizer" variable="BoxSizerADC" member="no">
+									<object class="sizeritem">
+										<object class="wxStaticText" name="ID_STATICTEXT_ADC_LBL" variable="StaticTextADCLbl" member="yes">
+											<label> Audio ADC:</label>
+											<size>100,-1</size>
+											<font>
+												<size>10</size>
+												<style>normal</style>
+												<weight>bold</weight>
+												<underlined>0</underlined>
+												<family>swiss</family>
+												<face>Arial Narrow</face>
+											</font>
+											<style>wxALIGN_CENTRE</style>
+										</object>
+										<flag>wxALL|wxEXPAND</flag>
+										<border>4</border>
+									</object>
+									<object class="sizeritem">
+										<object class="wxTextCtrl" name="ID_TEXTCTRL_ADC" variable="TextCtrlADC" member="yes">
+											<size>200,22</size>
+										</object>
+										<flag>wxALL|wxEXPAND</flag>
+										<border>4</border>
+									</object>
+								</object>
+							</object>
+							<flag>wxTOP|wxEXPAND</flag>
+							<border>2</border>
+						</object>
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND</flag>
+							<size>-1,25</size>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND</flag>
+				<option>1</option>
+			</object>
+		</object>
+	</object>
+</wxsmith>

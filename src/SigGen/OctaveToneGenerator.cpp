@@ -5,17 +5,32 @@
 
 OctaveToneGenerator::OctaveToneGenerator(double sampleRate, int channels)
 :mParamsNode(NULL)
-,mSampleRate(sampleRate)
-,mNoChannels(channels)
 ,mSelectedChannelIdx(0)
 {
-    //ctor
+	//ctor
 	mSeparator = wxT("\\");
+	Create(sampleRate, sampleRate, channels);
+}
+
+OctaveToneGenerator::OctaveToneGenerator(double pbSampleRate, double recSampleRate, int channels)
+:mParamsNode(NULL)
+,mSelectedChannelIdx(0)
+{
+	//ctor
+	mSeparator = wxT("\\");
+	Create(pbSampleRate, recSampleRate, channels);
 }
 
 OctaveToneGenerator::~OctaveToneGenerator()
 {
     //dtor
+}
+
+void OctaveToneGenerator::Create(double pbSampleRate, double recSampleRate, int channels)
+{
+	mPbSampleRate = pbSampleRate;
+	mRecSampleRate = recSampleRate;
+	mNoChannels = channels;
 }
 
 bool 
@@ -35,11 +50,33 @@ OctaveToneGenerator::generateSignal(wxXmlNode* parameters)
 void
 OctaveToneGenerator::setParameters( wxXmlNode* paramsNode )
 {
-    mParamsNode = paramsNode;
+	wxXmlNode* cNode = paramsNode->GetChildren();
+
+	while (cNode)
+	{
+		wxString nName = cNode->GetName();
+
+		if (nName == wxT("audiorouting"))
+		{
+		}
+		else if (nName == wxT("fileio"))
+		{
+			mFolderPath = cNode->GetAttribute(wxT("workfolder"));
+			mFileName = cNode->GetAttribute(wxT("signalfile"));
+		}
+		else if (nName == wxT("config"))
+		{
+			mParamsNode = cNode;
+		}
+		else if (nName == wxT("performancespecs"))
+		{
+		}
+		cNode = cNode->GetNext();
+	}
 
 	//set default parameter values
 	mStartFreq = 100;
-	mStopFreq = mSampleRate/2;
+	mStopFreq = mRecSampleRate/2;
 	mStepsPerOctave = 6;
 	mIntegrationTime = 500;
 	mTransientTime = 250;
@@ -53,13 +90,6 @@ OctaveToneGenerator::setParameters( wxXmlNode* paramsNode )
 	{
 		wxString pName = parameterNode->GetAttribute(wxT("name"));
 
-		if (pName == wxT("chidx"))
-		{
-			wxString value = parameterNode->GetAttribute(wxT("value"));
-			double dChIdx;
-			value.ToDouble(&dChIdx);
-			mSelectedChannelIdx = -1;// (int)dChIdx;
-		}
 		if (pName == wxT("freqstart"))
 		{
 			wxString value = parameterNode->GetAttribute(wxT("value"));
@@ -96,15 +126,6 @@ OctaveToneGenerator::setParameters( wxXmlNode* paramsNode )
 			wxString value = parameterNode->GetAttribute(wxT("value"));
 			value.ToDouble(&mSignalLevel);
 		}
-		else if (pName == wxT("workfolder"))
-		{
-			mFolderPath = parameterNode->GetAttribute(wxT("value"));
-		}
-		else if (pName == wxT("signalfile"))
-		{
-			mFileName = parameterNode->GetAttribute(wxT("value"));
-		}
-
 		parameterNode = parameterNode->GetNext();
 	}
 
@@ -121,9 +142,9 @@ bool
 OctaveToneGenerator::writeSignalFile()
 {
 	bool bRes = false;
-	size_t sampleSilence = 1e-3 * mBurstIntervalTime * mSampleRate;
-	size_t sampleTransient = 1e-3 * mTransientTime * mSampleRate;
-	size_t sampleTone = 1e-3 * mIntegrationTime * mSampleRate;
+	size_t sampleSilence = 1e-3 * mBurstIntervalTime * mRecSampleRate;
+	size_t sampleTransient = 1e-3 * mTransientTime * mRecSampleRate;
+	size_t sampleTone = 1e-3 * mIntegrationTime * mRecSampleRate;
 	size_t writeLength = 1024;
 	
 	float* silenceBuffer = new float[writeLength * (size_t)mNoChannels];
@@ -135,7 +156,7 @@ OctaveToneGenerator::writeSignalFile()
 	wxString filePath = mFolderPath + mSeparator + mFileName;
 	
 	std::string strpath(filePath.mbc_str());
-	WavFileWriter* writer = new WavFileWriter(strpath, (size_t)mNoChannels, (size_t)mSampleRate, 1);
+	WavFileWriter* writer = new WavFileWriter(strpath, (size_t)mNoChannels, (size_t)mPbSampleRate, 1);
 
 	if (writer && writer->isOK())
 	{
@@ -155,7 +176,7 @@ OctaveToneGenerator::writeSignalFile()
 			double freq = mFrequencies[fIdx];
 			double linLevel = pow(10, (mSignalLevel / 20.0));
 			double twoPi = T_PI * 2;
-			double dTime = 1.0 / mSampleRate;
+			double dTime = 1.0 / mPbSampleRate;
 			double timeS = dTime;
 			double angleS = 0;
 			
@@ -184,7 +205,7 @@ OctaveToneGenerator::writeSignalFile()
 						toneBuffer[mNoChannels* i + mSelectedChannelIdx] = (float)sig;
 					}
 
-					timeS = (double)tCount / mSampleRate;// += dTime;
+					timeS = (double)tCount / mPbSampleRate;// += dTime;
 					tCount++;
 				}
 				writer->writeAudioFrames(toneBuffer, writeLength);

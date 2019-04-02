@@ -81,23 +81,14 @@
     <ClCompile Include="..\..\AVPTesterMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Devices\ADevicesManager.cpp">
-      <Filter>Source Files\Devices</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\System\Prefs.cpp">
       <Filter>Source Files\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\AudioDevicesPanel.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Widgets\RimPanel.cpp">
       <Filter>Source Files\Widgets</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Widgets\GButton.cpp">
       <Filter>Source Files\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\AudioIO\AudioEngine.cpp">
-      <Filter>Source Files\AudioIO</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Widgets\VuMeter.cpp">
       <Filter>Source Files\Widgets</Filter>
@@ -165,9 +156,6 @@
     <ClCompile Include="..\..\SigGen\SingleSineToneGenerator.cpp">
       <Filter>Source Files\SigGen</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Analysers\THDNoise.cpp">
-      <Filter>Source Files\Analysers</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Analysers\FADGIAnalyser.cpp">
       <Filter>Source Files\Analysers</Filter>
     </ClCompile>
@@ -192,6 +180,36 @@
     <ClCompile Include="..\..\ParamEditDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Project\ProjectManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\NewProjectDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PrjInfoEditPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\InfoEditDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\WaitDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\GenParamEditDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\AudioIO\FDAudioEngine.cpp">
+      <Filter>Source Files\AudioIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Devices\FDADevicesManager.cpp">
+      <Filter>Source Files\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\FDAudioDevicesPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Analysers\THDNoise.cpp">
+      <Filter>Source Files\Analysers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\AVPTesterApp.h">
@@ -200,14 +218,8 @@
     <ClInclude Include="..\..\AVPTesterMain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Devices\ADevicesManager.h">
-      <Filter>Header Files\Devices</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\System\Prefs.h">
       <Filter>Header Files\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\AudioDevicesPanel.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Widgets\RimPanel.h">
       <Filter>Header Files\Widgets</Filter>
@@ -217,9 +229,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Widgets\GButton.h">
       <Filter>Header Files\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\AudioIO\AudioEngine.h">
-      <Filter>Header Files\AudioIO</Filter>
     </ClInclude>
     <ClInclude Include="..\..\AudioIO\LevelAnalyser.h">
       <Filter>Header Files\AudioIO</Filter>
@@ -324,6 +333,33 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ParamEditDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Project\ProjectManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\NewProjectDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PrjInfoEditPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\InfoEditDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\WaitDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GenParamEditDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\AudioIO\FDAudioEngine.h">
+      <Filter>Header Files\AudioIO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Devices\FDADevicesManager.h">
+      <Filter>Header Files\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\FDAudioDevicesPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

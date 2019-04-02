@@ -745,3 +745,27 @@ MathUtilities::calculateOctaveFreqs(double startFreq,
 
 	return freqs;
 }
+
+double
+MathUtilities::stdVar(std::vector<double> &data)
+{
+	size_t dataSize = data.size();
+
+	// find the mean (average) of the data
+	double xbar = 0;
+	for (int i = 0; i < dataSize; i++)
+		xbar = xbar + data[i];
+
+	xbar = xbar / dataSize;
+
+	// find the standard deviation
+	double numerator = 0;
+	double denominator = dataSize;
+
+	for (int i = 1; i < dataSize; i++)
+		numerator = numerator + pow((data[i] - xbar), 2);
+
+	double standard_deviation = sqrt(numerator / denominator);
+
+	return standard_deviation;
+}

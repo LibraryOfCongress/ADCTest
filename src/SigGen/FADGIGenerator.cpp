@@ -3,12 +3,17 @@
 
 
 FADGIGenerator::FADGIGenerator(double sampleRate, int channels)
-:mSampleRate(sampleRate)
-,mNoChannels(channels)
-,mSignalFile(NULL)
+:mSignalFile(NULL)
 {
+	Create(sampleRate, sampleRate, channels);
 }
 
+void FADGIGenerator::Create(double pbSampleRate, double recSampleRate, int channels)
+{
+	mPbSampleRate = pbSampleRate;
+	mRecSampleRate = recSampleRate;
+	mNoChannels = channels;
+}
 
 FADGIGenerator::~FADGIGenerator()
 {
@@ -44,7 +49,7 @@ FADGIGenerator::setParameters(wxXmlNode* testDescriptionNode)
 	{
 		wxString nName = cNode->GetName();
 
-		if (nName == wxT("paramters"))
+		if (nName == wxT("config"))
 		{
 			mParamsNode = cNode;
 		}
@@ -59,7 +64,7 @@ FADGIGenerator::setParameters(wxXmlNode* testDescriptionNode)
 	mTransientTime = getTestParameterValue(wxT("transtime"), mParamsNode);
 	mIntegrationTime = getTestParameterValue(wxT("inttime"), mParamsNode);
 	mBurstIntervalTime = getTestParameterValue(wxT("bursttime"), mParamsNode);
-	mSelectedChannel = (int)getTestParameterValue(wxT("chidx"), mParamsNode);
+	mSelectedChannel = 0;
 
 	mFolderPath = getTestParameterStringValue(wxT("workfolder"), mParamsNode);
 	mSignalFileName = getTestParameterStringValue(wxT("responsefile"), mParamsNode);

@@ -18,7 +18,7 @@ protected:
 	FreqPoint getMaxLevelInResponse(SNDFILE* afile, std::vector<size_t> &onsets, int channelIndex, float startFreq, float endFreq);
 
 	float calculateCrossTalk( SNDFILE* afile, std::vector<size_t> &onsets, int channelIndex);
-	bool buildReport();
+	int buildReport();
 
 	size_t mFFTLength;
 	size_t mFFTAverages;

@@ -16,8 +16,10 @@ class SingleSineToneGenerator
 {
     public:
 		SingleSineToneGenerator(double sampleRate, int channels);
+		SingleSineToneGenerator(double pbSampleRate, double recSampleRate, int channels);
         virtual ~SingleSineToneGenerator();
 
+		void Create(double pbSampleRate, double recSampleRate, int channels);
 		bool generateSignal(wxXmlNode* parameters);
 
 	protected:
@@ -26,7 +28,8 @@ class SingleSineToneGenerator
 
     protected:
         wxXmlNode* mParamsNode;
-        double mSampleRate;
+        double mPbSampleRate;
+		double mRecSampleRate;
 		int mNoChannels;
 		wxString mFolderPath;
 		wxString mFileName;

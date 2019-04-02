@@ -16,8 +16,10 @@ class DualSineToneGenerator
 {
     public:
 		DualSineToneGenerator(double sampleRate, int channels);
+		DualSineToneGenerator(double pbSampleRate, double recSampleRate, int channels);
         virtual ~DualSineToneGenerator();
 
+		void Create(double pbSampleRate, double recSampleRate, int channels);
 		bool generateSignal(wxXmlNode* parameters);
 
 	protected:
@@ -26,7 +28,8 @@ class DualSineToneGenerator
 
     protected:
         wxXmlNode* mParamsNode;
-        double mSampleRate;
+		double mPbSampleRate;
+		double mRecSampleRate;
 		int mNoChannels;
 		wxString mFolderPath;
 		wxString mFileName;

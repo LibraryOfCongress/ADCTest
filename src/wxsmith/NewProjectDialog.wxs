@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="NewProjectDialog">
+		<title>Create new test project</title>
+		<centered>1</centered>
+		<bg>#C8C8C8</bg>
+		<pos_arg>1</pos_arg>
+		<size_arg>1</size_arg>
+		<style>wxCAPTION</style>
+		<object class="wxBoxSizer" variable="BoxSizerMail" member="no">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_TOP" subclass="RimPanel" variable="PanelTop" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPanelTop" member="no">
+						<object class="sizeritem">
+							<object class="wxStaticText" name="ID_STATICTEXT_LBL_PJNAME" variable="StaticTextLblPjName" member="yes">
+								<label> Project title:</label>
+								<size>100,-1</size>
+								<font>
+									<size>10</size>
+									<style>normal</style>
+									<weight>bold</weight>
+									<underlined>0</underlined>
+									<family>swiss</family>
+									<face>Arial Narrow</face>
+								</font>
+								<style>wxALIGN_CENTRE</style>
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>4</border>
+						</object>
+						<object class="sizeritem">
+							<object class="wxTextCtrl" name="ID_TEXTCTRL_PJNAME" variable="TextCtrlPjName" member="yes">
+								<size>200,22</size>
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>4</border>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>2</border>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_MIDDLE" subclass="RimPanel" variable="PanelMiddle" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPanelMiddle" member="no">
+						<object class="sizeritem">
+							<object class="wxStaticText" name="ID_STATICTEXT_LBL_PJPATH" variable="StaticText1" member="yes">
+								<label> Project path:</label>
+								<size>100,-1</size>
+								<font>
+									<size>10</size>
+									<style>normal</style>
+									<weight>bold</weight>
+									<underlined>0</underlined>
+									<family>swiss</family>
+									<face>Arial Narrow</face>
+								</font>
+								<style>wxALIGN_CENTRE</style>
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>4</border>
+						</object>
+						<object class="sizeritem">
+							<object class="wxTextCtrl" name="ID_TEXTCTRL_PJPATH" variable="TextCtrlPJPath" member="yes">
+								<size>200,0</size>
+							</object>
+							<flag>wxTOP|wxBOTTOM|wxLEFT|wxEXPAND</flag>
+							<border>4</border>
+						</object>
+						<object class="sizeritem">
+							<object class="wxButton" name="ID_BUTTON_PJPATH" subclass="GButton" variable="ButtonPJPath" member="yes">
+								<label>..</label>
+								<size>30,20</size>
+								<handler function="OnButtonPJPathClick" entry="EVT_BUTTON" />
+							</object>
+							<flag>wxALL</flag>
+							<border>4</border>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>2</border>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_INFO" variable="PanelInfo" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPanelInfo" member="no">
+						<object class="sizeritem">
+							<object class="Custom" name="ID_CUSTOM_PANEL_INFO" subclass="PrjInfoEditPanel" variable="mPanelInfo" member="yes">
+								<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
+								<include_file>PrjInfoEditPanel.h</include_file>
+								<local_include>1</local_include>
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>2</border>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_BOTTOM" subclass="RimPanel" variable="PanelBottom" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPanelBottom" member="no">
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND</flag>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxButton" name="ID_BUTTON_PJOK" subclass="GButton" variable="ButtonPJOK" member="yes">
+								<label>ok</label>
+								<size>100,22</size>
+								<handler function="OnButtonPJOKClick" entry="EVT_BUTTON" />
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>4</border>
+						</object>
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND</flag>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxButton" name="ID_BUTTON_PJCANCEL" subclass="GButton" variable="ButtonPJCancel" member="yes">
+								<label>cancel</label>
+								<size>100,22</size>
+								<handler function="OnButtonPJCancelClick" entry="EVT_BUTTON" />
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>4</border>
+						</object>
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND</flag>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>2</border>
+			</object>
+		</object>
+	</object>
+</wxsmith>

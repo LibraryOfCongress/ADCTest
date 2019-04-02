@@ -1,5 +1,5 @@
 #include "ParamEditDialog.h"
-#include "AudioIO/AudioEngine.h"
+#include "AudioIO/FDAudioEngine.h"
 
 //(*InternalHeaders(ParamEditDialog)
 #include <wx/font.h>

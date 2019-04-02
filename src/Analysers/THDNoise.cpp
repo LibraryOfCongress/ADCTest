@@ -33,12 +33,9 @@ THDNoise::analyseSignal(wxXmlNode* testDescriptionNode)
 		{
 			analyseSegments(mRespFile, onsets);
 
-			bool testOutcome = buildReport();
-
-			if (testOutcome)
-				result = TestPass;
-			else
-				result = TestFail;
+			mSigQualityOK = checkSignalQuality();
+			
+			result = buildReport();
 		}
 		else
 		{
@@ -55,9 +52,10 @@ THDNoise::analyseSignal(wxXmlNode* testDescriptionNode)
 	return result;
 }
 
-void
+int
 THDNoise::analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets)
 {
+	int retVal = 0;
 	//module specific parameters
 	mFFTLength = getTestParameterValue(wxT("fftlength"), mParamsNode);
 	mFFTAverages = getTestParameterValue(wxT("fftnoavg"), mParamsNode);
@@ -99,6 +97,8 @@ THDNoise::analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets)
 	mMinSigValue = 1.0;
 	size_t averagesCounter = 0;
 	mFirstObservation = true;
+	
+	mFramesEnergy.clear();
 	while (averagesCounter < mFFTAverages)
 	{
 		sf_count_t read = sf_readf_float(afile, fileBuffer, mFFTLength);
@@ -119,6 +119,14 @@ THDNoise::analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets)
 		}
 
 		mRTA->getFDData(channelBuffer, fftMag, dummyPhase, true, false);
+
+		//check frame energy
+		double nrg = 0;
+		for (size_t i = 0; i < mFFTBins; i++)
+		{
+			nrg += (double)fftMag[i];
+		}
+		mFramesEnergy.push_back(nrg / (double)mFFTBins);
 
 		//no averaging
 		if (mAverageType == 0)
@@ -181,6 +189,8 @@ THDNoise::analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets)
 	delete mRTA;
 
 	extractTHDNoiseMetrics();
+	
+	return retVal;
 }
 
 void 
@@ -262,7 +272,7 @@ THDNoise::extractTHDNoiseMetrics()
 	mSNR_Log = 20 * log10((mTHDpN_Pc/100) - (mTHD_Pc/100)) - fabs(mSigBin.peakValueLog);
 }
 
-bool
+int
 THDNoise::buildReport()
 {
 	wxString channelInfo;
@@ -336,6 +346,14 @@ THDNoise::buildReport()
 	logSNRNode->AddAttribute(wxT("units"), wxT("dB"));
 	metricsNode->AddChild(logSNRNode);
 
+	//frame energies
+	wxXmlNode*energiesNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("parameter"));
+	energiesNode->AddAttribute(wxT("name"), wxT("sig_std_var"));
+	paramValueStr.Printf(wxT("%g"), mFrNrgDev);
+	energiesNode->AddAttribute(wxT("value"), paramValueStr);
+	energiesNode->AddAttribute(wxT("units"), wxT(""));
+	metricsNode->AddChild(energiesNode);
+
 	//Add metrics node to data node;
 	dataNode->AddChild(metricsNode);
 
@@ -367,20 +385,14 @@ THDNoise::buildReport()
 	//write pass or fail outcome for test based on perfomance specifications
 
 	//add published specs for reference
-	wxXmlNode* specNode = new wxXmlNode(*mSpecsNode);// wxXML_ELEMENT_NODE, wxT("performancespecs"));
+	wxXmlNode* specNode = new wxXmlNode(*mSpecsNode);
 	resultsNode->AddChild(specNode);
 
 	//check against target performance
-	bool testResultsOK = checkTestSpecs(resultsNode);
+	wxString testResultString;
+	int testResultValue = getTestOutcome(resultsNode, testResultString);
 	wxXmlNode* outcomeNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("testoutcome"));
-	wxString passOrFail;
-
-	if (testResultsOK)
-		passOrFail = wxT("pass");
-	else
-		passOrFail = wxT("fail");
-
-	outcomeNode->AddAttribute(wxT("value"), passOrFail);
+	outcomeNode->AddAttribute(wxT("value"), testResultString);
 	resultsNode->AddChild(outcomeNode);
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -389,6 +401,6 @@ THDNoise::buildReport()
 
 	delete resultsNode;
 
-	return testResultsOK;
+	return testResultValue;
 }
 

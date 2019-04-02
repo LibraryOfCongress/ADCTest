@@ -16,8 +16,10 @@ class OctaveToneGenerator
 {
     public:
         OctaveToneGenerator(double sampleRate, int channels);
+		OctaveToneGenerator(double pbSampleRate, double recSampleRate, int channels);
         virtual ~OctaveToneGenerator();
 
+		void Create(double pbSampleRate, double recSampleRate, int channels);
 		bool generateSignal(wxXmlNode* parameters);
 
 	protected:
@@ -27,7 +29,8 @@ class OctaveToneGenerator
 
     protected:
         wxXmlNode* mParamsNode;
-        double mSampleRate;
+		double mPbSampleRate;
+		double mRecSampleRate;
 		int mNoChannels;
 		wxString mFolderPath;
 		wxString mFileName;

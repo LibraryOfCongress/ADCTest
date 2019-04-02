@@ -34,7 +34,7 @@
 					<Add library="libwxzlibd.a" />
 					<Add library="libwxregexud.a" />
 					<Add library="libwxexpatd.a" />
-					<Add library="msvc\AVPTester\Debug\portaudio-v19.lib" />
+					<Add library="msvc/AVPTester/Debug/portaudio-v19.lib" />
 					<Add directory="C:/MinGW/wxWidgets-2.9.5/lib/gcc_lib" />
 				</Linker>
 			</Target>
@@ -114,8 +114,8 @@
 		<Unit filename="Analysers/StepsFrequencyResponse.h" />
 		<Unit filename="AudioDevicesDialog.cpp" />
 		<Unit filename="AudioDevicesDialog.h" />
-		<Unit filename="AudioDevicesPanel.cpp" />
-		<Unit filename="AudioDevicesPanel.h" />
+		<Unit filename="FDAudioDevicesPanel.cpp" />
+		<Unit filename="FDAudioDevicesPanel.h" />
 		<Unit filename="AudioIO/AudioEngine.cpp" />
 		<Unit filename="AudioIO/AudioEngine.h" />
 		<Unit filename="DSP/FFTAnalyser.cpp" />
@@ -131,6 +131,14 @@
 		<Unit filename="Devices/AudioInput.h" />
 		<Unit filename="Devices/LevelAnalyser.cpp" />
 		<Unit filename="Devices/LevelAnalyser.h" />
+		<Unit filename="GenParamEditDialog.cpp" />
+		<Unit filename="GenParamEditDialog.h" />
+		<Unit filename="InfoEditDialog.cpp" />
+		<Unit filename="InfoEditDialog.h" />
+		<Unit filename="NewProjectDialog.cpp" />
+		<Unit filename="NewProjectDialog.h" />
+		<Unit filename="PrjInfoEditPanel.cpp" />
+		<Unit filename="PrjInfoEditPanel.h" />
 		<Unit filename="ResultsDialog.cpp" />
 		<Unit filename="ResultsDialog.h" />
 		<Unit filename="SigGen/OctaveToneGenerator.cpp" />
@@ -141,6 +149,8 @@
 		<Unit filename="System/Prefs.h" />
 		<Unit filename="TestManager.cpp" />
 		<Unit filename="TestManager.h" />
+		<Unit filename="WaitDialog.cpp" />
+		<Unit filename="WaitDialog.h" />
 		<Unit filename="Widgets/GButton.cpp" />
 		<Unit filename="Widgets/GButton.h" />
 		<Unit filename="Widgets/QPxColours.h" />
@@ -153,7 +163,12 @@
 		<Unit filename="wxsmith/AboutADCTDialog.wxs" />
 		<Unit filename="wxsmith/AudioDevicesDialog.wxs" />
 		<Unit filename="wxsmith/AudioDevicesPanel.wxs" />
+		<Unit filename="wxsmith/GenParamEditDialog.wxs" />
+		<Unit filename="wxsmith/InfoEditDialog.wxs" />
+		<Unit filename="wxsmith/NewProjectDialog.wxs" />
+		<Unit filename="wxsmith/PrjInfoEditPanel.wxs" />
 		<Unit filename="wxsmith/ResultsDialog.wxs" />
+		<Unit filename="wxsmith/WaitDialog.wxs" />
 		<Extensions>
 			<code_completion />
 			<envvars />
@@ -162,10 +177,15 @@
 				<gui name="wxWidgets" src="AVPTesterApp.cpp" main="AVPTesterFrame" init_handlers="necessary" language="CPP" />
 				<resources>
 					<wxFrame wxs="wxsmith/AVPTesterframe.wxs" src="AVPTesterMain.cpp" hdr="AVPTesterMain.h" fwddecl="0" i18n="1" name="AVPTesterFrame" language="CPP" />
-					<wxPanel wxs="wxsmith/AudioDevicesPanel.wxs" src="AudioDevicesPanel.cpp" hdr="AudioDevicesPanel.h" fwddecl="0" i18n="1" name="AudioDevicesPanel" language="CPP" />
+					<wxPanel wxs="wxsmith/AudioDevicesPanel.wxs" src="FDAudioDevicesPanel.cpp" hdr="FDAudioDevicesPanel.h" fwddecl="0" i18n="1" name="AudioDevicesPanel" language="CPP" />
 					<wxDialog wxs="wxsmith/AudioDevicesDialog.wxs" src="AudioDevicesDialog.cpp" hdr="AudioDevicesDialog.h" fwddecl="0" i18n="1" name="AudioDevicesDialog" language="CPP" />
 					<wxDialog wxs="wxsmith/ResultsDialog.wxs" src="ResultsDialog.cpp" hdr="ResultsDialog.h" fwddecl="0" i18n="1" name="ResultsDialog" language="CPP" />
 					<wxDialog wxs="wxsmith/AboutADCTDialog.wxs" src="AboutADCTDialog.cpp" hdr="AboutADCTDialog.h" fwddecl="0" i18n="1" name="AboutADCTDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/NewProjectDialog.wxs" src="NewProjectDialog.cpp" hdr="NewProjectDialog.h" fwddecl="0" i18n="1" name="NewProjectDialog" language="CPP" />
+					<wxPanel wxs="wxsmith/PrjInfoEditPanel.wxs" src="PrjInfoEditPanel.cpp" hdr="PrjInfoEditPanel.h" fwddecl="0" i18n="1" name="PrjInfoEditPanel" language="CPP" />
+					<wxDialog wxs="wxsmith/InfoEditDialog.wxs" src="InfoEditDialog.cpp" hdr="InfoEditDialog.h" fwddecl="0" i18n="1" name="InfoEditDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/WaitDialog.wxs" src="WaitDialog.cpp" hdr="WaitDialog.h" fwddecl="0" i18n="1" name="WaitDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/GenParamEditDialog.wxs" src="GenParamEditDialog.cpp" hdr="GenParamEditDialog.h" fwddecl="0" i18n="1" name="GenParamEditDialog" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>

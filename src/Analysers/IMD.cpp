@@ -31,12 +31,9 @@ IMD::analyseSignal(wxXmlNode* testDescriptionNode)
 		{
 			calculateIMDProducts(mResponseFile, onsets, mSelectedChannel);
 
-			bool testOutcome = buildReport();
+			mSigQualityOK = checkSignalQuality();
 
-			if (testOutcome)
-				result = TestPass;
-			else
-				result = TestFail;
+			result = buildReport();
 		}
 		else
 		{
@@ -53,9 +50,10 @@ IMD::analyseSignal(wxXmlNode* testDescriptionNode)
 	return result;
 }
 
-float
+int
 IMD::calculateIMDProducts(SNDFILE* afile, std::vector<size_t> &onsets, int channelIndex)
 {
+	int retVal = 0;
 	mFFTLength = (size_t)getTestParameterValue(wxT("fftlength"), mParamsNode);
 	mFFTAverages = (size_t)getTestParameterValue(wxT("fftnoavg"), mParamsNode);
 	mInputSignalLevel = (float)getTestParameterValue(wxT("tonelevel"), mParamsNode);
@@ -87,6 +85,7 @@ IMD::calculateIMDProducts(SNDFILE* afile, std::vector<size_t> &onsets, int chann
 	memset(fftMagAcc, 0, sizeof(double)*mFFTLength);
 
 	size_t averagesCounter = 0;
+	mFramesEnergy.clear();
 	while (averagesCounter < mFFTAverages)
 	{
 		sf_count_t read = sf_readf_float(afile, fileBuffer, mFFTLength);
@@ -101,10 +100,15 @@ IMD::calculateIMDProducts(SNDFILE* afile, std::vector<size_t> &onsets, int chann
 		mRTA->getFDData(channelBuffer, fftMag, dummyPhase, true, false);
 
 		//accumulate for linear averaging
+		//check frame energy
+		double nrg = 0;
 		for (size_t i = 0; i < mFFTBins; i++)
 		{
-			fftMagAcc[i] += (double)fftMag[i];
+			double binVal = (double)fftMag[i];
+			fftMagAcc[i] += binVal;
+			nrg += binVal;
 		}
+		mFramesEnergy.push_back(nrg / (double)mFFTBins);
 
 		averagesCounter++;
 	}
@@ -202,10 +206,10 @@ IMD::calculateIMDProducts(SNDFILE* afile, std::vector<size_t> &onsets, int chann
 	}
 
 
-	return 0;// ;
+	return retVal;// ;
 }
 
-bool
+int
 IMD::buildReport()
 {
 	wxString channelInfo;
@@ -255,6 +259,14 @@ IMD::buildReport()
 	IMDLoglNode->AddAttribute(wxT("units"), wxT("dB"));
 	metricsNode->AddChild(IMDLoglNode);
 
+	//frame energies
+	wxXmlNode*energiesNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("parameter"));
+	energiesNode->AddAttribute(wxT("name"), wxT("sig_std_var"));
+	paramValueStr.Printf(wxT("%g"), mFrNrgDev);
+	energiesNode->AddAttribute(wxT("value"), paramValueStr);
+	energiesNode->AddAttribute(wxT("units"), wxT(""));
+	metricsNode->AddChild(energiesNode);
+
 	//Add metrics node to data node;
 	dataNode->AddChild(metricsNode);
 
@@ -290,16 +302,10 @@ IMD::buildReport()
 	resultsNode->AddChild(specNode);
 
 	//check against target performance
-	bool testResultsOK = checkTestSpecs(resultsNode);
+	wxString testResultString;
+	int testResultValue = getTestOutcome(resultsNode, testResultString);
 	wxXmlNode* outcomeNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("testoutcome"));
-	wxString passOrFail;
-
-	if (testResultsOK)
-		passOrFail = wxT("pass");
-	else
-		passOrFail = wxT("fail");
-
-	outcomeNode->AddAttribute(wxT("value"), passOrFail);
+	outcomeNode->AddAttribute(wxT("value"), testResultString);
 	resultsNode->AddChild(outcomeNode);
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -308,7 +314,5 @@ IMD::buildReport()
 
 	delete resultsNode;
 
-	return testResultsOK;
-
-	return true;
+	return testResultValue;
 }

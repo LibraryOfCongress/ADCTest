@@ -1,49 +1,184 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxDialog" name="AboutADCTDialog">
-		<title>About FADGI ADCTester</title>
+		<title>About FADGI ADCTest</title>
 		<centered>1</centered>
-		<fg>#804040</fg>
+		<fg>#E8E8E8</fg>
 		<bg>#C8C8C8</bg>
-		<pos_arg>1</pos_arg>
-		<size_arg>1</size_arg>
+		<id_arg>0</id_arg>
 		<object class="wxBoxSizer" variable="BoxSizerMain" member="no">
 			<orient>wxVERTICAL</orient>
-			<object class="sizeritem">
-				<object class="wxPanel" name="ID_PANEL_TOP" subclass="RimPanel" variable="PanelTop" member="yes">
-					<object class="wxBoxSizer" variable="BoxSizerPanelTop" member="no" />
-				</object>
-				<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP</flag>
-				<border>5</border>
+			<object class="spacer">
+				<flag>wxALL|wxEXPAND</flag>
+				<size>-1,10</size>
 			</object>
 			<object class="sizeritem">
-				<object class="wxPanel" name="ID_PANEL_BOTTOM" subclass="RimPanel" variable="PanelBottom" member="yes">
-					<object class="wxBoxSizer" variable="BoxSizerPanelBottom" member="no">
+				<object class="wxPanel" name="ID_PANEL_TOP" subclass="RimPanel" variable="PanelTop" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPanelTop" member="no">
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND</flag>
+							<size>10,-1</size>
+						</object>
 						<object class="sizeritem">
-							<object class="wxTextCtrl" name="ID_TEXTCTRL_LICENSE" variable="TextCtrlLicense" member="yes">
-								<value>Text</value>
-								<size>300,350</size>
-								<fg>#804040</fg>
-								<bg>#C8C8CD</bg>
-								<font>
-									<size>10</size>
-									<style>normal</style>
-									<weight>bold</weight>
-									<underlined>0</underlined>
-									<family>swiss</family>
-									<face></face>
-								</font>
-								<style>wxTE_MULTILINE|wxTE_READONLY</style>
+							<object class="wxPanel" name="ID_PANEL_LEFT" subclass="RimPanel" variable="PanelLeft" member="yes">
+								<object class="wxBoxSizer" variable="BoxSizerPLeft" member="no">
+									<orient>wxVERTICAL</orient>
+									<object class="sizeritem">
+										<object class="wxBoxSizer" variable="BoxSizerButtons" member="no">
+											<orient>wxVERTICAL</orient>
+											<object class="sizeritem">
+												<object class="wxButton" name="ID_BUTTON_DESCRIPTION" subclass="GButton" variable="ButtonDescription" member="yes">
+													<label>description</label>
+													<size>150,22</size>
+													<handler function="OnButtonDescriptionClick" entry="EVT_BUTTON" />
+												</object>
+												<flag>wxTOP|wxLEFT|wxRIGHT</flag>
+												<border>5</border>
+											</object>
+											<object class="spacer">
+												<flag>wxALL|wxEXPAND</flag>
+												<size>-1,15</size>
+											</object>
+											<object class="sizeritem">
+												<object class="wxButton" name="ID_BUTTON_AUTHOR_LIC" subclass="GButton" variable="ButtonAuthorLic" member="yes">
+													<label>author and license</label>
+													<size>150,22</size>
+													<handler function="OnButtonAuthorLicClick" entry="EVT_BUTTON" />
+												</object>
+												<flag>wxLEFT|wxRIGHT</flag>
+												<border>5</border>
+											</object>
+											<object class="spacer">
+												<flag>wxALL|wxEXPAND</flag>
+												<size>-1,15</size>
+											</object>
+											<object class="sizeritem">
+												<object class="wxButton" name="ID_BUTTON_CONTACTS" subclass="GButton" variable="ButtonContacts" member="yes">
+													<label>contacts</label>
+													<size>150,22</size>
+													<hidden>1</hidden>
+													<handler function="OnButtonContactsClick" entry="EVT_BUTTON" />
+												</object>
+												<flag>wxBOTTOM|wxLEFT|wxRIGHT</flag>
+												<border>5</border>
+											</object>
+										</object>
+										<flag>wxALL|wxEXPAND</flag>
+									</object>
+									<object class="spacer">
+										<flag>wxALL|wxEXPAND</flag>
+										<size>-1,30</size>
+									</object>
+									<object class="sizeritem">
+										<object class="wxStaticText" name="ID_STATICTEXT_VERSION" variable="StaticTextVersion" member="yes">
+											<label></label>
+											<size>150,65</size>
+											<font>
+												<size>10</size>
+												<style>normal</style>
+												<weight>normal</weight>
+												<underlined>0</underlined>
+												<family>swiss</family>
+												<face>Arial</face>
+											</font>
+											<style>wxALIGN_CENTRE</style>
+										</object>
+										<flag>wxALL|wxEXPAND</flag>
+										<border>4</border>
+									</object>
+									<object class="spacer">
+										<flag>wxALL|wxEXPAND</flag>
+										<size>-1,35</size>
+									</object>
+									<object class="sizeritem">
+										<object class="wxBoxSizer" variable="BoxSizerAppIcon" member="no">
+											<object class="spacer">
+												<flag>wxALL|wxEXPAND</flag>
+												<option>1</option>
+											</object>
+											<object class="sizeritem">
+												<object class="wxStaticBitmap" name="ID_STATICBITMAP_FADGI" variable="StaticBitmapFADGI" member="yes">
+													<bitmap>UI\appicon.png</bitmap>
+												</object>
+												<flag>wxALL|wxEXPAND</flag>
+												<border>2</border>
+											</object>
+											<object class="spacer">
+												<flag>wxALL|wxEXPAND</flag>
+												<option>1</option>
+											</object>
+										</object>
+										<flag>wxALL|wxEXPAND</flag>
+										<border>2</border>
+									</object>
+								</object>
 							</object>
-							<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
-							<border>5</border>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>2</border>
+						</object>
+						<object class="spacer">
+							<flag>wxALL|wxEXPAND</flag>
+							<size>10,-1</size>
+						</object>
+						<object class="sizeritem">
+							<object class="wxPanel" name="ID_PANEL_RIGHT" subclass="RimPanel" variable="PanelRight" member="yes">
+								<object class="wxBoxSizer" variable="BoxSizerPRight" member="no">
+									<orient>wxVERTICAL</orient>
+									<object class="sizeritem">
+										<object class="wxStaticText" name="ID_STATICTEXT_TTL" variable="StaticTextTtle" member="yes">
+											<label>Description</label>
+											<size>450,-1</size>
+											<fg>#FFFFFF</fg>
+											<bg>#4EB7DF</bg>
+											<font>
+												<size>11</size>
+												<style>normal</style>
+												<weight>bold</weight>
+												<underlined>0</underlined>
+												<family>swiss</family>
+												<face>Arial</face>
+											</font>
+										</object>
+										<flag>wxALL|wxEXPAND</flag>
+										<border>2</border>
+									</object>
+									<object class="spacer">
+										<flag>wxALL|wxEXPAND</flag>
+										<size>-1,20</size>
+									</object>
+									<object class="sizeritem">
+										<object class="wxTextCtrl" name="ID_TEXTCTRL_LICENSE" variable="TextCtrlLicense" member="yes">
+											<value>Text</value>
+											<size>450,350</size>
+											<fg>#383838</fg>
+											<font>
+												<size>10</size>
+												<style>normal</style>
+												<weight>bold</weight>
+												<underlined>0</underlined>
+												<family>swiss</family>
+												<face>Arial</face>
+											</font>
+											<style>wxTE_MULTILINE|wxTE_READONLY</style>
+										</object>
+										<flag>wxALL</flag>
+										<option>1</option>
+									</object>
+								</object>
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>2</border>
 							<option>1</option>
 						</object>
 					</object>
 				</object>
-				<flag>wxALL|wxALIGN_LEFT|wxALIGN_TOP</flag>
-				<border>5</border>
+				<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+				<border>2</border>
 				<option>1</option>
+			</object>
+			<object class="spacer">
+				<flag>wxALL|wxEXPAND</flag>
+				<size>-1,10</size>
 			</object>
 		</object>
 	</object>

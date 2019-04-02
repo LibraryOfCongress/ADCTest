@@ -1,4 +1,4 @@
-﻿ADCTest was created in 2017 by AVP, formerly AVPreserve (https://www.weareavp.com/), and developed by Christian Landone, for the Library of Congress and the other federal government agencies participating in the Federal Agencies Digital Guidelines Initiative (FADGI: www.digitizationguidelines.gov).
+ADCTest was created in 2017 by AVPreserve (www.avpreserve.com), and developed by Christian Landone, for the Library of Congress and the other federal government agencies participating in the Federal Agencies Digital Guidelines Initiative (www.digitizationguidelines.gov).
 
 # ADCTest Copyright and License
 

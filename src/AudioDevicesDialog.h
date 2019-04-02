@@ -6,9 +6,9 @@
 #define AUDIODEVICESDIALOG_H
 
 //(*Headers(AudioDevicesDialog)
-#include <wx/sizer.h>
-#include "AudioDevicesPanel.h"
+#include "FDAudioDevicesPanel.h"
 #include <wx/dialog.h>
+#include <wx/sizer.h>
 //*)
 
 class AudioDevicesDialog: public wxDialog

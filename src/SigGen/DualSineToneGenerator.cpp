@@ -5,17 +5,32 @@
 
 DualSineToneGenerator::DualSineToneGenerator(double sampleRate, int channels)
 :mParamsNode(NULL)
-,mSampleRate(sampleRate)
-,mNoChannels(channels)
 ,mSelectedChannelIdx(0)
 {
-    //ctor
+	//ctor
 	mSeparator = wxT("\\");
+	Create(sampleRate, sampleRate, channels);
+}
+
+DualSineToneGenerator::DualSineToneGenerator(double pbSampleRate, double recSampleRate, int channels)
+:mParamsNode(NULL)
+,mSelectedChannelIdx(0)
+{
+	//ctor
+	mSeparator = wxT("\\");
+	Create(pbSampleRate, recSampleRate, channels);
 }
 
 DualSineToneGenerator::~DualSineToneGenerator()
 {
     //dtor
+}
+
+void DualSineToneGenerator::Create(double pbSampleRate, double recSampleRate, int channels)
+{
+	mPbSampleRate = pbSampleRate;
+	mRecSampleRate = recSampleRate;
+	mNoChannels = channels;
 }
 
 bool 
@@ -33,7 +48,29 @@ DualSineToneGenerator::generateSignal(wxXmlNode* parameters)
 void
 DualSineToneGenerator::setParameters( wxXmlNode* paramsNode )
 {
-    mParamsNode = paramsNode;
+	wxXmlNode* cNode = paramsNode->GetChildren();
+
+	while (cNode)
+	{
+		wxString nName = cNode->GetName();
+
+		if (nName == wxT("audiorouting"))
+		{
+		}
+		else if (nName == wxT("fileio"))
+		{
+			mFolderPath = cNode->GetAttribute(wxT("workfolder"));
+			mFileName = cNode->GetAttribute(wxT("signalfile"));
+		}
+		else if (nName == wxT("config"))
+		{
+			mParamsNode = cNode;
+		}
+		else if (nName == wxT("performancespecs"))
+		{
+		}
+		cNode = cNode->GetNext();
+	}
 
 	//set default parameter values
 	mFFTLength = 0;
@@ -51,13 +88,6 @@ DualSineToneGenerator::setParameters( wxXmlNode* paramsNode )
 	{
 		wxString pName = parameterNode->GetAttribute(wxT("name"));
 
-		if (pName == wxT("chidx"))
-		{
-			wxString value = parameterNode->GetAttribute(wxT("value"));
-			double dChIdx;
-			value.ToDouble(&dChIdx);
-			mSelectedChannelIdx = -1;// (int)dChIdx;
-		}
 		if (pName == wxT("fftlength"))
 		{
 			wxString value = parameterNode->GetAttribute(wxT("value"));
@@ -107,14 +137,6 @@ DualSineToneGenerator::setParameters( wxXmlNode* paramsNode )
 			wxString value = parameterNode->GetAttribute(wxT("value"));
 			value.ToDouble(&mLevelRatio);
 		}
-		else if (pName == wxT("workfolder"))
-		{
-			mFolderPath = parameterNode->GetAttribute(wxT("value"));
-		}
-		else if (pName == wxT("signalfile"))
-		{
-			mFileName = parameterNode->GetAttribute(wxT("value"));
-		}
 
 		parameterNode = parameterNode->GetNext();
 	}
@@ -126,19 +148,21 @@ bool
 DualSineToneGenerator::writeSignalFile()
 {
 	bool bRes = false;
-	size_t sampleSilence = 1e-3 * mBurstIntervalTime * mSampleRate;
-	size_t sampleTransient = 1e-3 * mTransientTime * mSampleRate;
+	size_t sampleSilence = 1e-3 * mBurstIntervalTime * mRecSampleRate;
+	size_t sampleTransient = 1e-3 * mTransientTime * mRecSampleRate;
+
+	float IOSampleRateRatio = (float)mPbSampleRate / (float)mRecSampleRate;
 	
 	size_t sampleTone = 0;
 	if (mFFTLength > 0)
 	{
 		//if the FFT analysis parameters are specified, 
 		//we can derive tone duration from the required FFT length and averages
-		sampleTone = mFFTLength * (mFFTAverages + 5);
+		sampleTone = (size_t)ceil(IOSampleRateRatio*(float)(mFFTLength * (mFFTAverages + 5)));
 	}
 	else
 	{
-		sampleTone = 1e-3 * mIntegrationTime * mSampleRate;
+		sampleTone = 1e-3 * mIntegrationTime * mRecSampleRate;
 	}
 
 	size_t writeLength = 1024;
@@ -151,7 +175,7 @@ DualSineToneGenerator::writeSignalFile()
 	wxString filePath = mFolderPath + mSeparator + mFileName;
 	
 	std::string strpath(filePath.mbc_str());
-	WavFileWriter* writer = new WavFileWriter(strpath, (size_t)mNoChannels, (size_t)mSampleRate, 1);
+	WavFileWriter* writer = new WavFileWriter(strpath, (size_t)mNoChannels, (size_t)mPbSampleRate, 1);
 
 	if (writer && writer->isOK())
 	{
@@ -189,7 +213,7 @@ DualSineToneGenerator::writeSignalFile()
 		}
 
 		double twoPi = T_PI * 2;
-		double dTime = 1.0 / mSampleRate;
+		double dTime = 1.0 / mPbSampleRate;
 		double timeS_1 = dTime;
 		double angleS_1 = 0;
 		double timeS_2 = dTime;
@@ -222,8 +246,8 @@ DualSineToneGenerator::writeSignalFile()
 					toneBuffer[mNoChannels* i + mSelectedChannelIdx] = (float)sig;
 				}
 
-				timeS_1 = (double)tCount / mSampleRate; 
-				timeS_2 = (double)tCount / mSampleRate;// += dTime;
+				timeS_1 = (double)tCount / mPbSampleRate;
+				timeS_2 = (double)tCount / mPbSampleRate;// += dTime;
 				
 				tCount++;
 			}

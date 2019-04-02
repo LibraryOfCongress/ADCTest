@@ -32,6 +32,12 @@ void RimPanel::setBGColours( unsigned char redT, unsigned char greenT, unsigned 
     Refresh();
 }
 
+void RimPanel::setRimColour(unsigned char red, unsigned char green, unsigned char blue)
+{
+	mFGColour = wxColour(red, green, blue);
+	Refresh();
+}
+
 void RimPanel::EnableGradient(bool enabled)
 {
 	mEnabledGradient = enabled;

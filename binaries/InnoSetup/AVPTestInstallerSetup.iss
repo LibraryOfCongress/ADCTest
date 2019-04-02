@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ADCTest"
-#define MyAppVersion "1.1.0"
+#define MyAppVersion "2.3.5"
 #define MyAppPublisher "Audiovisual Preservation Solutions, Inc."
 #define MyAppURL "https://www.avpreserve.com/"
 #define MyAppExeName "ADCTest.exe"
@@ -22,7 +22,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-SetupIconFile=..\UI\AVPTester.ico
+SetupIconFile=..\UI\ADCTest.ico
 OutputBaseFilename=ADCTestSetup
 Compression=lzma
 SolidCompression=yes
@@ -36,9 +36,8 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "..\ADCTest.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\default.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\default.avt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\userguide.pdf"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\License.MD.rtf"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\UI\*"; DestDir: "{app}\UI"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

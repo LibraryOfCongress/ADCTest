@@ -24,6 +24,7 @@ class RimPanel : public wxPanel
         virtual ~RimPanel();
 
         void setBGColours( unsigned char redT, unsigned char greenT, unsigned char blueT, unsigned char redB, unsigned char greenB, unsigned char blueB );
+		void setRimColour(unsigned char red, unsigned char green, unsigned char blue);
 
         void paintEvent(wxPaintEvent & evt);
         void OnSize(wxSizeEvent &event);

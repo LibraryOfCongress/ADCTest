@@ -31,6 +31,7 @@ typedef struct TestDescriptor {
 	wxString name;
 	wxString alias;
 	wxString enabled;
+	wxString resultPath;
 }TestDescriptor;
 
 typedef struct TestParameter {
@@ -41,6 +42,21 @@ typedef struct TestParameter {
 	wxString value;
 	wxString editable;
 }TestParameter;
+
+typedef struct TestFileIOInfo{
+	wxString testType;
+	wxString signalFileName;
+	wxString responseFileName;
+	wxString resultsFileName;
+	wxString workFolder;
+}TestFileIOInfo;
+
+typedef struct TestAudioIOInfo {
+	wxString signalChIdx;
+	int signalChIdxNum;
+	wxString responseChIdx;
+	int responseChIdxNum;
+}TestAudioIOInfo;
 
 class TestManager
 {
@@ -54,8 +70,11 @@ class TestManager
 		//Saves the current procedures structure to a specific path
 		bool SaveProject( wxString path = wxEmptyString);
 
+		//Sets the XML structure describing the test procedures
+		void SetTestXml(wxXmlNode* tNode, wxString ProjectBasePath);
+
 		//Returns the XML structure describing the test procedures
-		wxXmlNode* GetTestsXml() { return mTestsNode; }
+		wxXmlNode* GetTestsXml() { return mProceduresNode; }
 		
 		//Returns a vector containing string-only descriptions of the currently loaded test procedures. Used by the UI for display purposes.
 		std::vector<TestDescriptor> GetTestDescriptors() { return mDescriptors; }
@@ -69,6 +88,15 @@ class TestManager
 		//Returns a vector containing string-only descriptions of the test with index testID.  Used by the UI for display purposes.
 		std::vector<TestParameter>  GetTestParameters(wxString testID);
 		
+		//Returns a vector containing string-only descriptions of the file IO settings for test with index testID. 
+		TestFileIOInfo GetTestFileIOInfo(wxString testID);
+
+		//Returns a vector containing string-only descriptions of the audio IO settings for test with identifier testID. 
+		TestAudioIOInfo GetTestAudioIOInfo(wxString testID);
+
+		//Returns a vector containing string-only descriptions of the audio IO settings for test with index testIdx. 
+		TestAudioIOInfo GetTestAudioIOInfo(int testIdx);
+
 		//Returns the number of tests specified in the procedures file.
 		int GetNumberOfTest() { return mNumberOfTests; }
 		
@@ -80,14 +108,18 @@ class TestManager
 
 		//Generates the excitation signal described in the test with id testIndex and saves it to file. 
 		//SampleRate and Channels are parameters specific to the procedure set up that are set by the user in the “audio devices setup” UI window.
-		int GenerateSignalFile(int testIndex, double sampleRate, int Channels, wxString&);
+		//note that playback and recording devices are in principle allowed to operate at different samplng rates
+		int GenerateSignalFile(int testIndex, double pbSampleRate, double recSampleRate, int Channels, wxString& signalFilePath);
 		
 		//Returns the complete path of the Wav file containing the excitation signal.
 		wxString GetSignalFilePath(int testIdx); 
 		
 		//Returns the complete path of the Wav file containing the recorded response signal.
 		wxString GetResponseFilePath(int testIdx);
-		
+
+		//Returns the name of the Wav file containing the recorded response signal.
+		wxString GetResponseFileName(int testIdx);
+
 		//Instantiates the analysis module specified in the test descriptor and calculates performance metrics using the response file.
 		wxString AnalyseResponse(int testIndex);
 
@@ -100,6 +132,17 @@ class TestManager
 		//Helper method: returns the parameter xml description belonging to the test with ID testIndex;
 		wxXmlNode* GetParameterNode(int testIndex, wxString parameterName);
 
+		//set the type of test to be performed (normal or offline)
+		void SetTestType(wxString testID, wxString testType);
+
+		//Sets the name of the Wav file containing the recorded response signal.
+		void SetTestResponseFileName(wxString testID, wxString fileName);
+
+		//Sets the index of the playback channel used in the test.
+		void SetTestSignalChannel(wxString testID, wxString chIdx);
+
+		//Sets the index of the recording channel used in the test.
+		void SetTestResponseChannel(wxString testID, wxString chIdx);
 
     protected:
 		void OpenProjectFile(wxString path);
@@ -107,15 +150,21 @@ class TestManager
         void DeleteProject();
 
 		void ParseProject();
+
+		void UpdateDescriptors();
 		wxXmlNode* GetTestNode(int testIndex);
 		wxXmlNode* GetTestNode(wxString testID);
 		
 		wxXmlNode* GetParameterNode(wxXmlNode* testNode, wxString paramName);
+		wxXmlNode* GetConfigNode(wxXmlNode* testNode);
+		wxXmlNode* GetFileIONode(wxXmlNode* testNode);
+		wxXmlNode* GetAudioIONode(wxXmlNode* testNode);
 
     protected:
         wxXmlNode* mProjectNode;
-        wxXmlNode* mTestsNode;
+        wxXmlNode* mProceduresNode;
 
+		wxString mProjectBasePath;
         wxString mProjectPath;
         wxString mProjectNewPath;
         wxString mProjectFolder;

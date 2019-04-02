@@ -10,7 +10,7 @@
 #include "wx/config.h"
 #include "wx/fileconf.h"
 
-#define RELEASE_VERSION 110
+#define RELEASE_VERSION 235
 
 void InitPreferences();
 void FinishPreferences();

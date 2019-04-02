@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -22,21 +22,21 @@
     <ProjectGuid>{EF9B5FFC-C081-4B79-AECA-77D1D55020ED}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>AVPTester</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
     <ProjectName>ADCTest</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>false</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>false</UseOfMfc>
@@ -44,13 +44,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -92,13 +92,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\..\lib-src\libsndfile\include;..\..\..\lib-src\portmixer\include;..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\portaudio-v19\src\common;..\..\..\lib-src\wxWidgets-3.1.0\lib\vc_lib\mswud;..\..\..\lib-src\wxWidgets-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;..\..\..\lib-src\libsndfile\include;..\..\..\lib-src\portmixer\include;..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\portaudio-v19\src\common;..\..\..\lib-src\wxWidgets-3.1.1\lib\vc_lib\mswud;..\..\..\lib-src\wxWidgets-3.1.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\lib-src\wxWidgets-3.1.0\lib\vc_lib;$(SolutionDir)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\lib-src\wxWidgets-3.1.1\lib\vc_lib;$(SolutionDir)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>wxmsw31ud_core.lib;wxbase31ud.lib;wxbase31ud_xml.lib;wxmsw31ud_adv.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;libsndfile.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;oleacc.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;setupapi.lib;uuid.lib;msvcrtd.lib;winmm.lib;portaudio-v19.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
@@ -107,7 +107,7 @@
       <PreprocessorDefinitions>_DEBUG;_CRT_SECURE_NO_DEPRECATE=1;_CRT_NON_CONFORMING_SWPRINTFS=1;_SCL_SECURE_NO_WARNINGS=1;__WXMSW__;_UNICODE;_WINDOWS;NOPCH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>..\..\..\lib\vc_lib\mswud;..\..\..\lib-src\wxWidgets-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\lib\vc_lib\mswud;..\..\..\lib-src\wxWidgets-3.1.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -121,13 +121,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\chris\Desktop\AVPreserve\Software\AVPTester\lib-src\wxWidgets-3.1.0\lib\vc_lib\mswud;C:\Users\chris\Desktop\AVPreserve\Software\AVPTester\lib-src\wxWidgets-3.1.0\include;C:\Users\chris\Desktop\AVPreserve\Software\AVPTester\lib-src\portaudio-v19\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\lib-src\wxWidgets-3.1.1\lib\vc_lib\mswud;..\..\..\lib-src\wxWidgets-3.1.1\include;..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\portaudio-v19\src\common;..\..\..\lib-src\libsndfile\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\chris\Desktop\AVPreserve\Software\AVPTester\lib-src\wxWidgets-3.1.0\lib\vc_lib;$(SolutionDir)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\lib-src\wxWidgets-3.1.1\lib\vc_lib;$(SolutionDir)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>wxmsw31ud_core.lib;wxbase31ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;shlwapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;version.lib;wsock32.lib;wininet.lib;portaudio-v19.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
@@ -135,7 +135,7 @@
       <PreprocessorDefinitions>_DEBUG;_CRT_SECURE_NO_DEPRECATE=1;_CRT_NON_CONFORMING_SWPRINTFS=1;_SCL_SECURE_NO_WARNINGS=1;__WXMSW__;_UNICODE;_WINDOWS;NOPCH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\chris\Desktop\AVPreserve\Software\AVPTester\lib-src\wxWidgets-3.1.0\lib\vc_lib\mswud;C:\Users\chris\Desktop\AVPreserve\Software\AVPTester\lib-src\wxWidgets-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\lib-src\wxWidgets-3.1.1\lib\vc_lib\mswud;..\..\..\lib-src\wxWidgets-3.1.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -148,7 +148,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\..\lib-src\libsndfile\include;..\..\..\lib-src\portmixer\include;..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\portaudio-v19\src\common;..\..\..\lib-src\wxWidgets-3.1.0\lib\vc_lib\mswu;..\..\..\lib-src\wxWidgets-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\lib-src\libsndfile\include;..\..\..\lib-src\portmixer\include;..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\portaudio-v19\src\common;..\..\..\lib-src\wxWidgets-3.1.1\lib\vc_lib\mswu;..\..\..\lib-src\wxWidgets-3.1.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -156,14 +156,14 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\..\lib-src\wxWidgets-3.1.0\lib\vc_lib;$(SolutionDir)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\lib-src\wxWidgets-3.1.1\lib\vc_lib;$(SolutionDir)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>wxmsw31u_core.lib;wxbase31u.lib;wxbase31u_xml.lib;wxmsw31u_adv.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;winmm.lib;oleacc.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;msvcrt.lib;setupapi.lib;libsndfile.lib;portaudio-v19.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>MSVCRT.LIB</IgnoreSpecificDefaultLibraries>
       <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>..\..\..\lib\vc_lib\mswu;..\..\..\lib-src\wxWidgets-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\lib\vc_lib\mswu;..\..\..\lib-src\wxWidgets-3.1.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -176,14 +176,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\chris\Desktop\AVPreserve\Software\AVPTester\lib-src\wxWidgets-3.1.0\lib\vc_lib\mswud;C:\Users\chris\Desktop\AVPreserve\Software\AVPTester\lib-src\wxWidgets-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\pl\Desktop\AVPreserve\Software\AVPTester\lib-src\wxWidgets-3.1.0\lib\vc_lib\mswud;C:\Users\pl\Desktop\AVPreserve\Software\AVPTester\lib-src\wxWidgets-3.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\chris\Desktop\AVPreserve\Software\AVPTester\lib-src\wxWidgets-3.1.0\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\pl\Desktop\AVPreserve\Software\AVPTester\lib-src\wxWidgets-3.1.0\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -197,13 +197,12 @@
     <ClCompile Include="..\..\Analysers\StepsFrequencyResponse.cpp" />
     <ClCompile Include="..\..\Analysers\THDNoise.cpp" />
     <ClCompile Include="..\..\AudioDevicesDialog.cpp" />
-    <ClCompile Include="..\..\AudioDevicesPanel.cpp" />
-    <ClCompile Include="..\..\AudioIO\AudioEngine.cpp" />
+    <ClCompile Include="..\..\AudioIO\FDAudioEngine.cpp" />
     <ClCompile Include="..\..\AudioIO\LevelAnalyser.cpp" />
     <ClCompile Include="..\..\AudioIO\ParametersQueue.cpp" />
     <ClCompile Include="..\..\AVPTesterApp.cpp" />
     <ClCompile Include="..\..\AVPTesterMain.cpp" />
-    <ClCompile Include="..\..\Devices\ADevicesManager.cpp" />
+    <ClCompile Include="..\..\Devices\FDADevicesManager.cpp" />
     <ClCompile Include="..\..\DSP\adapters\RingBufferFloat.cpp" />
     <ClCompile Include="..\..\DSP\FFTAnalyser.cpp" />
     <ClCompile Include="..\..\DSP\GenMetricQueue.cpp" />
@@ -212,7 +211,13 @@
     <ClCompile Include="..\..\DSP\kissfft\kiss_fft.c" />
     <ClCompile Include="..\..\DSP\kissfft\tools\kiss_fftr.c" />
     <ClCompile Include="..\..\DSP\Utils\MathUtilities.cpp" />
+    <ClCompile Include="..\..\FDAudioDevicesPanel.cpp" />
+    <ClCompile Include="..\..\GenParamEditDialog.cpp" />
+    <ClCompile Include="..\..\InfoEditDialog.cpp" />
+    <ClCompile Include="..\..\NewProjectDialog.cpp" />
     <ClCompile Include="..\..\ParamEditDialog.cpp" />
+    <ClCompile Include="..\..\PrjInfoEditPanel.cpp" />
+    <ClCompile Include="..\..\Project\ProjectManager.cpp" />
     <ClCompile Include="..\..\ResultsDialog.cpp" />
     <ClCompile Include="..\..\SigGen\AudioFileWriter.cpp" />
     <ClCompile Include="..\..\SigGen\DualSineToneGenerator.cpp" />
@@ -222,6 +227,7 @@
     <ClCompile Include="..\..\SigGen\WavFileWriter.cpp" />
     <ClCompile Include="..\..\System\Prefs.cpp" />
     <ClCompile Include="..\..\TestManager.cpp" />
+    <ClCompile Include="..\..\WaitDialog.cpp" />
     <ClCompile Include="..\..\Widgets\awohSpin.cpp" />
     <ClCompile Include="..\..\Widgets\GButton.cpp" />
     <ClCompile Include="..\..\Widgets\RimPanel.cpp" />
@@ -238,14 +244,13 @@
     <ClInclude Include="..\..\Analysers\StepsFrequencyResponse.h" />
     <ClInclude Include="..\..\Analysers\THDNoise.h" />
     <ClInclude Include="..\..\AudioDevicesDialog.h" />
-    <ClInclude Include="..\..\AudioDevicesPanel.h" />
-    <ClInclude Include="..\..\AudioIO\AudioEngine.h" />
+    <ClInclude Include="..\..\AudioIO\FDAudioEngine.h" />
     <ClInclude Include="..\..\AudioIO\LevelAnalyser.h" />
     <ClInclude Include="..\..\AudioIO\ParametersQueue.h" />
     <ClInclude Include="..\..\AudioIO\ProcessParams.h" />
     <ClInclude Include="..\..\AVPTesterApp.h" />
     <ClInclude Include="..\..\AVPTesterMain.h" />
-    <ClInclude Include="..\..\Devices\ADevicesManager.h" />
+    <ClInclude Include="..\..\Devices\FDADevicesManager.h" />
     <ClInclude Include="..\..\DSP\adapters\RingBufferFloat.h" />
     <ClInclude Include="..\..\DSP\FFTAnalyser.h" />
     <ClInclude Include="..\..\DSP\GenMetricQueue.h" />
@@ -257,7 +262,13 @@
     <ClInclude Include="..\..\DSP\kissfft\_kiss_fft_guts.h" />
     <ClInclude Include="..\..\DSP\Utils\MathUtilities.h" />
     <ClInclude Include="..\..\DSP\window.h" />
+    <ClInclude Include="..\..\FDAudioDevicesPanel.h" />
+    <ClInclude Include="..\..\GenParamEditDialog.h" />
+    <ClInclude Include="..\..\InfoEditDialog.h" />
+    <ClInclude Include="..\..\NewProjectDialog.h" />
     <ClInclude Include="..\..\ParamEditDialog.h" />
+    <ClInclude Include="..\..\PrjInfoEditPanel.h" />
+    <ClInclude Include="..\..\Project\ProjectManager.h" />
     <ClInclude Include="..\..\ResultsDialog.h" />
     <ClInclude Include="..\..\SigGen\AudioFileWriter.h" />
     <ClInclude Include="..\..\SigGen\DualSineToneGenerator.h" />
@@ -267,6 +278,7 @@
     <ClInclude Include="..\..\SigGen\WavFileWriter.h" />
     <ClInclude Include="..\..\System\Prefs.h" />
     <ClInclude Include="..\..\TestManager.h" />
+    <ClInclude Include="..\..\WaitDialog.h" />
     <ClInclude Include="..\..\Widgets\awohSpin.h" />
     <ClInclude Include="..\..\Widgets\GButton.h" />
     <ClInclude Include="..\..\Widgets\QPxColours.h" />
