@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FADGIProject version="1.0" title="temporary" date="01 Jan 2018">
+<FADGIProject version="1.0" title="temporary" date="01 Jan 2018" type="0">
   <projectinfo>
   <info name="" value=""/>
   </projectinfo>
@@ -89,7 +89,7 @@
         <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -114,7 +114,7 @@
         <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -139,7 +139,7 @@
         <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -164,7 +164,7 @@
         <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -239,7 +239,7 @@
         <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -289,7 +289,7 @@
         <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -314,7 +314,7 @@
         <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -339,7 +339,7 @@
         <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -364,7 +364,7 @@
         <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -389,7 +389,7 @@
         <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -470,7 +470,7 @@
         <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -496,7 +496,7 @@
         <parameter name="lowerlimit" type="double" value="20" units="hz" alias="lowest frequency used in calculations" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -521,7 +521,7 @@
         <parameter name="higherlimit" type="double" value="20000" units="hz" alias="highest frequency used in calculations" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -546,7 +546,7 @@
         <parameter name="higherlimit" type="double" value="20000" units="hz" alias="highest frequency used in calculations" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="500" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -573,7 +573,7 @@
         <parameter name="fftavgtype" type="string" value="exponential" units="" alias="averaging type" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -595,7 +595,7 @@
         <parameter name="fftavgtype" type="string" value="exponential" units="" alias="averaging type" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -617,7 +617,7 @@
         <parameter name="fftavgtype" type="string" value="exponential" units="" alias="averaging type" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -644,7 +644,7 @@
         <parameter name="fftavgtype" type="string" value="exponential" units="" alias="averaging type" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -666,7 +666,7 @@
         <parameter name="fftavgtype" type="string" value="exponential" units="" alias="averaging type" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>
@@ -688,7 +688,7 @@
         <parameter name="fftavgtype" type="string" value="exponential" units="" alias="averaging type" editable="true"/>
         <parameter name="outputfreqresponse" type="bool" value="1" units="" alias="output frequency response" editable="true"/>
         <parameter name="inttime" type="double" value="50" units="mS" alias="integration time" editable="true"/>
-        <parameter name="transtime" type="double" value="1000" units="mS" alias="transient time" editable="true"/>
+        <parameter name="transtime" type="double" value="1500" units="mS" alias="transient time" editable="true"/>
         <parameter name="bursttime" type="double" value="100" units="mS" alias="burst pause" editable="true"/>
         <parameter name="maxsigdev" type="double" value="1e-8" units="" alias="signal quality threshold" editable="true"/>
       </config>

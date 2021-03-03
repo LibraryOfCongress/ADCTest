@@ -31,9 +31,6 @@
     <Filter Include=".Has Custom Build.">
       <UniqueIdentifier>{881e0352-3670-4f33-8446-dea209d54c5d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ASIOSDK">
-      <UniqueIdentifier>{518d689b-e72f-40c3-8f1f-ed6828ad259a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\hostapi\asio">
       <UniqueIdentifier>{2e755f92-e4f8-4866-b6d8-b5dbd504403e}</UniqueIdentifier>
     </Filter>

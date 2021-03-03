@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="FDEngineTest" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/FDEngineTest" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-D__WXDEBUG__" />
+					<Add directory="C:/MinGW/wxWidgets-3.1.1/lib/gcc_lib/mswud" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="C:/MinGW/wxWidgets-3.1.1/lib/gcc_lib/mswud" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="libwxmsw31ud_core.a" />
+					<Add library="libwxbase31ud.a" />
+					<Add library="libwxpngd.a" />
+					<Add library="libwxzlibd.a" />
+					<Add directory="C:/MinGW/wxWidgets-3.1.1/lib/gcc_lib" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/FDEngineTest" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="C:/MinGW/wxWidgets-3.1.1/lib/gcc_lib/mswu" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="C:/MinGW/wxWidgets-3.1.1/lib/gcc_lib/mswu" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="libwxmsw31u_core.a" />
+					<Add library="libwxbase31u.a" />
+					<Add library="libwxpng.a" />
+					<Add library="libwxzlib.a" />
+					<Add directory="C:/MinGW/wxWidgets-3.1.1/lib/gcc_lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-pipe" />
+			<Add option="-mthreads" />
+			<Add option="-D__GNUWIN32__" />
+			<Add option="-D__WXMSW__" />
+			<Add option="-DwxUSE_UNICODE" />
+			<Add option="-Wall" />
+			<Add directory="C:/MinGW/wxWidgets-3.1.1/include" />
+		</Compiler>
+		<ResourceCompiler>
+			<Add directory="C:/MinGW/wxWidgets-3.1.1/include" />
+		</ResourceCompiler>
+		<Linker>
+			<Add option="-mthreads" />
+			<Add library="libkernel32.a" />
+			<Add library="libuser32.a" />
+			<Add library="libgdi32.a" />
+			<Add library="libwinspool.a" />
+			<Add library="libcomdlg32.a" />
+			<Add library="libadvapi32.a" />
+			<Add library="libshell32.a" />
+			<Add library="libole32.a" />
+			<Add library="liboleaut32.a" />
+			<Add library="libuuid.a" />
+			<Add library="libcomctl32.a" />
+			<Add library="libwsock32.a" />
+			<Add library="libodbc32.a" />
+			<Add library="libshlwapi.a" />
+			<Add library="libversion.a" />
+		</Linker>
+		<Unit filename="AudioDevicesDialog.cpp" />
+		<Unit filename="AudioDevicesDialog.h" />
+		<Unit filename="AudioDevicesPanel.cpp" />
+		<Unit filename="AudioDevicesPanel.h" />
+		<Unit filename="FDAudioEngine.cpp" />
+		<Unit filename="FDAudioEngine.h" />
+		<Unit filename="FDEngineTestApp.cpp" />
+		<Unit filename="FDEngineTestApp.h" />
+		<Unit filename="FDEngineTestMain.cpp" />
+		<Unit filename="FDEngineTestMain.h" />
+		<Unit filename="resource.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="wxsmith/AudioDevicesDialog.wxs" />
+		<Unit filename="wxsmith/AudioDevicesPanel.wxs" />
+		<Unit filename="wxsmith/FDEngineTestdialog.wxs" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+			<wxsmith version="1">
+				<gui name="wxWidgets" src="FDEngineTestApp.cpp" main="FDEngineTestDialog" init_handlers="necessary" language="CPP" />
+				<resources>
+					<wxDialog wxs="wxsmith/FDEngineTestdialog.wxs" src="FDEngineTestMain.cpp" hdr="FDEngineTestMain.h" fwddecl="0" i18n="1" name="FDEngineTestDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/AudioDevicesDialog.wxs" src="AudioDevicesDialog.cpp" hdr="AudioDevicesDialog.h" fwddecl="0" i18n="1" name="AudioDevicesDialog" language="CPP" />
+					<wxPanel wxs="wxsmith/AudioDevicesPanel.wxs" src="AudioDevicesPanel.cpp" hdr="AudioDevicesPanel.h" fwddecl="0" i18n="1" name="AudioDevicesPanel" language="CPP" />
+				</resources>
+			</wxsmith>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

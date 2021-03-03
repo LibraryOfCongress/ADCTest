@@ -2,101 +2,33 @@
 #include "System/Prefs.h"
 
 TestManager::TestManager()
-:mProjectNode(0)
-,mProceduresNode(0)
+:mProceduresNode(0)
 {
     //ctor
+	mPathSeparator = wxT("\\");
 }
 
 TestManager::~TestManager()
 {
     //dtor
-    DeleteProject();
 }
 
 void 
-TestManager::SetTestXml(wxXmlNode* tNode, wxString ProjectBasePath)
+TestManager::SetTestXml(wxXmlNode* tNode, wxString ProjectBasePath, int defaultSampleRate, int testType)
 {
 	mProjectBasePath = ProjectBasePath;
 	mDataFolderPath = mProjectBasePath;
 	mProceduresNode = tNode;
+	mDefautSampleRate = defaultSampleRate;
+	mTestType = testType;
+
 	UpdateDescriptors();
 }
-
-bool
-TestManager::OpenProject( wxString path )
-{
-    mProjectPath = path;
-    mProjectNewPath = wxEmptyString;
-	mDataFolderPath = wxEmptyString;
-	OpenProjectFile(path);
-    return true;
-}
-
-bool
-TestManager::SaveProject( wxString path )
-{
-    mProjectNewPath =  path;
-	SaveProjectFile(path);
-	return true;
-}
-
-void
-TestManager::DeleteProject()
-{
-    if( mProjectNode )
-    {
-        mProjectPath = wxEmptyString;
-        mProjectTitle = wxEmptyString;
-
-        delete mProjectNode;
-        mProjectNode = 0;
-        mProceduresNode = 0;
-    }
-}
-
-void
-TestManager::SaveProjectFile( wxString path )
-{
-    if( path.IsEmpty())
-        path = mProjectPath;
-
-    wxXmlDocument* writeSchema = new wxXmlDocument();
-    writeSchema->SetRoot( mProjectNode );
-    writeSchema->Save( path );
-    writeSchema->DetachRoot();
-    delete writeSchema;
-}
-
-void
-TestManager::OpenProjectFile( wxString path )
-{
-    DeleteProject();
-
-    mProjectNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("FADGIProject") );
-    mProjectNode->AddAttribute( wxT("title"), wxT("temporary"));
-
-    mProceduresNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("Procedures") );
-    mProjectNode->AddChild(mProceduresNode);
-
-    mProjectPath = path;
-    mProjectFolder = path.BeforeLast(wxT('.'));
-
-    wxXmlDocument* readSchema = new wxXmlDocument();
-    if( readSchema->Load( path ) )
-    {
-        mProjectNode = readSchema->DetachRoot();
-		ParseProject();
-    }
-    delete readSchema;
-
-    mProjectNewPath = wxEmptyString;
-}
-
 
 void 
 TestManager::UpdateDescriptors()
 {
+	mOfflineResponseStartMs = 0;
 	mNumberOfTests = 0;
 	mDescriptors.clear();
 
@@ -128,13 +60,6 @@ TestManager::UpdateDescriptors()
 	}
 }
 
-void
-TestManager::ParseProject()
-{
-	mProceduresNode = mProjectNode->GetChildren();
-	UpdateDescriptors();
-}
-
 void 
 TestManager::SetTestParameter(int testIndex, wxString paramName, wxString paramValue)
 {
@@ -151,6 +76,26 @@ TestManager::SetTestParameter(int testIndex, wxString paramName, wxString paramV
 		{
 			pNode->DeleteAttribute(wxT("value"));
 			pNode->AddAttribute(wxT("value"), paramValue);
+		}
+	}
+}
+
+void 
+TestManager::SetOfflineTimeRange(int testIndex, float startMs, float endMs)
+{
+	wxString stMs, edMs;
+	stMs.Printf(wxT("%f"), startMs);
+	edMs.Printf(wxT("%f"), endMs);
+
+	wxXmlNode* testNode = GetTestNode(testIndex);
+	if (testNode)
+	{
+		wxXmlNode* fioNode = GetFileIONode(testNode);
+		if (fioNode) {
+			fioNode->DeleteAttribute(wxT("response_start_ms"));
+			fioNode->DeleteAttribute(wxT("response_end_ms"));
+			fioNode->AddAttribute(wxT("response_start_ms"), stMs);
+			fioNode->AddAttribute(wxT("response_end_ms"), edMs);
 		}
 	}
 }
@@ -409,6 +354,12 @@ TestManager::SetTestResponseChannel(wxString testID, wxString chIdx)
 	}
 }
 
+void 
+TestManager::SetOfflineResponseStartMs(size_t offset)
+{
+	mOfflineResponseStartMs = offset;
+}
+
 bool 
 TestManager::IsTestEnabled(int testIndex)
 {
@@ -463,10 +414,34 @@ TestManager::GenerateSignalFile(int testIndex, double pbSampleRate, double recSa
 	else if (signalType == wxT("pause"))
 	{
 		//pause until user ok
+		signalFilePath = wxEmptyString;
 		retval = 1;
 	}
 
 	return retval;
+}
+
+wxString
+TestManager::GetOfflineTestStimulusPath()
+{
+	wxString resPath = wxEmptyString;
+	wxString workFolder = wxEmptyString;
+	wxString signalFile = wxEmptyString;
+
+	wxXmlNode* testNode = GetTestNode(0);
+	if (testNode)
+	{
+		wxXmlNode* fileIONode = GetFileIONode(testNode);
+
+		if (fileIONode)
+		{
+			workFolder = fileIONode->GetAttribute(wxT("workfolder"));
+			signalFile = wxT("testSequence.wav");
+			resPath = workFolder + mPathSeparator + signalFile;
+		}
+	}
+
+	return resPath;
 }
 
 wxString
@@ -487,7 +462,7 @@ TestManager::GetSignalFilePath(int testIndex)
 		}
 	}
 
-	wxString resPath = workFolder + wxT("\\") + signalFile;
+	wxString resPath = workFolder + mPathSeparator + signalFile;
 	return resPath;
 }
 
@@ -509,7 +484,7 @@ TestManager::GetResponseFilePath(int testIndex)
 		}
 	}
 
-	wxString resPath = workFolder + wxT("\\") + responseFile;
+	wxString resPath = workFolder + mPathSeparator + responseFile;
 	return resPath;
 }
 
@@ -559,30 +534,40 @@ TestManager::AnalyseResponse(int testIndex)
 	if (analyserType == wxT("stepfreq"))
 	{
 		StepsFrequencyResponse* mAnalyser = new StepsFrequencyResponse();
+		mAnalyser->SetAnalisysMode(mTestType);
+		mAnalyser->SetOfflineSyncOffsetMs(mOfflineResponseStartMs);
 		outcome = mAnalyser->analyseSignal(testNode);
 		delete mAnalyser;
 	}
 	else if (analyserType == wxT("thdn"))
 	{
 		THDNoise* mAnalyser = new THDNoise();
+		mAnalyser->SetAnalisysMode(mTestType);
+		mAnalyser->SetOfflineSyncOffsetMs(mOfflineResponseStartMs);
 		outcome= mAnalyser->analyseSignal(testNode);
 		delete mAnalyser;
 	}
 	else if (analyserType == wxT("xtalk"))
 	{
 		Crosstalk* mAnalyser = new Crosstalk();
+		mAnalyser->SetAnalisysMode(mTestType);
+		mAnalyser->SetOfflineSyncOffsetMs(mOfflineResponseStartMs);
 		outcome = mAnalyser->analyseSignal(testNode);
 		delete mAnalyser;
 	}
 	else if (analyserType == wxT("lfimd"))
 	{
 		IMD* mAnalyser = new IMD();
+		mAnalyser->SetAnalisysMode(mTestType);
+		mAnalyser->SetOfflineSyncOffsetMs(mOfflineResponseStartMs);
 		outcome = mAnalyser->analyseSignal(testNode);
 		delete mAnalyser;
 	}
 	else if (analyserType == wxT("spis"))
 	{
 		SpIS* mAnalyser = new SpIS();
+		mAnalyser->SetAnalisysMode(mTestType);
+		mAnalyser->SetOfflineSyncOffsetMs(mOfflineResponseStartMs);
 		outcome = mAnalyser->analyseSignal(testNode);
 		delete mAnalyser;
 	}

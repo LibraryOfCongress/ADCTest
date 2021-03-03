@@ -4,6 +4,7 @@
 //(*Headers(NewProjectDialog)
 #include "PrjInfoEditPanel.h"
 #include <wx/button.h>
+#include <wx/choice.h>
 #include <wx/dialog.h>
 #include <wx/panel.h>
 #include <wx/sizer.h>
@@ -23,7 +24,7 @@ class NewProjectDialog: public wxDialog
 		NewProjectDialog(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
 		virtual ~NewProjectDialog();
 
-		void GetNewProjectDefs(wxString& pPath, wxString& pName);
+		void GetNewProjectDefs(wxString& pPath, wxString& pName, int& pType, int& pRate);
 		std::vector<ProjectInfo> GetNewProjectInfo();
 
 		//(*Declarations(NewProjectDialog)
@@ -32,11 +33,18 @@ class NewProjectDialog: public wxDialog
 		GButton* ButtonPJPath;
 		PrjInfoEditPanel* mPanelInfo;
 		RimPanel* PanelBottom;
-		RimPanel* PanelMiddle;
-		RimPanel* PanelTop;
+		RimPanel* PanelPath;
+		RimPanel* PanelSRate;
+		RimPanel* PanelTitle;
+		RimPanel* PanelType;
+		wxBoxSizer* BoxSizerMail;
+		wxChoice* ChoicePJSRate;
+		wxChoice* ChoicePJType;
 		wxPanel* PanelInfo;
-		wxStaticText* StaticText1;
 		wxStaticText* StaticTextLblPjName;
+		wxStaticText* StaticTextLblPjSRate;
+		wxStaticText* StaticTextLblPjType;
+		wxStaticText* StaticTextPJPath;
 		wxTextCtrl* TextCtrlPJPath;
 		wxTextCtrl* TextCtrlPjName;
 		//*)
@@ -47,11 +55,17 @@ class NewProjectDialog: public wxDialog
 		//(*Identifiers(NewProjectDialog)
 		static const long ID_STATICTEXT_LBL_PJNAME;
 		static const long ID_TEXTCTRL_PJNAME;
-		static const long ID_PANEL_TOP;
+		static const long ID_PANEL_TITLE;
 		static const long ID_STATICTEXT_LBL_PJPATH;
 		static const long ID_TEXTCTRL_PJPATH;
 		static const long ID_BUTTON_PJPATH;
-		static const long ID_PANEL_MIDDLE;
+		static const long ID_PANEL_PATH;
+		static const long ID_STATICTEXT_LBL_PJTYPE;
+		static const long ID_CHOICE_PJTYPE;
+		static const long ID_PANEL_TYPE;
+		static const long ID_STATICTEXT_LBL_PJSRATE;
+		static const long ID_CHOICE_PJSRATE;
+		static const long ID_PANEL_SRATE;
 		static const long ID_CUSTOM_PANEL_INFO;
 		static const long ID_PANEL_INFO;
 		static const long ID_BUTTON_PJOK;
@@ -65,12 +79,15 @@ class NewProjectDialog: public wxDialog
 		void OnButtonPJPathClick(wxCommandEvent& event);
 		void OnButtonPJOKClick(wxCommandEvent& event);
 		void OnButtonPJCancelClick(wxCommandEvent& event);
+		void OnChoicePJTypeSelect(wxCommandEvent& event);
 		//*)
 
 		DECLARE_EVENT_TABLE()
 
 		wxString mProjPath;
 		wxString mProjName;
+		int      mProjType;
+		int      mProjSRate;
 };
 
 #endif

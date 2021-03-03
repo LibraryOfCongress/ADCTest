@@ -1,0 +1,97 @@
+﻿  AboutADCTDialog.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  Crosstalk.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  FADGIAnalyser.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  IMD.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  OfflineSyncLocator.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  SegmentLocator.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  SpIS.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  StepsFrequencyResponse.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  THDNoise.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  AudioDevicesDialog.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  FDAudioEngine.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  LevelAnalyser.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\src\audioio\levelanalyser.cpp(181): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\work\avpreserve\software\fadg-adctest-2019\src\audioio\levelanalyser.cpp(187): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\work\avpreserve\software\fadg-adctest-2019\src\audioio\levelanalyser.cpp(188): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\work\avpreserve\software\fadg-adctest-2019\src\audioio\levelanalyser.cpp(224): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\work\avpreserve\software\fadg-adctest-2019\src\audioio\levelanalyser.cpp(248): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\work\avpreserve\software\fadg-adctest-2019\src\audioio\levelanalyser.cpp(254): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\work\avpreserve\software\fadg-adctest-2019\src\audioio\levelanalyser.cpp(255): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  ParametersQueue.cpp
+  AVPTesterApp.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  AVPTesterMain.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  FDADevicesManager.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  RingBufferFloat.cpp
+  FFTAnalyser.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  GenMetricQueue.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  HFFilter.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  Generating Code...
+  Compiling...
+  KFFTWrapper.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  MathUtilities.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  FDAudioDevicesPanel.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  GenParamEditDialog.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  InfoEditDialog.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  NewProjectDialog.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  ParamEditDialog.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  PrjInfoEditPanel.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  ProjectManager.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  ResultsDialog.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  AudioFileWriter.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  DualSineToneGenerator.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  FADGIGenerator.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  OctaveToneGenerator.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  SingleSineToneGenerator.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  WavFileWriter.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  Prefs.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  TestManager.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  WaitDialog.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  awohSpin.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  Generating Code...
+  Compiling...
+  GButton.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  RimPanel.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  VuMeter.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  mathplot.cpp
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\wxwidgets-3.1.1\include\wx\platform.h(148): fatal error C1083: Cannot open include file: 'wx/setup.h': No such file or directory
+  Generating Code...

@@ -1144,7 +1144,6 @@ AudioDevicesPanel::StartCalibration()
 	EnableSelectionTools(false);
 
 	gAudioIO->StartCalibration();
-	//gAudioIO->StartTestProcedure(0);
 	TimerAudioMonitor.Start(50, false);
 }
 
@@ -1297,9 +1296,7 @@ AudioDevicesPanel::ConfigurePlot(size_t RTALength, double sampleRate)
 	mRTAMagPLot->AddLayer(mFFTInMagLayer);
 
 	mpInfoCoords *nfo;
-	wxBrush hatch(wxColour(200, 200, 200), wxSOLID);
-	mRTAMagPLot->AddLayer(nfo = new mpInfoCoords(wxRect(300, 0, 160, 20), wxTRANSPARENT_BRUSH, fstep)); //&hatch));
-	nfo->SetVisible(true);
+	mRTAMagPLot->AddLayer(nfo = new mpInfoCoords(wxRect(300, 0, 160, 20), wxTRANSPARENT_BRUSH, fstep));
 
 	ConfigureXAxis();
 

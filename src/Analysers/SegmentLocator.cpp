@@ -90,6 +90,7 @@ SegmentLocator::ProcesSignal(float* signal, int channelIdx, size_t frameLength)
 	return onset;
 }
 
+
 std::vector<Segment> 
 SegmentLocator::GetSegments()
 {

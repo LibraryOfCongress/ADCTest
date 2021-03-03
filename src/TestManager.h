@@ -71,19 +71,29 @@ class TestManager
 		bool SaveProject( wxString path = wxEmptyString);
 
 		//Sets the XML structure describing the test procedures
-		void SetTestXml(wxXmlNode* tNode, wxString ProjectBasePath);
+		void SetTestXml(wxXmlNode* tNode, wxString ProjectBasePath, int defaultSampleRate, int testType);
 
 		//Returns the XML structure describing the test procedures
-		wxXmlNode* GetTestsXml() { return mProceduresNode; }
+		wxXmlNode* GetTestsXml() { return mProceduresNode; };
+
+		//returns the test procedure's sample rate - defined explicitely in the project file for the offline option
+		//value is set to -1 in case of local test case, as the sample rate is set by the user in the devices panel
+		int GetDefaultSampleRate() { return mDefautSampleRate; };
 		
 		//Returns a vector containing string-only descriptions of the currently loaded test procedures. Used by the UI for display purposes.
 		std::vector<TestDescriptor> GetTestDescriptors() { return mDescriptors; }
 		
+		//if the entire test is performed in offline mode, return the name of the test stimulus sequence;
+		wxString GetOfflineTestStimulusPath();
+
 		//Enables / disable a single test with index testID
 		void EnableTest(wxString testID, bool enabled);
 
 		//sets the value of a specific test parameter
 		void SetTestParameter(int testIndex, wxString paramName, wxString paramValue);
+
+		//define time ranges for individual stimuli on offline test sequence
+		void SetOfflineTimeRange(int testIndex, float startMs, float endMs);
 		
 		//Returns a vector containing string-only descriptions of the test with index testID.  Used by the UI for display purposes.
 		std::vector<TestParameter>  GetTestParameters(wxString testID);
@@ -144,36 +154,35 @@ class TestManager
 		//Sets the index of the recording channel used in the test.
 		void SetTestResponseChannel(wxString testID, wxString chIdx);
 
+		//Sets the time in mS of the end of the offline reponse sync tone.
+		void SetOfflineResponseStartMs(size_t offset);
+
     protected:
-		void OpenProjectFile(wxString path);
-		void SaveProjectFile( wxString path );
-        void DeleteProject();
-
-		void ParseProject();
-
 		void UpdateDescriptors();
 		wxXmlNode* GetTestNode(int testIndex);
 		wxXmlNode* GetTestNode(wxString testID);
-		
 		wxXmlNode* GetParameterNode(wxXmlNode* testNode, wxString paramName);
 		wxXmlNode* GetConfigNode(wxXmlNode* testNode);
 		wxXmlNode* GetFileIONode(wxXmlNode* testNode);
 		wxXmlNode* GetAudioIONode(wxXmlNode* testNode);
 
     protected:
-        wxXmlNode* mProjectNode;
         wxXmlNode* mProceduresNode;
-
 		wxString mProjectBasePath;
         wxString mProjectPath;
         wxString mProjectNewPath;
         wxString mProjectFolder;
         wxString mProjectTitle;
+		wxString mPathSeparator;
 
 		wxString mDataFolderPath; 
+		int		 mDefautSampleRate;
+		int      mTestType; //0 online, 1 offline
 
 		int mNumberOfTests;
 		std::vector<TestDescriptor> mDescriptors;
+
+		size_t mOfflineResponseStartMs;
 
     private:
 };

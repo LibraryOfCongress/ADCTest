@@ -146,7 +146,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;PA_USE_ASIO=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>..\..\..\lib-src\libsndfile\include;..\..\..\lib-src\portmixer\include;..\..\..\lib-src\portaudio-v19\include;..\..\..\lib-src\portaudio-v19\src\common;..\..\..\lib-src\wxWidgets-3.1.1\lib\vc_lib\mswu;..\..\..\lib-src\wxWidgets-3.1.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -192,6 +192,7 @@
     <ClCompile Include="..\..\Analysers\Crosstalk.cpp" />
     <ClCompile Include="..\..\Analysers\FADGIAnalyser.cpp" />
     <ClCompile Include="..\..\Analysers\IMD.cpp" />
+    <ClCompile Include="..\..\Analysers\OfflineSyncLocator.cpp" />
     <ClCompile Include="..\..\Analysers\SegmentLocator.cpp" />
     <ClCompile Include="..\..\Analysers\SpIS.cpp" />
     <ClCompile Include="..\..\Analysers\StepsFrequencyResponse.cpp" />
@@ -239,6 +240,7 @@
     <ClInclude Include="..\..\Analysers\Crosstalk.h" />
     <ClInclude Include="..\..\Analysers\FADGIAnalyser.h" />
     <ClInclude Include="..\..\Analysers\IMD.h" />
+    <ClInclude Include="..\..\Analysers\OfflineSyncLocator.h" />
     <ClInclude Include="..\..\Analysers\SegmentLocator.h" />
     <ClInclude Include="..\..\Analysers\SpIS.h" />
     <ClInclude Include="..\..\Analysers\StepsFrequencyResponse.h" />

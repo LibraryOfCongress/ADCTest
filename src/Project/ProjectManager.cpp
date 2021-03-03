@@ -15,7 +15,7 @@ ProjectManager::ProjectManager()
 ,bTemplateLoaded(false)
 {
 	mFileSeparator = wxT('\\');
-	mTemplateName = wxT("default");
+	mProjectType = -1;
 
 	wxString exePath = wxStandardPaths::Get().GetExecutablePath();
 	mExePath = exePath.BeforeLast(mFileSeparator);
@@ -37,7 +37,10 @@ bool ProjectManager::LoadTemplate(wxString path)
 	}
 
 	if (path.IsEmpty())
+	{
+		mTemplateName = wxT("default");
 		path = mExePath + mFileSeparator + mTemplateName + wxT(".avt");
+	}
 
 	mTemplateNode = new wxXmlNode(wxXML_ELEMENT_NODE, wxT("unknown"));
 	mTemplateNode->AddAttribute(wxT("title"), wxT("unknown"));
@@ -53,7 +56,7 @@ bool ProjectManager::LoadTemplate(wxString path)
 	return bLoaded;
 }
 
-int ProjectManager::NewProject(wxString path, wxString name, std::vector<ProjectInfo> info)
+int ProjectManager::NewProject(wxString path, wxString name, int type, int srate, std::vector<ProjectInfo> info)
 {
 	bTemplateLoaded = LoadTemplate(wxEmptyString);
 
@@ -90,12 +93,79 @@ int ProjectManager::NewProject(wxString path, wxString name, std::vector<Project
 	mProjectNode->DeleteAttribute(wxT("date"));
 	mProjectNode->AddAttribute(wxT("date"), projectDate);
 
+	//set project type	
+	wxString projectType;
+	projectType.Printf(wxT("%d"), type);
+	mProjectNode->DeleteAttribute(wxT("type"));
+	mProjectNode->AddAttribute(wxT("type"), projectType);
+
+	//set project default sample rate for offline test procedures
+	wxString projectRate;
+	projectRate.Printf(wxT("%d"), srate);
+	mProjectNode->DeleteAttribute(wxT("srate"));
+	mProjectNode->AddAttribute(wxT("srate"), projectRate);
+
+	//if this is a procedure intended for offline testing, modify the template accordingly.
+	if (type == 1)
+	{
+		bool res = ModifyTemplateForOfflineProc(mProjectNode);
+	}
+
 	SetProjectInfo(info);
 
 	if (!SaveProject())
 		return 	MgmtErrorProjectWriteFail;
 
 	return OpenProject(mProjectPath);
+}
+
+bool ProjectManager::ModifyTemplateForOfflineProc(wxXmlNode* tNode)
+{
+	bool res = true;
+
+	wxString cumulativeResponseFileName = wxT("response.wav");
+
+	// get the procedures node
+	wxXmlNode* proceduresNode = NULL;
+	wxXmlNode* cNode = tNode->GetChildren();
+	while (cNode)
+	{
+		if (cNode->GetName() == wxT("procedures")) {
+			proceduresNode = cNode;
+			break;
+		}
+		cNode = cNode->GetNext();
+	}
+
+	wxXmlNode* testNode = proceduresNode->GetChildren();
+	while (testNode)
+	{
+		//get numeric id and disable xtalk procedures by default in offline mode
+		wxString wID = testNode->GetAttribute(wxT("id"));
+		double nID; wID.ToDouble(&nID);
+
+		if(nID >= 22) {
+			if (testNode->DeleteAttribute(wxT("enabled"))) {
+				testNode->AddAttribute(wxT("enabled"), wxT("false"));
+			}
+		}
+
+		wxXmlNode* retNode = testNode->GetChildren();
+		while (retNode)
+		{
+			if (retNode->GetName() == wxT("fileio"))
+			{
+				retNode->DeleteAttribute(wxT("responsefile"));
+				retNode->AddAttribute(wxT("responsefile"), cumulativeResponseFileName);
+				retNode->AddAttribute(wxT("response_start_ms"), wxT("0"));
+				retNode->AddAttribute(wxT("response_end_ms"), wxT("0"));
+				break;
+			}
+			retNode = retNode->GetNext();
+		}
+		testNode = testNode->GetNext();
+	}
+	return res;
 }
 
 void ProjectManager::SetProjectInfo(std::vector<ProjectInfo> info)
@@ -231,9 +301,19 @@ ProjectManager::OpenProject(wxString path)
 		{
 			mProjectTitle = mProjectNode->GetAttribute("title");
 			mProjectDate  = mProjectNode->GetAttribute("date");
+
+			wxString pType = mProjectNode->GetAttribute("type");
+			double dType;
+			pType.ToDouble(&dType);
+			mProjectType = (int)dType;
 			
+			wxString pRate = mProjectNode->GetAttribute("srate");
+			double dRate;
+			pRate.ToDouble(&dRate);
+			mProjectSRate = (int)dRate;
+
 			TestManager* tm = gAudioIO->GetTestManager();
-			tm->SetTestXml(mProceduresNode, mProjectFolder);
+			tm->SetTestXml(mProceduresNode, mProjectFolder, mProjectSRate, mProjectType);
 
 			bProjLoaded = true;
 			result = MgmtOK;
@@ -268,14 +348,17 @@ void ProjectManager::DeleteProject()
 		mProjectPath = wxEmptyString;
 		mProjectTitle = wxEmptyString;
 		mProjectDate = wxEmptyString;
+		mProjectType = -1;
+		mProjectSRate = -1;
 
 		delete mProjectNode;
 		mProjectNode = NULL;
 		mProceduresNode = NULL;
+		mTemplateNode = NULL;
 		bProjLoaded = false;
 
 		TestManager* tm = gAudioIO->GetTestManager();
-		tm->SetTestXml(mProceduresNode, wxEmptyString);
+		tm->SetTestXml(mProceduresNode, wxEmptyString, -1, -1);
 	}
 }
 
