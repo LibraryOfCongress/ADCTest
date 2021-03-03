@@ -36,6 +36,7 @@ AudioDevicesDialog::~AudioDevicesDialog()
 {
 	//(*Destroy(AudioDevicesDialog)
 	//*)
+	int testD = 0;
 }
 
 

@@ -113,7 +113,7 @@ AboutADCTDialog::AboutADCTDialog(wxWindow* parent,wxWindowID id,const wxPoint& p
 	Connect(ID_BUTTON_CONTACTS, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AboutADCTDialog::OnButtonContactsClick);
 
 	mVerMsg.Printf(wxT("\nADCTest Version %d"), RELEASE_VERSION);
-	wxString dateMsg = wxT("\nAugust 2018\n");
+	wxString dateMsg = wxT("\nOctober 2020\n");
 	mVerMsg += dateMsg;
 	StaticTextVersion->SetLabel(mVerMsg);
 	

@@ -210,6 +210,9 @@
     <ClCompile Include="..\..\Analysers\THDNoise.cpp">
       <Filter>Source Files\Analysers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Analysers\OfflineSyncLocator.cpp">
+      <Filter>Source Files\Analysers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\AVPTesterApp.h">
@@ -361,6 +364,9 @@
     </ClInclude>
     <ClInclude Include="..\..\FDAudioDevicesPanel.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Analysers\OfflineSyncLocator.h">
+      <Filter>Header Files\Analysers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

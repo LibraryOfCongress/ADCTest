@@ -57,6 +57,11 @@ public:
 	wxString GetResponseFileName();
 	wxString GetResultsFileName();
 
+	//if the analysis is performed offline using a single file, these methods
+	// specify the point were the specific response is located
+	size_t   GetResponseStartMs();
+	size_t   GetResponseEndMs();
+
 	//extract analysis parameters from test xml description 
 	void setParameters(wxXmlNode* testDescriptionNode);
 
@@ -99,6 +104,11 @@ public:
 	//acquired response signal quality pass/fail check
 	bool checkSignalQuality();
 
+	//sets the file to either offline or online mode
+	void SetAnalisysMode(int mode);
+
+	//sets the offline response file offset
+	void SetOfflineSyncOffsetMs(size_t offset);
 
 protected:
 
@@ -137,5 +147,18 @@ protected:
 	std::vector<double> mFramesEnergy;
 	double mFrNrgDev;
 	double mMaxSigNrgVariance;
+
+	//test mode: 0 for live local and 1 for offline 
+	int mAnalysisMode;
+
+	//in case of offline analysis, this parameter indicates the end of the synchronisation tone
+	// and actual start of the sequence
+	size_t mOfflineSyncOffsetMs;
+
+	//start of individual response signals after the sync offset
+	size_t mResponseStartOffsetMs;
+
+	//total offsets in samples for offline analysis
+	size_t mTotalSamplesOffset;
 };
 #endif

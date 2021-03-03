@@ -56,6 +56,12 @@ const long AVPTesterFrame::ID_PANEL_PTITLE = wxNewId();
 const long AVPTesterFrame::ID_STATICTEXT_PDATE_LBL = wxNewId();
 const long AVPTesterFrame::ID_TEXTCTRL_PDATE = wxNewId();
 const long AVPTesterFrame::ID_PANEL_PDATE = wxNewId();
+const long AVPTesterFrame::ID_STATICTEXT_PTYPE_LBL = wxNewId();
+const long AVPTesterFrame::ID_TEXTCTRL_PTYPE = wxNewId();
+const long AVPTesterFrame::ID_PANEL_PTYPE = wxNewId();
+const long AVPTesterFrame::ID_STATICTEXT_PSRATE_LBL = wxNewId();
+const long AVPTesterFrame::ID_TEXTCTRL_PSRATE = wxNewId();
+const long AVPTesterFrame::ID_PANEL_PSRATE = wxNewId();
 const long AVPTesterFrame::ID_STATICTEXT_POPS_LBL = wxNewId();
 const long AVPTesterFrame::ID_TEXTCTRL_POPS = wxNewId();
 const long AVPTesterFrame::ID_PANEL_POps = wxNewId();
@@ -79,6 +85,10 @@ const long AVPTesterFrame::ID_LISTVIEW_TESTS = wxNewId();
 const long AVPTesterFrame::ID_STATICTEXT_LINE1 = wxNewId();
 const long AVPTesterFrame::ID_BUTTON_START_TESTS = wxNewId();
 const long AVPTesterFrame::ID_PANEL_CTRL_BTNS = wxNewId();
+const long AVPTesterFrame::ID_BUTTON_GEN_STIM_FILE = wxNewId();
+const long AVPTesterFrame::ID_PANEL_CTRL_BTNS_OFFLINE_GEN = wxNewId();
+const long AVPTesterFrame::ID_BUTTON_ANZ_RSP_FILE = wxNewId();
+const long AVPTesterFrame::ID_PANEL_CTRL_BTNS_OFFLINE_ANZ = wxNewId();
 const long AVPTesterFrame::ID_PANEL_TST_LST = wxNewId();
 const long AVPTesterFrame::ID_STATICTEXT_DESC_TTL = wxNewId();
 const long AVPTesterFrame::ID_TEXTCTRL_TEST_DESCRIPTION = wxNewId();
@@ -145,6 +155,8 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizerBottom;
     wxBoxSizer* BoxSizerComments;
     wxBoxSizer* BoxSizerCtrlBtns;
+    wxBoxSizer* BoxSizerCtrlBtnsOffLineAnz;
+    wxBoxSizer* BoxSizerCtrlBtnsOffLineGen;
     wxBoxSizer* BoxSizerDAC;
     wxBoxSizer* BoxSizerFrame;
     wxBoxSizer* BoxSizerLeftPanels;
@@ -158,9 +170,10 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizerPTAudio;
     wxBoxSizer* BoxSizerPTestNode;
     wxBoxSizer* BoxSizerPTitle;
+    wxBoxSizer* BoxSizerPType;
+    wxBoxSizer* BoxSizerPanelPSRate;
     wxBoxSizer* BoxSizerPanelProject;
     wxBoxSizer* BoxSizerParamsBtns;
-    wxBoxSizer* BoxSizerRightPanels;
     wxBoxSizer* BoxSizerTestDescription;
     wxBoxSizer* BoxSizerTestList;
     wxBoxSizer* BoxSizerTestParams;
@@ -235,6 +248,38 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     BoxSizerPDate->Fit(PanelPDate);
     BoxSizerPDate->SetSizeHints(PanelPDate);
     BoxSizerPanelProject->Add(PanelPDate, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 2);
+    PanelPType = new RimPanel(PanelProject, ID_PANEL_PTYPE, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_PTYPE"));
+    BoxSizerPType = new wxBoxSizer(wxHORIZONTAL);
+    StaticText1StaticTextPTypeLbl = new wxStaticText(PanelPType, ID_STATICTEXT_PTYPE_LBL, _(" Type:"), wxDefaultPosition, wxSize(75,21), 0, _T("ID_STATICTEXT_PTYPE_LBL"));
+    StaticText1StaticTextPTypeLbl->SetBackgroundColour(wxColour(78,183,223));
+    wxFont StaticText1StaticTextPTypeLblFont(10,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
+    StaticText1StaticTextPTypeLbl->SetFont(StaticText1StaticTextPTypeLblFont);
+    BoxSizerPType->Add(StaticText1StaticTextPTypeLbl, 0, wxTOP|wxBOTTOM|wxLEFT|wxEXPAND, 1);
+    TextCtrlPType = new wxTextCtrl(PanelPType, ID_TEXTCTRL_PTYPE, wxEmptyString, wxDefaultPosition, wxSize(200,22), wxTE_READONLY, wxDefaultValidator, _T("ID_TEXTCTRL_PTYPE"));
+    TextCtrlPType->SetBackgroundColour(wxColour(200,200,200));
+    wxFont TextCtrlPTypeFont(10,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,wxEmptyString,wxFONTENCODING_DEFAULT);
+    TextCtrlPType->SetFont(TextCtrlPTypeFont);
+    BoxSizerPType->Add(TextCtrlPType, 0, wxALL|wxEXPAND, 1);
+    PanelPType->SetSizer(BoxSizerPType);
+    BoxSizerPType->Fit(PanelPType);
+    BoxSizerPType->SetSizeHints(PanelPType);
+    BoxSizerPanelProject->Add(PanelPType, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 2);
+    PanelPSRate = new RimPanel(PanelProject, ID_PANEL_PSRATE, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_PSRATE"));
+    BoxSizerPanelPSRate = new wxBoxSizer(wxHORIZONTAL);
+    StaticText1StaticTextPSRateLbl = new wxStaticText(PanelPSRate, ID_STATICTEXT_PSRATE_LBL, _(" Rate:"), wxDefaultPosition, wxSize(75,21), 0, _T("ID_STATICTEXT_PSRATE_LBL"));
+    StaticText1StaticTextPSRateLbl->SetBackgroundColour(wxColour(78,183,223));
+    wxFont StaticText1StaticTextPSRateLblFont(10,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
+    StaticText1StaticTextPSRateLbl->SetFont(StaticText1StaticTextPSRateLblFont);
+    BoxSizerPanelPSRate->Add(StaticText1StaticTextPSRateLbl, 0, wxTOP|wxBOTTOM|wxLEFT|wxEXPAND, 1);
+    TextCtrlPSRate = new wxTextCtrl(PanelPSRate, ID_TEXTCTRL_PSRATE, wxEmptyString, wxDefaultPosition, wxSize(200,22), wxTE_READONLY, wxDefaultValidator, _T("ID_TEXTCTRL_PSRATE"));
+    TextCtrlPSRate->SetBackgroundColour(wxColour(200,200,200));
+    wxFont TextCtrlPSRateFont(10,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,wxEmptyString,wxFONTENCODING_DEFAULT);
+    TextCtrlPSRate->SetFont(TextCtrlPSRateFont);
+    BoxSizerPanelPSRate->Add(TextCtrlPSRate, 0, wxALL|wxEXPAND, 1);
+    PanelPSRate->SetSizer(BoxSizerPanelPSRate);
+    BoxSizerPanelPSRate->Fit(PanelPSRate);
+    BoxSizerPanelPSRate->SetSizeHints(PanelPSRate);
+    BoxSizerPanelProject->Add(PanelPSRate, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 2);
     PanelPOps = new RimPanel(PanelProject, ID_PANEL_POps, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_POps"));
     BoxSizerPOps = new wxBoxSizer(wxHORIZONTAL);
     StaticTextPOpsLbl = new wxStaticText(PanelPOps, ID_STATICTEXT_POPS_LBL, _(" Operator:"), wxDefaultPosition, wxSize(75,21), 0, _T("ID_STATICTEXT_POPS_LBL"));
@@ -253,7 +298,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     BoxSizerPanelProject->Add(PanelPOps, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 2);
     PanelDAC = new RimPanel(PanelProject, ID_PANEL_DAC, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_DAC"));
     BoxSizerDAC = new wxBoxSizer(wxHORIZONTAL);
-    StaticTextDACLbl = new wxStaticText(PanelDAC, ID_STATICTEXT_DAC_LBL, _(" Audio DAC:"), wxDefaultPosition, wxSize(75,21), 0, _T("ID_STATICTEXT_DAC_LBL"));
+    StaticTextDACLbl = new wxStaticText(PanelDAC, ID_STATICTEXT_DAC_LBL, _(" Audio\n DAC:"), wxDefaultPosition, wxSize(75,21), 0, _T("ID_STATICTEXT_DAC_LBL"));
     StaticTextDACLbl->SetBackgroundColour(wxColour(78,183,223));
     wxFont StaticTextDACLblFont(10,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     StaticTextDACLbl->SetFont(StaticTextDACLblFont);
@@ -269,7 +314,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     BoxSizerPanelProject->Add(PanelDAC, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 2);
     PanelADC = new RimPanel(PanelProject, ID_PANEL_ADC, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_ADC"));
     BoxSizerADC = new wxBoxSizer(wxHORIZONTAL);
-    StaticTextADCLbl = new wxStaticText(PanelADC, ID_STATICTEXT_ADC_LBL, _(" Audio ADC:"), wxDefaultPosition, wxSize(75,21), 0, _T("ID_STATICTEXT_ADC_LBL"));
+    StaticTextADCLbl = new wxStaticText(PanelADC, ID_STATICTEXT_ADC_LBL, _(" Audio\n ADC:"), wxDefaultPosition, wxSize(75,21), 0, _T("ID_STATICTEXT_ADC_LBL"));
     StaticTextADCLbl->SetBackgroundColour(wxColour(78,183,223));
     wxFont StaticTextADCLblFont(10,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     StaticTextADCLbl->SetFont(StaticTextADCLblFont);
@@ -292,7 +337,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     wxFont StaticTextCommentsLblFont(11,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     StaticTextCommentsLbl->SetFont(StaticTextCommentsLblFont);
     BoxSizerComments->Add(StaticTextCommentsLbl, 0, wxALL|wxEXPAND, 1);
-    TextCtrlProjDescription = new wxTextCtrl(PanelComments, ID_TEXTCTRL_PROJ_DESC, wxEmptyString, wxDefaultPosition, wxSize(200,50), wxTE_NO_VSCROLL|wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL_PROJ_DESC"));
+    TextCtrlProjDescription = new wxTextCtrl(PanelComments, ID_TEXTCTRL_PROJ_DESC, wxEmptyString, wxDefaultPosition, wxSize(200,80), wxTE_NO_VSCROLL|wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL_PROJ_DESC"));
     TextCtrlProjDescription->SetBackgroundColour(wxColour(200,200,200));
     wxFont TextCtrlProjDescriptionFont(11,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     TextCtrlProjDescription->SetFont(TextCtrlProjDescriptionFont);
@@ -358,20 +403,48 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     wxFont StaticTextLine1Font(11,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     StaticTextLine1->SetFont(StaticTextLine1Font);
     BoxSizerTestList->Add(StaticTextLine1, 0, wxALL|wxEXPAND, 0);
-    PanelCtrlBtns = new wxPanel(PanelTestList, ID_PANEL_CTRL_BTNS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_CTRL_BTNS"));
-    PanelCtrlBtns->SetBackgroundColour(wxColour(190,190,190));
+    PanelCtrlBtnsStartLocal = new wxPanel(PanelTestList, ID_PANEL_CTRL_BTNS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_CTRL_BTNS"));
+    PanelCtrlBtnsStartLocal->SetBackgroundColour(wxColour(190,190,190));
     BoxSizerCtrlBtns = new wxBoxSizer(wxHORIZONTAL);
     BoxSizerCtrlBtns->Add(1,-1,0, wxALL|wxEXPAND, 0);
     BoxSizerCtrlBtns->Add(-1,-1,1, wxALL|wxEXPAND, 0);
-    ButtonStartTests = new GButton(PanelCtrlBtns, ID_BUTTON_START_TESTS, _("Start procedure"), wxDefaultPosition, wxSize(320,20), 0, wxDefaultValidator, _T("ID_BUTTON_START_TESTS"));
+    ButtonStartTests = new GButton(PanelCtrlBtnsStartLocal, ID_BUTTON_START_TESTS, _("Start procedure"), wxDefaultPosition, wxSize(320,22), 0, wxDefaultValidator, _T("ID_BUTTON_START_TESTS"));
     ButtonStartTests->SetForegroundColour(wxColour(255,255,255));
     BoxSizerCtrlBtns->Add(ButtonStartTests, 0, wxALL|wxALIGN_TOP, 2);
     BoxSizerCtrlBtns->Add(-1,-1,1, wxALL|wxEXPAND, 0);
     BoxSizerCtrlBtns->Add(1,-1,0, wxALL|wxEXPAND, 0);
-    PanelCtrlBtns->SetSizer(BoxSizerCtrlBtns);
-    BoxSizerCtrlBtns->Fit(PanelCtrlBtns);
-    BoxSizerCtrlBtns->SetSizeHints(PanelCtrlBtns);
-    BoxSizerTestList->Add(PanelCtrlBtns, 0, wxALL|wxEXPAND, 1);
+    PanelCtrlBtnsStartLocal->SetSizer(BoxSizerCtrlBtns);
+    BoxSizerCtrlBtns->Fit(PanelCtrlBtnsStartLocal);
+    BoxSizerCtrlBtns->SetSizeHints(PanelCtrlBtnsStartLocal);
+    BoxSizerTestList->Add(PanelCtrlBtnsStartLocal, 0, wxALL|wxEXPAND, 1);
+    PanelCtrlBtnsOffLineGen = new wxPanel(PanelTestList, ID_PANEL_CTRL_BTNS_OFFLINE_GEN, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_CTRL_BTNS_OFFLINE_GEN"));
+    PanelCtrlBtnsOffLineGen->SetBackgroundColour(wxColour(190,190,190));
+    BoxSizerCtrlBtnsOffLineGen = new wxBoxSizer(wxHORIZONTAL);
+    BoxSizerCtrlBtnsOffLineGen->Add(1,-1,0, wxALL|wxEXPAND, 0);
+    BoxSizerCtrlBtnsOffLineGen->Add(-1,-1,1, wxALL|wxEXPAND, 0);
+    ButtonGenerateStimFile = new GButton(PanelCtrlBtnsOffLineGen, ID_BUTTON_GEN_STIM_FILE, _("Generate offline stim file"), wxDefaultPosition, wxSize(320,22), 0, wxDefaultValidator, _T("ID_BUTTON_GEN_STIM_FILE"));
+    ButtonGenerateStimFile->SetForegroundColour(wxColour(255,255,255));
+    BoxSizerCtrlBtnsOffLineGen->Add(ButtonGenerateStimFile, 0, wxALL|wxALIGN_TOP, 2);
+    BoxSizerCtrlBtnsOffLineGen->Add(-1,-1,1, wxALL|wxEXPAND, 0);
+    BoxSizerCtrlBtnsOffLineGen->Add(1,-1,0, wxALL|wxEXPAND, 0);
+    PanelCtrlBtnsOffLineGen->SetSizer(BoxSizerCtrlBtnsOffLineGen);
+    BoxSizerCtrlBtnsOffLineGen->Fit(PanelCtrlBtnsOffLineGen);
+    BoxSizerCtrlBtnsOffLineGen->SetSizeHints(PanelCtrlBtnsOffLineGen);
+    BoxSizerTestList->Add(PanelCtrlBtnsOffLineGen, 0, wxALL|wxEXPAND, 1);
+    PanelCtrlBtnsOffLineAnz = new wxPanel(PanelTestList, ID_PANEL_CTRL_BTNS_OFFLINE_ANZ, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_CTRL_BTNS_OFFLINE_ANZ"));
+    PanelCtrlBtnsOffLineAnz->SetBackgroundColour(wxColour(190,190,190));
+    BoxSizerCtrlBtnsOffLineAnz = new wxBoxSizer(wxHORIZONTAL);
+    BoxSizerCtrlBtnsOffLineAnz->Add(1,-1,0, wxALL|wxEXPAND, 0);
+    BoxSizerCtrlBtnsOffLineAnz->Add(-1,-1,1, wxALL|wxEXPAND, 0);
+    ButtonAnalyseRespFile = new GButton(PanelCtrlBtnsOffLineAnz, ID_BUTTON_ANZ_RSP_FILE, _("Analyze offline response file"), wxDefaultPosition, wxSize(320,22), 0, wxDefaultValidator, _T("ID_BUTTON_ANZ_RSP_FILE"));
+    ButtonAnalyseRespFile->SetForegroundColour(wxColour(255,255,255));
+    BoxSizerCtrlBtnsOffLineAnz->Add(ButtonAnalyseRespFile, 0, wxALL|wxALIGN_TOP, 2);
+    BoxSizerCtrlBtnsOffLineAnz->Add(-1,-1,1, wxALL|wxEXPAND, 0);
+    BoxSizerCtrlBtnsOffLineAnz->Add(1,-1,0, wxALL|wxEXPAND, 0);
+    PanelCtrlBtnsOffLineAnz->SetSizer(BoxSizerCtrlBtnsOffLineAnz);
+    BoxSizerCtrlBtnsOffLineAnz->Fit(PanelCtrlBtnsOffLineAnz);
+    BoxSizerCtrlBtnsOffLineAnz->SetSizeHints(PanelCtrlBtnsOffLineAnz);
+    BoxSizerTestList->Add(PanelCtrlBtnsOffLineAnz, 0, wxALL|wxEXPAND, 1);
     PanelTestList->SetSizer(BoxSizerTestList);
     BoxSizerTestList->Fit(PanelTestList);
     BoxSizerTestList->SetSizeHints(PanelTestList);
@@ -388,7 +461,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     BoxSizerTestDescription->Add(StaticTextTestDescTTl, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 1);
     TextCtrlTestDescription = new wxTextCtrl(PanelTestDescription, ID_TEXTCTRL_TEST_DESCRIPTION, wxEmptyString, wxDefaultPosition, wxSize(-1,50), wxTE_MULTILINE|wxTE_READONLY, wxDefaultValidator, _T("ID_TEXTCTRL_TEST_DESCRIPTION"));
     TextCtrlTestDescription->SetBackgroundColour(wxColour(200,200,200));
-    wxFont TextCtrlTestDescriptionFont(11,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
+    wxFont TextCtrlTestDescriptionFont(10,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,_T("Arial"),wxFONTENCODING_DEFAULT);
     TextCtrlTestDescription->SetFont(TextCtrlTestDescriptionFont);
     BoxSizerTestDescription->Add(TextCtrlTestDescription, 0, wxALL|wxEXPAND, 2);
     StaticTextLine0 = new wxStaticText(PanelTestDescription, ID_STATICTEXT_LINE_0, wxEmptyString, wxDefaultPosition, wxSize(-1,2), 0, _T("ID_STATICTEXT_LINE_0"));
@@ -401,9 +474,10 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     BoxSizerTestDescription->Fit(PanelTestDescription);
     BoxSizerTestDescription->SetSizeHints(PanelTestDescription);
     BoxSizerRightPanels->Add(PanelTestDescription, 0, wxALL|wxEXPAND, 2);
-    BoxSizerRightPanels->Add(-1,10,0, wxALL|wxEXPAND, 0);
     PanelTestMode = new RimPanel(PanelList, ID_PANEL_TEST_MODE, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_TEST_MODE"));
+    PanelTestMode->Hide();
     BoxSizerPTestNode = new wxBoxSizer(wxVERTICAL);
+    BoxSizerPTestNode->Add(-1,10,0, wxALL|wxEXPAND, 0);
     StaticTextTestMode = new wxStaticText(PanelTestMode, ID_STATICTEXT_TEST_MODE, _("  Test mode"), wxDefaultPosition, wxSize(-1,21), 0, _T("ID_STATICTEXT_TEST_MODE"));
     StaticTextTestMode->SetForegroundColour(wxColour(255,255,255));
     StaticTextTestMode->SetBackgroundColour(wxColour(78,183,223));
@@ -411,11 +485,11 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     StaticTextTestMode->SetFont(StaticTextTestModeFont);
     BoxSizerPTestNode->Add(StaticTextTestMode, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 1);
     BoxSizerModeOpts = new wxBoxSizer(wxHORIZONTAL);
-    ChoiceTestMode = new wxChoice(PanelTestMode, ID_CHOICE_TEST_MODE, wxDefaultPosition, wxSize(75,21), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_TEST_MODE"));
+    ChoiceTestMode = new wxChoice(PanelTestMode, ID_CHOICE_TEST_MODE, wxDefaultPosition, wxSize(90,21), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_TEST_MODE"));
     BoxSizerModeOpts->Add(ChoiceTestMode, 0, wxALL|wxEXPAND, 2);
-    BoxSizerModeOpts->Add(10,0,1, wxALL|wxEXPAND, 0);
-    ButtonRespFile = new GButton(PanelTestMode, ID_BUTTON_RESP_FILE, wxEmptyString, wxDefaultPosition, wxSize(225,22), 0, wxDefaultValidator, _T("ID_BUTTON_RESP_FILE"));
-    BoxSizerModeOpts->Add(ButtonRespFile, 0, wxALL, 2);
+    BoxSizerModeOpts->Add(5,0,0, wxALL|wxEXPAND, 0);
+    ButtonRespFile = new GButton(PanelTestMode, ID_BUTTON_RESP_FILE, wxEmptyString, wxDefaultPosition, wxSize(232,22), 0, wxDefaultValidator, _T("ID_BUTTON_RESP_FILE"));
+    BoxSizerModeOpts->Add(ButtonRespFile, 0, wxALL|wxEXPAND, 2);
     BoxSizerModeOpts->Add(5,-1,0, wxALL|wxEXPAND, 0);
     BoxSizerPTestNode->Add(BoxSizerModeOpts, 0, wxALL|wxEXPAND, 2);
     StaticText3 = new wxStaticText(PanelTestMode, ID_STATICTEXT3, wxEmptyString, wxDefaultPosition, wxSize(-1,2), 0, _T("ID_STATICTEXT3"));
@@ -428,9 +502,9 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     BoxSizerPTestNode->Fit(PanelTestMode);
     BoxSizerPTestNode->SetSizeHints(PanelTestMode);
     BoxSizerRightPanels->Add(PanelTestMode, 0, wxALL|wxEXPAND, 2);
-    BoxSizerRightPanels->Add(-1,10,0, wxALL|wxEXPAND, 0);
     PanelTestAudio = new RimPanel(PanelList, ID_PANEL_TEST_AUDIO, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_TEST_AUDIO"));
     BoxSizerPTAudio = new wxBoxSizer(wxVERTICAL);
+    BoxSizerPTAudio->Add(-1,10,0, wxALL|wxEXPAND, 0);
     StaticTextAudioRouting = new wxStaticText(PanelTestAudio, ID_STATICTEXT_AUDIO_ROUTING, _("  Audio routing"), wxDefaultPosition, wxSize(-1,21), 0, _T("ID_STATICTEXT_AUDIO_ROUTING"));
     StaticTextAudioRouting->SetForegroundColour(wxColour(255,255,255));
     StaticTextAudioRouting->SetBackgroundColour(wxColour(78,183,223));
@@ -439,10 +513,12 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     BoxSizerPTAudio->Add(StaticTextAudioRouting, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 1);
     PanelAudioDAC = new RimPanel(PanelTestAudio, ID_PANEL_AUDIO_DAC, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_AUDIO_DAC"));
     BoxSizerAudioDAC = new wxBoxSizer(wxHORIZONTAL);
-    StaticTextDACCh = new wxStaticText(PanelAudioDAC, ID_STATICTEXT_DAC_CH, _(" DAC chan:  "), wxDefaultPosition, wxSize(75,16), 0, _T("ID_STATICTEXT_DAC_CH"));
+    StaticTextDACCh = new wxStaticText(PanelAudioDAC, ID_STATICTEXT_DAC_CH, _(" DAC chan:  "), wxDefaultPosition, wxSize(80,16), 0, _T("ID_STATICTEXT_DAC_CH"));
+    wxFont StaticTextDACChFont(10,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,_T("Arial"),wxFONTENCODING_DEFAULT);
+    StaticTextDACCh->SetFont(StaticTextDACChFont);
     BoxSizerAudioDAC->Add(StaticTextDACCh, 0, wxALL|wxEXPAND, 2);
     BoxSizerAudioDAC->Add(5,-1,0, wxALL|wxEXPAND, 0);
-    ChoiceDACCh = new wxChoice(PanelAudioDAC, ID_CHOICE_DAC_CH, wxDefaultPosition, wxSize(40,21), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_DAC_CH"));
+    ChoiceDACCh = new wxChoice(PanelAudioDAC, ID_CHOICE_DAC_CH, wxDefaultPosition, wxSize(35,21), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_DAC_CH"));
     ChoiceDACCh->Disable();
     BoxSizerAudioDAC->Add(ChoiceDACCh, 0, wxALL|wxEXPAND, 2);
     BoxSizerAudioDAC->Add(5,0,0, wxALL|wxEXPAND, 0);
@@ -457,10 +533,12 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     BoxSizerPTAudio->Add(PanelAudioDAC, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 2);
     PanelAudioADC = new RimPanel(PanelTestAudio, ID_PANEL_AUDIO_ADC, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_AUDIO_ADC"));
     BoxSizerAudioADC = new wxBoxSizer(wxHORIZONTAL);
-    StaticTextADCCh = new wxStaticText(PanelAudioADC, ID_STATICTEXT_ADC_CH, _(" ADC chan:  "), wxDefaultPosition, wxSize(75,16), 0, _T("ID_STATICTEXT_ADC_CH"));
+    StaticTextADCCh = new wxStaticText(PanelAudioADC, ID_STATICTEXT_ADC_CH, _(" ADC chan:  "), wxDefaultPosition, wxSize(80,16), 0, _T("ID_STATICTEXT_ADC_CH"));
+    wxFont StaticTextADCChFont(10,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,_T("Arial"),wxFONTENCODING_DEFAULT);
+    StaticTextADCCh->SetFont(StaticTextADCChFont);
     BoxSizerAudioADC->Add(StaticTextADCCh, 0, wxALL|wxEXPAND, 2);
     BoxSizerAudioADC->Add(5,-1,0, wxALL|wxEXPAND, 0);
-    ChoiceADCCh = new wxChoice(PanelAudioADC, ID_CHOICE_ADC_CH, wxDefaultPosition, wxSize(40,21), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_ADC_CH"));
+    ChoiceADCCh = new wxChoice(PanelAudioADC, ID_CHOICE_ADC_CH, wxDefaultPosition, wxSize(35,21), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE_ADC_CH"));
     ChoiceADCCh->Disable();
     BoxSizerAudioADC->Add(ChoiceADCCh, 0, wxALL|wxEXPAND, 2);
     BoxSizerAudioADC->Add(5,0,0, wxALL|wxEXPAND, 0);
@@ -496,7 +574,7 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     ListViewParameters->SetBackgroundColour(wxColour(200,200,200));
     wxFont ListViewParametersFont(10,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL,false,_T("Arial Narrow"),wxFONTENCODING_DEFAULT);
     ListViewParameters->SetFont(ListViewParametersFont);
-    BoxSizerTestParams->Add(ListViewParameters, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 1);
+    BoxSizerTestParams->Add(ListViewParameters, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 1);
     StaticTextLine2 = new wxStaticText(PanelParamsLst, ID_STATICTEXT_LINE2, wxEmptyString, wxDefaultPosition, wxSize(-1,2), 0, _T("ID_STATICTEXT_LINE2"));
     StaticTextLine2->SetForegroundColour(wxColour(255,255,255));
     StaticTextLine2->SetBackgroundColour(wxColour(78,183,223));
@@ -506,19 +584,19 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     PanelParamsBtns = new wxPanel(PanelParamsLst, ID_PANEL_PARAMS_BTNS, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL_PARAMS_BTNS"));
     PanelParamsBtns->SetBackgroundColour(wxColour(190,190,190));
     BoxSizerParamsBtns = new wxBoxSizer(wxHORIZONTAL);
-    BoxSizerParamsBtns->Add(-1,-1,1, wxALL|wxEXPAND, 0);
-    ButtonDoSingleTest = new GButton(PanelParamsBtns, ID_BUTTON_DO_SINGLETEST, _("Perform selected test"), wxDefaultPosition, wxSize(320,20), 0, wxDefaultValidator, _T("ID_BUTTON_DO_SINGLETEST"));
+    BoxSizerParamsBtns->Add(5,-1,1, wxALL|wxEXPAND, 0);
+    ButtonDoSingleTest = new GButton(PanelParamsBtns, ID_BUTTON_DO_SINGLETEST, _("Perform selected test"), wxDefaultPosition, wxSize(325,22), 0, wxDefaultValidator, _T("ID_BUTTON_DO_SINGLETEST"));
     ButtonDoSingleTest->SetForegroundColour(wxColour(255,255,255));
     BoxSizerParamsBtns->Add(ButtonDoSingleTest, 0, wxALL|wxALIGN_TOP, 2);
-    BoxSizerParamsBtns->Add(-1,-1,1, wxALL|wxEXPAND, 0);
+    BoxSizerParamsBtns->Add(5,-1,1, wxALL|wxEXPAND, 0);
     PanelParamsBtns->SetSizer(BoxSizerParamsBtns);
     BoxSizerParamsBtns->Fit(PanelParamsBtns);
     BoxSizerParamsBtns->SetSizeHints(PanelParamsBtns);
-    BoxSizerTestParams->Add(PanelParamsBtns, 1, wxALL|wxEXPAND, 1);
+    BoxSizerTestParams->Add(PanelParamsBtns, 0, wxALL|wxEXPAND, 1);
     PanelParamsLst->SetSizer(BoxSizerTestParams);
     BoxSizerTestParams->Fit(PanelParamsLst);
     BoxSizerTestParams->SetSizeHints(PanelParamsLst);
-    BoxSizerRightPanels->Add(PanelParamsLst, 1, wxTOP|wxLEFT|wxRIGHT, 2);
+    BoxSizerRightPanels->Add(PanelParamsLst, 1, wxTOP|wxLEFT|wxRIGHT|wxEXPAND, 2);
     BoxSizerLists->Add(BoxSizerRightPanels, 0, wxALL|wxEXPAND, 4);
     BoxSizerLists->Add(5,-1,0, wxALL|wxEXPAND, 0);
     PanelList->SetSizer(BoxSizerLists);
@@ -580,6 +658,8 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_LISTVIEW_TESTS,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&AVPTesterFrame::OnListViewTestsItemActivated);
     Connect(ID_LISTVIEW_TESTS,wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK,(wxObjectEventFunction)&AVPTesterFrame::OnListViewTestsItemRClick);
     Connect(ID_BUTTON_START_TESTS,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AVPTesterFrame::OnButtonStartTestsClick);
+    Connect(ID_BUTTON_GEN_STIM_FILE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AVPTesterFrame::OnButtonGenerateStimFileClick);
+    Connect(ID_BUTTON_ANZ_RSP_FILE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AVPTesterFrame::OnButtonAnalyseRespFileClick);
     Connect(ID_CHOICE_TEST_MODE,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&AVPTesterFrame::OnChoiceTestModeSelect);
     Connect(ID_BUTTON_RESP_FILE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&AVPTesterFrame::OnButtonRespFileClick);
     Connect(ID_CHOICE_DAC_CH,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&AVPTesterFrame::OnChoiceDACChSelect);
@@ -610,6 +690,8 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
 	PanelADC->setRimColour(78, 183, 223);
 	PanelComments->setRimColour(78, 183, 223);
 
+    Connect(ID_BUTTON_ANZ_RSP_FILE,wxEVT_COMMAND_GBUTTON,(wxObjectEventFunction)&AVPTesterFrame::OnButtonAnalyseRespFileClick);
+	Connect(ID_BUTTON_GEN_STIM_FILE, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AVPTesterFrame::OnButtonGenerateStimFileClick);
 	Connect(ID_BUTTON_START_TESTS, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AVPTesterFrame::OnButtonStartTestsClick);
 	Connect(ID_BUTTON_DO_SINGLETEST, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AVPTesterFrame::OnButtonDoSingleTestClick);
 	Connect(ID_BUTTON_RESP_FILE, wxEVT_COMMAND_GBUTTON, (wxObjectEventFunction)&AVPTesterFrame::OnButtonRespFileClick);
@@ -631,12 +713,13 @@ AVPTesterFrame::AVPTesterFrame(wxWindow* parent,wxWindowID id)
 
 	mPManager = new ProjectManager();
 
-	/////////////
 	/*
-	if (mPManager->OpenProject(wxT("C:\\Users\\pl\\Desktop\\MEGATEST\\MEGATEST.avt")) == MgmtOK)
+	wxString filePath = wxT("C:\\Users\\chris\\Desktop\\AVPTest\\offline\\offline.avt");//
+	if (mPManager->OpenProject(filePath) == MgmtOK)
 	{
 		PopulateProjectInfo();
 		PopulateTestsList();
+		ConfigureProjectUI();
 	}
 	*/
 }
@@ -656,6 +739,9 @@ AVPTesterFrame::~AVPTesterFrame()
 		mResultsDialog = NULL;
 	}
 
+	if(mPManager->IsProjectLoaded())
+		mPManager->SaveProject();
+	
 	delete mPManager;
 
     DeinitAudioIO();
@@ -697,6 +783,7 @@ void AVPTesterFrame::OnMenuItemFOpenSelected(wxCommandEvent& event)
 		{
 			PopulateProjectInfo();
 			PopulateTestsList();
+			ConfigureProjectUI();
 		}
     }
 }
@@ -744,6 +831,8 @@ AVPTesterFrame::EnableTestUI(bool enable, bool isLoading)
 	ListViewTests->Enable(enable);
 	ListViewParameters->Enable(enable);
 	ButtonDoSingleTest->enable(enable);
+	ButtonGenerateStimFile->Enable(enable);
+	ButtonAnalyseRespFile->Enable(enable);
 	MenuItemDevices->Enable(enable);
 
 	MenuItemFOpen->Enable(enable);
@@ -907,6 +996,26 @@ void AVPTesterFrame::PopulateProjectInfo()
 	TextCtrlPDate->SetValue(mPManager->GetProjectDate());
 	TextCtrlProjDescription->SetValue(mPManager->GetProjectRemarks());
 
+	mProjectType = mPManager->GetProjectType();
+
+	if (mProjectType == 0)
+		TextCtrlPType->SetValue(wxT("Local test"));
+	else if (mProjectType == 1)
+		TextCtrlPType->SetValue(wxT("Offline test"));
+	else
+		TextCtrlPType->SetValue(wxT(""));
+
+	int projectRate = mPManager->GetProjectDefaultSRate();
+	wxString rateString;
+
+	if (projectRate == -1)
+		rateString = wxT("Defined in devices panel");
+	else
+		rateString.Printf(wxT("%d Hz"), projectRate);
+
+	TextCtrlPSRate->SetValue(rateString);
+
+
 	std::vector<ProjectInfo> info = mPManager->GetProjectInfo();
 
 	size_t infoSize = info.size();
@@ -937,6 +1046,45 @@ void AVPTesterFrame::PopulateProjectInfo()
 			TextCtrlADC->SetValue(ie.infoValue);
 		}
 	}
+}
+
+void AVPTesterFrame::ConfigureProjectUI()
+{
+	switch (mProjectType)
+	{
+		case -1:
+		{
+			PanelCtrlBtnsStartLocal->Show(false);
+			PanelCtrlBtnsOffLineGen->Show(false);
+			PanelCtrlBtnsOffLineAnz->Show(false);
+			PanelTestMode->Show(false);
+			PanelTestAudio->Show(false);
+			PanelParamsBtns->Show(false);
+		}break;
+
+		case 0:
+		{
+			PanelCtrlBtnsStartLocal->Show(true);
+			PanelCtrlBtnsOffLineGen->Show(false);
+			PanelCtrlBtnsOffLineAnz->Show(false);
+			PanelTestMode->Show(false);
+			PanelTestAudio->Show(true);
+			PanelParamsBtns->Show(true);
+		}break;
+
+		case 1:
+		{
+			PanelCtrlBtnsStartLocal->Show(false);
+			PanelCtrlBtnsOffLineGen->Show(true);
+			PanelCtrlBtnsOffLineAnz->Show(true);
+			PanelTestMode->Show(false);
+			PanelTestAudio->Show(false);
+			PanelParamsBtns->Show(false);
+		}break;
+	}
+	PanelTestList->Layout();
+	BoxSizerRightPanels->Layout();
+	PanelParamsLst->Layout();
 }
 
 void AVPTesterFrame::WriteLogMsg( wxString msg )
@@ -1017,11 +1165,20 @@ AVPTesterFrame::PopulateTestsListThx()
 
 		ListViewTests->InsertItem(i, desc.name, 0);
 
-		if (desc.enabled == wxT("true"))
+		if (desc.enabled == wxT("true")) {
 			ListViewTests->SetItem(i, 1, wxT("enabled"));
-		else
+			wxFont f = ListViewTests->GetItemFont(i);
+			f.SetStyle(wxFONTSTYLE_NORMAL);
+			ListViewTests->SetItemFont(i, f);
+			ListViewTests->SetItemTextColour(i, wxColour(0,0,0));
+		}
+		else {
 			ListViewTests->SetItem(i, 1, wxT("disabled"));
-
+			wxFont f = ListViewTests->GetItemFont(i);
+			f.SetStyle(wxFONTSTYLE_ITALIC);
+			ListViewTests->SetItemFont(i,f);
+			ListViewTests->SetItemTextColour(i, wxColour(64, 64, 64));
+		}
 		ListViewTests->SetItem(i, 2, wxT("LOADING..."));
 
 		//check if results are already available from a previous run
@@ -1120,7 +1277,10 @@ void AVPTesterFrame::OnListViewTestsItemRClick(wxListEvent& event)
 	menu.Append(0, wxT("&enable"));
 	menu.Append(1, wxT("&disable"));
 	menu.Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(AVPTesterFrame::OnTestMenuPopupClick), NULL, this);
-	PopupMenu(&menu, event.GetPoint());
+
+	wxPoint hit = event.GetPoint();
+	hit.x += 125;
+	PopupMenu(&menu, hit);
 }
 
 void AVPTesterFrame::OnTestMenuPopupClick(wxCommandEvent &evt)
@@ -1134,6 +1294,10 @@ void AVPTesterFrame::OnTestMenuPopupClick(wxCommandEvent &evt)
 		{
 			mPManager->EnableTest(dsc.ID, true);
 			ListViewTests->SetItem(mSelectedTestIdx, 1, wxT("enabled"));
+			wxFont f = ListViewTests->GetItemFont(mSelectedTestIdx);
+			f.SetStyle(wxFONTSTYLE_NORMAL);
+			ListViewTests->SetItemFont(mSelectedTestIdx, f);
+			ListViewTests->SetItemTextColour(mSelectedTestIdx, wxColour(0, 0, 0));
 		}
 		break;
 
@@ -1141,6 +1305,10 @@ void AVPTesterFrame::OnTestMenuPopupClick(wxCommandEvent &evt)
 		{
 			mPManager->EnableTest(dsc.ID, false);
 			ListViewTests->SetItem(mSelectedTestIdx, 1, wxT("disabled"));
+			wxFont f = ListViewTests->GetItemFont(mSelectedTestIdx);
+			f.SetStyle(wxFONTSTYLE_ITALIC);
+			ListViewTests->SetItemFont(mSelectedTestIdx, f);
+			ListViewTests->SetItemTextColour(mSelectedTestIdx, wxColour(64, 64, 64));
 		}
 		break;
 	}
@@ -1288,19 +1456,21 @@ AVPTesterFrame::wxSeparateCommandAndArguments(const wxString& command, wxString&
 void AVPTesterFrame::OnMenuItemFNewSelected(wxCommandEvent& event)
 {
 	wxString projectPath, projectName;
+	int projectType, projectSRate;
 
 	NewProjectDialog dlg(this);
 	if (dlg.ShowModal() == wxID_OK)
 	{
-		dlg.GetNewProjectDefs(projectPath, projectName);
+		dlg.GetNewProjectDefs(projectPath, projectName, projectType, projectSRate);
 		std::vector<ProjectInfo> pinfo = dlg.GetNewProjectInfo();
 
-		int res = mPManager->NewProject(projectPath, projectName, pinfo);
+		int res = mPManager->NewProject(projectPath, projectName, projectType, projectSRate, pinfo);
 
 		if (res == MgmtOK)
 		{
 			PopulateProjectInfo();
 			PopulateTestsList();
+			ConfigureProjectUI();
 		}
 	}
 }
@@ -1310,6 +1480,7 @@ void AVPTesterFrame::OnMenuItemFCloseSelected(wxCommandEvent& event)
 	mPManager->CloseProject();
 	PopulateProjectInfo();
 	PopulateTestsList();
+	ConfigureProjectUI();
 }
 
 void AVPTesterFrame::OnButtonProjEditCtrlsClick(wxCommandEvent& event)
@@ -1544,4 +1715,24 @@ void AVPTesterFrame::OnMenuItemInfoSelected(wxCommandEvent& event)
 {
 	AboutADCTDialog dlg(this);
 	dlg.ShowModal();
+}
+
+void AVPTesterFrame::OnButtonGenerateStimFileClick(wxCommandEvent& event)
+{
+	if (!mPManager->IsProjectLoaded()) {
+		wxMessageBox(wxT("Load or create a test project first"), wxT("Error"));
+		return;
+	}
+
+	gAudioIO->GenerateStimFile();
+}
+
+void AVPTesterFrame::OnButtonAnalyseRespFileClick(wxCommandEvent& event)
+{
+	if (!mPManager->IsProjectLoaded()) {
+		wxMessageBox(wxT("Load or create a test project first"), wxT("Error"));
+		return;
+	}
+
+	gAudioIO->AnalyseOfflineResponse();
 }

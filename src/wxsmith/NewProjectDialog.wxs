@@ -7,11 +7,11 @@
 		<pos_arg>1</pos_arg>
 		<size_arg>1</size_arg>
 		<style>wxCAPTION</style>
-		<object class="wxBoxSizer" variable="BoxSizerMail" member="no">
+		<object class="wxBoxSizer" variable="BoxSizerMail" member="yes">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
-				<object class="wxPanel" name="ID_PANEL_TOP" subclass="RimPanel" variable="PanelTop" member="yes">
-					<object class="wxBoxSizer" variable="BoxSizerPanelTop" member="no">
+				<object class="wxPanel" name="ID_PANEL_TITLE" subclass="RimPanel" variable="PanelTitle" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPanelTitle" member="no">
 						<object class="sizeritem">
 							<object class="wxStaticText" name="ID_STATICTEXT_LBL_PJNAME" variable="StaticTextLblPjName" member="yes">
 								<label> Project title:</label>
@@ -42,10 +42,10 @@
 				<border>2</border>
 			</object>
 			<object class="sizeritem">
-				<object class="wxPanel" name="ID_PANEL_MIDDLE" subclass="RimPanel" variable="PanelMiddle" member="yes">
-					<object class="wxBoxSizer" variable="BoxSizerPanelMiddle" member="no">
+				<object class="wxPanel" name="ID_PANEL_PATH" subclass="RimPanel" variable="PanelPath" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPanelPath" member="no">
 						<object class="sizeritem">
-							<object class="wxStaticText" name="ID_STATICTEXT_LBL_PJPATH" variable="StaticText1" member="yes">
+							<object class="wxStaticText" name="ID_STATICTEXT_LBL_PJPATH" variable="StaticTextPJPath" member="yes">
 								<label> Project path:</label>
 								<size>100,-1</size>
 								<font>
@@ -63,7 +63,7 @@
 						</object>
 						<object class="sizeritem">
 							<object class="wxTextCtrl" name="ID_TEXTCTRL_PJPATH" variable="TextCtrlPJPath" member="yes">
-								<size>200,0</size>
+								<size>200,22</size>
 							</object>
 							<flag>wxTOP|wxBOTTOM|wxLEFT|wxEXPAND</flag>
 							<border>4</border>
@@ -83,6 +83,106 @@
 				<border>2</border>
 			</object>
 			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_TYPE" subclass="RimPanel" variable="PanelType" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPanelType" member="no">
+						<object class="sizeritem">
+							<object class="wxStaticText" name="ID_STATICTEXT_LBL_PJTYPE" variable="StaticTextLblPjType" member="yes">
+								<label> Project type:</label>
+								<size>100,-1</size>
+								<font>
+									<size>10</size>
+									<style>normal</style>
+									<weight>bold</weight>
+									<underlined>0</underlined>
+									<family>swiss</family>
+									<face>Arial Narrow</face>
+								</font>
+								<style>wxALIGN_CENTRE</style>
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>4</border>
+						</object>
+						<object class="sizeritem">
+							<object class="wxChoice" name="ID_CHOICE_PJTYPE" variable="ChoicePJType" member="yes">
+								<content>
+									<item>                   Local</item>
+									<item>                  Offline</item>
+								</content>
+								<selection>0</selection>
+								<size>200,22</size>
+								<font>
+									<size>10</size>
+									<style>normal</style>
+									<weight>bold</weight>
+									<underlined>0</underlined>
+									<family>swiss</family>
+									<face>Arial</face>
+								</font>
+								<handler function="OnChoicePJTypeSelect" entry="EVT_CHOICE" />
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>4</border>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>2</border>
+			</object>
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL_SRATE" subclass="RimPanel" variable="PanelSRate" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizerPanelSrate" member="no">
+						<object class="sizeritem">
+							<object class="wxStaticText" name="ID_STATICTEXT_LBL_PJSRATE" variable="StaticTextLblPjSRate" member="yes">
+								<label> Sample rate:</label>
+								<size>100,-1</size>
+								<font>
+									<size>10</size>
+									<style>normal</style>
+									<weight>bold</weight>
+									<underlined>0</underlined>
+									<family>swiss</family>
+									<face>Arial Narrow</face>
+								</font>
+								<style>wxALIGN_CENTRE</style>
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>4</border>
+						</object>
+						<object class="sizeritem">
+							<object class="wxChoice" name="ID_CHOICE_PJSRATE" variable="ChoicePJSRate" member="yes">
+								<content>
+									<item>                   8000</item>
+									<item>                   16000</item>
+									<item>                   22050</item>
+									<item>                   24000</item>
+									<item>                   32000</item>
+									<item>                   44100</item>
+									<item>                   48000</item>
+									<item>                   88200</item>
+									<item>                   96000</item>
+									<item>                   192000</item>
+								</content>
+								<selection>0</selection>
+								<size>200,22</size>
+								<font>
+									<size>10</size>
+									<style>normal</style>
+									<weight>bold</weight>
+									<underlined>0</underlined>
+									<family>swiss</family>
+									<face>Arial</face>
+								</font>
+								<handler function="OnChoicePJTypeSelect" entry="EVT_CHOICE" />
+							</object>
+							<flag>wxALL|wxEXPAND</flag>
+							<border>4</border>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND</flag>
+				<border>2</border>
+			</object>
+			<object class="sizeritem">
 				<object class="wxPanel" name="ID_PANEL_INFO" variable="PanelInfo" member="yes">
 					<object class="wxBoxSizer" variable="BoxSizerPanelInfo" member="no">
 						<object class="sizeritem">
@@ -90,6 +190,7 @@
 								<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
 								<include_file>PrjInfoEditPanel.h</include_file>
 								<local_include>1</local_include>
+								<style></style>
 							</object>
 							<flag>wxALL|wxEXPAND</flag>
 							<option>1</option>
@@ -98,6 +199,7 @@
 				</object>
 				<flag>wxALL|wxEXPAND</flag>
 				<border>2</border>
+				<option>1</option>
 			</object>
 			<object class="sizeritem">
 				<object class="wxPanel" name="ID_PANEL_BOTTOM" subclass="RimPanel" variable="PanelBottom" member="yes">

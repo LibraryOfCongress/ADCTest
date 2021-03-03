@@ -19,6 +19,9 @@ FADGIAnalyser::FADGIAnalyser()
 ,mLogDetectionThreshold(0)
 ,mSelectedChannel(-1)
 ,mMaxSigNrgVariance(1e-8)
+,mOfflineSyncOffsetMs(0)
+,mResponseStartOffsetMs(0)
+,mAnalysisMode(0)
 {
 	mSeparator = wxT("\\");
 	mTestTitle = wxEmptyString;
@@ -80,9 +83,15 @@ FADGIAnalyser::setParameters(wxXmlNode* testDescriptionNode)
 	mFrNrgDev = 0;
 	mSigQualityOK = true;
 
-	//We are now dealing with mono files now 
-	//test channel selection is now managed by the AudioIO engine
-	mSelectedChannel = 0;// GetSelectedChannel();
+	//in live local mode, we are now using mono files and the 
+	//test channel selection is managed by the AudioIO engine
+	//if the test is performed using a sequential offline response file, then the channel selection is specified 
+	// by the project file
+
+	if( mAnalysisMode == 0)
+		mSelectedChannel = 0;
+	else
+		mSelectedChannel = GetSelectedChannel();
 
 	mFolderPath = GetWorkFolderPath();
 	mResponseFileName = GetResponseFileName();
@@ -123,6 +132,24 @@ FADGIAnalyser::GetResultsFileName()
 	return res;
 }
 
+size_t   
+FADGIAnalyser::GetResponseStartMs()
+{
+	wxString res = mFileIONode->GetAttribute(wxT("response_start_ms"),wxT("0"));
+	double dres;
+	res.ToCDouble(&dres);
+	return (size_t)dres;
+}
+
+size_t
+FADGIAnalyser::GetResponseEndMs()
+{
+	wxString res = mFileIONode->GetAttribute(wxT("response_end_ms"), wxT("0"));
+	double dres;
+	res.ToCDouble(&dres);
+	return (size_t)dres;
+}
+
 SNDFILE* 
 FADGIAnalyser::openResponseFile()
 {
@@ -134,14 +161,29 @@ FADGIAnalyser::openResponseFile()
 	respFileInfo.format = 0;
 	respFileInfo.frames = 0;
 	respFile = sf_open((const char*)strpath.c_str(), SFM_READ, &respFileInfo);
-	mRespFileFrames = respFileInfo.frames;
+	
 
 	if (respFile)
 	{
 		mSampleRate = respFileInfo.samplerate;
 		mNoChannels = respFileInfo.channels;
-	}
 
+		//depending on whether the analysis is using an individual response file or a single sequential response set, 
+		//we set the length of the response as:
+		
+		if (mAnalysisMode == 0) {
+			//individual response file
+			mRespFileFrames = respFileInfo.frames;
+		}
+		else
+		{
+			//response is somewhere in the sequence file
+			//find out whre the response is located within the file
+			size_t stResp = GetResponseStartMs();
+			size_t enResp = GetResponseEndMs();
+			mRespFileFrames = ((float)(enResp - stResp) / 1000) * mSampleRate;
+		}
+	}
 	return respFile;
 }
 
@@ -163,6 +205,8 @@ FADGIAnalyser::getOnsets(SNDFILE* afile, int channelIndex, bool debug)
 	mTransientSamples = (size_t)(1e-3 * mTransientTime * mSampleRate);
 	mIntegrationSamples = (size_t)(1e-3 * mIntegrationTime * mSampleRate);
 
+	size_t mTotalSamplesOffset = ((float)(mOfflineSyncOffsetMs+ GetResponseStartMs()) / 1000) * mSampleRate;
+
 	SegmentLocator* locator = new SegmentLocator(mSampleRate, mNoChannels);
 	locator->Reset();
 	locator->SetDetectionParameters(mLogDetectionThreshold);
@@ -176,7 +220,10 @@ FADGIAnalyser::getOnsets(SNDFILE* afile, int channelIndex, bool debug)
 	}
 
 	float* windowBuffer = new float[mDetectionWLen*mNoChannels];
-	size_t count = 0;//sf_seek(afile, mDetectionWLen, SEEK_SET);
+	size_t count = 0;
+	
+	sf_seek(afile, mTotalSamplesOffset, SEEK_SET);
+	
 	while (count < mRespFileFrames)
 	{
 		sf_count_t read = sf_readf_float(afile, windowBuffer, mDetectionWLen);
@@ -208,6 +255,12 @@ FADGIAnalyser::getOnsets(SNDFILE* afile, int channelIndex, bool debug)
 		delete dbgWriter;
 		delete[] dbgBuf;
 	}
+
+	//add total test offset to vector
+	for (size_t i = 0; i < onsets.size(); i++)
+		onsets[i] = onsets[i] + mTotalSamplesOffset;
+
+	sf_seek(afile, 0, SEEK_SET);
 
 	return onsets; 
 }
@@ -463,4 +516,15 @@ FADGIAnalyser::checkSignalQuality()
 		check = true;
 
 	return check;
+}
+
+void FADGIAnalyser::SetAnalisysMode(int mode)
+{
+	mAnalysisMode = mode;
+}
+
+void 
+FADGIAnalyser::SetOfflineSyncOffsetMs( size_t offset )
+{
+	mOfflineSyncOffsetMs = offset;
 }

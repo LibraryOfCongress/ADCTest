@@ -90,12 +90,15 @@ class AVPTesterFrame: public wxFrame
         void OnChoiceDACChSelect(wxCommandEvent& event);
         void OnChoiceADCChSelect(wxCommandEvent& event);
         void OnMenuItemInfoSelected(wxCommandEvent& event);
+        void OnButtonGenerateStimFileClick(wxCommandEvent& event);
+        void OnButtonAnalyseRespFileClick(wxCommandEvent& event);
         //*)
 		void OnTestMenuPopupClick(wxCommandEvent &evt);
 
 		void OnAudioThreadEvent(wxThreadEvent& event);
 		void PopulateTestsList();
 		void PopulateProjectInfo();
+		void ConfigureProjectUI();
 		void PopulateTestParametersList();
 		void PopulateAudioIOInfo(bool enabled);
 		void PopulateModeInfo(bool enabled);
@@ -118,6 +121,12 @@ class AVPTesterFrame: public wxFrame
         static const long ID_STATICTEXT_PDATE_LBL;
         static const long ID_TEXTCTRL_PDATE;
         static const long ID_PANEL_PDATE;
+        static const long ID_STATICTEXT_PTYPE_LBL;
+        static const long ID_TEXTCTRL_PTYPE;
+        static const long ID_PANEL_PTYPE;
+        static const long ID_STATICTEXT_PSRATE_LBL;
+        static const long ID_TEXTCTRL_PSRATE;
+        static const long ID_PANEL_PSRATE;
         static const long ID_STATICTEXT_POPS_LBL;
         static const long ID_TEXTCTRL_POPS;
         static const long ID_PANEL_POps;
@@ -141,6 +150,10 @@ class AVPTesterFrame: public wxFrame
         static const long ID_STATICTEXT_LINE1;
         static const long ID_BUTTON_START_TESTS;
         static const long ID_PANEL_CTRL_BTNS;
+        static const long ID_BUTTON_GEN_STIM_FILE;
+        static const long ID_PANEL_CTRL_BTNS_OFFLINE_GEN;
+        static const long ID_BUTTON_ANZ_RSP_FILE;
+        static const long ID_PANEL_CTRL_BTNS_OFFLINE_ANZ;
         static const long ID_PANEL_TST_LST;
         static const long ID_STATICTEXT_DESC_TTL;
         static const long ID_TEXTCTRL_TEST_DESCRIPTION;
@@ -186,7 +199,9 @@ class AVPTesterFrame: public wxFrame
         //*)
 
         //(*Declarations(AVPTesterFrame)
+        GButton* ButtonAnalyseRespFile;
         GButton* ButtonDoSingleTest;
+        GButton* ButtonGenerateStimFile;
         GButton* ButtonRespFile;
         GButton* ButtonStartTests;
         RimPanel* PanelADC;
@@ -198,7 +213,9 @@ class AVPTesterFrame: public wxFrame
         RimPanel* PanelLog;
         RimPanel* PanelPDate;
         RimPanel* PanelPOps;
+        RimPanel* PanelPSRate;
         RimPanel* PanelPTitle;
+        RimPanel* PanelPType;
         RimPanel* PanelParamsLst;
         RimPanel* PanelProject;
         RimPanel* PanelTestAudio;
@@ -206,6 +223,7 @@ class AVPTesterFrame: public wxFrame
         RimPanel* PanelTestList;
         RimPanel* PanelTestMode;
         wxBoxSizer* BoxSizerMainUI;
+        wxBoxSizer* BoxSizerRightPanels;
         wxChoice* ChoiceADCCh;
         wxChoice* ChoiceDACCh;
         wxChoice* ChoiceTestMode;
@@ -220,11 +238,15 @@ class AVPTesterFrame: public wxFrame
         wxMenuItem* MenuItemFSave;
         wxMenuItem* MenuItemInfo;
         wxMenuItem* MenuItemOpenManual;
-        wxPanel* PanelCtrlBtns;
+        wxPanel* PanelCtrlBtnsOffLineAnz;
+        wxPanel* PanelCtrlBtnsOffLineGen;
+        wxPanel* PanelCtrlBtnsStartLocal;
         wxPanel* PanelList;
         wxPanel* PanelMainUI;
         wxPanel* PanelParamsBtns;
         wxStaticBitmap* StaticBitmapFADGI;
+        wxStaticText* StaticText1StaticTextPSRateLbl;
+        wxStaticText* StaticText1StaticTextPTypeLbl;
         wxStaticText* StaticText2;
         wxStaticText* StaticText3;
         wxStaticText* StaticText4;
@@ -256,7 +278,9 @@ class AVPTesterFrame: public wxFrame
         wxTextCtrl* TextCtrlLog;
         wxTextCtrl* TextCtrlPDate;
         wxTextCtrl* TextCtrlPOps;
+        wxTextCtrl* TextCtrlPSRate;
         wxTextCtrl* TextCtrlPTitle;
+        wxTextCtrl* TextCtrlPType;
         wxTextCtrl* TextCtrlProjDescription;
         wxTextCtrl* TextCtrlTestDescription;
         wxTimer TimerLoadProject;
@@ -269,6 +293,7 @@ class AVPTesterFrame: public wxFrame
 
         DECLARE_EVENT_TABLE()
 
+		int mProjectType;
 		int mSelectedTestIdx;
 		std::vector<TestDescriptor> mTestDescriptors;
 		int mSelectedParamIdx;

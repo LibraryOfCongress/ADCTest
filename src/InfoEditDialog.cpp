@@ -95,11 +95,11 @@ InfoEditDialog::SetProjectInfo(std::vector<ProjectInfo> info)
 		}
 		else if (ie.infoName == wxT("dacname"))
 		{
-			mPanelInfo->SetADCName(ie.infoValue);
+			mPanelInfo->SetDACName(ie.infoValue);
 		}
 		else if (ie.infoName == wxT("adcname"))
 		{
-			mPanelInfo->SetDACName(ie.infoValue);
+			mPanelInfo->SetADCName(ie.infoValue);
 		}
 	}
 }

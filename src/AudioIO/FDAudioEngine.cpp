@@ -2,10 +2,13 @@
 #include "sndfile.h"
 #include "..\System\Prefs.h"
 #include "..\AVPTesterMain.h"
+#include "..\Analysers\OfflineSyncLocator.h"
 
 std::unique_ptr<FDAudioEngine> ugAudioIO;
 
 FDAudioEngine *gAudioIO{};
+
+#define T_PI 3.1415926535897932384626433832795028841971693993751
 
 void InitAudioIO()
 {
@@ -39,6 +42,18 @@ public:
 class AudioThreadPlayback : public wxThread {
 public:
 	AudioThreadPlayback() :wxThread(wxTHREAD_DETACHED) {}
+	ExitCode Entry() override;
+};
+
+class AudioThreadSequentialWrite : public wxThread {
+public:
+	AudioThreadSequentialWrite() :wxThread(wxTHREAD_DETACHED) {}
+	ExitCode Entry() override;
+};
+
+class AudioThreadSequentialAnalyse : public wxThread {
+public:
+	AudioThreadSequentialAnalyse() :wxThread(wxTHREAD_DETACHED) {}
 	ExitCode Entry() override;
 };
 
@@ -572,7 +587,7 @@ FDAudioEngine::doIODevicesCalibration()
 
 				double sig = mOutputGain * (mToneLevel*sin(twoPi*angleS));
 
-				for (size_t j = 0; j <mOutConfig.devChannels; j++)
+				for (int j = 0; j <mOutConfig.devChannels; j++)
 				{
 					OutputBuffer[mOutConfig.devChannels* i + j] = (float)sig;
 				}
@@ -752,6 +767,41 @@ FDAudioEngine::reportEvent(int processID,
 	}
 }
 
+void
+FDAudioEngine::GenerateStimFile()
+{
+	if (bIsStopped)
+	{
+		mIsSafe = false;
+		bIsStopped = false;
+
+		mThreadSequentialWrite = new AudioThreadSequentialWrite;
+		if (mThreadSequentialWrite->Run() != wxTHREAD_NO_ERROR)
+		{
+			delete mThreadSequentialWrite;
+			mThreadSequentialWrite = NULL;
+			mIsSafe = true;
+		}
+	}
+}
+
+void
+FDAudioEngine::AnalyseOfflineResponse()
+{
+	if (bIsStopped)
+	{
+		mIsSafe = false;
+		bIsStopped = false;
+
+		mThreadSequentialAnalyse = new AudioThreadSequentialAnalyse;
+		if (mThreadSequentialAnalyse->Run() != wxTHREAD_NO_ERROR)
+		{
+			delete mThreadSequentialAnalyse;
+			mThreadSequentialAnalyse = NULL;
+			mIsSafe = true;
+		}
+	}
+}
 
 void
 FDAudioEngine::StartTestProcedure(int testIndex)
@@ -1141,6 +1191,233 @@ FDAudioEngine::doPlayFile()
 	return 0;
 }
 
+int
+FDAudioEngine::doWriteStimulusSequence()
+{
+	mCaptureSampleRate = mTestManager->GetDefaultSampleRate();
+
+	size_t transferFrameSize = 2048;
+	size_t numSecsStimGuard = 5;
+	size_t numSecsPauseGuard = 30;
+	int    numChansTestFiles = 2;
+
+	//sequential stim file format
+	SF_INFO aFormat;
+	aFormat.channels = numChansTestFiles;
+	aFormat.samplerate = mCaptureSampleRate;
+	aFormat.format = (SF_FORMAT_WAV | SF_FORMAT_FLOAT);
+	wxString stimSequencePath = mTestManager->GetOfflineTestStimulusPath();
+
+	mTotalNoTests = mTestManager->GetNumberOfTest();
+	int testIndex = 0;
+		
+	//no tests to be performed, exit thread
+	if (mTotalNoTests < 1)
+		goto exit_proc;
+
+	//create file containing sequence of test stimuli
+	SNDFILE* sequenceFile;
+	if (sequenceFile = sf_open(stimSequencePath.mbc_str(), SFM_WRITE, &aFormat))
+	{
+		float* tsfBuffer = new float[transferFrameSize*aFormat.channels];
+		float* oneSecGuardBuffer = new float[mCaptureSampleRate*aFormat.channels];
+		memset(oneSecGuardBuffer, 0, sizeof(float)*mCaptureSampleRate*aFormat.channels);
+
+		reportEvent(2, AVP_PROCESS_STAGE, wxT("generating single stimulus file"), false, wxEmptyString, 1, 0);
+		
+		//write sync tone
+		size_t write_count = WriteSyncToneToFile(sequenceFile, aFormat, 1000, 3000);
+
+		//start and end of individual test stimulus
+		for (testIndex = 0; testIndex < mTotalNoTests; testIndex++)
+		{
+			if (mTestManager->IsTestEnabled(testIndex))
+			{
+				size_t start_ms = 0; 
+
+				reportEvent(2, AVP_PROCESS_STAGE, wxT("generating single signal file"), false, wxEmptyString, mTotalNoTests, testIndex);
+
+				wxString sigType = mTestManager->GetParameterValue(testIndex, wxT("signal"));
+				if (sigType == wxT("pause"))
+				{
+					//user action, we give 30 seconds to change setup
+					for (size_t secIdx = 0; secIdx < numSecsPauseGuard; secIdx++) {
+						sf_writef_float(sequenceFile, oneSecGuardBuffer, mCaptureSampleRate);
+						write_count += mCaptureSampleRate;
+					}
+
+					start_ms = (size_t)(1000 * (float)write_count / (float)mCaptureSampleRate);
+				}
+				else
+				{
+					//interval between stimuli
+					for (size_t secIdx = 0; secIdx < numSecsStimGuard; secIdx++) {
+						sf_writef_float(sequenceFile, oneSecGuardBuffer, mCaptureSampleRate);
+						write_count += mCaptureSampleRate;
+					}
+					start_ms = (size_t)(1000 * (float)write_count / (float)mCaptureSampleRate);
+
+					wxString testFilePath;
+					int errorCode = mTestManager->GenerateSignalFile(testIndex, mCaptureSampleRate, mCaptureSampleRate, numChansTestFiles, testFilePath);
+
+					//copy content of each test file into the single sequence
+					SNDFILE* singleTestFile;
+					if ((!testFilePath.IsEmpty()) && (singleTestFile = sf_open(testFilePath.mbc_str(), SFM_READ, &aFormat)))
+					{
+						sf_seek(sequenceFile, 0, SEEK_END);
+						int readcount = (int)transferFrameSize;
+
+						while (readcount > 0)
+						{
+							readcount = sf_readf_float(singleTestFile, tsfBuffer, transferFrameSize);
+							sf_writef_float(sequenceFile, tsfBuffer, readcount);
+							write_count += readcount;
+						};
+
+						//close and delete single test file
+						sf_close(singleTestFile);
+						wxRemoveFile(testFilePath);
+
+					}
+				}
+				float end_ms = (size_t)(1000*(float)write_count / (float)mCaptureSampleRate);
+
+				//specify individual test time range on single file
+				mTestManager->SetOfflineTimeRange(testIndex, start_ms, end_ms);
+			}
+		}
+		sf_close(sequenceFile);
+		delete[] tsfBuffer;
+		delete[] oneSecGuardBuffer;
+	}
+	else
+	{
+		reportEvent(2, AVP_PROCESS_STAGE, wxT("failed to create single stimulus file"), false, wxEmptyString, 1, 0);
+	}
+
+	reportEvent(2, AVP_PROCESS_TERM_OK, wxT("Test signal generation finished"), true, wxEmptyString, 1, 0);
+
+	/////////////////////////////////////////////////////////////////////////////
+exit_proc:
+	mIsSafe = true;
+	return 0;
+}
+
+//offline signal generation stuff
+size_t
+FDAudioEngine::WriteSyncToneToFile(SNDFILE* file, SF_INFO format, float lengthMs, float frequency)
+{
+	size_t writeCount = 0;
+	size_t writeLength = 1024;
+	size_t leadSamples = 5*format.samplerate;
+	size_t toneSamples = format.samplerate*(lengthMs/1000);
+
+	float* toneBuffer = new float[writeLength * (size_t)format.channels];
+	float* silenceBuffer = new float[writeLength * (size_t)format.channels];
+	memset(silenceBuffer, 0, sizeof(float)*writeLength*format.channels);
+
+	if (file)
+	{
+		//write 5 second lead in
+		size_t sCount = 0;
+		while (sCount < leadSamples)
+		{
+			sf_writef_float(file, silenceBuffer, writeLength);
+			sCount += writeLength;
+		}
+
+		//write lengthMs sync tone
+		double freq = (double)frequency;
+		double linLevel = pow(10, (-3 / 20.0));
+		double twoPi = T_PI * 2;
+		double dTime = 1.0 / (double)format.samplerate;
+		double timeS = dTime;
+		double angleS = 0;
+
+		size_t tCount = 0;
+		while (tCount < toneSamples)
+		{
+			memset(toneBuffer, 0, sizeof(float)*format.channels*writeLength);
+
+			for (size_t i = 0; i < writeLength; i++)
+			{
+				angleS = freq * timeS;
+
+				double sig = (linLevel*sin(twoPi*angleS));
+
+				for (int j = 0; j < format.channels; j++)
+				{
+					toneBuffer[format.channels* i + j] = (float)sig;
+				}
+
+				timeS = (double)tCount / format.samplerate;// += dTime;
+				tCount++;
+			}
+			sf_writef_float(file, toneBuffer, writeLength);
+		}
+
+		//write 1 second lead out
+		sCount = 0;
+		while (sCount < leadSamples)
+		{
+			sf_writef_float(file, silenceBuffer, writeLength);
+			sCount += writeLength;
+		}
+
+		writeCount = leadSamples;
+	}
+
+	delete[] toneBuffer;
+	delete[] silenceBuffer;
+
+	return writeCount;
+}
+
+
+//offline response analysis
+int
+FDAudioEngine::doOfflineAnalysis()
+{
+	wxString responsePath = mTestManager->GetResponseFilePath(0);
+	//wxString responsePath = mTestManager->GetOfflineTestStimulusPath();
+	//find beginning of response sequence
+	OfflineSyncLocator sLoc(responsePath, 3000);
+	if (sLoc.isFileOK())
+	{
+		size_t respStartMs = sLoc.GetResponseStartMs();
+		mTestManager->SetOfflineResponseStartMs(respStartMs);
+		mTotalNoTests = mTestManager->GetNumberOfTest();
+
+		for (int testIndex = 0; testIndex < mTotalNoTests; testIndex++)
+		{
+			////////////////////////////////////////////////////////////////
+			if (mTestManager->IsTestEnabled(testIndex))
+			{
+				int testType = mTestManager->GetTestType(testIndex);
+				//analyse
+				reportEvent(2, AVP_PROCESS_STAGE, wxT("response analysis"), false, wxEmptyString, mTotalNoTests, testIndex);
+				wxString testResult = mTestManager->AnalyseResponse(testIndex);
+
+				//send result
+				reportEvent(2, AVP_PROCESS_RESULT, testResult, false, wxEmptyString, mTotalNoTests, testIndex);
+			}
+			else
+			{
+				//signal that the test has been skipped
+				reportEvent(2, AVP_PROCESS_RESULT, wxT("skipped"), false, wxEmptyString, mTotalNoTests, testIndex);
+			}
+			//////////////////////////////////////////////////////////////
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////////////////
+	reportEvent(2, AVP_PROCESS_TERM_OK, wxT("Test procedures finished"), true, wxEmptyString, 1, 0);
+
+exit_offline_a_proc:
+	mIsSafe = true;
+	return 0;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 AudioThreadCalibrate::ExitCode AudioThreadCalibrate::Entry()
 {
@@ -1163,6 +1440,18 @@ AudioThreadADCTest::ExitCode AudioThreadADCTest::Entry()
 AudioThreadPlayback::ExitCode AudioThreadPlayback::Entry()
 {
 	gAudioIO->doPlayFile();
+	return 0;
+}
+
+AudioThreadSequentialWrite::ExitCode AudioThreadSequentialWrite::Entry()
+{
+	gAudioIO->doWriteStimulusSequence();
+	return 0;
+}
+
+AudioThreadSequentialAnalyse::ExitCode AudioThreadSequentialAnalyse::Entry()
+{
+	gAudioIO->doOfflineAnalysis();
 	return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////

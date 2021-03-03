@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="BASE">
+      <UniqueIdentifier>{3a4e11a1-c344-476d-b4b7-aa6bc9b314e0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FDEngineTest.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="FDEngineTest.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FDEngineTestApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDEngineTestMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDAudioDevicesDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\AudioIO\FDAudioEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Devices\FDADevicesManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\FDAudioDevicesPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FDEngineTestApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDEngineTestMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioDevicesDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\FFTAnalyser.cpp">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\GenMetricQueue.cpp">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\KFFTWrapper.cpp">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\adapters\RingBufferFloat.cpp">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\kissfft\kiss_fft.c">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\kissfft\tools\kiss_fftr.c">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DSP\Utils\MathUtilities.cpp">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\AudioIO\ParametersQueue.cpp">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Widgets\awohSpin.cpp">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Widgets\GButton.cpp">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Widgets\wxMathPlot\mathplot.cpp">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\AudioIO\LevelAnalyser.cpp">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Widgets\RimPanel.cpp">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Widgets\VuMeter.cpp">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\System\Prefs.cpp">
+      <Filter>BASE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\AudioIO\FDAudioEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Devices\FDADevicesManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\FDAudioDevicesPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

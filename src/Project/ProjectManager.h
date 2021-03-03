@@ -28,10 +28,12 @@ public:
 	~ProjectManager();
 
 	//Creates a test project 
-	int NewProject(wxString path, wxString name, std::vector<ProjectInfo> info);
+	int NewProject(wxString path, wxString name, int type, int srate, std::vector<ProjectInfo> info);
 
 	wxString GetProjectTitle() { return mProjectTitle; }
 	wxString GetProjectDate()  { return mProjectDate; }
+	int      GetProjectType()  { return mProjectType; }
+	int      GetProjectDefaultSRate()  { return mProjectSRate; }
 	
 	void SetProjectInfo(std::vector<ProjectInfo> info);
 	std::vector<ProjectInfo> GetProjectInfo();
@@ -85,6 +87,7 @@ public:
 protected:
 
 	bool LoadTemplate(wxString path);
+	bool ModifyTemplateForOfflineProc(wxXmlNode* tNode);
 
 	void DeleteProject();  
 	bool ParseProject();
@@ -102,6 +105,8 @@ protected:
 
 	wxString mProjectTitle;
 	wxString mProjectDate;
+	int      mProjectType;
+	int      mProjectSRate;
 
 	wxString mProjectPath;
 	wxString mProjectFolder;

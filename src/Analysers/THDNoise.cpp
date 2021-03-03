@@ -55,6 +55,13 @@ THDNoise::analyseSignal(wxXmlNode* testDescriptionNode)
 int
 THDNoise::analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets)
 {
+	/*
+	wxString dFilePath = mFolderPath + mSeparator + wxT("debug_") + mTestTitle + wxT(".wav");;
+	std::string dbgPath(dFilePath.ToStdString());
+	WavFileWriter* dbgWriter;
+	dbgWriter = new WavFileWriter(dbgPath, 2, (size_t)mSampleRate, 1);
+	*/
+
 	int retVal = 0;
 	//module specific parameters
 	mFFTLength = getTestParameterValue(wxT("fftlength"), mParamsNode);
@@ -102,6 +109,7 @@ THDNoise::analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets)
 	while (averagesCounter < mFFTAverages)
 	{
 		sf_count_t read = sf_readf_float(afile, fileBuffer, mFFTLength);
+		//dbgWriter->writeAudioFrames(fileBuffer, mFFTLength);
 
 		for (size_t j = 0; j < mFFTLength; j++)
 		{
@@ -190,6 +198,7 @@ THDNoise::analyseSegments(SNDFILE* afile, std::vector<size_t> &onsets)
 
 	extractTHDNoiseMetrics();
 	
+	//delete dbgWriter;
 	return retVal;
 }
 

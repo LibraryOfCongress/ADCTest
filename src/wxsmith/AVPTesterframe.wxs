@@ -160,6 +160,88 @@
 															<border>2</border>
 														</object>
 														<object class="sizeritem">
+															<object class="wxPanel" name="ID_PANEL_PTYPE" subclass="RimPanel" variable="PanelPType" member="yes">
+																<object class="wxBoxSizer" variable="BoxSizerPType" member="no">
+																	<object class="sizeritem">
+																		<object class="wxStaticText" name="ID_STATICTEXT_PTYPE_LBL" variable="StaticText1StaticTextPTypeLbl" member="yes">
+																			<label> Type:</label>
+																			<size>75,21</size>
+																			<bg>#4EB7DF</bg>
+																			<font>
+																				<size>10</size>
+																				<style>normal</style>
+																				<weight>bold</weight>
+																				<underlined>0</underlined>
+																				<family>swiss</family>
+																				<face>Arial Narrow</face>
+																			</font>
+																		</object>
+																		<flag>wxTOP|wxBOTTOM|wxLEFT|wxEXPAND</flag>
+																		<border>1</border>
+																	</object>
+																	<object class="sizeritem">
+																		<object class="wxTextCtrl" name="ID_TEXTCTRL_PTYPE" variable="TextCtrlPType" member="yes">
+																			<size>200,22</size>
+																			<bg>#C8C8C8</bg>
+																			<font>
+																				<size>10</size>
+																				<style>normal</style>
+																				<weight>bold</weight>
+																				<underlined>0</underlined>
+																				<family>swiss</family>
+																			</font>
+																			<style>wxTE_READONLY</style>
+																		</object>
+																		<flag>wxALL|wxEXPAND</flag>
+																		<border>1</border>
+																	</object>
+																</object>
+															</object>
+															<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+															<border>2</border>
+														</object>
+														<object class="sizeritem">
+															<object class="wxPanel" name="ID_PANEL_PSRATE" subclass="RimPanel" variable="PanelPSRate" member="yes">
+																<object class="wxBoxSizer" variable="BoxSizerPanelPSRate" member="no">
+																	<object class="sizeritem">
+																		<object class="wxStaticText" name="ID_STATICTEXT_PSRATE_LBL" variable="StaticText1StaticTextPSRateLbl" member="yes">
+																			<label> Rate:</label>
+																			<size>75,21</size>
+																			<bg>#4EB7DF</bg>
+																			<font>
+																				<size>10</size>
+																				<style>normal</style>
+																				<weight>bold</weight>
+																				<underlined>0</underlined>
+																				<family>swiss</family>
+																				<face>Arial Narrow</face>
+																			</font>
+																		</object>
+																		<flag>wxTOP|wxBOTTOM|wxLEFT|wxEXPAND</flag>
+																		<border>1</border>
+																	</object>
+																	<object class="sizeritem">
+																		<object class="wxTextCtrl" name="ID_TEXTCTRL_PSRATE" variable="TextCtrlPSRate" member="yes">
+																			<size>200,22</size>
+																			<bg>#C8C8C8</bg>
+																			<font>
+																				<size>10</size>
+																				<style>normal</style>
+																				<weight>bold</weight>
+																				<underlined>0</underlined>
+																				<family>swiss</family>
+																			</font>
+																			<style>wxTE_READONLY</style>
+																		</object>
+																		<flag>wxALL|wxEXPAND</flag>
+																		<border>1</border>
+																	</object>
+																</object>
+															</object>
+															<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
+															<border>2</border>
+														</object>
+														<object class="sizeritem">
 															<object class="wxPanel" name="ID_PANEL_POps" subclass="RimPanel" variable="PanelPOps" member="yes">
 																<object class="wxBoxSizer" variable="BoxSizerPOps" member="no">
 																	<object class="sizeritem">
@@ -205,7 +287,7 @@
 																<object class="wxBoxSizer" variable="BoxSizerDAC" member="no">
 																	<object class="sizeritem">
 																		<object class="wxStaticText" name="ID_STATICTEXT_DAC_LBL" variable="StaticTextDACLbl" member="yes">
-																			<label> Audio DAC:</label>
+																			<label> Audio&#x0A; DAC:</label>
 																			<size>75,21</size>
 																			<bg>#4EB7DF</bg>
 																			<font>
@@ -246,7 +328,7 @@
 																<object class="wxBoxSizer" variable="BoxSizerADC" member="no">
 																	<object class="sizeritem">
 																		<object class="wxStaticText" name="ID_STATICTEXT_ADC_LBL" variable="StaticTextADCLbl" member="yes">
-																			<label> Audio ADC:</label>
+																			<label> Audio&#x0A; ADC:</label>
 																			<size>75,21</size>
 																			<bg>#4EB7DF</bg>
 																			<font>
@@ -311,7 +393,7 @@
 																	</object>
 																	<object class="sizeritem">
 																		<object class="wxTextCtrl" name="ID_TEXTCTRL_PROJ_DESC" variable="TextCtrlProjDescription" member="yes">
-																			<size>200,50</size>
+																			<size>200,80</size>
 																			<bg>#C8C8C8</bg>
 																			<font>
 																				<size>11</size>
@@ -496,7 +578,7 @@
 													<flag>wxALL|wxEXPAND</flag>
 												</object>
 												<object class="sizeritem">
-													<object class="wxPanel" name="ID_PANEL_CTRL_BTNS" variable="PanelCtrlBtns" member="yes">
+													<object class="wxPanel" name="ID_PANEL_CTRL_BTNS" variable="PanelCtrlBtnsStartLocal" member="yes">
 														<bg>#BEBEBE</bg>
 														<object class="wxBoxSizer" variable="BoxSizerCtrlBtns" member="no">
 															<object class="spacer">
@@ -510,9 +592,79 @@
 															<object class="sizeritem">
 																<object class="wxButton" name="ID_BUTTON_START_TESTS" subclass="GButton" variable="ButtonStartTests" member="yes">
 																	<label>Start procedure</label>
-																	<size>320,20</size>
+																	<size>320,22</size>
 																	<fg>#FFFFFF</fg>
 																	<handler function="OnButtonStartTestsClick" entry="EVT_BUTTON" />
+																</object>
+																<flag>wxALL|wxALIGN_TOP</flag>
+																<border>2</border>
+															</object>
+															<object class="spacer">
+																<flag>wxALL|wxEXPAND</flag>
+																<option>1</option>
+															</object>
+															<object class="spacer">
+																<flag>wxALL|wxEXPAND</flag>
+																<size>1,-1</size>
+															</object>
+														</object>
+													</object>
+													<flag>wxALL|wxEXPAND</flag>
+													<border>1</border>
+												</object>
+												<object class="sizeritem">
+													<object class="wxPanel" name="ID_PANEL_CTRL_BTNS_OFFLINE_GEN" variable="PanelCtrlBtnsOffLineGen" member="yes">
+														<bg>#BEBEBE</bg>
+														<object class="wxBoxSizer" variable="BoxSizerCtrlBtnsOffLineGen" member="no">
+															<object class="spacer">
+																<flag>wxALL|wxEXPAND</flag>
+																<size>1,-1</size>
+															</object>
+															<object class="spacer">
+																<flag>wxALL|wxEXPAND</flag>
+																<option>1</option>
+															</object>
+															<object class="sizeritem">
+																<object class="wxButton" name="ID_BUTTON_GEN_STIM_FILE" subclass="GButton" variable="ButtonGenerateStimFile" member="yes">
+																	<label>Generate offline stim file</label>
+																	<size>320,22</size>
+																	<fg>#FFFFFF</fg>
+																	<handler function="OnButtonGenerateStimFileClick" entry="EVT_BUTTON" />
+																</object>
+																<flag>wxALL|wxALIGN_TOP</flag>
+																<border>2</border>
+															</object>
+															<object class="spacer">
+																<flag>wxALL|wxEXPAND</flag>
+																<option>1</option>
+															</object>
+															<object class="spacer">
+																<flag>wxALL|wxEXPAND</flag>
+																<size>1,-1</size>
+															</object>
+														</object>
+													</object>
+													<flag>wxALL|wxEXPAND</flag>
+													<border>1</border>
+												</object>
+												<object class="sizeritem">
+													<object class="wxPanel" name="ID_PANEL_CTRL_BTNS_OFFLINE_ANZ" variable="PanelCtrlBtnsOffLineAnz" member="yes">
+														<bg>#BEBEBE</bg>
+														<object class="wxBoxSizer" variable="BoxSizerCtrlBtnsOffLineAnz" member="no">
+															<object class="spacer">
+																<flag>wxALL|wxEXPAND</flag>
+																<size>1,-1</size>
+															</object>
+															<object class="spacer">
+																<flag>wxALL|wxEXPAND</flag>
+																<option>1</option>
+															</object>
+															<object class="sizeritem">
+																<object class="wxButton" name="ID_BUTTON_ANZ_RSP_FILE" subclass="GButton" variable="ButtonAnalyseRespFile" member="yes">
+																	<label>Analyze offline response file</label>
+																	<size>320,22</size>
+																	<fg>#FFFFFF</fg>
+																	<handler function="OnButtonAnalyseRespFileClick" entry="EVT_BUTTON" />
 																</object>
 																<flag>wxALL|wxALIGN_TOP</flag>
 																<border>2</border>
@@ -540,7 +692,7 @@
 										<size>10,-1</size>
 									</object>
 									<object class="sizeritem">
-										<object class="wxBoxSizer" variable="BoxSizerRightPanels" member="no">
+										<object class="wxBoxSizer" variable="BoxSizerRightPanels" member="yes">
 											<orient>wxVERTICAL</orient>
 											<object class="sizeritem">
 												<object class="wxPanel" name="ID_PANEL_TEST_DESCRIPTION" subclass="RimPanel" variable="PanelTestDescription" member="yes">
@@ -569,12 +721,12 @@
 																<size>-1,50</size>
 																<bg>#C8C8C8</bg>
 																<font>
-																	<size>11</size>
+																	<size>10</size>
 																	<style>normal</style>
 																	<weight>bold</weight>
 																	<underlined>0</underlined>
 																	<family>swiss</family>
-																	<face>Arial Narrow</face>
+																	<face>Arial</face>
 																</font>
 																<style>wxTE_MULTILINE|wxTE_READONLY</style>
 															</object>
@@ -604,14 +756,15 @@
 												<flag>wxALL|wxEXPAND</flag>
 												<border>2</border>
 											</object>
-											<object class="spacer">
-												<flag>wxALL|wxEXPAND</flag>
-												<size>-1,10</size>
-											</object>
 											<object class="sizeritem">
 												<object class="wxPanel" name="ID_PANEL_TEST_MODE" subclass="RimPanel" variable="PanelTestMode" member="yes">
+													<hidden>1</hidden>
 													<object class="wxBoxSizer" variable="BoxSizerPTestNode" member="no">
 														<orient>wxVERTICAL</orient>
+														<object class="spacer">
+															<flag>wxALL|wxEXPAND</flag>
+															<size>-1,10</size>
+														</object>
 														<object class="sizeritem">
 															<object class="wxStaticText" name="ID_STATICTEXT_TEST_MODE" variable="StaticTextTestMode" member="yes">
 																<label>  Test mode</label>
@@ -635,7 +788,7 @@
 																<object class="sizeritem">
 																	<object class="wxChoice" name="ID_CHOICE_TEST_MODE" variable="ChoiceTestMode" member="yes">
 																		<selection>0</selection>
-																		<size>75,21</size>
+																		<size>90,21</size>
 																		<handler function="OnChoiceTestModeSelect" entry="EVT_CHOICE" />
 																	</object>
 																	<flag>wxALL|wxEXPAND</flag>
@@ -643,15 +796,14 @@
 																</object>
 																<object class="spacer">
 																	<flag>wxALL|wxEXPAND</flag>
-																	<option>1</option>
-																	<size>10,0</size>
+																	<size>5,0</size>
 																</object>
 																<object class="sizeritem">
 																	<object class="wxButton" name="ID_BUTTON_RESP_FILE" subclass="GButton" variable="ButtonRespFile" member="yes">
-																		<size>225,22</size>
+																		<size>232,22</size>
 																		<handler function="OnButtonRespFileClick" entry="EVT_BUTTON" />
 																	</object>
-																	<flag>wxALL</flag>
+																	<flag>wxALL|wxEXPAND</flag>
 																	<border>2</border>
 																</object>
 																<object class="spacer">
@@ -685,14 +837,14 @@
 												<flag>wxALL|wxEXPAND</flag>
 												<border>2</border>
 											</object>
-											<object class="spacer">
-												<flag>wxALL|wxEXPAND</flag>
-												<size>-1,10</size>
-											</object>
 											<object class="sizeritem">
 												<object class="wxPanel" name="ID_PANEL_TEST_AUDIO" subclass="RimPanel" variable="PanelTestAudio" member="yes">
 													<object class="wxBoxSizer" variable="BoxSizerPTAudio" member="no">
 														<orient>wxVERTICAL</orient>
+														<object class="spacer">
+															<flag>wxALL|wxEXPAND</flag>
+															<size>-1,10</size>
+														</object>
 														<object class="sizeritem">
 															<object class="wxStaticText" name="ID_STATICTEXT_AUDIO_ROUTING" variable="StaticTextAudioRouting" member="yes">
 																<label>  Audio routing</label>
@@ -717,7 +869,15 @@
 																	<object class="sizeritem">
 																		<object class="wxStaticText" name="ID_STATICTEXT_DAC_CH" variable="StaticTextDACCh" member="yes">
 																			<label> DAC chan:  </label>
-																			<size>75,16</size>
+																			<size>80,16</size>
+																			<font>
+																				<size>10</size>
+																				<style>normal</style>
+																				<weight>bold</weight>
+																				<underlined>0</underlined>
+																				<family>swiss</family>
+																				<face>Arial</face>
+																			</font>
 																		</object>
 																		<flag>wxALL|wxEXPAND</flag>
 																		<border>2</border>
@@ -728,7 +888,7 @@
 																	</object>
 																	<object class="sizeritem">
 																		<object class="wxChoice" name="ID_CHOICE_DAC_CH" variable="ChoiceDACCh" member="yes">
-																			<size>40,21</size>
+																			<size>35,21</size>
 																			<enabled>0</enabled>
 																			<handler function="OnChoiceDACChSelect" entry="EVT_CHOICE" />
 																		</object>
@@ -764,7 +924,15 @@
 																	<object class="sizeritem">
 																		<object class="wxStaticText" name="ID_STATICTEXT_ADC_CH" variable="StaticTextADCCh" member="yes">
 																			<label> ADC chan:  </label>
-																			<size>75,16</size>
+																			<size>80,16</size>
+																			<font>
+																				<size>10</size>
+																				<style>normal</style>
+																				<weight>bold</weight>
+																				<underlined>0</underlined>
+																				<family>swiss</family>
+																				<face>Arial</face>
+																			</font>
 																		</object>
 																		<flag>wxALL|wxEXPAND</flag>
 																		<border>2</border>
@@ -775,7 +943,7 @@
 																	</object>
 																	<object class="sizeritem">
 																		<object class="wxChoice" name="ID_CHOICE_ADC_CH" variable="ChoiceADCCh" member="yes">
-																			<size>40,21</size>
+																			<size>35,21</size>
 																			<enabled>0</enabled>
 																			<handler function="OnChoiceADCChSelect" entry="EVT_CHOICE" />
 																		</object>
@@ -873,6 +1041,7 @@
 															</object>
 															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
 															<border>1</border>
+															<option>1</option>
 														</object>
 														<object class="sizeritem">
 															<object class="wxStaticText" name="ID_STATICTEXT_LINE2" variable="StaticTextLine2" member="yes">
@@ -898,11 +1067,12 @@
 																	<object class="spacer">
 																		<flag>wxALL|wxEXPAND</flag>
 																		<option>1</option>
+																		<size>5,-1</size>
 																	</object>
 																	<object class="sizeritem">
 																		<object class="wxButton" name="ID_BUTTON_DO_SINGLETEST" subclass="GButton" variable="ButtonDoSingleTest" member="yes">
 																			<label>Perform selected test</label>
-																			<size>320,20</size>
+																			<size>325,22</size>
 																			<fg>#FFFFFF</fg>
 																			<handler function="OnButtonDoSingleTestClick" entry="EVT_BUTTON" />
 																		</object>
@@ -912,16 +1082,16 @@
 																	<object class="spacer">
 																		<flag>wxALL|wxEXPAND</flag>
 																		<option>1</option>
+																		<size>5,-1</size>
 																	</object>
 																</object>
 															</object>
 															<flag>wxALL|wxEXPAND</flag>
 															<border>1</border>
-															<option>1</option>
 														</object>
 													</object>
 												</object>
-												<flag>wxTOP|wxLEFT|wxRIGHT</flag>
+												<flag>wxTOP|wxLEFT|wxRIGHT|wxEXPAND</flag>
 												<border>2</border>
 												<option>1</option>
 											</object>

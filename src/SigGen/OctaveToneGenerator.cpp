@@ -51,6 +51,7 @@ void
 OctaveToneGenerator::setParameters( wxXmlNode* paramsNode )
 {
 	wxXmlNode* cNode = paramsNode->GetChildren();
+	double selectedStimChannel = 0;
 
 	while (cNode)
 	{
@@ -58,6 +59,8 @@ OctaveToneGenerator::setParameters( wxXmlNode* paramsNode )
 
 		if (nName == wxT("audiorouting"))
 		{
+			wxString sigChW = cNode->GetAttribute(wxT("signal_ch_idx"),wxT("0"));
+			sigChW.ToDouble(&selectedStimChannel);
 		}
 		else if (nName == wxT("fileio"))
 		{
@@ -82,7 +85,12 @@ OctaveToneGenerator::setParameters( wxXmlNode* paramsNode )
 	mTransientTime = 250;
 	mBurstIntervalTime = 250;
 	mSignalLevel = 0;
-	mSelectedChannelIdx = 0;
+
+	//if a multichannel file is requested, get the stimulus channel from the test config
+	if (mNoChannels > 1)
+		mSelectedChannelIdx = (int)selectedStimChannel;
+	else
+		mSelectedChannelIdx = 0;
 
 	//get parameters from xml node
 	wxXmlNode* parameterNode = mParamsNode->GetChildren();

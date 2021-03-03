@@ -26,9 +26,11 @@ class AVPTesterFrame;
 class FDAudioEngine;
 extern FDAudioEngine *gAudioIO;
 
-
 class AudioThreadCalibrate;
 class AudioThreadWrite;
+
+class AudioThreadSequentialWrite;
+class AudioThreadSequentialAnalyse;
 
 class AudioThreadADCTest;
 class AudioThreadPlayback;
@@ -95,10 +97,19 @@ class FDAudioEngine
 
 		int doADCTest();
 		int performADCTestUnit(int testIndex);
+		
 		//Plays test signal and records response  
 		int PlaybackAcquire(wxString signalFile, wxString responseFile, int signalChannel, int responseChannel);
 		int doPlayFile();
 
+		//Generates offline stimulus sequence 
+		void GenerateStimFile();
+		int doWriteStimulusSequence();
+		size_t WriteSyncToneToFile(SNDFILE* file, SF_INFO format, float lengthMs, float frequency);
+
+		//analyse offline response file
+		void AnalyseOfflineResponse();
+		int  doOfflineAnalysis();
 
 		PaError OpenInputOutputDevices(StreamConfiguration inConfig, StreamConfiguration outConfig);
 		PaError CloseInputOutputDevices();
@@ -121,6 +132,9 @@ class FDAudioEngine
 
 		AudioThreadADCTest*  mThreadADCTest;
 		AudioThreadPlayback* mThreadPlayback;
+
+		AudioThreadSequentialWrite*  mThreadSequentialWrite;
+		AudioThreadSequentialAnalyse*  mThreadSequentialAnalyse;
 
 		int CreateLevelAnalysers(size_t srate, size_t interval);
 		void DeleteLevelAnalysers();

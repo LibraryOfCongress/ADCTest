@@ -1,0 +1,75 @@
+﻿  asio.cpp
+  asiodrivers.cpp
+  asiolist.cpp
+  pa_asio.cpp
+  Generating Code...
+  pa_allocation.c
+  pa_converters.c
+  pa_cpuload.c
+  pa_debugprint.c
+  pa_dither.c
+  pa_front.c
+  pa_process.c
+  pa_ringbuffer.c
+  pa_stream.c
+  pa_trace.c
+  pa_win_wdmks.c
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(701): warning C4996: '_vsnprintf': This function or variable may be unsafe. Consider using _vsnprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdio.h(1400): note: see declaration of '_vsnprintf'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(1256): warning C4996: '_snwprintf': This function or variable may be unsafe. Consider using _snwprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstdio.h(1667): note: see declaration of '_snwprintf'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(1259): warning C4996: '_snwprintf': This function or variable may be unsafe. Consider using _snwprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstdio.h(1667): note: see declaration of '_snwprintf'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(1654): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstring.h(123): note: see declaration of 'wcscpy'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(1686): warning C4996: 'wcsncpy': This function or variable may be unsafe. Consider using wcsncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstring.h(205): note: see declaration of 'wcsncpy'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(1715): warning C4996: 'wcsncpy': This function or variable may be unsafe. Consider using wcsncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstring.h(205): note: see declaration of 'wcsncpy'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(1787): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstring.h(123): note: see declaration of 'wcscpy'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(1882): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstring.h(123): note: see declaration of 'wcscpy'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(1960): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstring.h(123): note: see declaration of 'wcscpy'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(1986): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstring.h(123): note: see declaration of 'wcscpy'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(2704): warning C4996: 'wcsncpy': This function or variable may be unsafe. Consider using wcsncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstring.h(205): note: see declaration of 'wcsncpy'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(2707): warning C4996: 'wcsncpy': This function or variable may be unsafe. Consider using wcsncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstring.h(205): note: see declaration of 'wcsncpy'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(3572): warning C4996: 'wcsncpy': This function or variable may be unsafe. Consider using wcsncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstring.h(205): note: see declaration of 'wcsncpy'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(3579): warning C4996: 'wcsncpy': This function or variable may be unsafe. Consider using wcsncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstring.h(205): note: see declaration of 'wcsncpy'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(3594): warning C4996: '_snwprintf': This function or variable may be unsafe. Consider using _snwprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstdio.h(1667): note: see declaration of '_snwprintf'
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\wdmks\pa_win_wdmks.c(3597): warning C4996: '_snwprintf': This function or variable may be unsafe. Consider using _snwprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstdio.h(1667): note: see declaration of '_snwprintf'
+  pa_win_wmme.c
+  pa_win_ds.c
+c:\work\avpreserve\software\fadg-adctest-2019\lib-src\portaudio-v19\src\hostapi\dsound\pa_win_ds.c(603): warning C4996: 'wcscpy': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\corecrt_wstring.h(123): note: see declaration of 'wcscpy'
+  pa_win_ds_dynlink.c
+  pa_win_wasapi.c
+  pa_win_coinitialize.c
+  pa_win_hostapis.c
+  pa_win_util.c
+  pa_win_waveformat.c
+  pa_win_wdmks_utils.c
+  Generating Code...
+  Compiling...
+  pa_x86_plain_converters.c
+  Generating Code...
+  portaudio-v19.vcxproj -> C:\Work\AVPreserve\Software\fadg-adctest-2019\src\msvc\AVPTester\Debug\portaudio-v19.lib
+  
+  ---------- C:\WORK\AVPRESERVE\SOFTWARE\FADG-ADCTEST-2019\SRC\MSVC\PORTAUDIO-V19\DEBUG\CONFIG.H
+  #define PA_USE_WASAPI 1 
+  pa_win_wasapi.c
+  
+  ---------- C:\WORK\AVPRESERVE\SOFTWARE\FADG-ADCTEST-2019\SRC\MSVC\PORTAUDIO-V19\DEBUG\CONFIG.H
+  
+  ---------- C:\WORK\AVPRESERVE\SOFTWARE\FADG-ADCTEST-2019\SRC\MSVC\PORTAUDIO-V19\DEBUG\CONFIG.H
+  Microsoft (R) Library Manager Version 14.14.26433.0
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
